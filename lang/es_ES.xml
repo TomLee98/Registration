@@ -1,0 +1,301 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<struct>
+    <FILE>archivos</FILE>
+    <LOAD_FILE>Cargar archivos</LOAD_FILE>
+    <LOAD_WORKSPACE_VARIABLE>Cargar variables del espacio de trabajo</LOAD_WORKSPACE_VARIABLE>
+    <EXPORT_IMAGES>Exportar imágenes</EXPORT_IMAGES>
+    <EXPORT_GEOMETRIC_TRANSFORM>Exportar transformación geométrica</EXPORT_GEOMETRIC_TRANSFORM>
+    <EXPORT_TIME>Tiempo de exportación</EXPORT_TIME>
+    <EXPORT_MOVIE>Exportar película</EXPORT_MOVIE>
+    <EXIT>Salida</EXIT>
+    <IMAGE>Imágenes</IMAGE>
+    <LIGHT_CONTRAST>Luz/Contraste</LIGHT_CONTRAST>
+    <Z_PROJECTION>Proyección Z</Z_PROJECTION>
+    <MAX_Z_PROJECTION>Proyección Z máxima</MAX_Z_PROJECTION>
+    <MIN_Z_PROJECTION>Proyección Z mínima</MIN_Z_PROJECTION>
+    <MEDIAN_Z_PROJECTION>Proyección Z mediana</MEDIAN_Z_PROJECTION>
+    <MEAN_Z_PROJECTION>Proyección Z media</MEAN_Z_PROJECTION>
+    <MASK>Mascarilla</MASK>
+    <GENERATE_MASK>Generación</GENERATE_MASK>
+    <IMPORT_MASK>Máscara de importación</IMPORT_MASK>
+    <APPEND_COMMENTS>Agregar comentarios</APPEND_COMMENTS>
+    <TIME_STAMP>Marca de tiempo</TIME_STAMP>
+    <SCALE_RATIO>Escala de proporción</SCALE_RATIO>
+    <METADATA>metadatos</METADATA>
+    <CROP_VOLUME>Volumen de cultivo</CROP_VOLUME>
+    <CROP_XY>Recortar XY</CROP_XY>
+    <CROP_Z>Recorte de espesor</CROP_Z>
+    <CROP_FRAME>Recorte de fotogramas</CROP_FRAME>
+    <OPTION>Opciones</OPTION>
+    <EXPORT_CONFIGURATION>Exportar configuración</EXPORT_CONFIGURATION>
+    <LOAD_CONFIGURATION>Cargar configuración</LOAD_CONFIGURATION>
+    <ANIMATION>Animación</ANIMATION>
+    <PLAY_MODE>Modo de juego</PLAY_MODE>
+    <DIRECT>Directo</DIRECT>
+    <RECYCLE>Reciclar</RECYCLE>
+    <REGISTRATOR>Registro</REGISTRATOR>
+    <REGISTRATION_SETTING>Configuración de registro</REGISTRATION_SETTING>
+    <REGISTRATION_RANGE>Rango de registro</REGISTRATION_RANGE>
+    <REGISTRATION_EVALUATION>Evaluación de registro</REGISTRATION_EVALUATION>
+    <REGISTRATION_HISTORY>Historial de registro</REGISTRATION_HISTORY>
+    <HELP>Ayuda</HELP>
+    <ABOUT>Acerca de</ABOUT>
+    <DOCUMENT>Documento</DOCUMENT>
+    <LANGUAGE>Idioma</LANGUAGE>
+    <CHECK_UPDATE>Comprueba la actualización</CHECK_UPDATE>
+    <SLICE_VIEWER>Visor de sectores</SLICE_VIEWER>
+    <SLICE>Rebanada</SLICE>
+    <TIME_FRAME>Tiempo</TIME_FRAME>
+    <CONTROL_PANEL>Panel de control</CONTROL_PANEL>
+    <LOG>Registro</LOG>
+    <ON>En</ON>
+    <OFF>Apagado</OFF>
+    <SOURCE>Fuente</SOURCE>
+    <WELCOME_TO_Reg3D_App>Bienvenido a la aplicación Reg3D</WELCOME_TO_Reg3D_App>
+    <RUN>Correr</RUN>
+    <HORIZONTAL_FLIP>Volteo horizontal</HORIZONTAL_FLIP>
+    <VERTICAL_FLIP>Volteo vertical</VERTICAL_FLIP>
+    <ROI_SETTING>Configuración de rendimiento de la inversión</ROI_SETTING>
+    <RECTANGLE>Rectángulo</RECTANGLE>
+    <CIRCLE>Círculo</CIRCLE>
+    <POLYGON>Polígono</POLYGON>
+    <REGION_FREE>Región libre</REGION_FREE>
+    <COLOR_CHANNEL>Canal de color</COLOR_CHANNEL>
+    <MERGE_SOURCE>Fusionar fuentes (M-A)</MERGE_SOURCE>
+    <NONE>Ninguno</NONE>
+    <RED_CYAN>rojo-cian</RED_CYAN>
+    <GREEN_MAGENTA>Verde-Magenta</GREEN_MAGENTA>
+    <RED>Rojo</RED>
+    <GREEN>Verde</GREEN>
+    <EXPORT>Exportar</EXPORT>
+    <CLEAR>Claro</CLEAR>
+    <RAW>Crudo</RAW>
+    <ALIGNED>Alineado</ALIGNED>
+    <DATA_SELECTER>Selector de datos</DATA_SELECTER>
+    <VIDEO_DATA>Datos de vídeo</VIDEO_DATA>
+    <DATA_TYPE>Tipo de datos</DATA_TYPE>
+    <SINGLE_CHANNEL>Un canal solo</SINGLE_CHANNEL>
+    <DUAL_CHANNEL>Doble canal</DUAL_CHANNEL>
+    <RED_CHANNEL>canal rojo</RED_CHANNEL>
+    <GREEN_CHANNEL>Canal verde</GREEN_CHANNEL>
+    <MIX_CHANNEL>Canal de mezcla</MIX_CHANNEL>
+    <IMAGE_PARAMETER>Parámetros de imagen</IMAGE_PARAMETER>
+    <CAMERA_TIME>Tiempo de cámara</CAMERA_TIME>
+    <CLOSE>Cerca</CLOSE>
+    <PIXEL_HISTOGRAM>Histograma de píxeles</PIXEL_HISTOGRAM>
+    <LIGHT>Luz</LIGHT>
+    <CONTRAST>Contraste</CONTRAST>
+    <GAMMA>Gama</GAMMA>
+    <TRANSLATION>Traducción</TRANSLATION>
+    <ROTATION>Rotación</ROTATION>
+    <GLOBAL_REGISTRATION>Registro mundial</GLOBAL_REGISTRATION>
+    <LOCAL_REGISTRATION>Registro local</LOCAL_REGISTRATION>
+    <REGISTRATION_GOODNESS>Bondad de registro</REGISTRATION_GOODNESS>
+    <REFRESH_REGISTRATION_GOODNESS>Actualizar bondad de registro</REFRESH_REGISTRATION_GOODNESS>
+    <DISPLACEMENT_FIELD_ESTIMATION>Estimación del campo de desplazamiento</DISPLACEMENT_FIELD_ESTIMATION>
+    <RENDERER_PARAMETERS>Parámetros del renderizador</RENDERER_PARAMETERS>
+    <RENDER_PRECISION>Precisión de renderizado</RENDER_PRECISION>
+    <PROJECTION>Proyección</PROJECTION>
+    <COLOR_MAPPING>Mapeo de color</COLOR_MAPPING>
+    <TRANSPARENT_MAPPING>Mapeo transparente</TRANSPARENT_MAPPING>
+    <LINEARITY>Lineal</LINEARITY>
+    <SOFT_TISSUE>Tejido suave</SOFT_TISSUE>
+    <REGISTRATION_IMAGE>Imagen registrada</REGISTRATION_IMAGE>
+    <DISPLACEMENT_FIELD>Campo de desplazamiento</DISPLACEMENT_FIELD>
+    <DISPLACEMENT_VOXEL>Desplazamiento (Voxel)</DISPLACEMENT_VOXEL>
+    <ANGULAR_DISPLACEMENT_RADIAN>Desplazamiento angular (radianes)</ANGULAR_DISPLACEMENT_RADIAN>
+    <SETTING_PANEL>Panel de configuración</SETTING_PANEL>
+    <MOVIE_FORMAT>Formato de película</MOVIE_FORMAT>
+    <WIDTH>Ancho</WIDTH>
+    <HEIGHT>Altura</HEIGHT>
+    <RECOVERY>Recuperar</RECOVERY>
+    <FRAME_RATE>Cuadros por segundo</FRAME_RATE>
+    <RENDER_QUALITY>Calidad de renderizado</RENDER_QUALITY>
+    <LOSSLESS>sin pérdidas</LOSSLESS>
+    <TARGET_BITRATE>Tasa de bits objetivo</TARGET_BITRATE>
+    <INTERPOLATION>Interpolación</INTERPOLATION>
+    <NEAREST>Más cercano</NEAREST>
+    <BILINEAR>bilineal</BILINEAR>
+    <BICUBIC>bicúbico</BICUBIC>
+    <CANCEL>Cancelar</CANCEL>
+    <REGION_PROPERTY_SLICE>Propiedad de región (segmento)</REGION_PROPERTY_SLICE>
+    <AREA>Área</AREA>
+    <PERIMETER>Perímetro</PERIMETER>
+    <CENTROID>Centroide</CENTROID>
+    <REGION_PROPERTY_VOLUME>Propiedad de región (volumen)</REGION_PROPERTY_VOLUME>
+    <VOLUME>Volumen</VOLUME>
+    <SURFACE_AREA>Área de superficie</SURFACE_AREA>
+    <SPHERICITY>Esfericidad</SPHERICITY>
+    <APPEND>Adjuntar</APPEND>
+    <REMOVE>Eliminar</REMOVE>
+    <INVERSE>Inverso</INVERSE>
+    <GLOBAL_REGISTRATION_AUTO>Registro global (automático)</GLOBAL_REGISTRATION_AUTO>
+    <REGISTRATION_TEMPLATE>Plantilla de registro</REGISTRATION_TEMPLATE>
+    <SAMPLING>Muestreo</SAMPLING>
+    <RIGID>Rígido</RIGID>
+    <SIMILARITY>Semejanza</SIMILARITY>
+    <AFFINE>Afín</AFFINE>
+    <MODAL>Modal</MODAL>
+    <MONOMODAL>Monomodal</MONOMODAL>
+    <MULTIMODAL>multimodal</MULTIMODAL>
+    <MEAN>Significar</MEAN>
+    <MEDIAN>Mediana</MEDIAN>
+    <MIN>mínimo</MIN>
+    <MAX>máx.</MAX>
+    <REGION_LABEL>Etiqueta de región</REGION_LABEL>
+    <INTENSITY_THRESHOLD>Umbral de intensidad</INTENSITY_THRESHOLD>
+    <SCALE_THRESHOLD>Umbral de escala(um)</SCALE_THRESHOLD>
+    <MIN_ITERATION_STEP>Paso mínimo de iteración</MIN_ITERATION_STEP>
+    <INITIAL_ITERATION_STEP>Paso de iteración inicial</INITIAL_ITERATION_STEP>
+    <MAX_ITERATION_N>Número máximo de iteraciones</MAX_ITERATION_N>
+    <ITERATION_COEFFICIENT>Coeficiente de iteración</ITERATION_COEFFICIENT>
+    <CUBIC_HIGH_QUALITY>Cúbico (alta calidad)</CUBIC_HIGH_QUALITY>
+    <NEAREST_FAST>Más cercano (rápido)</NEAREST_FAST>
+    <PYRAMID_COEFFICIENT>Coeficiente de pirámide</PYRAMID_COEFFICIENT>
+    <ENABLE>Permitir</ENABLE>
+    <LOCAL_REGISTRATION_AUTO>Registro local (automático)</LOCAL_REGISTRATION_AUTO>
+    <GRID_UNIT_SIZE>Tamaño de la unidad de cuadrícula</GRID_UNIT_SIZE>
+    <AUTO>Auto</AUTO>
+    <ACCUMULATIVE_FIELD_SMOOTHING>Suavizado de campo acumulativo</ACCUMULATIVE_FIELD_SMOOTHING>
+    <GEOMETRIC_TRANSFORMATION>Transformación Geométrica</GEOMETRIC_TRANSFORMATION>
+    <GLOBAL_REGISTRATION_MANUAL>Registro global (manual)</GLOBAL_REGISTRATION_MANUAL>
+    <PIECEWISE_LINEAR>Lineal a trozos</PIECEWISE_LINEAR>
+    <POLYNOMIAL>Polinomio</POLYNOMIAL>
+    <LOCAL_WEIGHTED_MEAN>Media ponderada local</LOCAL_WEIGHTED_MEAN>
+    <MIN_CONTROL_VAL>Importe mínimo de control</MIN_CONTROL_VAL>
+    <POLYNOMIAL_ORDER>Orden polinomial</POLYNOMIAL_ORDER>
+    <WEIGHTED_POINTS_NUMBER>Número de puntos ponderados</WEIGHTED_POINTS_NUMBER>
+    <EDGE_SMOOTHING>Suavizado de bordes</EDGE_SMOOTHING>
+    <YES>Sí</YES>
+    <NO>No</NO>
+    <TEMPLATE_SYNCHRONISATION>Sincronizar plantilla</TEMPLATE_SYNCHRONISATION>
+    <LOCATION>Ubicación</LOCATION>
+    <SIGNAL>Señal</SIGNAL>
+    <ROBUSTNESS_COEFFICIENT>Coeficiente de robustez</ROBUSTNESS_COEFFICIENT>
+    <DOWNSAMPLING>Reducción de muestreo</DOWNSAMPLING>
+    <COMPENSATION_PHOTOBLEACHING>Compensación por fotoblanqueo</COMPENSATION_PHOTOBLEACHING>
+    <PRECISION>Precisión</PRECISION>
+    <RATIO>Relación</RATIO>
+    <SCALE>Escala</SCALE>
+    <X_DIRECTION_RESOLUTION>Resolución X</X_DIRECTION_RESOLUTION>
+    <Y_DIRECTION_RESOLUTION>Resolución Y</Y_DIRECTION_RESOLUTION>
+    <SCALE_UNIT>Unidad de escala</SCALE_UNIT>
+    <X_DIRECTION_LENGTH>Escala X</X_DIRECTION_LENGTH>
+    <Y_DIRECTION_LENGTH>Escala Y</Y_DIRECTION_LENGTH>
+    <HORIZONTAL>Horizontal</HORIZONTAL>
+    <VERTICAL>Vertical</VERTICAL>
+    <LINE_WIDTH>Ancho de línea</LINE_WIDTH>
+    <COLOR>Color</COLOR>
+    <BLUE>Azul</BLUE>
+    <CYAN>cian</CYAN>
+    <MAGENTA>Magenta</MAGENTA>
+    <YELLOW>Amarillo</YELLOW>
+    <BLACK>Negro</BLACK>
+    <WHITE>Blanco</WHITE>
+    <SELF_DEFINITION>Autodefinición</SELF_DEFINITION>
+    <FONT>Fuente</FONT>
+    <LINE_HAT>Sombrero de línea</LINE_HAT>
+    <FLAT_HAT>sombrero plano</FLAT_HAT>
+    <CIRCLE_HAT>Sombrero circular</CIRCLE_HAT>
+    <SQUARE_HAT>Sombrero Cuadrado</SQUARE_HAT>
+    <DIAMOND_HAT>Sombrero de diamante</DIAMOND_HAT>
+    <SPACE>Espacio</SPACE>
+    <HAT_SIZE>Tamaño del sombrero</HAT_SIZE>
+    <SOLID>Sólido</SOLID>
+    <UNSUPPORTED_CHANNEL_NUMBER>Número de canales no admitido</UNSUPPORTED_CHANNEL_NUMBER>
+    <UNSUPPORTED_FEW_LAYERS>No se admite el registro con muy pocas capas (&lt;5)</UNSUPPORTED_FEW_LAYERS>
+    <ERROR>Error</ERROR>
+    <WARNING>Advertencia</WARNING>
+    <INFORMATION>Información</INFORMATION>
+    <DISCARD_RATIO>Proporción de descarte</DISCARD_RATIO>
+    <WAITING>espera</WAITING>
+    <INPUT>aporte</INPUT>
+    <END>comenzar</END>
+    <BEGIN>comenzar</BEGIN>
+    <OK>DE ACUERDO</OK>
+    <INVALID_FRAME_ORDER>Orden de fotogramas no válido</INVALID_FRAME_ORDER>
+    <INVALID_RULER>Regla no válida: intente cambiar el tamaño de la regla</INVALID_RULER>
+    <CONFIGURATION_EXPORTED>La configuración se exporta</CONFIGURATION_EXPORTED>
+    <CONFGURATION_LOADED>La configuración está cargada</CONFGURATION_LOADED>
+    <CONFIGURATION_CORRUPTED>El archivo de configuración está dañado.</CONFIGURATION_CORRUPTED>
+    <IN_PROGRESS>En curso</IN_PROGRESS>
+    <REGISTRATION_WORKFLOW_ERROR>No se ha configurado el flujo de trabajo de registro</REGISTRATION_WORKFLOW_ERROR>
+    <PERFORM_AUTO_REGISTRATION>Realizar registro automático</PERFORM_AUTO_REGISTRATION>
+    <REGISTRATION_FRAMES>Marcos de registro(Segundos):</REGISTRATION_FRAMES>
+    <COVERAGE_OPERATION>Según el registro actual, la operación es irreversible, ¿continuar?</COVERAGE_OPERATION>
+    <CONFIRM_COVERAGE>Confirmar registro de cobertura</CONFIRM_COVERAGE>
+    <REGISTRATION_COMPLETE>Registro completo</REGISTRATION_COMPLETE>
+    <TIME_COST>Costo de tiempo(Segundos):</TIME_COST>
+    <TERMINATE_REGISTRATION>Terminación forzosa del registro</TERMINATE_REGISTRATION>
+    <ASK_FOR_UPDATE>Hay una versión actualizada, ¿está actualizada?</ASK_FOR_UPDATE>
+    <DOWNLOADING>Descargando…</DOWNLOADING>
+    <UNSUPPORTED_OS>Tipo de sistema operativo no compatible</UNSUPPORTED_OS>
+    <FINISH_UPDATE>La descarga está completa, cierre el programa para completar la actualización</FINISH_UPDATE>
+    <UPDATE_SCRIPT_FAILED>La generación del script de actualización falló, verifique los permisos de escritura</UPDATE_SCRIPT_FAILED>
+    <LATEST_VERSION>El programa actual es la última versión.</LATEST_VERSION>
+    <UNABLE_ACCESS_SERVER>No se puede acceder al servidor remoto, verifique los permisos</UNABLE_ACCESS_SERVER>
+    <UNABLE_ACCESS_UPDATE_SETTING>No se puede abrir update_setting.ini. Permisos insuficientes</UNABLE_ACCESS_UPDATE_SETTING>
+    <UNRECOGNIZED_UPDATE_IDENTIFIER>Buscando actualizaciones: identificador no reconocido. Compruebe update_setting.ini</UNRECOGNIZED_UPDATE_IDENTIFIER>
+    <INVALID_UPDATE_REPOSITORY>Buscando actualizaciones: ruta de repositorio ilegal. Compruebe update_setting.ini</INVALID_UPDATE_REPOSITORY>
+    <UI_INITIALIZE_SUCCESS>Inicialización de la interfaz completada</UI_INITIALIZE_SUCCESS>
+    <SYS_INITIALIZE_SUCCESS>Inicialización del sistema completa</SYS_INITIALIZE_SUCCESS>
+    <FILE_LOADING_COMPLETE>Carga de archivo completa:</FILE_LOADING_COMPLETE>
+    <EXPORT_AS>Exportar cómo</EXPORT_AS>
+    <EXPORTING>Exportador...</EXPORTING>
+    <IMAGE_EXPORT_SUCCESS>Imágenes exportadas con éxito</IMAGE_EXPORT_SUCCESS>
+    <IRREVERSIBLE_CROP>La operación de recorte es irreversible, ¿continuar?</IRREVERSIBLE_CROP>
+    <CONFIRM_CROP>Confirmar recorte</CONFIRM_CROP>
+    <FRAME_FEW>Seleccione al menos dos marcos</FRAME_FEW>
+    <SLICE_FEW>Seleccione al menos dos rebanadas</SLICE_FEW>
+    <FRAME_OVERFLOW>Desbordamiento de recuento de fotogramas</FRAME_OVERFLOW>
+    <GIVEUP_CROP>dejar de recortar</GIVEUP_CROP>
+    <RESET_REGISTRATION_FRAMES>Restablecer marco de registro</RESET_REGISTRATION_FRAMES>
+    <T_CROPPED>Camiseta recortada</T_CROPPED>
+    <MISSING_HELP>falta el archivo help.html</MISSING_HELP>
+    <REG3D_CONFIGURATION>Archivo de configuración Reg3D</REG3D_CONFIGURATION>
+    <SAVE_CONFIGURATION_FILE>Guardar archivo de configuración</SAVE_CONFIGURATION_FILE>
+    <READ_CONFIGURATION_FILE>Leer archivo de configuración</READ_CONFIGURATION_FILE>
+    <XY_CROPPED>Recorte XY completo</XY_CROPPED>
+    <CONFIRM_ROI_RANGE>Confirme el rango de ROI</CONFIRM_ROI_RANGE>
+    <THICKNESS_RANGE>Ingrese el rango de espesor (capa):</THICKNESS_RANGE>
+    <SLICES_FEW_FOR_NEXT_STEP>El número de capas es pequeño y el registro no será posible después de recortar</SLICES_FEW_FOR_NEXT_STEP>
+    <SLICES_OVERFLOW>Desbordamiento de número de rebanadas</SLICES_OVERFLOW>
+    <Z_CROPPED>Recorte Z completo</Z_CROPPED>
+    <VARIABLE_LOADED>Variable cargado</VARIABLE_LOADED>
+    <TIME_SERIES_FILE>Archivo de serie temporal</TIME_SERIES_FILE>
+    <TEXT_FILE>Archivo de texto</TEXT_FILE>
+    <COMMA_SEPARATED>Separado por comas</COMMA_SEPARATED>
+    <WORKSHEET>Hoja de cálculo</WORKSHEET>
+    <TIME_EXPORT_SUCCESS>Exportación de tiempo exitosa</TIME_EXPORT_SUCCESS>
+    <TIME_MISSING>Faltan datos de series temporales</TIME_MISSING>
+    <GEOMETRIC_TRANSFORMATION_EXPORT_SUCCESS>Transformación geométrica exportada con éxito</GEOMETRIC_TRANSFORMATION_EXPORT_SUCCESS>
+    <LOGFILE_EXPORT_TO>Exportar archivos de registro a</LOGFILE_EXPORT_TO>
+    <MASK_REMOVED>Máscara eliminada</MASK_REMOVED>
+    <MASK_MISMATCH>Desajuste del tamaño de la máscara</MASK_MISMATCH>
+    <MASK_LOADED>Máscara cargada</MASK_LOADED>
+    <RENDERING>Representación...</RENDERING>
+    <MOVIE_EXPORTED_SUCCESS>Vídeo exportado con éxito</MOVIE_EXPORTED_SUCCESS>
+    <MOVIE_EXPORT_INTERRUPTED>Exportación de película interrumpida</MOVIE_EXPORT_INTERRUPTED>
+    <TIME_RANGE>Ingrese un rango de tiempo (fotogramas):</TIME_RANGE>
+    <UNREGISTRATERED_FRAMES>Fotogramas a registrar</UNREGISTRATERED_FRAMES>
+    <DISPLACEMENT_NOT_EXIST>No existen datos de campo de desplazamiento (no rígidos)</DISPLACEMENT_NOT_EXIST>
+    <RENDERING_DISPLACEMENT_FIELD>Representación del campo de desplazamiento...</RENDERING_DISPLACEMENT_FIELD>
+    <CALCULATING_GOODNESS>Calculando la bondad del registro...</CALCULATING_GOODNESS>
+    <REGMODE_CURRENT_MANUAL>Modo de registro actual: Manual</REGMODE_CURRENT_MANUAL>
+    <REGMODE_CURRENT_AUTO>Modo de registro actual: Automático</REGMODE_CURRENT_AUTO>
+    <IMAGE_INTENSITY>intensidad de la imagen</IMAGE_INTENSITY>
+    <OPACITY>Opacidad</OPACITY>
+    <UNSUPPORTED_FILE_FORMAT>Formato de archivo no soportado</UNSUPPORTED_FILE_FORMAT>
+    <IMPORT_EXPORT>Importar y exportar</IMPORT_EXPORT>
+    <IMAGE_ANNOTATION>Imagen y anotación</IMAGE_ANNOTATION>
+    <SETTING_PREFERENCE>Configuraciones y Preferencias</SETTING_PREFERENCE>
+    <HELP_UPDATE>Ayuda y actualizaciones</HELP_UPDATE>
+    <SLICE_FINE_TUNING>Rebanada de ajuste fino</SLICE_FINE_TUNING>
+    <PROGRESS_BAR>Barra de progreso</PROGRESS_BAR>
+    <TIME_FINE_TUNING>Ajuste de tiempo</TIME_FINE_TUNING>
+    <CONTROL_REGISTRATION_RUNNING>Controlar la ejecución del procedimiento de registro</CONTROL_REGISTRATION_RUNNING>
+    <LOG_SWITCH>Interruptor de registro, detener la salida cuando está apagado</LOG_SWITCH>
+    <SELECTION_SOURCE>Seleccione la fuente de datos del navegador</SELECTION_SOURCE>
+    <RUNNING_REGISTRATION>Ejecutar el programa de registro</RUNNING_REGISTRATION>
+    <DEVELOPING>Desarrollando…</DEVELOPING>
+</struct>

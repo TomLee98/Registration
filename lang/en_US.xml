@@ -1,0 +1,301 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<struct>
+    <FILE>Files</FILE>
+    <LOAD_FILE>Load Files</LOAD_FILE>
+    <LOAD_WORKSPACE_VARIABLE>Load Workspace Variables</LOAD_WORKSPACE_VARIABLE>
+    <EXPORT_IMAGES>Export Images</EXPORT_IMAGES>
+    <EXPORT_GEOMETRIC_TRANSFORM>Export Geometric Transformation</EXPORT_GEOMETRIC_TRANSFORM>
+    <EXPORT_TIME>Export Time</EXPORT_TIME>
+    <EXPORT_MOVIE>Export Movie</EXPORT_MOVIE>
+    <EXIT>Exit</EXIT>
+    <IMAGE>Images</IMAGE>
+    <LIGHT_CONTRAST>Light/Contrast</LIGHT_CONTRAST>
+    <Z_PROJECTION>Z Projection</Z_PROJECTION>
+    <MAX_Z_PROJECTION>Maximum Z Projection</MAX_Z_PROJECTION>
+    <MIN_Z_PROJECTION>Minimum Z Projection</MIN_Z_PROJECTION>
+    <MEDIAN_Z_PROJECTION>Median Z Projection</MEDIAN_Z_PROJECTION>
+    <MEAN_Z_PROJECTION>Mean Z Projection</MEAN_Z_PROJECTION>
+    <MASK>Mask</MASK>
+    <GENERATE_MASK>Generation</GENERATE_MASK>
+    <IMPORT_MASK>Import mask</IMPORT_MASK>
+    <APPEND_COMMENTS>Append Comments</APPEND_COMMENTS>
+    <TIME_STAMP>Time Stamp</TIME_STAMP>
+    <SCALE_RATIO>Ratio/Scale</SCALE_RATIO>
+    <METADATA>Metadata</METADATA>
+    <CROP_VOLUME>Crop Volume</CROP_VOLUME>
+    <CROP_XY>Crop XY</CROP_XY>
+    <CROP_Z>Thickness Cropping</CROP_Z>
+    <CROP_FRAME>Frames cropping</CROP_FRAME>
+    <OPTION>Options</OPTION>
+    <EXPORT_CONFIGURATION>Export Configuration</EXPORT_CONFIGURATION>
+    <LOAD_CONFIGURATION>Load Configuration</LOAD_CONFIGURATION>
+    <ANIMATION>Animation</ANIMATION>
+    <PLAY_MODE>Play Mode</PLAY_MODE>
+    <DIRECT>Direct</DIRECT>
+    <RECYCLE>Recycle</RECYCLE>
+    <REGISTRATOR>Register</REGISTRATOR>
+    <REGISTRATION_SETTING>Registration Setting</REGISTRATION_SETTING>
+    <REGISTRATION_RANGE>Registration Range</REGISTRATION_RANGE>
+    <REGISTRATION_EVALUATION>Registration Evaluation</REGISTRATION_EVALUATION>
+    <REGISTRATION_HISTORY>Registration History</REGISTRATION_HISTORY>
+    <HELP>Help</HELP>
+    <ABOUT>About</ABOUT>
+    <DOCUMENT>Document</DOCUMENT>
+    <LANGUAGE>Language</LANGUAGE>
+    <CHECK_UPDATE>Check Update</CHECK_UPDATE>
+    <SLICE_VIEWER>Slice Viewer</SLICE_VIEWER>
+    <SLICE>Slice</SLICE>
+    <TIME_FRAME>Time(Frame)</TIME_FRAME>
+    <CONTROL_PANEL>Control Panel</CONTROL_PANEL>
+    <LOG>Log</LOG>
+    <ON>On</ON>
+    <OFF>Off</OFF>
+    <SOURCE>Source</SOURCE>
+    <WELCOME_TO_Reg3D_App>Welcome to Reg3D App</WELCOME_TO_Reg3D_App>
+    <RUN>Run</RUN>
+    <HORIZONTAL_FLIP>Horizontal Flip</HORIZONTAL_FLIP>
+    <VERTICAL_FLIP>Vertical Flip</VERTICAL_FLIP>
+    <ROI_SETTING>ROI Setting</ROI_SETTING>
+    <RECTANGLE>Rectangle</RECTANGLE>
+    <CIRCLE>Circle</CIRCLE>
+    <POLYGON>Polygon</POLYGON>
+    <REGION_FREE>Region Free</REGION_FREE>
+    <COLOR_CHANNEL>Color Channel</COLOR_CHANNEL>
+    <MERGE_SOURCE>Merge Sources(M-A)</MERGE_SOURCE>
+    <NONE>None</NONE>
+    <RED_CYAN>Red-Cyan</RED_CYAN>
+    <GREEN_MAGENTA>Green-Magenta</GREEN_MAGENTA>
+    <RED>Red</RED>
+    <GREEN>Green</GREEN>
+    <EXPORT>Export</EXPORT>
+    <CLEAR>Clear</CLEAR>
+    <RAW>Raw</RAW>
+    <ALIGNED>Aligned</ALIGNED>
+    <DATA_SELECTER>Data Selecter</DATA_SELECTER>
+    <VIDEO_DATA>Video Data</VIDEO_DATA>
+    <DATA_TYPE>Data Type</DATA_TYPE>
+    <SINGLE_CHANNEL>Single Channel</SINGLE_CHANNEL>
+    <DUAL_CHANNEL>Dual Channel</DUAL_CHANNEL>
+    <RED_CHANNEL>Red Channel</RED_CHANNEL>
+    <GREEN_CHANNEL>Green Channel</GREEN_CHANNEL>
+    <MIX_CHANNEL>Mix Channel</MIX_CHANNEL>
+    <IMAGE_PARAMETER>Image Parameters</IMAGE_PARAMETER>
+    <CAMERA_TIME>Camera Time</CAMERA_TIME>
+    <CLOSE>Close</CLOSE>
+    <PIXEL_HISTOGRAM>Pixel Histogram</PIXEL_HISTOGRAM>
+    <LIGHT>Light</LIGHT>
+    <CONTRAST>Contrast</CONTRAST>
+    <GAMMA>Gamma</GAMMA>
+    <TRANSLATION>Translation</TRANSLATION>
+    <ROTATION>Rotation</ROTATION>
+    <GLOBAL_REGISTRATION>Global Registration</GLOBAL_REGISTRATION>
+    <LOCAL_REGISTRATION>Local Registration</LOCAL_REGISTRATION>
+    <REGISTRATION_GOODNESS>Registration Goodness</REGISTRATION_GOODNESS>
+    <REFRESH_REGISTRATION_GOODNESS>Refresh Registration Goodness</REFRESH_REGISTRATION_GOODNESS>
+    <DISPLACEMENT_FIELD_ESTIMATION>Displacement Field Estimation</DISPLACEMENT_FIELD_ESTIMATION>
+    <RENDERER_PARAMETERS>Renderer Parameters</RENDERER_PARAMETERS>
+    <RENDER_PRECISION>Render Precision</RENDER_PRECISION>
+    <PROJECTION>Projection</PROJECTION>
+    <COLOR_MAPPING>Color Mapping</COLOR_MAPPING>
+    <TRANSPARENT_MAPPING>Transparent Mapping</TRANSPARENT_MAPPING>
+    <LINEARITY>Linear</LINEARITY>
+    <SOFT_TISSUE>Soft Tissue</SOFT_TISSUE>
+    <REGISTRATION_IMAGE>Registered Image</REGISTRATION_IMAGE>
+    <DISPLACEMENT_FIELD>Displacement Field</DISPLACEMENT_FIELD>
+    <DISPLACEMENT_VOXEL>Displacement(Voxel)</DISPLACEMENT_VOXEL>
+    <ANGULAR_DISPLACEMENT_RADIAN>Angular displacement (Radian)</ANGULAR_DISPLACEMENT_RADIAN>
+    <SETTING_PANEL>Setting Panel</SETTING_PANEL>
+    <MOVIE_FORMAT>Movie Format</MOVIE_FORMAT>
+    <WIDTH>Width</WIDTH>
+    <HEIGHT>Height</HEIGHT>
+    <RECOVERY>Recover</RECOVERY>
+    <FRAME_RATE>Frame Rate</FRAME_RATE>
+    <RENDER_QUALITY>Render Quality</RENDER_QUALITY>
+    <LOSSLESS>Lossless</LOSSLESS>
+    <TARGET_BITRATE>Target Bitrate</TARGET_BITRATE>
+    <INTERPOLATION>Interpolation</INTERPOLATION>
+    <NEAREST>Nearest</NEAREST>
+    <BILINEAR>Bilinear</BILINEAR>
+    <BICUBIC>Bicubic</BICUBIC>
+    <CANCEL>Cancel</CANCEL>
+    <REGION_PROPERTY_SLICE>Region Property(Slice)</REGION_PROPERTY_SLICE>
+    <AREA>Area</AREA>
+    <PERIMETER>Perimeter</PERIMETER>
+    <CENTROID>Centroid</CENTROID>
+    <REGION_PROPERTY_VOLUME>Region Property(Volume)</REGION_PROPERTY_VOLUME>
+    <VOLUME>Volume</VOLUME>
+    <SURFACE_AREA>Surface Area</SURFACE_AREA>
+    <SPHERICITY>Sphericity</SPHERICITY>
+    <APPEND>Append</APPEND>
+    <REMOVE>Remove</REMOVE>
+    <INVERSE>Inverse</INVERSE>
+    <GLOBAL_REGISTRATION_AUTO>Global Registration(Auto)</GLOBAL_REGISTRATION_AUTO>
+    <REGISTRATION_TEMPLATE>Registration Template</REGISTRATION_TEMPLATE>
+    <SAMPLING>Sampling</SAMPLING>
+    <RIGID>Rigid</RIGID>
+    <SIMILARITY>Similarity</SIMILARITY>
+    <AFFINE>Affine</AFFINE>
+    <MODAL>Modal</MODAL>
+    <MONOMODAL>Monomodal</MONOMODAL>
+    <MULTIMODAL>Multimodal</MULTIMODAL>
+    <MEAN>Mean</MEAN>
+    <MEDIAN>Median</MEDIAN>
+    <MIN>Min</MIN>
+    <MAX>Max</MAX>
+    <REGION_LABEL>Region Label</REGION_LABEL>
+    <INTENSITY_THRESHOLD>Intensity Threshold</INTENSITY_THRESHOLD>
+    <SCALE_THRESHOLD>Scale Threshold(um)</SCALE_THRESHOLD>
+    <MIN_ITERATION_STEP>Minimum Iteration Step</MIN_ITERATION_STEP>
+    <INITIAL_ITERATION_STEP>Initial Iteration Step</INITIAL_ITERATION_STEP>
+    <MAX_ITERATION_N>Max Iteration Number</MAX_ITERATION_N>
+    <ITERATION_COEFFICIENT>Iteration Coefficient</ITERATION_COEFFICIENT>
+    <CUBIC_HIGH_QUALITY>Cubic(High Quality)</CUBIC_HIGH_QUALITY>
+    <NEAREST_FAST>Nearest(Fast)</NEAREST_FAST>
+    <PYRAMID_COEFFICIENT>Pyramid Coefficient</PYRAMID_COEFFICIENT>
+    <ENABLE>Enable</ENABLE>
+    <LOCAL_REGISTRATION_AUTO>Local Registration(Auto)</LOCAL_REGISTRATION_AUTO>
+    <GRID_UNIT_SIZE>Grid Unit Size</GRID_UNIT_SIZE>
+    <AUTO>Auto</AUTO>
+    <ACCUMULATIVE_FIELD_SMOOTHING>Accumulative Field Smoothing</ACCUMULATIVE_FIELD_SMOOTHING>
+    <GEOMETRIC_TRANSFORMATION>Geometric Transformation</GEOMETRIC_TRANSFORMATION>
+    <GLOBAL_REGISTRATION_MANUAL>Global Registration(Manual)</GLOBAL_REGISTRATION_MANUAL>
+    <PIECEWISE_LINEAR>Piecewise linear</PIECEWISE_LINEAR>
+    <POLYNOMIAL>Polynomial</POLYNOMIAL>
+    <LOCAL_WEIGHTED_MEAN>Local Weighted Mean</LOCAL_WEIGHTED_MEAN>
+    <MIN_CONTROL_VAL>Minimum Control Amount</MIN_CONTROL_VAL>
+    <POLYNOMIAL_ORDER>Polynomial Order</POLYNOMIAL_ORDER>
+    <WEIGHTED_POINTS_NUMBER>Weighted Points Number</WEIGHTED_POINTS_NUMBER>
+    <EDGE_SMOOTHING>Edge Smoothing</EDGE_SMOOTHING>
+    <YES>Yes</YES>
+    <NO>No</NO>
+    <TEMPLATE_SYNCHRONISATION>Template Synchronize</TEMPLATE_SYNCHRONISATION>
+    <LOCATION>Location</LOCATION>
+    <SIGNAL>Signal</SIGNAL>
+    <ROBUSTNESS_COEFFICIENT>Robustness coefficient</ROBUSTNESS_COEFFICIENT>
+    <DOWNSAMPLING>Downsampling</DOWNSAMPLING>
+    <COMPENSATION_PHOTOBLEACHING>Photobleaching Compensation</COMPENSATION_PHOTOBLEACHING>
+    <PRECISION>Precision</PRECISION>
+    <RATIO>Ratio</RATIO>
+    <SCALE>Scale</SCALE>
+    <X_DIRECTION_RESOLUTION>X Resolution</X_DIRECTION_RESOLUTION>
+    <Y_DIRECTION_RESOLUTION>Y Resolution</Y_DIRECTION_RESOLUTION>
+    <SCALE_UNIT>Scale Unit</SCALE_UNIT>
+    <X_DIRECTION_LENGTH>X Scale</X_DIRECTION_LENGTH>
+    <Y_DIRECTION_LENGTH>Y Scale</Y_DIRECTION_LENGTH>
+    <HORIZONTAL>Horizontal</HORIZONTAL>
+    <VERTICAL>Vertical</VERTICAL>
+    <LINE_WIDTH>Line Width</LINE_WIDTH>
+    <COLOR>Color</COLOR>
+    <BLUE>Blue</BLUE>
+    <CYAN>Cyan</CYAN>
+    <MAGENTA>Magenta</MAGENTA>
+    <YELLOW>Yellow</YELLOW>
+    <BLACK>Black</BLACK>
+    <WHITE>White</WHITE>
+    <SELF_DEFINITION>Self Definition</SELF_DEFINITION>
+    <FONT>Font</FONT>
+    <LINE_HAT>Line Hat</LINE_HAT>
+    <FLAT_HAT>Flat Hat</FLAT_HAT>
+    <CIRCLE_HAT>Circle Hat</CIRCLE_HAT>
+    <SQUARE_HAT>Square Hat</SQUARE_HAT>
+    <DIAMOND_HAT>Diamond Hat</DIAMOND_HAT>
+    <SPACE>Space</SPACE>
+    <HAT_SIZE>Hat Size</HAT_SIZE>
+    <SOLID>Solid</SOLID>
+    <UNSUPPORTED_CHANNEL_NUMBER>Unsupported number of channels</UNSUPPORTED_CHANNEL_NUMBER>
+    <UNSUPPORTED_FEW_LAYERS>Registration with too few layers (&lt;5) is not supported</UNSUPPORTED_FEW_LAYERS>
+    <ERROR>Error</ERROR>
+    <WARNING>Warning</WARNING>
+    <INFORMATION>Information</INFORMATION>
+    <DISCARD_RATIO>Discard Ratio</DISCARD_RATIO>
+    <WAITING>waiting</WAITING>
+    <INPUT>input</INPUT>
+    <END>end</END>
+    <BEGIN>begin</BEGIN>
+    <OK>OK</OK>
+    <INVALID_FRAME_ORDER>Invalid frames order</INVALID_FRAME_ORDER>
+    <INVALID_RULER>Invalid ruler: try resizing the ruler</INVALID_RULER>
+    <CONFIGURATION_EXPORTED>The configuration is exported</CONFIGURATION_EXPORTED>
+    <CONFGURATION_LOADED>The configuration is loaded</CONFGURATION_LOADED>
+    <CONFIGURATION_CORRUPTED>The configuration file is corrupted</CONFIGURATION_CORRUPTED>
+    <IN_PROGRESS>In progress</IN_PROGRESS>
+    <REGISTRATION_WORKFLOW_ERROR>No registration workflow set up</REGISTRATION_WORKFLOW_ERROR>
+    <PERFORM_AUTO_REGISTRATION>Perform automatic registration</PERFORM_AUTO_REGISTRATION>
+    <REGISTRATION_FRAMES>Registration frames(Seconds):</REGISTRATION_FRAMES>
+    <COVERAGE_OPERATION>Based on the current registration, the operation is irreversible, continue?</COVERAGE_OPERATION>
+    <CONFIRM_COVERAGE>Confirm coverage registration</CONFIRM_COVERAGE>
+    <REGISTRATION_COMPLETE>Registration complete</REGISTRATION_COMPLETE>
+    <TIME_COST>Time cost(Seconds):</TIME_COST>
+    <TERMINATE_REGISTRATION>Forced termination of registration</TERMINATE_REGISTRATION>
+    <ASK_FOR_UPDATE>There is an updated version, is it updated?</ASK_FOR_UPDATE>
+    <DOWNLOADING>Downloading…</DOWNLOADING>
+    <UNSUPPORTED_OS>Unsupported OS type</UNSUPPORTED_OS>
+    <FINISH_UPDATE>The download is complete, please close the program to complete the update</FINISH_UPDATE>
+    <UPDATE_SCRIPT_FAILED>Update script generation failed, please check the write permissions</UPDATE_SCRIPT_FAILED>
+    <LATEST_VERSION>The current program is the latest version</LATEST_VERSION>
+    <UNABLE_ACCESS_SERVER>Unable to access the remote server, please check the permissions</UNABLE_ACCESS_SERVER>
+    <UNABLE_ACCESS_UPDATE_SETTING>Unable to open update_setting.ini. Insufficient permissions</UNABLE_ACCESS_UPDATE_SETTING>
+    <UNRECOGNIZED_UPDATE_IDENTIFIER>Checking for updates: Unrecognized identifier. Please check update_setting.ini</UNRECOGNIZED_UPDATE_IDENTIFIER>
+    <INVALID_UPDATE_REPOSITORY>Checking for updates: Illegal repository path. Please check update_setting.ini</INVALID_UPDATE_REPOSITORY>
+    <UI_INITIALIZE_SUCCESS>Interface initialization completed</UI_INITIALIZE_SUCCESS>
+    <SYS_INITIALIZE_SUCCESS>System initialization complete</SYS_INITIALIZE_SUCCESS>
+    <FILE_LOADING_COMPLETE>File loading completed:</FILE_LOADING_COMPLETE>
+    <EXPORT_AS>Export as</EXPORT_AS>
+    <EXPORTING>Exporting...</EXPORTING>
+    <IMAGE_EXPORT_SUCCESS>Images exported successfully</IMAGE_EXPORT_SUCCESS>
+    <IRREVERSIBLE_CROP>Cropping operation is irreversible, continue?</IRREVERSIBLE_CROP>
+    <CONFIRM_CROP>Confirm cropping</CONFIRM_CROP>
+    <FRAME_FEW>Please select at least two frames</FRAME_FEW>
+    <SLICE_FEW>Please select at least two slices</SLICE_FEW>
+    <FRAME_OVERFLOW>Frames count overflow</FRAME_OVERFLOW>
+    <GIVEUP_CROP>Give up cropping</GIVEUP_CROP>
+    <RESET_REGISTRATION_FRAMES>Reset registration frame</RESET_REGISTRATION_FRAMES>
+    <T_CROPPED>T cropped</T_CROPPED>
+    <MISSING_HELP>help.html file is missing</MISSING_HELP>
+    <REG3D_CONFIGURATION>Reg3D configuration file</REG3D_CONFIGURATION>
+    <SAVE_CONFIGURATION_FILE>Save configuration file</SAVE_CONFIGURATION_FILE>
+    <READ_CONFIGURATION_FILE>Read configuration file</READ_CONFIGURATION_FILE>
+    <XY_CROPPED>XY cropping complete</XY_CROPPED>
+    <CONFIRM_ROI_RANGE>Please confirm the ROI range</CONFIRM_ROI_RANGE>
+    <THICKNESS_RANGE>Please enter the thickness range (layer):</THICKNESS_RANGE>
+    <SLICES_FEW_FOR_NEXT_STEP>The number of layers is small, and registration will not be possible after cropping</SLICES_FEW_FOR_NEXT_STEP>
+    <SLICES_OVERFLOW>Slices number overflow</SLICES_OVERFLOW>
+    <Z_CROPPED>Z cropping complete</Z_CROPPED>
+    <VARIABLE_LOADED>Variable loaded</VARIABLE_LOADED>
+    <TIME_SERIES_FILE>Time series file</TIME_SERIES_FILE>
+    <TEXT_FILE>Text file</TEXT_FILE>
+    <COMMA_SEPARATED>Comma Separated</COMMA_SEPARATED>
+    <WORKSHEET>Worksheet</WORKSHEET>
+    <TIME_EXPORT_SUCCESS>Time export successful</TIME_EXPORT_SUCCESS>
+    <TIME_MISSING>Missing time series data</TIME_MISSING>
+    <GEOMETRIC_TRANSFORMATION_EXPORT_SUCCESS>Geometric transformation exported successfully</GEOMETRIC_TRANSFORMATION_EXPORT_SUCCESS>
+    <LOGFILE_EXPORT_TO>Export log files to</LOGFILE_EXPORT_TO>
+    <MASK_REMOVED>Mask removed</MASK_REMOVED>
+    <MASK_MISMATCH>Mask size mismatch</MASK_MISMATCH>
+    <MASK_LOADED>Mask loaded</MASK_LOADED>
+    <RENDERING>Rendering...</RENDERING>
+    <MOVIE_EXPORTED_SUCCESS>Video exported successfully</MOVIE_EXPORTED_SUCCESS>
+    <MOVIE_EXPORT_INTERRUPTED>Movie export interrupted</MOVIE_EXPORT_INTERRUPTED>
+    <TIME_RANGE>Please enter a time range (frames):</TIME_RANGE>
+    <UNREGISTRATERED_FRAMES>Frames to be registered</UNREGISTRATERED_FRAMES>
+    <DISPLACEMENT_NOT_EXIST>(non-rigid) displacement field data does not exist</DISPLACEMENT_NOT_EXIST>
+    <RENDERING_DISPLACEMENT_FIELD>Rendering displacement field...</RENDERING_DISPLACEMENT_FIELD>
+    <CALCULATING_GOODNESS>Calculating goodness of registration...</CALCULATING_GOODNESS>
+    <REGMODE_CURRENT_MANUAL>Current Registration Mode: Manual</REGMODE_CURRENT_MANUAL>
+    <REGMODE_CURRENT_AUTO>Current Registration Mode: Automatic</REGMODE_CURRENT_AUTO>
+    <IMAGE_INTENSITY>image intensity</IMAGE_INTENSITY>
+    <OPACITY>Opacity</OPACITY>
+    <UNSUPPORTED_FILE_FORMAT>unsupported file format</UNSUPPORTED_FILE_FORMAT>
+    <IMPORT_EXPORT>Import and Export</IMPORT_EXPORT>
+    <IMAGE_ANNOTATION>Image and Annotation</IMAGE_ANNOTATION>
+    <SETTING_PREFERENCE>Settings and Preferences</SETTING_PREFERENCE>
+    <HELP_UPDATE>Help and Updates</HELP_UPDATE>
+    <SLICE_FINE_TUNING>Slice fine-tuning</SLICE_FINE_TUNING>
+    <PROGRESS_BAR>Progress bar</PROGRESS_BAR>
+    <TIME_FINE_TUNING>Time fine-tuning</TIME_FINE_TUNING>
+    <CONTROL_REGISTRATION_RUNNING>Controlling registration procedure execution</CONTROL_REGISTRATION_RUNNING>
+    <LOG_SWITCH>Log switch, stop output when off</LOG_SWITCH>
+    <SELECTION_SOURCE>Select browser data source</SELECTION_SOURCE>
+    <RUNNING_REGISTRATION>Run the registration program</RUNNING_REGISTRATION>
+    <DEVELOPING>Developing…</DEVELOPING>
+</struct>

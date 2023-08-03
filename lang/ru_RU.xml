@@ -1,0 +1,301 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<struct>
+    <FILE>Файлы</FILE>
+    <LOAD_FILE>Загрузить файлы</LOAD_FILE>
+    <LOAD_WORKSPACE_VARIABLE>Загрузить переменные рабочей области</LOAD_WORKSPACE_VARIABLE>
+    <EXPORT_IMAGES>Экспорт изображений</EXPORT_IMAGES>
+    <EXPORT_GEOMETRIC_TRANSFORM>Экспорт геометрического преобразования</EXPORT_GEOMETRIC_TRANSFORM>
+    <EXPORT_TIME>Время экспорта</EXPORT_TIME>
+    <EXPORT_MOVIE>Экспорт фильма</EXPORT_MOVIE>
+    <EXIT>Выход</EXIT>
+    <IMAGE>Изображений</IMAGE>
+    <LIGHT_CONTRAST>Свет/Контраст</LIGHT_CONTRAST>
+    <Z_PROJECTION>Z-проекция</Z_PROJECTION>
+    <MAX_Z_PROJECTION>Максимальная Z-проекция</MAX_Z_PROJECTION>
+    <MIN_Z_PROJECTION>Минимальная Z-проекция</MIN_Z_PROJECTION>
+    <MEDIAN_Z_PROJECTION>Медианная Z-проекция</MEDIAN_Z_PROJECTION>
+    <MEAN_Z_PROJECTION>Средняя проекция Z</MEAN_Z_PROJECTION>
+    <MASK>Маска</MASK>
+    <GENERATE_MASK>Поколение</GENERATE_MASK>
+    <IMPORT_MASK>Маска импорта</IMPORT_MASK>
+    <APPEND_COMMENTS>Добавить комментарии</APPEND_COMMENTS>
+    <TIME_STAMP>Отметка времени</TIME_STAMP>
+    <SCALE_RATIO>Соотношение/Масштаб</SCALE_RATIO>
+    <METADATA>Метаданные</METADATA>
+    <CROP_VOLUME>Объем урожая</CROP_VOLUME>
+    <CROP_XY>Обрезать XY</CROP_XY>
+    <CROP_Z>Обрезка толщины</CROP_Z>
+    <CROP_FRAME>Обрезка кадров</CROP_FRAME>
+    <OPTION>Параметры</OPTION>
+    <EXPORT_CONFIGURATION>Экспорт конфигурации</EXPORT_CONFIGURATION>
+    <LOAD_CONFIGURATION>Загрузить конфигурацию</LOAD_CONFIGURATION>
+    <ANIMATION>Анимация</ANIMATION>
+    <PLAY_MODE>Игровой режим</PLAY_MODE>
+    <DIRECT>Прямой</DIRECT>
+    <RECYCLE>Перерабатывать</RECYCLE>
+    <REGISTRATOR>регистр</REGISTRATOR>
+    <REGISTRATION_SETTING>Настройка регистрации</REGISTRATION_SETTING>
+    <REGISTRATION_RANGE>Диапазон регистрации</REGISTRATION_RANGE>
+    <REGISTRATION_EVALUATION>Регистрация Оценка</REGISTRATION_EVALUATION>
+    <REGISTRATION_HISTORY>История регистрации</REGISTRATION_HISTORY>
+    <HELP>Помощь</HELP>
+    <ABOUT>О</ABOUT>
+    <DOCUMENT>Документ</DOCUMENT>
+    <LANGUAGE>Язык</LANGUAGE>
+    <CHECK_UPDATE>Проверить обновление</CHECK_UPDATE>
+    <SLICE_VIEWER>Просмотр срезов</SLICE_VIEWER>
+    <SLICE>Кусочек</SLICE>
+    <TIME_FRAME>Время</TIME_FRAME>
+    <CONTROL_PANEL>Панель управления</CONTROL_PANEL>
+    <LOG>Бревно</LOG>
+    <ON>На</ON>
+    <OFF>Выключенный</OFF>
+    <SOURCE>Источник</SOURCE>
+    <WELCOME_TO_Reg3D_App>Добро пожаловать в приложение Reg3D</WELCOME_TO_Reg3D_App>
+    <RUN>Бегать</RUN>
+    <HORIZONTAL_FLIP>Горизонтальный флип</HORIZONTAL_FLIP>
+    <VERTICAL_FLIP>Вертикальный флип</VERTICAL_FLIP>
+    <ROI_SETTING>Настройка области интереса</ROI_SETTING>
+    <RECTANGLE>Прямоугольник</RECTANGLE>
+    <CIRCLE>Круг</CIRCLE>
+    <POLYGON>Полигон</POLYGON>
+    <REGION_FREE>Без региона</REGION_FREE>
+    <COLOR_CHANNEL>Цветовой канал</COLOR_CHANNEL>
+    <MERGE_SOURCE>Объединить источники (M-A)</MERGE_SOURCE>
+    <NONE>Никто</NONE>
+    <RED_CYAN>Красно-голубой</RED_CYAN>
+    <GREEN_MAGENTA>Зелено-пурпурный</GREEN_MAGENTA>
+    <RED>Красный</RED>
+    <GREEN>Зеленый</GREEN>
+    <EXPORT>Экспорт</EXPORT>
+    <CLEAR>Прозрачный</CLEAR>
+    <RAW>Сырой</RAW>
+    <ALIGNED>Выровнено</ALIGNED>
+    <DATA_SELECTER>Выбор данных</DATA_SELECTER>
+    <VIDEO_DATA>Видеоданные</VIDEO_DATA>
+    <DATA_TYPE>Тип данных</DATA_TYPE>
+    <SINGLE_CHANNEL>Один канал</SINGLE_CHANNEL>
+    <DUAL_CHANNEL>Двойной канал</DUAL_CHANNEL>
+    <RED_CHANNEL>Красный канал</RED_CHANNEL>
+    <GREEN_CHANNEL>Зеленый коридор</GREEN_CHANNEL>
+    <MIX_CHANNEL>Микс Канал</MIX_CHANNEL>
+    <IMAGE_PARAMETER>Параметры изображения</IMAGE_PARAMETER>
+    <CAMERA_TIME>Время камеры</CAMERA_TIME>
+    <CLOSE>Закрывать</CLOSE>
+    <PIXEL_HISTOGRAM>Пиксельная гистограмма</PIXEL_HISTOGRAM>
+    <LIGHT>Свет</LIGHT>
+    <CONTRAST>Контраст</CONTRAST>
+    <GAMMA>Гамма</GAMMA>
+    <TRANSLATION>Перевод</TRANSLATION>
+    <ROTATION>Вращение</ROTATION>
+    <GLOBAL_REGISTRATION>Глобальная регистрация</GLOBAL_REGISTRATION>
+    <LOCAL_REGISTRATION>Местная регистрация</LOCAL_REGISTRATION>
+    <REGISTRATION_GOODNESS>Регистрация</REGISTRATION_GOODNESS>
+    <REFRESH_REGISTRATION_GOODNESS>Обновить регистрацию</REFRESH_REGISTRATION_GOODNESS>
+    <DISPLACEMENT_FIELD_ESTIMATION>Оценка поля смещения</DISPLACEMENT_FIELD_ESTIMATION>
+    <RENDERER_PARAMETERS>Параметры визуализации</RENDERER_PARAMETERS>
+    <RENDER_PRECISION>Точность рендеринга</RENDER_PRECISION>
+    <PROJECTION>Проекция</PROJECTION>
+    <COLOR_MAPPING>Отображение цвета</COLOR_MAPPING>
+    <TRANSPARENT_MAPPING>Прозрачное отображение</TRANSPARENT_MAPPING>
+    <LINEARITY>Линейный</LINEARITY>
+    <SOFT_TISSUE>Мягких тканей</SOFT_TISSUE>
+    <REGISTRATION_IMAGE>Зарегистрированное изображение</REGISTRATION_IMAGE>
+    <DISPLACEMENT_FIELD>Поле смещения</DISPLACEMENT_FIELD>
+    <DISPLACEMENT_VOXEL>Смещение (воксель)</DISPLACEMENT_VOXEL>
+    <ANGULAR_DISPLACEMENT_RADIAN>Угловое смещение (радиан)</ANGULAR_DISPLACEMENT_RADIAN>
+    <SETTING_PANEL>Панель настроек</SETTING_PANEL>
+    <MOVIE_FORMAT>Формат фильма</MOVIE_FORMAT>
+    <WIDTH>Ширина</WIDTH>
+    <HEIGHT>Высота</HEIGHT>
+    <RECOVERY>Восстанавливаться</RECOVERY>
+    <FRAME_RATE>Частота кадров</FRAME_RATE>
+    <RENDER_QUALITY>Качество визуализации</RENDER_QUALITY>
+    <LOSSLESS>Без потерь</LOSSLESS>
+    <TARGET_BITRATE>Целевой битрейт</TARGET_BITRATE>
+    <INTERPOLATION>Интерполяция</INTERPOLATION>
+    <NEAREST>Ближайший</NEAREST>
+    <BILINEAR>Билинейный</BILINEAR>
+    <BICUBIC>Бикубический</BICUBIC>
+    <CANCEL>Отмена</CANCEL>
+    <REGION_PROPERTY_SLICE>Свойство региона (срез)</REGION_PROPERTY_SLICE>
+    <AREA>Область</AREA>
+    <PERIMETER>Периметр</PERIMETER>
+    <CENTROID>Центроид</CENTROID>
+    <REGION_PROPERTY_VOLUME>Свойство региона (объем)</REGION_PROPERTY_VOLUME>
+    <VOLUME>Объем</VOLUME>
+    <SURFACE_AREA>Площадь поверхности</SURFACE_AREA>
+    <SPHERICITY>Сферичность</SPHERICITY>
+    <APPEND>Добавить</APPEND>
+    <REMOVE>Удалять</REMOVE>
+    <INVERSE>Обратный</INVERSE>
+    <GLOBAL_REGISTRATION_AUTO>Глобальная регистрация (авто)</GLOBAL_REGISTRATION_AUTO>
+    <REGISTRATION_TEMPLATE>Шаблон регистрации</REGISTRATION_TEMPLATE>
+    <SAMPLING>Выборка</SAMPLING>
+    <RIGID>Жесткий</RIGID>
+    <SIMILARITY>Сходство</SIMILARITY>
+    <AFFINE>аффинный</AFFINE>
+    <MODAL>Модальный</MODAL>
+    <MONOMODAL>мономодальный</MONOMODAL>
+    <MULTIMODAL>Мультимодальный</MULTIMODAL>
+    <MEAN>Иметь в виду</MEAN>
+    <MEDIAN>медиана</MEDIAN>
+    <MIN>Мин.</MIN>
+    <MAX>Макс</MAX>
+    <REGION_LABEL>Метка региона</REGION_LABEL>
+    <INTENSITY_THRESHOLD>Порог интенсивности</INTENSITY_THRESHOLD>
+    <SCALE_THRESHOLD>Порог масштаба(um)</SCALE_THRESHOLD>
+    <MIN_ITERATION_STEP>Минимальный шаг итерации</MIN_ITERATION_STEP>
+    <INITIAL_ITERATION_STEP>Начальный этап итерации</INITIAL_ITERATION_STEP>
+    <MAX_ITERATION_N>Максимальное количество итераций</MAX_ITERATION_N>
+    <ITERATION_COEFFICIENT>Коэффициент итерации</ITERATION_COEFFICIENT>
+    <CUBIC_HIGH_QUALITY>Кубический (высокое качество)</CUBIC_HIGH_QUALITY>
+    <NEAREST_FAST>Ближайший (быстро)</NEAREST_FAST>
+    <PYRAMID_COEFFICIENT>Коэффициент пирамиды</PYRAMID_COEFFICIENT>
+    <ENABLE>Давать возможность</ENABLE>
+    <LOCAL_REGISTRATION_AUTO>Локальная регистрация (авто)</LOCAL_REGISTRATION_AUTO>
+    <GRID_UNIT_SIZE>Размер блока сетки</GRID_UNIT_SIZE>
+    <AUTO>Авто</AUTO>
+    <ACCUMULATIVE_FIELD_SMOOTHING>Накопительное сглаживание полей</ACCUMULATIVE_FIELD_SMOOTHING>
+    <GEOMETRIC_TRANSFORMATION>Геометрическое преобразование</GEOMETRIC_TRANSFORMATION>
+    <GLOBAL_REGISTRATION_MANUAL>Глобальная регистрация (вручную)</GLOBAL_REGISTRATION_MANUAL>
+    <PIECEWISE_LINEAR>Кусочно-линейный</PIECEWISE_LINEAR>
+    <POLYNOMIAL>Полиномиальный</POLYNOMIAL>
+    <LOCAL_WEIGHTED_MEAN>Локальное средневзвешенное значение</LOCAL_WEIGHTED_MEAN>
+    <MIN_CONTROL_VAL>Минимальная контрольная сумма</MIN_CONTROL_VAL>
+    <POLYNOMIAL_ORDER>Полиномиальный порядок</POLYNOMIAL_ORDER>
+    <WEIGHTED_POINTS_NUMBER>Количество взвешенных баллов</WEIGHTED_POINTS_NUMBER>
+    <EDGE_SMOOTHING>Сглаживание края</EDGE_SMOOTHING>
+    <YES>Да</YES>
+    <NO>Нет</NO>
+    <TEMPLATE_SYNCHRONISATION>Синхронизация шаблона</TEMPLATE_SYNCHRONISATION>
+    <LOCATION>Расположение</LOCATION>
+    <SIGNAL>Сигнал</SIGNAL>
+    <ROBUSTNESS_COEFFICIENT>Коэффициент прочности</ROBUSTNESS_COEFFICIENT>
+    <DOWNSAMPLING>Понижающая дискретизация</DOWNSAMPLING>
+    <COMPENSATION_PHOTOBLEACHING>Компенсация фотообесцвечивания</COMPENSATION_PHOTOBLEACHING>
+    <PRECISION>Точность</PRECISION>
+    <RATIO>Соотношение</RATIO>
+    <SCALE>Шкала</SCALE>
+    <X_DIRECTION_RESOLUTION>X Разрешение</X_DIRECTION_RESOLUTION>
+    <Y_DIRECTION_RESOLUTION>Y Разрешение</Y_DIRECTION_RESOLUTION>
+    <SCALE_UNIT>Единица масштаба</SCALE_UNIT>
+    <X_DIRECTION_LENGTH>Шкала X</X_DIRECTION_LENGTH>
+    <Y_DIRECTION_LENGTH>Шкала Y</Y_DIRECTION_LENGTH>
+    <HORIZONTAL>Горизонтальный</HORIZONTAL>
+    <VERTICAL>Вертикальный</VERTICAL>
+    <LINE_WIDTH>Ширина линии</LINE_WIDTH>
+    <COLOR>Цвет</COLOR>
+    <BLUE>Синий</BLUE>
+    <CYAN>Голубой</CYAN>
+    <MAGENTA>Пурпурный</MAGENTA>
+    <YELLOW>Желтый</YELLOW>
+    <BLACK>Черный</BLACK>
+    <WHITE>Белый</WHITE>
+    <SELF_DEFINITION>Самоопределение</SELF_DEFINITION>
+    <FONT>Шрифт</FONT>
+    <LINE_HAT>Линейная шляпа</LINE_HAT>
+    <FLAT_HAT>Плоская шляпа</FLAT_HAT>
+    <CIRCLE_HAT>Круглая шляпа</CIRCLE_HAT>
+    <SQUARE_HAT>Квадратная шляпа</SQUARE_HAT>
+    <DIAMOND_HAT>Алмазная шляпа</DIAMOND_HAT>
+    <SPACE>Космос</SPACE>
+    <HAT_SIZE>Размер шляпы</HAT_SIZE>
+    <SOLID>Твердый</SOLID>
+    <UNSUPPORTED_CHANNEL_NUMBER>Неподдерживаемое количество каналов</UNSUPPORTED_CHANNEL_NUMBER>
+    <UNSUPPORTED_FEW_LAYERS>Регистрация со слишком малым количеством слоев (&lt;5) не поддерживается.</UNSUPPORTED_FEW_LAYERS>
+    <ERROR>Ошибка</ERROR>
+    <WARNING>Предупреждение</WARNING>
+    <INFORMATION>Информация</INFORMATION>
+    <DISCARD_RATIO>Коэффициент выброса</DISCARD_RATIO>
+    <WAITING>ожидающий</WAITING>
+    <INPUT>вход</INPUT>
+    <END>конец</END>
+    <BEGIN>начинать</BEGIN>
+    <OK>ХОРОШО</OK>
+    <INVALID_FRAME_ORDER>Неверный порядок кадров</INVALID_FRAME_ORDER>
+    <INVALID_RULER>Недопустимая линейка: попробуйте изменить размер линейки</INVALID_RULER>
+    <CONFIGURATION_EXPORTED>Конфигурация экспортируется</CONFIGURATION_EXPORTED>
+    <CONFGURATION_LOADED>Конфигурация загружена</CONFGURATION_LOADED>
+    <CONFIGURATION_CORRUPTED>Файл конфигурации поврежден</CONFIGURATION_CORRUPTED>
+    <IN_PROGRESS>В ходе выполнения</IN_PROGRESS>
+    <REGISTRATION_WORKFLOW_ERROR>Рабочий процесс регистрации не настроен</REGISTRATION_WORKFLOW_ERROR>
+    <PERFORM_AUTO_REGISTRATION>Выполнить автоматическую регистрацию</PERFORM_AUTO_REGISTRATION>
+    <REGISTRATION_FRAMES>Регистрационные кадры(Секунды):</REGISTRATION_FRAMES>
+    <COVERAGE_OPERATION>На основании текущей регистрации операция необратима, продолжить?</COVERAGE_OPERATION>
+    <CONFIRM_COVERAGE>Подтвердить регистрацию покрытия</CONFIRM_COVERAGE>
+    <REGISTRATION_COMPLETE>Регистрация завершена</REGISTRATION_COMPLETE>
+    <TIME_COST>Стоимость времени(Секунды):</TIME_COST>
+    <TERMINATE_REGISTRATION>Принудительное прекращение регистрации</TERMINATE_REGISTRATION>
+    <ASK_FOR_UPDATE>Есть обновленная версия, она обновляется?</ASK_FOR_UPDATE>
+    <DOWNLOADING>Загрузка…</DOWNLOADING>
+    <UNSUPPORTED_OS>Неподдерживаемый тип ОС</UNSUPPORTED_OS>
+    <FINISH_UPDATE>Загрузка завершена, пожалуйста, закройте программу, чтобы завершить обновление</FINISH_UPDATE>
+    <UPDATE_SCRIPT_FAILED>Не удалось создать скрипт обновления, проверьте права на запись</UPDATE_SCRIPT_FAILED>
+    <LATEST_VERSION>Текущая программа является последней версией</LATEST_VERSION>
+    <UNABLE_ACCESS_SERVER>Не удается получить доступ к удаленному серверу, проверьте разрешения</UNABLE_ACCESS_SERVER>
+    <UNABLE_ACCESS_UPDATE_SETTING>Не удалось открыть update_setting.ini. Недостаточно разрешений</UNABLE_ACCESS_UPDATE_SETTING>
+    <UNRECOGNIZED_UPDATE_IDENTIFIER>Проверка обновлений: Неизвестный идентификатор. Пожалуйста, проверьте update_setting.ini</UNRECOGNIZED_UPDATE_IDENTIFIER>
+    <INVALID_UPDATE_REPOSITORY>Проверка обновлений: неверный путь к репозиторию. Пожалуйста, проверьте update_setting.ini</INVALID_UPDATE_REPOSITORY>
+    <UI_INITIALIZE_SUCCESS>Инициализация интерфейса завершена</UI_INITIALIZE_SUCCESS>
+    <SYS_INITIALIZE_SUCCESS>Инициализация системы завершена</SYS_INITIALIZE_SUCCESS>
+    <FILE_LOADING_COMPLETE>Загрузка файла завершена:</FILE_LOADING_COMPLETE>
+    <EXPORT_AS>Экспортировать как</EXPORT_AS>
+    <EXPORTING>Экспорт...</EXPORTING>
+    <IMAGE_EXPORT_SUCCESS>Изображения успешно экспортированы</IMAGE_EXPORT_SUCCESS>
+    <IRREVERSIBLE_CROP>Операция обрезки необратима, продолжить?</IRREVERSIBLE_CROP>
+    <CONFIRM_CROP>Подтвердить обрезку</CONFIRM_CROP>
+    <FRAME_FEW>Выберите не менее двух кадров</FRAME_FEW>
+    <SLICE_FEW>Выберите хотя бы два фрагмента</SLICE_FEW>
+    <FRAME_OVERFLOW>Переполнение счетчика кадров</FRAME_OVERFLOW>
+    <GIVEUP_CROP>Откажитесь от обрезки</GIVEUP_CROP>
+    <RESET_REGISTRATION_FRAMES>Сбросить регистрационную рамку</RESET_REGISTRATION_FRAMES>
+    <T_CROPPED>Т обрезанный</T_CROPPED>
+    <MISSING_HELP>файл help.html отсутствует</MISSING_HELP>
+    <REG3D_CONFIGURATION>Файл конфигурации Reg3D</REG3D_CONFIGURATION>
+    <SAVE_CONFIGURATION_FILE>Сохранить файл конфигурации</SAVE_CONFIGURATION_FILE>
+    <READ_CONFIGURATION_FILE>Чтение файла конфигурации</READ_CONFIGURATION_FILE>
+    <XY_CROPPED>XY обрезка завершена</XY_CROPPED>
+    <CONFIRM_ROI_RANGE>Пожалуйста, подтвердите диапазон рентабельности инвестиций</CONFIRM_ROI_RANGE>
+    <THICKNESS_RANGE>Пожалуйста, введите диапазон толщины (слоя):</THICKNESS_RANGE>
+    <SLICES_FEW_FOR_NEXT_STEP>Количество слоев мало, и после кадрирования регистрация будет невозможна</SLICES_FEW_FOR_NEXT_STEP>
+    <SLICES_OVERFLOW>Переполнение количества срезов</SLICES_OVERFLOW>
+    <Z_CROPPED>Z обрезка завершена</Z_CROPPED>
+    <VARIABLE_LOADED>Переменная загружена</VARIABLE_LOADED>
+    <TIME_SERIES_FILE>Файл временных рядов</TIME_SERIES_FILE>
+    <TEXT_FILE>Текстовый файл</TEXT_FILE>
+    <COMMA_SEPARATED>Разделенные запятой</COMMA_SEPARATED>
+    <WORKSHEET>Рабочий лист</WORKSHEET>
+    <TIME_EXPORT_SUCCESS>Экспорт времени выполнен успешно</TIME_EXPORT_SUCCESS>
+    <TIME_MISSING>Отсутствуют данные временного ряда</TIME_MISSING>
+    <GEOMETRIC_TRANSFORMATION_EXPORT_SUCCESS>Геометрическое преобразование успешно экспортировано</GEOMETRIC_TRANSFORMATION_EXPORT_SUCCESS>
+    <LOGFILE_EXPORT_TO>Экспорт файлов журнала в</LOGFILE_EXPORT_TO>
+    <MASK_REMOVED>Маска снята</MASK_REMOVED>
+    <MASK_MISMATCH>Несоответствие размера маски</MASK_MISMATCH>
+    <MASK_LOADED>Маска загружена</MASK_LOADED>
+    <RENDERING>Рендеринг...</RENDERING>
+    <MOVIE_EXPORTED_SUCCESS>Видео успешно экспортировано</MOVIE_EXPORTED_SUCCESS>
+    <MOVIE_EXPORT_INTERRUPTED>Экспорт фильма прерван</MOVIE_EXPORT_INTERRUPTED>
+    <TIME_RANGE>Пожалуйста, введите временной диапазон (кадры):</TIME_RANGE>
+    <UNREGISTRATERED_FRAMES>Кадры для регистрации</UNREGISTRATERED_FRAMES>
+    <DISPLACEMENT_NOT_EXIST>(нежесткие) данные поля смещения не существуют</DISPLACEMENT_NOT_EXIST>
+    <RENDERING_DISPLACEMENT_FIELD>Отрисовка поля смещения...</RENDERING_DISPLACEMENT_FIELD>
+    <CALCULATING_GOODNESS>Расчет качества регистрации...</CALCULATING_GOODNESS>
+    <REGMODE_CURRENT_MANUAL>Текущий режим регистрации: ручной</REGMODE_CURRENT_MANUAL>
+    <REGMODE_CURRENT_AUTO>Текущий режим регистрации: автоматический</REGMODE_CURRENT_AUTO>
+    <IMAGE_INTENSITY>интенсивность изображения</IMAGE_INTENSITY>
+    <OPACITY>Непрозрачность</OPACITY>
+    <UNSUPPORTED_FILE_FORMAT>неподдерживаемый формат файла</UNSUPPORTED_FILE_FORMAT>
+    <IMPORT_EXPORT>Импорт и экспорт</IMPORT_EXPORT>
+    <IMAGE_ANNOTATION>Изображение и аннотация</IMAGE_ANNOTATION>
+    <SETTING_PREFERENCE>Настройки и предпочтения</SETTING_PREFERENCE>
+    <HELP_UPDATE>Справка и обновления</HELP_UPDATE>
+    <SLICE_FINE_TUNING>Тонкая настройка среза</SLICE_FINE_TUNING>
+    <PROGRESS_BAR>Индикатор</PROGRESS_BAR>
+    <TIME_FINE_TUNING>Точная настройка времени</TIME_FINE_TUNING>
+    <CONTROL_REGISTRATION_RUNNING>Контроль выполнения процедуры регистрации</CONTROL_REGISTRATION_RUNNING>
+    <LOG_SWITCH>Переключатель журнала, остановка вывода при выключении</LOG_SWITCH>
+    <SELECTION_SOURCE>Выберите источник данных браузера</SELECTION_SOURCE>
+    <RUNNING_REGISTRATION>Запустите программу регистрации</RUNNING_REGISTRATION>
+    <DEVELOPING>Разработка…</DEVELOPING>
+</struct>

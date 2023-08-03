@@ -1,0 +1,335 @@
+<html>
+<head>
+<title></title>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+</head>
+<body>
+<p align="left"><font face="宋体"><strong>1.3.5 配准器</strong></font></p>
+<blockquote style="MARGIN-RIGHT: 0px" dir="ltr">
+<p align="left"><font face="宋体"><img src="options5.bmp">
+</font></p>
+<p align="left">&nbsp;配准器包括三个部分，配准(器)设置，配准范围及配准评估。</p>
+<p align="left"><font size="5"><strong>&nbsp;一、配准设置</strong></font></p>
+<p align="left">&nbsp;配准控制流程将根据单通道或双通道图像自动选择合适的算法，因此配准设置面板会产生对应的变化（下图以双通道图像配准为例）。</p>
+<p align="left"><font face="宋体"><img src="reg_global.bmp">
+</font><img src="reg_local.bmp" alt=""/>
+<img src="reg_manual.bmp" alt=""/></p>
+<p align="left">从左至右分别为<strong>全局自动配准</strong>，<strong>局部自动配准</strong>及<strong>全局手动配准</strong>设置面板。</p>
+<p align="left"><font size="5" face="宋体"><strong><font size="4">1</font> <font size="4">全局自动配准</font></strong></font></p>
+<blockquote style="MARGIN-RIGHT: 0px" dir="ltr">
+  <p align="left"><font face="宋体">导入数据后与配准配置页面自动解锁。</font></p>
+<p align="left"><font face="宋体"><u>全局自动配准</u>参数设置页面包括：</font></p>
+<ul>
+<li>
+<div align="left"><font face="宋体"><u>配准模板</u>：填入用于生成模板帧的采样帧序号以确定采样帧，用半角逗号分割。如果所有帧参与运算，可填入"1:end"。</font></div>
+</li>
+</ul>
+<ul>
+<li>
+<div align="left">
+<u>采样</u>：帧采样运算，用于生成模板帧。对采样帧的运算包括计算平均值、中位值、最小值、最大值。如果配准模板中仅有一帧，此时所有采样运算等价。</div>
+</li>
+</ul>
+<ul>
+<li>
+<div align="left"><font face="宋体"><u>几何变换</u>：<span style="FONT-SIZE: 12pt; FONT-FAMILY: 宋体; mso-bidi-font-size: 11.0pt">可选平移、刚体、相似、仿射。详情请见MATLAB
+帮助文档： <a href="https://ww2.mathworks.cn/help/images/matrix-representation-of-geometric-transformations.html">
+几何变换的矩阵表示</a>、<a href="https://ww2.mathworks.cn/help/images/ref/imregtform.html">几何变换估计</a></span></font></div>
+</li>
+</ul>
+<table cellspacing="2" cols="2" cellpadding="2" width="40%" align="center" border="2">
+<caption><font face="宋体">几何变换说明</font></caption>
+<tbody>
+<tr>
+<td><font face="宋体">变换方案</font></td>
+<td><font face="宋体">描述</font></td>
+</tr>
+<tr>
+<td><font face="宋体">“平移”</font></td>
+<td><font face="宋体">(x,y) 平移</font></td>
+</tr>
+<tr>
+<td><font face="宋体">“刚体”</font></td>
+<td><font face="宋体">刚体变换包括平移与旋转</font></td>
+</tr>
+<tr>
+<td><font face="宋体">“相似”</font></td>
+<td><font face="宋体">非反射相似变换包括平移、旋转与缩放</font></td>
+</tr>
+<tr>
+<td><font face="宋体">“仿射”</font></td>
+<td><font face="宋体">仿射变换包括平移、旋转、缩放与剪切</font></td>
+</tr>
+</tbody>
+</table>
+<br>
+<br>
+<ul>
+<li>
+<div align="left"><font face="宋体"><u>模态</u>：可选单模态或多模态。详情请见MATLAB 帮助文档：<a href="https://ww2.mathworks.cn/help/images/ref/imregconfig.html">基于强度的配准配置</a>。</font></div>
+</li>
+</ul>
+<table style="HEIGHT: 107px; WIDTH: 899px" cellspacing="2" cols="2" cellpadding="2" width="899" align="center" border="2">
+<caption align="center">模态说明</caption>
+<tbody>
+<tr>
+<td>程&nbsp;&nbsp;序&nbsp;&nbsp;</td>
+<td>描述</td>
+</tr>
+<tr>
+<td>
+<p>单模态</p>
+</td>
+<td>单模图像具有相似的亮度和对比度。图像是在同一类型的扫描仪或传感器上捕捉的。</td>
+</tr>
+<tr>
+<td>多模态</td>
+<td>
+多模态图像具有不同的亮度和对比度。图像可以来自两种不同类型的设备，如两种相机模型或两种医疗成像模式(如CT和MRI)。图像也可以来自单一设备，例如使用不同曝光设置的相机，或使用不同成像序列的核磁共振扫描仪。</td>
+</tr>
+</tbody>
+</table>
+</blockquote>
+</blockquote>
+<p dir="ltr" align="left">&nbsp;</p>
+<blockquote style="MARGIN-RIGHT: 0px" dir="ltr">
+<blockquote style="MARGIN-RIGHT: 0px" dir="ltr">
+<ul style="MARGIN-RIGHT: 0px" dir="ltr">
+<li>
+<div align="left"><u>定位<span lang="EN-US">/</span>信号</u>： <span style='FONT-SIZE: 12pt; FONT-FAMILY: 宋体; mso-bidi-font-size: 11.0pt; mso-bidi-font-family: "Times New Roman"; mso-bidi-theme-font: minor-bidi; mso-ansi-language: EN-US; mso-fareast-language: ZH-CN; mso-bidi-language: AR-SA'>
+确定不同颜色通道的作用，配准程序将使用定位通道作为基准，将其几何变换应用在信号通道上。这里的假设是定位通道与信号通道间的运动差异可以忽略不计。</span></div>
+</li>
+</ul>
+<ul style="MARGIN-RIGHT: 0px" dir="ltr">
+<li>
+<div align="left"><span style='FONT-SIZE: 12pt; FONT-FAMILY: 宋体; mso-bidi-font-size: 11.0pt; mso-bidi-font-family: "Times New Roman"; mso-bidi-theme-font: minor-bidi; mso-ansi-language: EN-US; mso-fareast-language: ZH-CN; mso-bidi-language: AR-SA'>
+<span><u>最小迭代步长</u>：确定配准过程的最终质量，当配准过程中损失函数（度量运动帧与模板帧差异）值的差异不超过最小迭代步长时配准过程停止。</span></span></div>
+</li>
+</ul>
+<ul style="MARGIN-RIGHT: 0px" dir="ltr">
+<li>
+<p style="MARGIN-RIGHT: 0px" dir="ltr"><span><span lang="EN-US"><?xml:namespace prefix="o" ns="urn:schemas-microsoft-com:office:office"?>
+<o:p><span style='FONT-SIZE: 12pt; FONT-FAMILY: 宋体; mso-bidi-font-size: 11.0pt; mso-bidi-font-family: "Times New Roman"; mso-bidi-theme-font: minor-bidi; mso-ansi-language: EN-US; mso-fareast-language: ZH-CN; mso-bidi-language: AR-SA'>
+<u>初始迭代步长</u>：</span> <span style='FONT-SIZE: 12pt; FONT-FAMILY: 宋体; mso-bidi-font-size: 11.0pt; mso-bidi-font-family: "Times New Roman"; mso-bidi-theme-font: minor-bidi; mso-ansi-language: EN-US; mso-fareast-language: ZH-CN; mso-bidi-language: AR-SA'>
+
+确定配准的起始迭代步长，当图像剧烈运动时，增加初始迭代步长有利于损失收敛。</span></o:p></span></span></p>
+</li>
+</ul>
+<ul style="MARGIN-RIGHT: 0px" dir="ltr">
+<li>
+<p style="MARGIN-RIGHT: 0px" dir="ltr"><span><span lang="EN-US"><o:p><span style='FONT-SIZE: 12pt; FONT-FAMILY: 宋体; mso-bidi-font-size: 11.0pt; mso-bidi-font-family: "Times New Roman"; mso-bidi-theme-font: minor-bidi; mso-ansi-language: EN-US; mso-fareast-language: ZH-CN; mso-bidi-language: AR-SA'>
+<span style='FONT-SIZE: 12pt; FONT-FAMILY: 宋体; mso-bidi-font-size: 11.0pt; mso-bidi-font-family: "Times New Roman"; mso-bidi-theme-font: minor-bidi; mso-ansi-language: EN-US; mso-fareast-language: ZH-CN; mso-bidi-language: AR-SA'>
+<u>迭代数上限</u>：</span> <span style='FONT-SIZE: 12pt; FONT-FAMILY: 宋体; mso-bidi-font-size: 11.0pt; mso-bidi-font-family: "Times New Roman"; mso-bidi-theme-font: minor-bidi; mso-ansi-language: EN-US; mso-fareast-language: ZH-CN; mso-bidi-language: AR-SA'>
+作为停机限制，当配准过程中迭代达到上限时，无论损失是否收敛，当前配准均停止。</span></span></o:p></span></span></p>
+</li>
+</ul>
+<ul style="margin-right: 0px" dir="ltr">
+<li>
+<p style="MARGIN-RIGHT: 0px" dir="ltr"><span><span lang="EN-US"><o:p><span style='FONT-SIZE: 12pt; FONT-FAMILY: 宋体; mso-bidi-font-size: 11.0pt; mso-bidi-font-family: "Times New Roman"; mso-bidi-theme-font: minor-bidi; mso-ansi-language: EN-US; mso-fareast-language: ZH-CN; mso-bidi-language: AR-SA'>
+<span style='FONT-SIZE: 12pt; FONT-FAMILY: 宋体; mso-bidi-font-size: 11.0pt; mso-bidi-font-family: "Times New Roman"; mso-bidi-theme-font: minor-bidi; mso-ansi-language: EN-US; mso-fareast-language: ZH-CN; mso-bidi-language: AR-SA'>
+<u>迭代因子</u>：</span> <span style='FONT-SIZE: 12pt; FONT-FAMILY: 宋体; mso-bidi-font-size: 11.0pt; mso-bidi-font-family: "Times New Roman"; mso-bidi-theme-font: minor-bidi; mso-ansi-language: EN-US; mso-fareast-language: ZH-CN; mso-bidi-language: AR-SA'>
+ 通过控制迭代中步长变化的速率，以控制迭代过程收敛速度。</span></span></o:p></span></span></p>
+</li>
+</ul>
+<blockquote style="MARGIN-RIGHT: 0px" dir="ltr">
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt"><span>详情请见MATLAB 帮助文档：<a href="https://ww2.mathworks.cn/help/images/ref/imregconfig.html">基于强度的配准配置</a>、<font color="#0066cc"><a href="https://ww2.mathworks.cn/help/images/ref/registration.optimizer.regularstepgradientdescent.html">
+常规梯度下降优化器配置</a><font color="#000000">、 <a href="https://ww2.mathworks.cn/help/images/ref/registration.optimizer.oneplusoneevolutionary.html">
+一加一演化优化器配置</a>。</font></font></span></p>
+</blockquote>
+<ul style="margin-right: 0px" dir="ltr">
+<li>
+<p style="MARGIN-RIGHT: 0px" dir="ltr"><span><span lang="EN-US"><o:p><span style='FONT-SIZE: 12pt; FONT-FAMILY: 宋体; mso-bidi-font-size: 11.0pt; mso-bidi-font-family: "Times New Roman"; mso-bidi-theme-font: minor-bidi; mso-ansi-language: EN-US; mso-fareast-language: ZH-CN; mso-bidi-language: AR-SA'>
+<span style='FONT-SIZE: 12pt; FONT-FAMILY: 宋体; mso-bidi-font-size: 11.0pt; mso-bidi-font-family: "Times New Roman"; mso-bidi-theme-font: minor-bidi; mso-ansi-language: EN-US; mso-fareast-language: ZH-CN; mso-bidi-language: AR-SA'>
+<u>鲁棒因子</u>：</span> <span style='FONT-SIZE: 12pt; FONT-FAMILY: 宋体; mso-bidi-font-size: 11.0pt; mso-bidi-font-family: "Times New Roman"; mso-bidi-theme-font: minor-bidi; mso-ansi-language: EN-US; mso-fareast-language: ZH-CN; mso-bidi-language: AR-SA'>
+    通过调整主成分压缩中的低阶信息量，控制粗配准的鲁棒水平。</span></span></o:p></span></span></p>
+</li>
+</ul>
+<ul style="margin-right: 0px" dir="ltr">
+<li>
+<p style="MARGIN-RIGHT: 0px" dir="ltr"><span><span lang="EN-US"><o:p><span style='FONT-SIZE: 12pt; FONT-FAMILY: 宋体; mso-bidi-font-size: 11.0pt; mso-bidi-font-family: "Times New Roman"; mso-bidi-theme-font: minor-bidi; mso-ansi-language: EN-US; mso-fareast-language: ZH-CN; mso-bidi-language: AR-SA'>
+<span style='FONT-SIZE: 12pt; FONT-FAMILY: 宋体; mso-bidi-font-size: 11.0pt; mso-bidi-font-family: "Times New Roman"; mso-bidi-theme-font: minor-bidi; mso-ansi-language: EN-US; mso-fareast-language: ZH-CN; mso-bidi-language: AR-SA'>
+<u>降采样</u>：</span> <span style='FONT-SIZE: 12pt; FONT-FAMILY: 宋体; mso-bidi-font-size: 11.0pt; mso-bidi-font-family: "Times New Roman"; mso-bidi-theme-font: minor-bidi; mso-ansi-language: EN-US; mso-fareast-language: ZH-CN; mso-bidi-language: AR-SA'>
+    通过对原始图像(结构通道)降采样，基于局部刚性假设得到较优位移估计。加速配准进程并降低资源利用率，但会因此损失部分精度。</span></span></o:p></span></span></p>
+</li>
+</ul>
+<ul>
+<li>
+<div class="MsoNormal" style="MARGIN: 0cm 0cm 0pt"><span><u>插值</u>： <span style='FONT-SIZE: 12pt; FONT-FAMILY: 宋体; mso-bidi-font-size: 11.0pt; mso-bidi-font-family: "Times New Roman"; mso-bidi-theme-font: minor-bidi; mso-ansi-language: EN-US; mso-fareast-language: ZH-CN; mso-bidi-language: AR-SA'>
+确定配准过程中几何变换造成的图像拉伸，变形部分像素值的计算方法。</span></span></div>
+</li>
+</ul>
+</blockquote>
+</blockquote>
+<blockquote style="MARGIN-RIGHT: 0px" dir="ltr">
+<blockquote style="MARGIN-RIGHT: 0px" dir="ltr">
+<ul>
+<li>
+<div class="MsoNormal" style="MARGIN: 0cm 0cm 0pt"><span><span style='FONT-SIZE: 12pt; FONT-FAMILY: 宋体; mso-bidi-font-size: 11.0pt; mso-bidi-font-family: "Times New Roman"; mso-bidi-theme-font: minor-bidi; mso-ansi-language: EN-US; mso-fareast-language: ZH-CN; mso-bidi-language: AR-SA'>
+<u>金字塔因子</u>：<span style="FONT-SIZE: 12pt; FONT-FAMILY: 宋体; mso-bidi-font-size: 11.0pt">金字塔方法中高斯金字塔的层数。</span></span></span></div>
+</li>
+</ul>
+<blockquote style="MARGIN-RIGHT: 0px" dir="ltr">
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt"><span><span style='FONT-SIZE: 12pt; FONT-FAMILY: 宋体; mso-bidi-font-size: 11.0pt; mso-bidi-font-family: "Times New Roman"; mso-bidi-theme-font: minor-bidi; mso-ansi-language: EN-US; mso-fareast-language: ZH-CN; mso-bidi-language: AR-SA'>
+<span style="FONT-SIZE: 12pt; FONT-FAMILY: 宋体; mso-bidi-font-size: 11.0pt">注1：勾选启用，则将<u>自动配准(全局)</u>添加进入配准任务队列。</span></span></span></p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt">&nbsp;</p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt"><span><span style='FONT-SIZE: 12pt; FONT-FAMILY: 宋体; mso-bidi-font-size: 11.0pt; mso-bidi-font-family: "Times New Roman"; mso-bidi-theme-font: minor-bidi; mso-ansi-language: EN-US; mso-fareast-language: ZH-CN; mso-bidi-language: AR-SA'>
+注2：迭代步长右侧图标显示当前计算机CPU生产商，单击可获得计算机详细配置。当CPU为单核时，不建议运行大文件配准。</span></span></p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt">&nbsp;</p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt"><span><span style='FONT-SIZE: 12pt; FONT-FAMILY: 宋体; mso-bidi-font-size: 11.0pt; mso-bidi-font-family: "Times New Roman"; mso-bidi-theme-font: minor-bidi; mso-ansi-language: EN-US; mso-fareast-language: ZH-CN; mso-bidi-language: AR-SA'>
+注3：如果配准程序中同时包含自动配准(全局)与自动配准(局部)，建议选用相同的配准模板与采样。</span></span></p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt">&nbsp;</p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt"><span><span style='FONT-SIZE: 12pt; FONT-FAMILY: 宋体; mso-bidi-font-size: 11.0pt; mso-bidi-font-family: "Times New Roman"; mso-bidi-theme-font: minor-bidi; mso-ansi-language: EN-US; mso-fareast-language: ZH-CN; mso-bidi-language: AR-SA'>
+注4：不同的数据可能需要应用不同的帧运算模板。</span></span></p>
+</blockquote>
+</blockquote>
+</blockquote>
+<blockquote style="MARGIN-RIGHT: 10px" dir="ltr">
+<p align="left"><font face="宋体">&nbsp; &nbsp; 自动配准程序将配准范围所确定的帧（体积）加入工作流程，默认情况下配准范围是所有帧（体积）。</font></p>
+<p align="left"><font face="宋体">&nbsp; &nbsp; 对于难以配准的部分帧，可以尝试选定<u>配准范围</u>并调整配准参数，多次迭代至达到标准。</font></p>
+</blockquote>
+<p align="left"><font size="4" face="宋体"><strong>&nbsp; &nbsp;2 局部自动配准</strong></font></p>
+<blockquote style="MARGIN-RIGHT: 0px" dir="ltr">
+<p align="left"><font face="宋体">&nbsp; 导入数据后与配准配置页面自动解锁。</font></p>
+<p align="left"><font face="宋体">&nbsp; <u>局部自动配准</u>参数设置页面包括：</font></p>
+<blockquote style="MARGIN-RIGHT: 0px" dir="ltr">
+<ul>
+<li>
+<div align="left"><font face="宋体"><u>配准模板</u>：填入用于生成模板帧的采样帧序号以确定采样帧，用半角逗号分割。如果所有帧参与运算，可填入"1:end"。</font></div>
+</li>
+</ul>
+<ul>
+<li>
+<div align="left">
+<u>采样</u>：帧采样运算，用于生成模板帧。对采样帧的运算包括计算平均值、中位值、最小值、最大值。如果配准模板中仅有一帧，此时所有采样运算等价。</div>
+</li>
+</ul>
+<ul>
+<li>
+<div align="left"><u>定位<span lang="EN-US">/</span>信号</u>： <span style='FONT-SIZE: 12pt; FONT-FAMILY: 宋体; mso-bidi-font-size: 11.0pt; mso-bidi-font-family: "Times New Roman"; mso-bidi-theme-font: minor-bidi; mso-ansi-language: EN-US; mso-fareast-language: ZH-CN; mso-bidi-language: AR-SA'>
+确定不同颜色通道的作用，配准程序将使用定位通道作为基准，将其几何变换应用在信号通道上。这里的假设是定位通道与信号通道间的运动差异可以忽略不计。</span></div>
+</li>
+</ul>
+</blockquote>
+<blockquote style="MARGIN-RIGHT: 0px" dir="ltr">
+<ul>
+<li>
+<div style="MARGIN-RIGHT: 0px"><span><span lang="EN-US"><?xml:namespace prefix="o" ns="urn:schemas-microsoft-com:office:office"?>
+<o:p><span style='FONT-SIZE: 12pt; FONT-FAMILY: 宋体; mso-bidi-font-size: 11.0pt; mso-bidi-font-family: "Times New Roman"; mso-bidi-theme-font: minor-bidi; mso-ansi-language: EN-US; mso-fareast-language: ZH-CN; mso-bidi-language: AR-SA'>
+<span style='FONT-SIZE: 12pt; FONT-FAMILY: 宋体; mso-bidi-font-size: 11.0pt; mso-bidi-font-family: "Times New Roman"; mso-bidi-theme-font: minor-bidi; mso-ansi-language: EN-US; mso-fareast-language: ZH-CN; mso-bidi-language: AR-SA'>
+<u>迭代数上限</u>：</span> <span style='FONT-SIZE: 12pt; FONT-FAMILY: 宋体; mso-bidi-font-size: 11.0pt; mso-bidi-font-family: "Times New Roman"; mso-bidi-theme-font: minor-bidi; mso-ansi-language: EN-US; mso-fareast-language: ZH-CN; mso-bidi-language: AR-SA'>
+作为停机限制，当配准过程中迭代达到上限时，无论损失是否收敛，当前配准均停止。可分别设置不同金字塔层级的迭代数上限。详情请见MATLAB帮助文档：<a href="https://ww2.mathworks.cn/help/images/ref/imregdemons.html?requestedDomain=cn">估计位移场以配准两幅图像</a>。</span></span></o:p></span></span></div>
+</li>
+</ul>
+<ul>
+<li>
+<p style="MARGIN-RIGHT: 0px"><span><span lang="EN-US"><o:p><span style='FONT-SIZE: 12pt; FONT-FAMILY: 宋体; mso-bidi-font-size: 11.0pt; mso-bidi-font-family: "Times New Roman"; mso-bidi-theme-font: minor-bidi; mso-ansi-language: EN-US; mso-fareast-language: ZH-CN; mso-bidi-language: AR-SA'>
+<u>积累场平滑</u>： <span style='FONT-SIZE: 12pt; FONT-FAMILY: 宋体; mso-bidi-font-size: 11.0pt; mso-bidi-font-family: "Times New Roman"; mso-bidi-theme-font: minor-bidi; mso-ansi-language: EN-US; mso-fareast-language: ZH-CN; mso-bidi-language: AR-SA'>
+确定局部配准算法的形变水平，数值越小意味着位移场运动强度估计上限越大，非刚性拉伸可以越强。详情请见MATLAB帮助文档：<a href="https://ww2.mathworks.cn/help/images/ref/imregdemons.html?requestedDomain=cn">估计位移场以配准两幅图像</a>。</span></span></o:p></span></span></p>
+</li>
+<li>
+<p style="MARGIN-RIGHT: 0px"><span><span lang="EN-US"><o:p><span style='FONT-SIZE: 12pt; FONT-FAMILY: 宋体; mso-bidi-font-size: 11.0pt; mso-bidi-font-family: "Times New Roman"; mso-bidi-theme-font: minor-bidi; mso-ansi-language: EN-US; mso-fareast-language: ZH-CN; mso-bidi-language: AR-SA'>
+<span style='FONT-SIZE: 12pt; FONT-FAMILY: 宋体; mso-bidi-font-size: 11.0pt; mso-bidi-font-family: "Times New Roman"; mso-bidi-theme-font: minor-bidi; mso-ansi-language: EN-US; mso-fareast-language: ZH-CN; mso-bidi-language: AR-SA'>
+<u>补偿光漂白</u>：使用<em>直方图规定化</em>使所有配准帧像素强度分布与模板帧保持一致，这里假设所有荧光分子的淬灭速率相同。详情请见MATLAB帮助文档：
+<a href="https://ww2.mathworks.cn/help/images/ref/imhistmatchn.html?requestedDomain=cn">
+N维图像直方图规定化</a>。</span></span></o:p></span></span></p>
+</li>
+<li>
+<p style="MARGIN-RIGHT: 0px"><span><span lang="EN-US"><o:p><span style='FONT-SIZE: 12pt; FONT-FAMILY: 宋体; mso-bidi-font-size: 11.0pt; mso-bidi-font-family: "Times New Roman"; mso-bidi-theme-font: minor-bidi; mso-ansi-language: EN-US; mso-fareast-language: ZH-CN; mso-bidi-language: AR-SA'>
+<span style='FONT-SIZE: 12pt; FONT-FAMILY: 宋体; mso-bidi-font-size: 11.0pt; mso-bidi-font-family: "Times New Roman"; mso-bidi-theme-font: minor-bidi; mso-ansi-language: EN-US; mso-fareast-language: ZH-CN; mso-bidi-language: AR-SA'>
+<u>精度</u>：设置<em>直方图规定化</em>所需的bin数量，数量越多，代表越高的补偿变换精度。</span></span></o:p></span></span></p>
+</li>
+<li>
+<p style="MARGIN-RIGHT: 0px"><span><span lang="EN-US"><o:p><span style='FONT-SIZE: 12pt; FONT-FAMILY: 宋体; mso-bidi-font-size: 11.0pt; mso-bidi-font-family: "Times New Roman"; mso-bidi-theme-font: minor-bidi; mso-ansi-language: EN-US; mso-fareast-language: ZH-CN; mso-bidi-language: AR-SA'>
+<span style='FONT-SIZE: 12pt; FONT-FAMILY: 宋体; mso-bidi-font-size: 11.0pt; mso-bidi-font-family: "Times New Roman"; mso-bidi-theme-font: minor-bidi; mso-ansi-language: EN-US; mso-fareast-language: ZH-CN; mso-bidi-language: AR-SA'>
+<span><u>插值</u>： <span style='FONT-SIZE: 12pt; FONT-FAMILY: 宋体; mso-bidi-font-size: 11.0pt; mso-bidi-font-family: "Times New Roman"; mso-bidi-theme-font: minor-bidi; mso-ansi-language: EN-US; mso-fareast-language: ZH-CN; mso-bidi-language: AR-SA'>
+确定配准过程中几何变换造成的图像拉伸，变形部分像素值的计算方法。</span></span></span></span></o:p></span></span></p>
+</li>
+<li>
+<p style="MARGIN-RIGHT: 0px"><span><span lang="EN-US"><o:p><span style='FONT-SIZE: 12pt; FONT-FAMILY: 宋体; mso-bidi-font-size: 11.0pt; mso-bidi-font-family: "Times New Roman"; mso-bidi-theme-font: minor-bidi; mso-ansi-language: EN-US; mso-fareast-language: ZH-CN; mso-bidi-language: AR-SA'>
+<span style='FONT-SIZE: 12pt; FONT-FAMILY: 宋体; mso-bidi-font-size: 11.0pt; mso-bidi-font-family: "Times New Roman"; mso-bidi-theme-font: minor-bidi; mso-ansi-language: EN-US; mso-fareast-language: ZH-CN; mso-bidi-language: AR-SA'>
+<span><span style='FONT-SIZE: 12pt; FONT-FAMILY: 宋体; mso-bidi-font-size: 11.0pt; mso-bidi-font-family: "Times New Roman"; mso-bidi-theme-font: minor-bidi; mso-ansi-language: EN-US; mso-fareast-language: ZH-CN; mso-bidi-language: AR-SA'>
+<u>金字塔因子</u>：<span style="FONT-SIZE: 12pt; FONT-FAMILY: 宋体; mso-bidi-font-size: 11.0pt">金字塔方法中高斯金字塔的层数。</span></span></span></span></span></o:p></span></span></p>
+</li>
+</ul>
+<span><span lang="EN-US"><o:p>
+<blockquote style="MARGIN-RIGHT: 0px" dir="ltr">
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt"><span><span style='FONT-SIZE: 12pt; FONT-FAMILY: 宋体; mso-bidi-font-size: 11.0pt; mso-bidi-font-family: "Times New Roman"; mso-bidi-theme-font: minor-bidi; mso-ansi-language: EN-US; mso-fareast-language: ZH-CN; mso-bidi-language: AR-SA'>
+<span style="FONT-SIZE: 12pt; FONT-FAMILY: 宋体; mso-bidi-font-size: 11.0pt">注1：勾选启用，则将<u>自动配准(局部)</u>添加进入配准任务队列。</span></span></span></p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt">&nbsp;</p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt"><span><span style='FONT-SIZE: 12pt; FONT-FAMILY: 宋体; mso-bidi-font-size: 11.0pt; mso-bidi-font-family: "Times New Roman"; mso-bidi-theme-font: minor-bidi; mso-ansi-language: EN-US; mso-fareast-language: ZH-CN; mso-bidi-language: AR-SA'>
+注2：迭代数上限右侧图标显示当前计算机GPU生产商，单击可获得计算机详细配置。当计算机中不存在GPU时(如图所示)不建议运行大文件非刚体配准。</span></span></p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt">&nbsp;</p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt"><span><span style='FONT-SIZE: 12pt; FONT-FAMILY: 宋体; mso-bidi-font-size: 11.0pt; mso-bidi-font-family: "Times New Roman"; mso-bidi-theme-font: minor-bidi; mso-ansi-language: EN-US; mso-fareast-language: ZH-CN; mso-bidi-language: AR-SA'>
+注3：如果配准程序中同时包含自动配准(全局)与自动配准(局部)，建议选用相同的配准模板与采样。</span></span></p>
+</blockquote>
+</blockquote>
+<p align="left"><font size="4" face="宋体"><strong>3 手动配准</strong></font></p>
+<p align="left"><font face="宋体">&nbsp; <u>手动配准</u>参数设置页面包括：</font></p>
+<blockquote style="MARGIN-RIGHT: 0px" dir="ltr">
+<ul>
+<li>
+<div align="left"><u>变换方案</u>：<span style="FONT-SIZE: 12pt; FONT-FAMILY: 宋体; mso-bidi-font-size: 11.0pt">可选非反射相似、仿射、投影、分段线性、多项式、局部加权平均，具体应用场景可参考<span lang="EN-US">MATLAB帮助文档： <span style='FONT-SIZE: 14px; FONT-FAMILY: "Microsoft YaHei", "Segoe UI", Arial, Helvetica; WHITE-SPACE: normal; WORD-SPACING: 0px; TEXT-TRANSFORM: none; FLOAT: none; FONT-WEIGHT: 400; COLOR: rgb(106,106,106); FONT-STYLE: normal; ORPHANS: 2; WIDOWS: 2; DISPLAY: inline !important; LETTER-SPACING: normal; BACKGROUND-COLOR: rgb(255,255,255); TEXT-INDENT: 0px; font-variant-ligatures: normal; font-variant-caps: normal; -webkit-text-stroke-width: 0px; text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial'>
+<a href="https://ww2.mathworks.cn/help/images/ref/fitgeotrans.html"><font color="#000000" size="3" face="宋体">对控制点对组进行几何变换拟合</font></a></span></span></span><span style="FONT-SIZE: 12pt; FONT-FAMILY: 宋体; mso-bidi-font-size: 11.0pt">。</span></div>
+</li>
+</ul>
+<ul>
+<li>
+<div align="left"><span style="FONT-SIZE: 12pt; FONT-FAMILY: 宋体; mso-bidi-font-size: 11.0pt"><u>最小控制量</u>：
+<span style='FONT-SIZE: 12pt; FONT-FAMILY: 宋体; mso-bidi-font-size: 11.0pt; mso-bidi-font-family: "Times New Roman"; mso-bidi-theme-font: minor-bidi; mso-ansi-language: EN-US; mso-fareast-language: ZH-CN; mso-bidi-language: AR-SA'>
+提示手动配准需要选择的控制点数量。即两幅图像中对应点对的数量。</span></span></div>
+</li>
+</ul>
+<ul>
+<li>
+<div align="left"><span style="FONT-SIZE: 12pt; FONT-FAMILY: 宋体; mso-bidi-font-size: 11.0pt"><span style='FONT-SIZE: 12pt; FONT-FAMILY: 宋体; mso-bidi-font-size: 11.0pt; mso-bidi-font-family: "Times New Roman"; mso-bidi-theme-font: minor-bidi; mso-ansi-language: EN-US; mso-fareast-language: ZH-CN; mso-bidi-language: AR-SA'>
+<u>多项式次数</u>： <span style='FONT-SIZE: 12pt; FONT-FAMILY: 宋体; mso-bidi-font-size: 11.0pt; mso-bidi-font-family: "Times New Roman"; mso-bidi-theme-font: minor-bidi; mso-ansi-language: EN-US; mso-fareast-language: ZH-CN; mso-bidi-language: AR-SA'>
+确定多项式变换的参数，详情请见<span lang="EN-US"><span lang="EN-US">MATLAB帮助文档： <span style='FONT-SIZE: 14px; FONT-FAMILY: "Microsoft YaHei", "Segoe UI", Arial, Helvetica; WHITE-SPACE: normal; WORD-SPACING: 0px; TEXT-TRANSFORM: none; FLOAT: none; FONT-WEIGHT: 400; COLOR: rgb(106,106,106); FONT-STYLE: normal; ORPHANS: 2; WIDOWS: 2; DISPLAY: inline !important; LETTER-SPACING: normal; BACKGROUND-COLOR: rgb(255,255,255); TEXT-INDENT: 0px; font-variant-ligatures: normal; font-variant-caps: normal; -webkit-text-stroke-width: 0px; text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial'>
+<a href="https://ww2.mathworks.cn/help/images/ref/fitgeotrans.html"><font color="#000000" size="3" face="宋体">对控制点对组进行几何变换拟合</font></a></span></span></span>。</span></span></span></div>
+</li>
+</ul>
+<ul>
+<li>
+<div align="left"><span style="FONT-SIZE: 12pt; FONT-FAMILY: 宋体; mso-bidi-font-size: 11.0pt"><span style='FONT-SIZE: 12pt; FONT-FAMILY: 宋体; mso-bidi-font-size: 11.0pt; mso-bidi-font-family: "Times New Roman"; mso-bidi-theme-font: minor-bidi; mso-ansi-language: EN-US; mso-fareast-language: ZH-CN; mso-bidi-language: AR-SA'>
+<u>加权点数</u>： <span style='FONT-SIZE: 12pt; FONT-FAMILY: 宋体; mso-bidi-font-size: 11.0pt; mso-bidi-font-family: "Times New Roman"; mso-bidi-theme-font: minor-bidi; mso-ansi-language: EN-US; mso-fareast-language: ZH-CN; mso-bidi-language: AR-SA'>
+确定局部加权平均的参数，详情请见<span lang="EN-US"><span lang="EN-US">MATLAB帮助文档： <span style='FONT-SIZE: 14px; FONT-FAMILY: "Microsoft YaHei", "Segoe UI", Arial, Helvetica; WHITE-SPACE: normal; WORD-SPACING: 0px; TEXT-TRANSFORM: none; FLOAT: none; FONT-WEIGHT: 400; COLOR: rgb(106,106,106); FONT-STYLE: normal; ORPHANS: 2; WIDOWS: 2; DISPLAY: inline !important; LETTER-SPACING: normal; BACKGROUND-COLOR: rgb(255,255,255); TEXT-INDENT: 0px; font-variant-ligatures: normal; font-variant-caps: normal; -webkit-text-stroke-width: 0px; text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial'>
+<a href="https://ww2.mathworks.cn/help/images/ref/fitgeotrans.html"><font color="#000000" size="3" face="宋体">对控制点对组进行几何变换拟合</font></a></span></span></span>。</span></span></span></div>
+</li>
+</ul>
+<ul>
+<li>
+<div align="left"><span style="FONT-SIZE: 12pt; FONT-FAMILY: 宋体; mso-bidi-font-size: 11.0pt"><span style='FONT-SIZE: 12pt; FONT-FAMILY: 宋体; mso-bidi-font-size: 11.0pt; mso-bidi-font-family: "Times New Roman"; mso-bidi-theme-font: minor-bidi; mso-ansi-language: EN-US; mso-fareast-language: ZH-CN; mso-bidi-language: AR-SA'>
+<span style='FONT-SIZE: 12pt; FONT-FAMILY: 宋体; mso-bidi-font-size: 11.0pt; mso-bidi-font-family: "Times New Roman"; mso-bidi-theme-font: minor-bidi; mso-ansi-language: EN-US; mso-fareast-language: ZH-CN; mso-bidi-language: AR-SA'>
+<u>边界平滑</u>：用于处理几何变换后的图像边界，详情请见<span lang="EN-US"><span lang="EN-US">MATLAB帮助文档： <span style='FONT-SIZE: 14px; FONT-FAMILY: "Microsoft YaHei", "Segoe UI", Arial, Helvetica; WHITE-SPACE: normal; WORD-SPACING: 0px; TEXT-TRANSFORM: none; FLOAT: none; FONT-WEIGHT: 400; COLOR: rgb(106,106,106); FONT-STYLE: normal; ORPHANS: 2; WIDOWS: 2; DISPLAY: inline !important; LETTER-SPACING: normal; BACKGROUND-COLOR: rgb(255,255,255); TEXT-INDENT: 0px; font-variant-ligatures: normal; font-variant-caps: normal; -webkit-text-stroke-width: 0px; text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial'>
+<a href="https://ww2.mathworks.cn/help/images/ref/imwarp.html?requestedDomain=cn"><font color="#000000" size="3" face="宋体">对图像应用几何变换</font></a></span></span></span>。</span></span></span></div>
+</li>
+</ul>
+<ul>
+<li>
+<div align="left"><span style="FONT-SIZE: 12pt; FONT-FAMILY: 宋体; mso-bidi-font-size: 11.0pt"><span style='FONT-SIZE: 12pt; FONT-FAMILY: 宋体; mso-bidi-font-size: 11.0pt; mso-bidi-font-family: "Times New Roman"; mso-bidi-theme-font: minor-bidi; mso-ansi-language: EN-US; mso-fareast-language: ZH-CN; mso-bidi-language: AR-SA'>
+<span style='FONT-SIZE: 12pt; FONT-FAMILY: 宋体; mso-bidi-font-size: 11.0pt; mso-bidi-font-family: "Times New Roman"; mso-bidi-theme-font: minor-bidi; mso-ansi-language: EN-US; mso-fareast-language: ZH-CN; mso-bidi-language: AR-SA'>
+<span><span lang="EN-US"><?xml:namespace prefix="o" ns="urn:schemas-microsoft-com:office:office"?>
+<o:p><span style='FONT-SIZE: 12pt; FONT-FAMILY: 宋体; mso-bidi-font-size: 11.0pt; mso-bidi-font-family: "Times New Roman"; mso-bidi-theme-font: minor-bidi; mso-ansi-language: EN-US; mso-fareast-language: ZH-CN; mso-bidi-language: AR-SA'>
+<span style='FONT-SIZE: 12pt; FONT-FAMILY: 宋体; mso-bidi-font-size: 11.0pt; mso-bidi-font-family: "Times New Roman"; mso-bidi-theme-font: minor-bidi; mso-ansi-language: EN-US; mso-fareast-language: ZH-CN; mso-bidi-language: AR-SA'>
+<span><u>插值</u>： <span style='FONT-SIZE: 12pt; FONT-FAMILY: 宋体; mso-bidi-font-size: 11.0pt; mso-bidi-font-family: "Times New Roman"; mso-bidi-theme-font: minor-bidi; mso-ansi-language: EN-US; mso-fareast-language: ZH-CN; mso-bidi-language: AR-SA'>
+确定配准过程中几何变换造成的图像拉伸，变形部分像素值的计算方法。</span></span></span></span></o:p></span></span></span></span></span></div>
+</li>
+</ul>
+<ul>
+<li>
+<div align="left"><span style="FONT-SIZE: 12pt; FONT-FAMILY: 宋体; mso-bidi-font-size: 11.0pt"><span style='FONT-SIZE: 12pt; FONT-FAMILY: 宋体; mso-bidi-font-size: 11.0pt; mso-bidi-font-family: "Times New Roman"; mso-bidi-theme-font: minor-bidi; mso-ansi-language: EN-US; mso-fareast-language: ZH-CN; mso-bidi-language: AR-SA'>
+<span style='FONT-SIZE: 12pt; FONT-FAMILY: 宋体; mso-bidi-font-size: 11.0pt; mso-bidi-font-family: "Times New Roman"; mso-bidi-theme-font: minor-bidi; mso-ansi-language: EN-US; mso-fareast-language: ZH-CN; mso-bidi-language: AR-SA'>
+<span><span lang="EN-US">
+<o:p><span style="FONT-SIZE: 12pt; FONT-FAMILY: 宋体; mso-bidi-font-size: 11.0pt; mso-bidi-font-family: 'Times New Roman'; mso-bidi-theme-font: minor-bidi; mso-ansi-language: EN-US; mso-fareast-language: ZH-CN; mso-bidi-language: AR-SA"> <span style="FONT-SIZE: 12pt; FONT-FAMILY: 宋体; mso-bidi-font-size: 11.0pt; mso-bidi-font-family: 'Times New Roman'; mso-bidi-theme-font: minor-bidi; mso-ansi-language: EN-US; mso-fareast-language: ZH-CN; mso-bidi-language: AR-SA"> <span><span style="FONT-SIZE: 12pt; FONT-FAMILY: 宋体; mso-bidi-font-size: 11.0pt; mso-bidi-font-family: 'Times New Roman'; mso-bidi-theme-font: minor-bidi; mso-ansi-language: EN-US; mso-fareast-language: ZH-CN; mso-bidi-language: AR-SA"> <u>模板同步</u>：确定手动配准的模板帧。</span></span></span></span></o:p>
+</span></span></span></span></span></div>
+</li>
+</ul>
+</blockquote>
+</blockquote>
+</o:p></span></span></blockquote>
+<p align="left"><font size="+2"><strong> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;二、配准范围</strong></font></p>
+<p align="left"><font face="宋体">&nbsp; &nbsp; &nbsp; <img src="reg_frames.bmp"></font>
+<p align="left">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;输入需要配准的范围(帧)并确定，切片语法与MATLAB命令行保持一致。</p>
+<p align="left"><font size="+2"><strong> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;三、配准评估</strong></font></p>
+<p align="left">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;参考主目录第四节“配准评估器”相关内容。</p>
+</body>
+</html>

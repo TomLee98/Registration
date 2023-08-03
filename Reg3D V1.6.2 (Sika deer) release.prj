@@ -1,0 +1,173 @@
+<deployment-project plugin="plugin.apptool" plugin-version="1.0">
+  <configuration build-checksum="3879129148" file="E:\si lab\Matlab Projects\CaImAn_Interface\utils\registration\Reg3D V1.6.2 (Sika deer) release.prj" location="E:\si lab\Matlab Projects\CaImAn_Interface\utils\registration" name="Reg3D V1.6.2 (Sika deer) release" target="target.mlapps" target-name="打包为 App">
+    <param.appname>Reg3D V1.6.2 (Sika deer) release</param.appname>
+    <param.authnamewatermark>Weihan Li</param.authnamewatermark>
+    <param.email>liweihan20@mails.ucas.ac.cn</param.email>
+    <param.company>IBP</param.company>
+    <param.icon />
+    <param.icons />
+    <param.summary>此程序用于完成3D图像配准</param.summary>
+    <param.description>自动/手动 &amp; 单/双通道混合3D 图像时间序列配准方案</param.description>
+    <param.screenshot />
+    <param.version>1.6</param.version>
+    <param.products.name>
+      <item>MATLAB</item>
+      <item>Computer Vision Toolbox</item>
+      <item>Image Processing Toolbox</item>
+      <item>Parallel Computing Toolbox</item>
+    </param.products.name>
+    <param.products.id>
+      <item>1</item>
+      <item>96</item>
+      <item>17</item>
+      <item>80</item>
+    </param.products.id>
+    <param.products.version>
+      <item>9.14</item>
+      <item>10.4</item>
+      <item>11.7</item>
+      <item>7.8</item>
+    </param.products.version>
+    <param.platforms />
+    <param.output>${PROJECT_ROOT}</param.output>
+    <param.guid>24b94049-3c4e-43d4-8439-2898296dc913</param.guid>
+    <unset>
+      <param.icon />
+      <param.icons />
+      <param.screenshot />
+      <param.platforms />
+      <param.output />
+    </unset>
+    <fileset.main>
+      <file>${PROJECT_ROOT}\Reg3D_GUI.mlapp</file>
+    </fileset.main>
+    <fileset.depfun>
+      <file>${MATLAB_ROOT}\toolbox\local\userpath.m</file>
+      <file>E:\si lab\Matlab Projects\CaImAn_Interface\extern\downsamplingDisplacement.m</file>
+      <file>E:\si lab\Matlab Projects\CaImAn_Interface\extern\getCpuInfo.m</file>
+      <file>E:\si lab\Matlab Projects\CaImAn_Interface\extern\getGpuInfo.m</file>
+      <file>E:\si lab\Matlab Projects\CaImAn_Interface\extern\ImageIO\ImarisReader\DatasetReader.m</file>
+      <file>E:\si lab\Matlab Projects\CaImAn_Interface\extern\ImageIO\imload.m</file>
+      <file>E:\si lab\Matlab Projects\CaImAn_Interface\extern\imborderval.m</file>
+      <file>E:\si lab\Matlab Projects\CaImAn_Interface\extern\imrescalei.m</file>
+      <file>E:\si lab\Matlab Projects\CaImAn_Interface\extern\modifySSD.m</file>
+      <file>E:\si lab\Matlab Projects\CaImAn_Interface\extern\setFigure.m</file>
+      <file>E:\si lab\Matlab Projects\CaImAn_Interface\utils\imageIO\loadvars.m</file>
+      <file>E:\si lab\Matlab Projects\CaImAn_Interface\utils\imageIO\savefile.m</file>
+      <file>${PROJECT_ROOT}\parwaitbar.m</file>
+      <file>${PROJECT_ROOT}\reg3d_startup_plugins\acquire_update.m</file>
+      <file>${PROJECT_ROOT}\reg3d_startup_plugins\reg3d_update.m</file>
+      <file>${PROJECT_ROOT}\register3D_manual.m</file>
+      <file>${PROJECT_ROOT}\register3D_oc_auto.m</file>
+      <file>${PROJECT_ROOT}\register3D_tc_auto.m</file>
+      <file>${PROJECT_ROOT}\sources\amd_logo.png</file>
+      <file>${PROJECT_ROOT}\sources\exporter.png</file>
+      <file>${PROJECT_ROOT}\sources\icon.png</file>
+      <file>${PROJECT_ROOT}\sources\intel_logo.png</file>
+      <file>${PROJECT_ROOT}\sources\linkicon.png</file>
+      <file>${PROJECT_ROOT}\sources\lock.png</file>
+      <file>${PROJECT_ROOT}\sources\nvidia_logo.png</file>
+      <file>${PROJECT_ROOT}\sources\ruler.png</file>
+      <file>${PROJECT_ROOT}\sources\run.png</file>
+      <file>${PROJECT_ROOT}\sources\setting.png</file>
+      <file>${PROJECT_ROOT}\sources\unknown_logo.png</file>
+      <file>${PROJECT_ROOT}\sources\unlock.png</file>
+      <file>${PROJECT_ROOT}\subapps\BC_GUI.mlapp</file>
+      <file>${PROJECT_ROOT}\subapps\Evaluation_GUI.mlapp</file>
+      <file>${PROJECT_ROOT}\subapps\ExportMovie_GUI.mlapp</file>
+      <file>${PROJECT_ROOT}\subapps\FrameSelecter_GUI.mlapp</file>
+      <file>${PROJECT_ROOT}\subapps\GenMask_GUI.mlapp</file>
+      <file>${PROJECT_ROOT}\subapps\RegSetting_OC_GUI.mlapp</file>
+      <file>${PROJECT_ROOT}\subapps\RegSetting_TC_GUI.mlapp</file>
+      <file>${PROJECT_ROOT}\subapps\ScaleBar_GUI.mlapp</file>
+      <file>${PROJECT_ROOT}\subapps\VarSelecter_GUI.mlapp</file>
+      <file>${PROJECT_ROOT}\utils\CompositeC.m</file>
+      <file>${PROJECT_ROOT}\utils\Coordinate2Pixel.m</file>
+      <file>${PROJECT_ROOT}\utils\CropT.m</file>
+      <file>${PROJECT_ROOT}\utils\CropXY.m</file>
+      <file>${PROJECT_ROOT}\utils\CropZ.m</file>
+      <file>${PROJECT_ROOT}\utils\DownSampling.m</file>
+      <file>${PROJECT_ROOT}\utils\GetAvailableMemory.m</file>
+      <file>${PROJECT_ROOT}\utils\GetFixedVol.m</file>
+      <file>${PROJECT_ROOT}\utils\GetHardwareInfo.m</file>
+      <file>${PROJECT_ROOT}\utils\GetRegionInfo.m</file>
+      <file>${PROJECT_ROOT}\utils\IsBigFile.m</file>
+      <file>${PROJECT_ROOT}\utils\LoadMetaData.m</file>
+      <file>${PROJECT_ROOT}\utils\MaskMovie.m</file>
+      <file>${PROJECT_ROOT}\utils\Projection.m</file>
+      <file>${PROJECT_ROOT}\utils\ROI2Rectangle.m</file>
+      <file>${PROJECT_ROOT}\utils\TransformBCG.m</file>
+      <file>E:\si lab\Matlab Projects\CaImAn_Interface\utils\ReTiNA\utils\loadfile.m</file>
+    </fileset.depfun>
+    <fileset.resources>
+      <file>E:\si lab\Matlab Projects\CaImAn_Interface\bfmatlab</file>
+      <file>E:\si lab\Matlab Projects\CaImAn_Interface\bin</file>
+      <file>E:\si lab\Matlab Projects\CaImAn_Interface\extern\optsHelper.mlx</file>
+      <file>${PROJECT_ROOT}\help</file>
+      <file>${PROJECT_ROOT}\lang</file>
+      <file>${PROJECT_ROOT}\readme.txt</file>
+      <file>${PROJECT_ROOT}\reg3d_startup_plugins\update_setting.ini</file>
+    </fileset.resources>
+    <fileset.package />
+    <build-deliverables>
+      <file location="E:\si lab\Matlab Projects\CaImAn_Interface\utils" name="registration" optional="false">E:\si lab\Matlab Projects\CaImAn_Interface\utils\registration</file>
+    </build-deliverables>
+    <workflow />
+    <matlab>
+      <root>D:\Program Files\MATLAB\R2023a</root>
+      <toolboxes>
+        <toolbox name="matlabcoder" />
+        <toolbox name="embeddedcoder" />
+        <toolbox name="gpucoder" />
+        <toolbox name="fixedpoint" />
+        <toolbox name="matlabhdlcoder" />
+        <toolbox name="neuralnetwork" />
+      </toolboxes>
+      <toolbox>
+        <matlabcoder>
+          <enabled>true</enabled>
+        </matlabcoder>
+      </toolbox>
+      <toolbox>
+        <embeddedcoder>
+          <enabled>true</enabled>
+        </embeddedcoder>
+      </toolbox>
+      <toolbox>
+        <gpucoder>
+          <enabled>true</enabled>
+        </gpucoder>
+      </toolbox>
+      <toolbox>
+        <fixedpoint>
+          <enabled>true</enabled>
+        </fixedpoint>
+      </toolbox>
+      <toolbox>
+        <matlabhdlcoder>
+          <enabled>true</enabled>
+        </matlabhdlcoder>
+      </toolbox>
+      <toolbox>
+        <neuralnetwork>
+          <enabled>true</enabled>
+        </neuralnetwork>
+      </toolbox>
+    </matlab>
+    <platform>
+      <unix>false</unix>
+      <mac>false</mac>
+      <windows>true</windows>
+      <win2k>false</win2k>
+      <winxp>false</winxp>
+      <vista>false</vista>
+      <linux>false</linux>
+      <solaris>false</solaris>
+      <osver>10.0</osver>
+      <os32>false</os32>
+      <os64>true</os64>
+      <arch>win64</arch>
+      <matlab>true</matlab>
+    </platform>
+  </configuration>
+</deployment-project>
