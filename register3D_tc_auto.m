@@ -139,6 +139,8 @@ function [signal,tform,marker] = register3D_tc_auto(varargin)
 % Version: 1.2.4
 %   *** Update option: "DS" for downsampling
 %   *** Remove border values
+% Version: 1.2.5
+%   *** Remove and clean up file pointer to a function
 
 % Copyright (c) 2022-2023, Weihan Li
 
@@ -334,88 +336,22 @@ reg_param = struct( 'regmode',      parser_results.RegMode,...
 
 % clear vars for debug easy
 clearvars -except opts mov reg_param CONTRAST_CONSTANT MA_MIN MA_MAX;
-% tmp file folder
-folder_unix = "/data/tmpdata/"; 
-folder_pc = "tmpdata\";
-folder.local = [];
-filename.aligned = "mov_aligned_source.mat";
-filename.signal = "mov_signal_source.mat";
 
 if ~isempty(mov)
-
     switch reg_param.bigfile
         case "on"
-            if isunix()
-                [~, user_name] = system('id -u --name');
-                user_name = string(user_name);
-                aligned_file = folder_unix + user_name + "/" + filename.aligned;
-                signal_file = folder_unix + user_name + "/" + filename.signal;
-                folder.local = folder_unix + user_name + "/";
-            elseif ispc()
-                user_name = string(getenv('username'));
-                aligned_file = folder_pc + user_name + "\" + filename.aligned;
-                signal_file = folder_pc + user_name + "\" + filename.signal;
-                folder.local = folder_pc + user_name + "\";
-            end
-
-            if exist(aligned_file,"file") && exist(signal_file,"file")
-                % ask for load the same name file?
-                overlap_flag = input("There are memory mapping file, loading?(Y/N)","s");
-                switch upper(overlap_flag)
-                    case "Y"
-                        % just loading and skip regenerating
-                        disp("Loading mapping file...");
-                        ma_ptr = matfile(aligned_file,"Writable",true);
-                        ms_ptr = matfile(signal_file,"Writable",true);
-                        loading_flag = true;    % flag for whether the data pointer loading into memory
-                    case "N"
-                        % goto the usual pipeline: saving file and reloading
-                        % the pointer
-                        loading_flag = false;
-                    otherwise
-                        error("unsupported operation.");
-                end
-            else
-                loading_flag = false;
-            end
-
-            if loading_flag == false
-                disp("Memory mapping...");
-                % save data to disk for big data support
-                % ============= PROCESSING THE ALIGNED DATA ==============
-                mov_aligned = squeeze(uint16(mov(:,:,...
-                    reg_param.chlA==reg_param.chlMode,:,:)));
-                if ~exist(folder.local, "dir")
-                    mkdir(folder.local);
-                end
-                % nocompression for faster saving/loading but more disk
-                % space allocated
-                save(aligned_file,"mov_aligned","-v7.3","-nocompression");
-                clearvars mov_aligned;
-
-                % ============= PROCESSING THE SIGNAL DATA ===============
-                mov_signal = squeeze(uint16(mov(:,:,...
-                    reg_param.chlS==reg_param.chlMode,:,:)));
-                save(signal_file,"mov_signal","-v7.3","-nocompression");
-                clearvars mov_signal;
-                clearvars mov;
-
-                % create matfile object for dynamic matrix processing
-                ma_ptr = matfile(aligned_file,"Writable",true);
-                ms_ptr = matfile(signal_file,"Writable",true);
-                loading_flag = true; %#ok<NASGU>
-            end
-            disp("Memory reloading succeed.");
+            chl = [find(reg_param.chlA==reg_param.chlMode), ...
+                   find(reg_param.chlS==reg_param.chlMode)];
+            [ma_ptr, ms_ptr] = GenFilePointer(mov, chl);
         case "off"
             % use the memory variable directly
             ma_ptr = squeeze(uint16(mov(:,:,...
                 reg_param.chlA==reg_param.chlMode,:,:)));
             ms_ptr = squeeze(uint16(mov(:,:,...
                 reg_param.chlS==reg_param.chlMode,:,:)));
-            clearvars mov;
         otherwise
-            % inner error
     end
+    clearvars mov;  % free memory for more computation
 
     [tform,signal,marker] = reg(ma_ptr,ms_ptr,opts,reg_param);
 else
