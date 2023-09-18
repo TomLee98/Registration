@@ -1,0 +1,167 @@
+版本号      发行代号           中文代号  
+V1.0        Panda               熊猫
+---
+V1.1        Baiji               白鳍豚
+---
+V1.2        Alligator           扬子鳄
+...
+  |
+  |- V1.2.6     2022/06/29 21:00
+  |     |- [Update] registration frames series setting, big file cut bug
+  |     |- [Update] manual registration speed up
+  |     |- [Update] manual interpolation algorithm selection & edge smooth
+  |- V1.2.7     2022/07/02  22:40
+  |     |- [Update] brightness/contrast
+  |     |- [Update] mouse tracking/pixel intensity real time viewing
+  |     |- [Update] move the merge channel to right context menu
+  |     |- [Fix Bugs] preset loading
+  |- V1.2.8     2022/07/08  10:30
+  |     |- [Update] memory loader
+  |     |- [Update] refine registration mode, UI modifing
+  |     |- [Update] UI append registration modal
+  |     |- [Fix Bugs] relavive button motion
+  |- V1.2.9     2022/07/18
+  |     |- [Update] the image registration evaluation (rigid/non-rigid)
+  |     |- [Update] the image registration evaluation result export
+  |     |- [Update] fill the aligned black border(only rigid)
+  |     |- [Update] add geometric transformation menu
+  |     |- [Update] log file export supported
+  |     |- [Update] the multimodal registration parameters matching
+  |     |- [Fix Bugs] fix workspace loader bug
+  |     |- [Fix Bugs] fix file saving bug (inner variable missmatch)
+  |     |- [Fix Bugs] fix the log panel bad control
+  |     |- [Fix Bugs] no non-rigid transformation error 
+  |     |- [Security Checking] Z、T crop, stack overflow
+  |     |- [Framework] remove the help by PDFReader
+  |     |- [Comments] Format code comments for better readability
+  #     #       
+
+V1.3        Paddlefish          白鲟
+  |- V1.3.0     2022/07/20  0:00
+  |     |- [Update] use web show help, remove pdf reader
+  |     |- [Update] template frame calculation method: global frame calculation
+  |     |- [Update] remove some alerts for better user experience
+  |     |           -> local frame calculation
+  |     |- [Update] export any source image supported
+  |     |- [Fix Bugs] preset loading
+  |     |- [Framework] give up the userpath
+  |- V1.3.1     2022/07/21  19:00
+  |     |- [Update] 3-D mask generater
+  |     |- [Fix Bugs] evaluate non-rigid registration after crop3D bug
+  |     |- [Fix Bugs] displacement field resample bugs
+  |     |- [Update] Graphics interface update: speed up interface response
+  |     |- [Update] enforce exit running when system switch goes off
+  |     |           comments: now I know it's impossible, no callback can interrupt
+  |     |           current activity and insert before it
+  |     |  [Note]: Today we regretfully know the Psephurus gladius Chinese 
+  |     |          Paddlefish became extinct(2022/07/21), so that we stop 
+  |     |          the version developing and going onto version 1.4.x
+  #     #
+
+V1.4        Chrysolophus pictus     红腹锦鸡
+  |- V1.4.0     2022/07/30  22:00     
+  |     |- [Update] registration movie export supported (with different speed)
+  |     |- [Update] export width/height recovery
+  |     |- [Update] modify the first volume time points as last plane time
+  |     |- [Fix Bugs] LoadMetaData.m meta data lost bug
+  |     |- [Fix Bugs] Fix the nd2 file load time bug
+  |- V1.4.1     2022/12/06  20:35
+  |     |- [Fix Bugs] increasing app stablity      
+  |- V1.4.2     2022/12/14  22:00
+  |     |- [Update] add the registration range for 'time-local registration'
+  |     |- [Fix Bugs] increasing app stablity
+  |- V1.4.3     2023/01/15  14:00
+  |     |- [Fix Bugs] fix the multilayer combination viewing bug
+  |- V1.4.4     2023/02/04  20:00
+  |     |- [Update] add the Robust Coefficient for better registration
+  |     |- [Update] the comments files
+  |- V1.4.5     2023/02/11  15:30
+  |     |- [Fix Bugs] workspace loading can't recognize big variables
+  |     |- [Fix Bugs] fix loadtime, bad first time point estimation
+  |- V1.4.6     2023/03/19  1:30
+  |     |- [Update] record operation and output at file name and write to 
+  |     |           tiff file as metadata-> OMEXML-> getDatasetDescription(x)
+  |     |           x = 0 returns y = how many items input, next key in [1,y]
+  |- V1.4.7     2023/03/28  15:00
+  |     |- [Fix Bugs] fix the time cut bug(cut before alignment)
+  #     #
+
+V1.5        Xizang antelope    藏羚羊
+  |- V1.5.0     2023/04/05  22:30
+  |     |- [Update] register3D_auto speed up 400% on "global" mode
+  |     |- [Update] new registration function: register3D_batch_rt
+  |- V1.5.1     2023/04/18  22:30
+  |     |- [Fix Bugs] fix the volume registration error when little slices
+  |     |- [Update] optimize the registration pipeline
+  |     |- [Update] auto detect the pyramidlevels
+  |- V1.5.2     2023/05/02  16:30
+  |     |- [Update] introduced powerful scale bar
+  |     |- [Update] speed up movie output renderer
+  |- V1.5.3     2023/05/10  19:00
+  |     |- [Update] add "check update" function for convinent app update
+  |     |- [Update] pre modify the UI for next version 
+  #     #
+
+V1.6        Sika deer           梅花鹿
+  |- V1.6.0     2023/05/11  20:00
+  |     |- [Update] optimize the registration panel as indenpendent component
+  |     |- [Update] setting profile could be edited: reg3d_startup_plugins\
+  |     |- [Update] optimize log viewer
+  |- V1.6.1     2023/07/03  22:00
+  |     |- [Update] single channel registration (rigid)
+  |     |- [Update] single channel registration (manual)
+  |     |- [Update] update_setting "AUTO_CLEAN" option supported
+  |     |- [Update] reading of *.ims file speed up 40%
+  |     |- [Update] support "min","median","mean" z-projection
+  |     |- [Fix Bugs] Z projection -> Spinner VPL error
+  |     |- [Fix Bugs] fix linux update permission error
+  |     |- [Fix Bugs] imborderval> bad error for some thick volume
+  |- V1.6.2     2023/07/24  15:30
+  |     |- [Update] single channel registration (non-rigid)
+  |     |- [Update] multi-language supported
+  |     |- [Update] Frame crop GUI and simplify mode(<=Ver 1.6.1)
+  |     |- [Update] new help file for V1.6.x
+  |     |- [Fix Bugs] two channel registration downsampling causing inner error
+  |     |- [Fix Bugs] *.ims file saving error
+  |     |- [Fix Bugs] some big file registration error
+  |     |- [Fix Bugs] movie exporting bug
+  |     |- [Fix Bugs] auto update command bug
+  |- V1.6.3     2023/09/19
+  |     |- [Update] long term registration: key frames & chain registration
+  |     |- [Fix Bugs] solve some problems
+  |- V1.6.4     2023/09
+  |     |- [Update] registration history
+  |- V1.6.5     2023
+  |     |- [Update] multi-target tracking and registration
+  |     |- [Update] ANN classifer tools
+  |- V1.6.6
+  |     |- [Update] file saving more faster
+  |     |- [Fix Bugs: TODO] fix export movie bug: uncertainty resolution
+  |- V1.6.7
+  |     |- [Update] optimize registration parameters automatically(by trying small random samples iteration)
+  |     |-
+  |- V1.6.8
+  |     |- [Update] one channel big file registration supported
+  |     |-
+
+
+V1.7        Crested ibis        朱鹮
+
+
+
+
+V2.0        Cathaya argyrophylla    银杉
+  |-V2.0.0  
+  |     |- [Update] 
+  |     |- []
+V2.1        Cymbidium tortisepalum  菅草兰
+
+V2.2        Davidia involucrata     珙桐
+
+V2.3        Dendrobium huoshanense  霍山石斛
+
+V2.4        Euryodendron excelsum   猪血木
+
+V2.5        Garcinia paucinervis    金丝李
+
+V2.6        Ginkgo biloba           银杏
