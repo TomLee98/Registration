@@ -142,9 +142,6 @@
     <MEDIAN>медиана</MEDIAN>
     <MIN>Мин.</MIN>
     <MAX>Макс</MAX>
-    <REGION_LABEL>Метка региона</REGION_LABEL>
-    <INTENSITY_THRESHOLD>Порог интенсивности</INTENSITY_THRESHOLD>
-    <SCALE_THRESHOLD>Порог масштаба(um)</SCALE_THRESHOLD>
     <MIN_ITERATION_STEP>Минимальный шаг итерации</MIN_ITERATION_STEP>
     <INITIAL_ITERATION_STEP>Начальный этап итерации</INITIAL_ITERATION_STEP>
     <MAX_ITERATION_N>Максимальное количество итераций</MAX_ITERATION_N>
@@ -158,6 +155,24 @@
     <AUTO>Авто</AUTO>
     <ACCUMULATIVE_FIELD_SMOOTHING>Накопительное сглаживание полей</ACCUMULATIVE_FIELD_SMOOTHING>
     <GEOMETRIC_TRANSFORMATION>Геометрическое преобразование</GEOMETRIC_TRANSFORMATION>
+    <LONGTERM_REGISTRATION_AUTO>Долгосрочная регистрация(авто)</LONGTERM_REGISTRATION_AUTO>
+    <KEY_FRAME>Ключевой кадр</KEY_FRAME>
+    <INTENSITY_THRESHOLD>Порог интенсивности</INTENSITY_THRESHOLD>
+    <SCALE_THRESHOLD>Порог масштаба(um)</SCALE_THRESHOLD>
+    <GRID_AVERAGE>Среднее по сетке</GRID_AVERAGE>
+    <RANDOM_UNIFORM>Случайный (равномерный)</RANDOM_UNIFORM>
+    <NONUNIFORM>Неравномерный</NONUNIFORM>
+    <GRID_STEP>Шаг сетки</GRID_STEP>
+    <PERCENTILE>процентиль</PERCENTILE>
+    <NUM_MAX>Максимум</NUM_MAX>
+    <PARAMETER>Параметр</PARAMETER>
+    <OUTLIER_RATIO>Коэффициент выбросов</OUTLIER_RATIO>
+    <GLOBAL_ERROR_LIMIT>Глобальный предел ошибок</GLOBAL_ERROR_LIMIT>
+    <PREVIEW>Предварительный просмотр</PREVIEW>
+    <POINT_CLOUD>Облако точек</POINT_CLOUD>
+    <VOXEL>Воксель</VOXEL>
+    <POINT_CLOUD_PREVIEW>Облако точек (предварительный просмотр)</POINT_CLOUD_PREVIEW>
+    <REGION_LABEL>Метка региона</REGION_LABEL>
     <GLOBAL_REGISTRATION_MANUAL>Глобальная регистрация (вручную)</GLOBAL_REGISTRATION_MANUAL>
     <PIECEWISE_LINEAR>Кусочно-линейный</PIECEWISE_LINEAR>
     <POLYNOMIAL>Полиномиальный</POLYNOMIAL>
@@ -221,6 +236,7 @@
     <IN_PROGRESS>В ходе выполнения</IN_PROGRESS>
     <REGISTRATION_WORKFLOW_ERROR>Рабочий процесс регистрации не настроен</REGISTRATION_WORKFLOW_ERROR>
     <PERFORM_AUTO_REGISTRATION>Выполнить автоматическую регистрацию</PERFORM_AUTO_REGISTRATION>
+    <PERFORM_LONGTERM_REGISTRATION>Осуществить долгосрочную регистрацию</PERFORM_LONGTERM_REGISTRATION>
     <REGISTRATION_FRAMES>Регистрационные кадры(Секунды):</REGISTRATION_FRAMES>
     <COVERAGE_OPERATION>На основании текущей регистрации операция необратима, продолжить?</COVERAGE_OPERATION>
     <CONFIRM_COVERAGE>Подтвердить регистрацию покрытия</CONFIRM_COVERAGE>
@@ -283,6 +299,7 @@
     <CALCULATING_GOODNESS>Расчет качества регистрации...</CALCULATING_GOODNESS>
     <REGMODE_CURRENT_MANUAL>Текущий режим регистрации: ручной</REGMODE_CURRENT_MANUAL>
     <REGMODE_CURRENT_AUTO>Текущий режим регистрации: автоматический</REGMODE_CURRENT_AUTO>
+    <REGMODE_CURRENT_LONGTERM>Текущий режим регистрации: Долгосрочный</REGMODE_CURRENT_LONGTERM>
     <IMAGE_INTENSITY>интенсивность изображения</IMAGE_INTENSITY>
     <OPACITY>Непрозрачность</OPACITY>
     <UNSUPPORTED_FILE_FORMAT>неподдерживаемый формат файла</UNSUPPORTED_FILE_FORMAT>
@@ -297,5 +314,8 @@
     <LOG_SWITCH>Переключатель журнала, остановка вывода при выключении</LOG_SWITCH>
     <SELECTION_SOURCE>Выберите источник данных браузера</SELECTION_SOURCE>
     <RUNNING_REGISTRATION>Запустите программу регистрации</RUNNING_REGISTRATION>
+    <LONG_TERM_ONCE_ONLY>Долгосрочный режим поддерживает только однократную регистрацию.</LONG_TERM_ONCE_ONLY>
+    <LONG_TERM_NORMAL_CONFLICT>Долгосрочный режим и нормальный режим включены одновременно, нормальный режим будет отключен. Продолжать?</LONG_TERM_NORMAL_CONFLICT>
+    <LOCAL_WEIGHTED_CONTROL>Рекомендуемое локальное средневзвешенное контрольное значение: 12.</LOCAL_WEIGHTED_CONTROL>
     <DEVELOPING>Разработка…</DEVELOPING>
 </struct>

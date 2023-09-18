@@ -12,7 +12,7 @@ arguments
 end
 
 % load the identifier-language pair file
-p = readtable("utils\registration\lang\words_dict.xlsx","TextType","string",...
+p = readtable("lang\words_dict.xlsx","TextType","string",...
     "FileType","spreadsheet","ExpectedNumVariables",6);
 
 mapping = struct();
@@ -21,7 +21,7 @@ for k = 1:size(p,1)
      mapping.(p.ID(k)) = p.(lang)(k);
 end
 
-writestruct(mapping,"utils\registration\lang\"+lang+".xml","FileType","xml");
+writestruct(mapping,"lang\"+lang+".xml","FileType","xml");
 
 status = 0;
 end

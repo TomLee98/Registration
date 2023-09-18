@@ -142,9 +142,6 @@
     <MEDIAN>Median</MEDIAN>
     <MIN>Min</MIN>
     <MAX>Max</MAX>
-    <REGION_LABEL>Region Label</REGION_LABEL>
-    <INTENSITY_THRESHOLD>Intensity Threshold</INTENSITY_THRESHOLD>
-    <SCALE_THRESHOLD>Scale Threshold(um)</SCALE_THRESHOLD>
     <MIN_ITERATION_STEP>Minimum Iteration Step</MIN_ITERATION_STEP>
     <INITIAL_ITERATION_STEP>Initial Iteration Step</INITIAL_ITERATION_STEP>
     <MAX_ITERATION_N>Max Iteration Number</MAX_ITERATION_N>
@@ -158,6 +155,24 @@
     <AUTO>Auto</AUTO>
     <ACCUMULATIVE_FIELD_SMOOTHING>Accumulative Field Smoothing</ACCUMULATIVE_FIELD_SMOOTHING>
     <GEOMETRIC_TRANSFORMATION>Geometric Transformation</GEOMETRIC_TRANSFORMATION>
+    <LONGTERM_REGISTRATION_AUTO>Long-Term Registration(Auto)</LONGTERM_REGISTRATION_AUTO>
+    <KEY_FRAME>Key Frame</KEY_FRAME>
+    <INTENSITY_THRESHOLD>Intensity Threshold</INTENSITY_THRESHOLD>
+    <SCALE_THRESHOLD>Scale Threshold(um)</SCALE_THRESHOLD>
+    <GRID_AVERAGE>Grid Average</GRID_AVERAGE>
+    <RANDOM_UNIFORM>Random(uniform)</RANDOM_UNIFORM>
+    <NONUNIFORM>Nonuniform</NONUNIFORM>
+    <GRID_STEP>Grid Step</GRID_STEP>
+    <PERCENTILE>Percentile</PERCENTILE>
+    <NUM_MAX>Maximum</NUM_MAX>
+    <PARAMETER>Parameter</PARAMETER>
+    <OUTLIER_RATIO>Outlier Ratio</OUTLIER_RATIO>
+    <GLOBAL_ERROR_LIMIT>Global Error Limit</GLOBAL_ERROR_LIMIT>
+    <PREVIEW>Preview</PREVIEW>
+    <POINT_CLOUD>Point Cloud</POINT_CLOUD>
+    <VOXEL>Voxel</VOXEL>
+    <POINT_CLOUD_PREVIEW>Point Cloud(Preview)</POINT_CLOUD_PREVIEW>
+    <REGION_LABEL>Region Label</REGION_LABEL>
     <GLOBAL_REGISTRATION_MANUAL>Global Registration(Manual)</GLOBAL_REGISTRATION_MANUAL>
     <PIECEWISE_LINEAR>Piecewise linear</PIECEWISE_LINEAR>
     <POLYNOMIAL>Polynomial</POLYNOMIAL>
@@ -221,6 +236,7 @@
     <IN_PROGRESS>In progress</IN_PROGRESS>
     <REGISTRATION_WORKFLOW_ERROR>No registration workflow set up</REGISTRATION_WORKFLOW_ERROR>
     <PERFORM_AUTO_REGISTRATION>Perform automatic registration</PERFORM_AUTO_REGISTRATION>
+    <PERFORM_LONGTERM_REGISTRATION>Perform long-term registration</PERFORM_LONGTERM_REGISTRATION>
     <REGISTRATION_FRAMES>Registration frames(Seconds):</REGISTRATION_FRAMES>
     <COVERAGE_OPERATION>Based on the current registration, the operation is irreversible, continue?</COVERAGE_OPERATION>
     <CONFIRM_COVERAGE>Confirm coverage registration</CONFIRM_COVERAGE>
@@ -283,6 +299,7 @@
     <CALCULATING_GOODNESS>Calculating goodness of registration...</CALCULATING_GOODNESS>
     <REGMODE_CURRENT_MANUAL>Current Registration Mode: Manual</REGMODE_CURRENT_MANUAL>
     <REGMODE_CURRENT_AUTO>Current Registration Mode: Automatic</REGMODE_CURRENT_AUTO>
+    <REGMODE_CURRENT_LONGTERM>Current Registration Mode: Long-Term</REGMODE_CURRENT_LONGTERM>
     <IMAGE_INTENSITY>image intensity</IMAGE_INTENSITY>
     <OPACITY>Opacity</OPACITY>
     <UNSUPPORTED_FILE_FORMAT>unsupported file format</UNSUPPORTED_FILE_FORMAT>
@@ -297,5 +314,8 @@
     <LOG_SWITCH>Log switch, stop output when off</LOG_SWITCH>
     <SELECTION_SOURCE>Select browser data source</SELECTION_SOURCE>
     <RUNNING_REGISTRATION>Run the registration program</RUNNING_REGISTRATION>
+    <LONG_TERM_ONCE_ONLY>Long-term mode only supports single registration</LONG_TERM_ONCE_ONLY>
+    <LONG_TERM_NORMAL_CONFLICT>The long-term mode and the normal mode are enabled at the same time, the normal mode will be turned off. Continue?</LONG_TERM_NORMAL_CONFLICT>
+    <LOCAL_WEIGHTED_CONTROL>Local weighted average recommended control value: 12</LOCAL_WEIGHTED_CONTROL>
     <DEVELOPING>Developing…</DEVELOPING>
 </struct>

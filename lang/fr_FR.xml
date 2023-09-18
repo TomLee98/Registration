@@ -142,9 +142,6 @@
     <MEDIAN>Médian</MEDIAN>
     <MIN>Min</MIN>
     <MAX>Max</MAX>
-    <REGION_LABEL>Étiquette de région</REGION_LABEL>
-    <INTENSITY_THRESHOLD>Seuil d'intensité</INTENSITY_THRESHOLD>
-    <SCALE_THRESHOLD>Seuil d'échelle(um)</SCALE_THRESHOLD>
     <MIN_ITERATION_STEP>Étape d'itération minimale</MIN_ITERATION_STEP>
     <INITIAL_ITERATION_STEP>Étape d'itération initiale</INITIAL_ITERATION_STEP>
     <MAX_ITERATION_N>Nombre maximal d'itérations</MAX_ITERATION_N>
@@ -158,6 +155,24 @@
     <AUTO>Auto</AUTO>
     <ACCUMULATIVE_FIELD_SMOOTHING>Lissage de champ cumulatif</ACCUMULATIVE_FIELD_SMOOTHING>
     <GEOMETRIC_TRANSFORMATION>Transformation géométrique</GEOMETRIC_TRANSFORMATION>
+    <LONGTERM_REGISTRATION_AUTO>Inscription à long terme (auto)</LONGTERM_REGISTRATION_AUTO>
+    <KEY_FRAME>Image clé</KEY_FRAME>
+    <INTENSITY_THRESHOLD>Seuil d'intensité</INTENSITY_THRESHOLD>
+    <SCALE_THRESHOLD>Seuil d'échelle(um)</SCALE_THRESHOLD>
+    <GRID_AVERAGE>Moyenne de la grille</GRID_AVERAGE>
+    <RANDOM_UNIFORM>Aléatoire (uniforme)</RANDOM_UNIFORM>
+    <NONUNIFORM>Non uniforme</NONUNIFORM>
+    <GRID_STEP>Étape de la grille</GRID_STEP>
+    <PERCENTILE>Centile</PERCENTILE>
+    <NUM_MAX>Maximum</NUM_MAX>
+    <PARAMETER>Paramètre</PARAMETER>
+    <OUTLIER_RATIO>Ratio de valeurs aberrantes</OUTLIER_RATIO>
+    <GLOBAL_ERROR_LIMIT>Limite d'erreur globale</GLOBAL_ERROR_LIMIT>
+    <PREVIEW>Aperçu</PREVIEW>
+    <POINT_CLOUD>Nuage de points</POINT_CLOUD>
+    <VOXEL>Voxel</VOXEL>
+    <POINT_CLOUD_PREVIEW>Nuage de points (aperçu)</POINT_CLOUD_PREVIEW>
+    <REGION_LABEL>Étiquette de région</REGION_LABEL>
     <GLOBAL_REGISTRATION_MANUAL>Enregistrement global (manuel)</GLOBAL_REGISTRATION_MANUAL>
     <PIECEWISE_LINEAR>Linéaire par morceaux</PIECEWISE_LINEAR>
     <POLYNOMIAL>Polynôme</POLYNOMIAL>
@@ -221,6 +236,7 @@
     <IN_PROGRESS>En cours</IN_PROGRESS>
     <REGISTRATION_WORKFLOW_ERROR>Aucun flux de travail d'inscription configuré</REGISTRATION_WORKFLOW_ERROR>
     <PERFORM_AUTO_REGISTRATION>Effectuer l'enregistrement automatique</PERFORM_AUTO_REGISTRATION>
+    <PERFORM_LONGTERM_REGISTRATION>Effectuer une inscription à long terme</PERFORM_LONGTERM_REGISTRATION>
     <REGISTRATION_FRAMES>Cadres d'enregistrement(Secondes):</REGISTRATION_FRAMES>
     <COVERAGE_OPERATION>Sur la base de l'immatriculation en cours, l'opération est irréversible, continuer ?</COVERAGE_OPERATION>
     <CONFIRM_COVERAGE>Confirmer l'enregistrement de la couverture</CONFIRM_COVERAGE>
@@ -283,6 +299,7 @@
     <CALCULATING_GOODNESS>Calcul de la qualité de l'enregistrement...</CALCULATING_GOODNESS>
     <REGMODE_CURRENT_MANUAL>Mode d'enregistrement actuel : Manuel</REGMODE_CURRENT_MANUAL>
     <REGMODE_CURRENT_AUTO>Mode d'enregistrement actuel : automatique</REGMODE_CURRENT_AUTO>
+    <REGMODE_CURRENT_LONGTERM>Mode d'enregistrement actuel : Long terme</REGMODE_CURRENT_LONGTERM>
     <IMAGE_INTENSITY>intensité de l'image</IMAGE_INTENSITY>
     <OPACITY>Opacité</OPACITY>
     <UNSUPPORTED_FILE_FORMAT>format de fichier non pris en charge</UNSUPPORTED_FILE_FORMAT>
@@ -297,5 +314,8 @@
     <LOG_SWITCH>Commutateur de journal, arrêt de la sortie lorsqu'il est éteint</LOG_SWITCH>
     <SELECTION_SOURCE>Sélectionnez la source de données du navigateur</SELECTION_SOURCE>
     <RUNNING_REGISTRATION>Exécutez le programme d'enregistrement</RUNNING_REGISTRATION>
+    <LONG_TERM_ONCE_ONLY>Le mode à long terme ne prend en charge qu'un seul enregistrement</LONG_TERM_ONCE_ONLY>
+    <LONG_TERM_NORMAL_CONFLICT>Le mode long terme et le mode normal sont activés en même temps, le mode normal sera désactivé. Continuer?</LONG_TERM_NORMAL_CONFLICT>
+    <LOCAL_WEIGHTED_CONTROL>La valeur de contrôle recommandée moyenne pondérée locale : 12</LOCAL_WEIGHTED_CONTROL>
     <DEVELOPING>Développement…</DEVELOPING>
 </struct>

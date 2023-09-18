@@ -142,9 +142,6 @@
     <MEDIAN>Mediana</MEDIAN>
     <MIN>mínimo</MIN>
     <MAX>máx.</MAX>
-    <REGION_LABEL>Etiqueta de región</REGION_LABEL>
-    <INTENSITY_THRESHOLD>Umbral de intensidad</INTENSITY_THRESHOLD>
-    <SCALE_THRESHOLD>Umbral de escala(um)</SCALE_THRESHOLD>
     <MIN_ITERATION_STEP>Paso mínimo de iteración</MIN_ITERATION_STEP>
     <INITIAL_ITERATION_STEP>Paso de iteración inicial</INITIAL_ITERATION_STEP>
     <MAX_ITERATION_N>Número máximo de iteraciones</MAX_ITERATION_N>
@@ -158,6 +155,24 @@
     <AUTO>Auto</AUTO>
     <ACCUMULATIVE_FIELD_SMOOTHING>Suavizado de campo acumulativo</ACCUMULATIVE_FIELD_SMOOTHING>
     <GEOMETRIC_TRANSFORMATION>Transformación Geométrica</GEOMETRIC_TRANSFORMATION>
+    <LONGTERM_REGISTRATION_AUTO>Registro a largo plazo (automático)</LONGTERM_REGISTRATION_AUTO>
+    <KEY_FRAME>Marco clave</KEY_FRAME>
+    <INTENSITY_THRESHOLD>Umbral de intensidad</INTENSITY_THRESHOLD>
+    <SCALE_THRESHOLD>Umbral de escala(um)</SCALE_THRESHOLD>
+    <GRID_AVERAGE>Promedio de cuadrícula</GRID_AVERAGE>
+    <RANDOM_UNIFORM>Aleatorio (uniforme)</RANDOM_UNIFORM>
+    <NONUNIFORM>No uniforme</NONUNIFORM>
+    <GRID_STEP>Paso de cuadrícula</GRID_STEP>
+    <PERCENTILE>percentil</PERCENTILE>
+    <NUM_MAX>Máximo</NUM_MAX>
+    <PARAMETER>Parámetro</PARAMETER>
+    <OUTLIER_RATIO>Relación de valores atípicos</OUTLIER_RATIO>
+    <GLOBAL_ERROR_LIMIT>Límite de errores globales</GLOBAL_ERROR_LIMIT>
+    <PREVIEW>Avance</PREVIEW>
+    <POINT_CLOUD>Punto de nube</POINT_CLOUD>
+    <VOXEL>Vóxel</VOXEL>
+    <POINT_CLOUD_PREVIEW>Nube de puntos (vista previa)</POINT_CLOUD_PREVIEW>
+    <REGION_LABEL>Etiqueta de región</REGION_LABEL>
     <GLOBAL_REGISTRATION_MANUAL>Registro global (manual)</GLOBAL_REGISTRATION_MANUAL>
     <PIECEWISE_LINEAR>Lineal a trozos</PIECEWISE_LINEAR>
     <POLYNOMIAL>Polinomio</POLYNOMIAL>
@@ -221,6 +236,7 @@
     <IN_PROGRESS>En curso</IN_PROGRESS>
     <REGISTRATION_WORKFLOW_ERROR>No se ha configurado el flujo de trabajo de registro</REGISTRATION_WORKFLOW_ERROR>
     <PERFORM_AUTO_REGISTRATION>Realizar registro automático</PERFORM_AUTO_REGISTRATION>
+    <PERFORM_LONGTERM_REGISTRATION>Realizar registro a largo plazo</PERFORM_LONGTERM_REGISTRATION>
     <REGISTRATION_FRAMES>Marcos de registro(Segundos):</REGISTRATION_FRAMES>
     <COVERAGE_OPERATION>Según el registro actual, la operación es irreversible, ¿continuar?</COVERAGE_OPERATION>
     <CONFIRM_COVERAGE>Confirmar registro de cobertura</CONFIRM_COVERAGE>
@@ -283,6 +299,7 @@
     <CALCULATING_GOODNESS>Calculando la bondad del registro...</CALCULATING_GOODNESS>
     <REGMODE_CURRENT_MANUAL>Modo de registro actual: Manual</REGMODE_CURRENT_MANUAL>
     <REGMODE_CURRENT_AUTO>Modo de registro actual: Automático</REGMODE_CURRENT_AUTO>
+    <REGMODE_CURRENT_LONGTERM>Modo de registro actual: a largo plazo</REGMODE_CURRENT_LONGTERM>
     <IMAGE_INTENSITY>intensidad de la imagen</IMAGE_INTENSITY>
     <OPACITY>Opacidad</OPACITY>
     <UNSUPPORTED_FILE_FORMAT>Formato de archivo no soportado</UNSUPPORTED_FILE_FORMAT>
@@ -297,5 +314,8 @@
     <LOG_SWITCH>Interruptor de registro, detener la salida cuando está apagado</LOG_SWITCH>
     <SELECTION_SOURCE>Seleccione la fuente de datos del navegador</SELECTION_SOURCE>
     <RUNNING_REGISTRATION>Ejecutar el programa de registro</RUNNING_REGISTRATION>
+    <LONG_TERM_ONCE_ONLY>El modo a largo plazo solo admite registro único</LONG_TERM_ONCE_ONLY>
+    <LONG_TERM_NORMAL_CONFLICT>El modo a largo plazo y el modo normal se habilitan al mismo tiempo, el modo normal se desactivará. ¿Continuar?</LONG_TERM_NORMAL_CONFLICT>
+    <LOCAL_WEIGHTED_CONTROL>Valor de control recomendado promedio ponderado local: 12</LOCAL_WEIGHTED_CONTROL>
     <DEVELOPING>Desarrollando…</DEVELOPING>
 </struct>
