@@ -126,12 +126,13 @@ V1.6        Sika deer           梅花鹿
   |     |- [Fix Bugs] some big file registration error
   |     |- [Fix Bugs] movie exporting bug
   |     |- [Fix Bugs] auto update command bug
-  |- V1.6.3     2023/09/20  14:00
+  |- V1.6.3     2023/09/21  
   |     |- [Update] long term registration: key frames & chain registration
-  |     |- [Fix Bugs] solve some problems
-  |- V1.6.4     2023/09
+  |     |- [Update] append some tooltips with multi-languages support
+  |     |- [Fix Bugs] solve the parpool cluster bugs when error occured
+  |- V1.6.4     2023/
   |     |- [Update] registration history
-  |- V1.6.5     2023
+  |- V1.6.5     2023/
   |     |- [Update] multi-target tracking and registration
   |     |- [Update] ANN classifer tools
   |- V1.6.6

@@ -411,7 +411,10 @@ end
         else
             % close parpool and change the parallel
             closeParpool(parobj);
-            block_n = getGpuBlockNumber(opts);
+            g_opts.width = round(opts.width*reg_param.dsVX);
+            g_opts.height = round(opts.height*reg_param.dsVX);
+            g_opts.slices = opts.slices;
+            block_n = getGpuBlockNumber(g_opts);
             parobj = openParpool(block_n);
             [tform_nrd, ms_ptr, ma_ptr] = imregdemons_fast_gpu(ma_ptr, ms_ptr, block_n);
         end
@@ -814,6 +817,9 @@ end
 end
 
 function closeParpool(parobj)
+pcl = parcluster("Reg3D_Server");
+% remove the possible latest failed jobs
+delete(pcl.Jobs);
 % close parpool
 delete(parobj);
 end
