@@ -136,7 +136,11 @@ frames = info_bf.getPixelsSizeT(0).getValue();
 images = channels*slices*frames;
 xRes = double(info_bf.getPixelsPhysicalSizeX(0).value);
 yRes = double(info_bf.getPixelsPhysicalSizeY(0).value);
-zRes = double(info_bf.getPixelsPhysicalSizeZ(0).value);
+if slices ~= 1
+    zRes = double(info_bf.getPixelsPhysicalSizeZ(0).value);
+else
+    zRes = 0;   % only one plane, no resolution at z direction
+end
 dimOrder = string(split(info_bf.getPixelsDimensionOrder(0).getValue(),""));
 dimOrder = dimOrder(strlength(dimOrder)>0)';
 cOrder = getChannelOrder(info_bf);
