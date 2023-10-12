@@ -141,6 +141,7 @@ function [signal,tform,marker] = register3D_tc_auto(varargin)
 %   *** Remove border values
 % Version: 1.2.5
 %   *** Remove and clean up file pointer to a function
+%   *** fix file pointer bug
 
 % Copyright (c) 2022-2023, Weihan Li
 
@@ -591,10 +592,13 @@ end
                 % using for loop load block data
                 mv_size = size(ma,'mov_aligned');
                 % generate the registration results as preprocess
-                ms_new = matfile(folder.local+"mov_signal_global.mat","Writable",true);
+                folder_local = fileparts(ma.Properties.Source);
+                ms_new = matfile(fullfile(folder_local, 'mov_signal_global.mat'), ...
+                    "Writable",true);
                 ms_new.mov_signal(mv_size(1),mv_size(2),mv_size(3),mv_size(4))...
                     = uint16(0);        % system malloc standby
-                ma_new = matfile(folder.local+"mov_aligned_global.mat","Writable",true);
+                ma_new = matfile(fullfile(folder_local, 'mov_aligned_global.mat'), ...
+                    "Writable",true);
                 ma_new.mov_aligned(mv_size(1),mv_size(2),mv_size(3),mv_size(4))...
                     = uint16(0);
                 NWorker = parobj.NumWorkers;
@@ -719,10 +723,13 @@ end
                 % using for loop load block data
                 mv_size = size(ma,'mov_aligned');
                 % generate the registration results as preprocess
-                ms_new = matfile(folder.local+"mov_signal_local.mat","Writable",true);
+                folder_local = fileparts(ma.Properties.Source);
+                ms_new = matfile(fullfile(folder_local, 'mov_signal_local.mat'), ...
+                    "Writable",true);
                 ms_new.mov_signal(mv_size(1),mv_size(2),mv_size(3),mv_size(4))...
                     = uint16(0);        % system malloc standby
-                ma_new = matfile(folder.local+"mov_aligned_local.mat","Writable",true);
+                ma_new = matfile(fullfile(folder_local, 'mov_aligned_local.mat'), ...
+                    "Writable",true);
                 ma_new.mov_aligned(mv_size(1),mv_size(2),mv_size(3),mv_size(4))...
                     = uint16(0);
                 NWorker = parobj.NumWorkers;
@@ -836,10 +843,13 @@ end
                 % using for loop load block data
                 mv_size = size(ma,'mov_aligned');
                 % generate the registration results as preprocess
-                ms_new = matfile(folder.local+"mov_signal_local.mat","Writable",true);
+                folder_local = fileparts(ma.Properties.Source);
+                ms_new = matfile(fullfile(folder_local, 'mov_signal_local.mat'), ...
+                    "Writable",true);
                 ms_new.mov_signal(mv_size(1),mv_size(2),mv_size(3),mv_size(4))...
                     = uint16(0);        % system malloc standby
-                ma_new = matfile(folder.local+"mov_aligned_local.mat","Writable",true);
+                ma_new = matfile(fullfile(folder_local, 'mov_aligned_local.mat'), ...
+                    "Writable",true);
                 ma_new.mov_aligned(mv_size(1),mv_size(2),mv_size(3),mv_size(4))...
                     = uint16(0);
                 NWorker = parobj.NumWorkers;

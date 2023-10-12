@@ -126,11 +126,12 @@ V1.6        Sika deer           梅花鹿
   |     |- [Fix Bugs] some big file registration error
   |     |- [Fix Bugs] movie exporting bug
   |     |- [Fix Bugs] auto update command bug
-  |- V1.6.3     2023/10/08  
+  |- V1.6.3     2023/10/  
   |     |- [Update] long term registration: key frames & chain registration
   |     |- [Update] append some tooltips with multi-languages support
   |     |- [Fix Bugs] solve the parpool cluster bugs when error occured
   |     |- [Fix Bugs] fix robust coefficient lost bug on two channels registration
+  |     |- [Fix Bugs] fix some big file registration bugs (two channels)
   |- V1.6.4     2023/
   |     |- [Update] registration history
   |     |- [Fix Bugs] 

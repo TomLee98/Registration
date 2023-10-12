@@ -13,7 +13,7 @@ ms_ptr = [];
 % tmp file folder
 folder_unix = "/data/tmpdata/";
 folder_pc = "tmpdata\";
-folder.local = [];
+folder_local = [];
 filename.aligned = "mov_aligned_source.mat";
 filename.signal = "mov_signal_source.mat";
 
@@ -23,12 +23,12 @@ if isunix()
     user_name = string(user_name);
     aligned_file = folder_unix + user_name + "/" + filename.aligned;
     signal_file = folder_unix + user_name + "/" + filename.signal;
-    folder.local = folder_unix + user_name + "/";
+    folder_local = folder_unix + user_name + "/";
 elseif ispc()
     user_name = string(getenv('username'));
     aligned_file = folder_pc + user_name + "\" + filename.aligned;
     signal_file = folder_pc + user_name + "\" + filename.signal;
-    folder.local = folder_pc + user_name + "\";
+    folder_local = folder_pc + user_name + "\";
 end
 
 if exist(aligned_file,"file") && exist(signal_file,"file")
@@ -57,8 +57,8 @@ if loading_flag == false
     % save data to disk for big data support
     % ============= PROCESSING THE ALIGNED DATA ==============
     mov_aligned = squeeze(uint16(mov(:,:,chl(1),:,:)));
-    if ~exist(folder.local, "dir")
-        mkdir(folder.local);
+    if ~exist(folder_local, "dir")
+        mkdir(folder_local);
     end
     % nocompression for faster saving/loading but more disk
     % space allocated
