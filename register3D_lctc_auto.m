@@ -73,6 +73,7 @@ function [signal, tform, marker] = register3D_lctc_auto(varargin)
 % REGISTER3D_TC_AUTO:
 % Version: 1.0.0
 %   *** Basic registration functions
+%   *** using same file when registration, for disk space saving
 
 % Copyright (c) 2022-2023, Weihan Li
 
@@ -401,7 +402,7 @@ end
             smse(st_idx:ed_idx) = smse_block;
             good_flag(st_idx:ed_idx) = flag_block;
 
-            % modify the hard drive data
+            % modify the raw hard drive data
             ms_ptr.mov_signal(:,:,:,st_idx:ed_idx) = ms;
             ma_ptr.mov_aligned(:,:,:,st_idx:ed_idx) = ma;
         end

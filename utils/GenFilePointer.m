@@ -37,13 +37,18 @@ if exist(aligned_file,"file") && exist(signal_file,"file")
     switch upper(overlap_flag)
         case "Y"
             % just loading and skip regenerating
+            % establish file pointer
             disp("Loading mapping file...");
             ma_ptr = matfile(aligned_file,"Writable",true);
             ms_ptr = matfile(signal_file,"Writable",true);
-            loading_flag = true;    % flag for whether the data pointer loading into memory
+
+            % flag for whether the data pointer loading into memory
+            loading_flag = true;
         case "N"
-            % goto the usual pipeline: saving file and reloading
-            % the pointer
+            % goto the usual pipeline: saving file and reloading pointer
+            % remove all exist temporary files
+            delete(folder_local+"*.mat");
+
             loading_flag = false;
         otherwise
             error("unsupported operation.");
