@@ -132,21 +132,21 @@ V1.6        Sika deer           梅花鹿
   |     |- [Fix Bugs] solve the parpool cluster bugs when error occured
   |     |- [Fix Bugs] fix robust coefficient lost bug on two channels registration
   |     |- [Fix Bugs] fix some big file registration bugs (two channels)
-  |- V1.6.4     2023/
-  |     |- [Update] registration history
+  |- V1.6.4     2023/10/
+  |     |- [Update] channel alignment for screen splitter motion correction (2D rigid only)
+  |     |- [Fix Bugs]
+  |- V1.6.5     2023/10/
+  |     |- [Update] registration history manager
   |     |- [Fix Bugs] 
-  |- V1.6.5     2023/
+  |- V1.6.6     2023/
   |     |- [Update] multi-target tracking and registration
   |     |- [Update] ANN classifer tools
-  |- V1.6.6
+  |- V1.6.7
   |     |- [Update] file saving more faster
   |     |- [Fix Bugs: TODO] fix export movie bug: uncertainty resolution
-  |- V1.6.7
-  |     |- [Update] optimize registration parameters automatically(by trying small random samples iteration)
-  |     |-
   |- V1.6.8
   |     |- [Update] one channel big file registration supported
-  |     |-
+  |     |- 
 
 
 V1.7        Crested ibis        朱鹮

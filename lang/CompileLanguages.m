@@ -8,7 +8,7 @@ function status = CompileLanguages(lang)
 
 arguments
     lang (1,1) string ...
-        {mustBeMember(lang,["zh_CN","en_US","ru_RU","fr_FR","es_ES"])} = "en_US";
+        {mustBeMember(lang,["zh_CN","en_US","ru_RU","fr_FR","es_ES","all"])} = "en_US";
 end
 
 % load the identifier-language pair file
@@ -17,11 +17,19 @@ p = readtable("lang\words_dict.xlsx","TextType","string",...
 
 mapping = struct();
 
-for k = 1:size(p,1)
-     mapping.(p.ID(k)) = p.(lang)(k);
+if lang == "all"
+    langs = ["zh_CN","en_US","ru_RU","fr_FR","es_ES"];
+else
+    langs = lang;
 end
 
-writestruct(mapping,"lang\"+lang+".xml","FileType","xml");
+for lang = langs
+    for k = 1:size(p,1)
+        mapping.(p.ID(k)) = p.(lang)(k);
+    end
+    writestruct(mapping,"lang\"+lang+".xml","FileType","xml");
+
+end
 
 status = 0;
 end

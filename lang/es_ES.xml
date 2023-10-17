@@ -88,6 +88,10 @@
     <GAMMA>Gama</GAMMA>
     <TRANSLATION>Traducción</TRANSLATION>
     <ROTATION>Rotación</ROTATION>
+    <TRANSLATION_TOOLTIP>traducción</TRANSLATION_TOOLTIP>
+    <RIGID_TOOLTIP>traslación y rotación</RIGID_TOOLTIP>
+    <SIMILARITY_TOOLTIP>traslación, rotación y escalado isotrópico</SIMILARITY_TOOLTIP>
+    <AFFINE_TOOLTIP>traslación, rotación, escalado anisotrópico, reflexión y corte</AFFINE_TOOLTIP>
     <GLOBAL_REGISTRATION>Registro mundial</GLOBAL_REGISTRATION>
     <LOCAL_REGISTRATION>Registro local</LOCAL_REGISTRATION>
     <REGISTRATION_GOODNESS>Bondad de registro</REGISTRATION_GOODNESS>
@@ -260,6 +264,7 @@
     <EXPORTING>Exportador...</EXPORTING>
     <IMAGE_EXPORT_SUCCESS>Imágenes exportadas con éxito</IMAGE_EXPORT_SUCCESS>
     <IRREVERSIBLE_CROP>La operación de recorte es irreversible, ¿continuar?</IRREVERSIBLE_CROP>
+    <IRREVERSIBLE_CA>La operación de alineación de canales es irreversible, ¿continuar?</IRREVERSIBLE_CA>
     <CONFIRM_CROP>Confirmar recorte</CONFIRM_CROP>
     <FRAME_FEW>Seleccione al menos dos marcos</FRAME_FEW>
     <SLICE_FEW>Seleccione al menos dos rebanadas</SLICE_FEW>
@@ -316,6 +321,7 @@
     <RUNNING_REGISTRATION>Ejecutar el programa de registro</RUNNING_REGISTRATION>
     <LONG_TERM_ONCE_ONLY>El modo a largo plazo solo admite registro único</LONG_TERM_ONCE_ONLY>
     <LONG_TERM_NORMAL_CONFLICT>El modo a largo plazo y el modo normal se habilitan al mismo tiempo, el modo normal se desactivará. ¿Continuar?</LONG_TERM_NORMAL_CONFLICT>
+    <NORMAL_LONG_TERM_CONFLICT>El modo normal y el modo a largo plazo se activan al mismo tiempo, el modo normal se desactivará. ¿Continuar?</NORMAL_LONG_TERM_CONFLICT>
     <LOCAL_WEIGHTED_CONTROL>Valor de control recomendado promedio ponderado local: 12</LOCAL_WEIGHTED_CONTROL>
     <DEVELOPING>Desarrollando…</DEVELOPING>
 </struct>

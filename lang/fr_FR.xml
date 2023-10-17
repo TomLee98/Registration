@@ -88,6 +88,10 @@
     <GAMMA>Gamma</GAMMA>
     <TRANSLATION>Traduction</TRANSLATION>
     <ROTATION>Rotation</ROTATION>
+    <TRANSLATION_TOOLTIP>traduction</TRANSLATION_TOOLTIP>
+    <RIGID_TOOLTIP>translation et rotation</RIGID_TOOLTIP>
+    <SIMILARITY_TOOLTIP>translation, rotation et mise à l'échelle isotrope</SIMILARITY_TOOLTIP>
+    <AFFINE_TOOLTIP>translation, rotation, mise à l'échelle anisotrope, réflexion et cisaillement</AFFINE_TOOLTIP>
     <GLOBAL_REGISTRATION>Enregistrement mondial</GLOBAL_REGISTRATION>
     <LOCAL_REGISTRATION>Inscription locale</LOCAL_REGISTRATION>
     <REGISTRATION_GOODNESS>Bonté d'enregistrement</REGISTRATION_GOODNESS>
@@ -260,6 +264,7 @@
     <EXPORTING>Exportation...</EXPORTING>
     <IMAGE_EXPORT_SUCCESS>Images exportées avec succès</IMAGE_EXPORT_SUCCESS>
     <IRREVERSIBLE_CROP>L'opération de recadrage est irréversible, continuer ?</IRREVERSIBLE_CROP>
+    <IRREVERSIBLE_CA>L’opération d’alignement des voies est irréversible, continuer ?</IRREVERSIBLE_CA>
     <CONFIRM_CROP>Confirmer le recadrage</CONFIRM_CROP>
     <FRAME_FEW>Veuillez sélectionner au moins deux cadres</FRAME_FEW>
     <SLICE_FEW>Veuillez sélectionner au moins deux tranches</SLICE_FEW>
@@ -316,6 +321,7 @@
     <RUNNING_REGISTRATION>Exécutez le programme d'enregistrement</RUNNING_REGISTRATION>
     <LONG_TERM_ONCE_ONLY>Le mode à long terme ne prend en charge qu'un seul enregistrement</LONG_TERM_ONCE_ONLY>
     <LONG_TERM_NORMAL_CONFLICT>Le mode long terme et le mode normal sont activés en même temps, le mode normal sera désactivé. Continuer?</LONG_TERM_NORMAL_CONFLICT>
+    <NORMAL_LONG_TERM_CONFLICT>Le mode normal et le mode longue durée sont activés en même temps, le mode normal sera désactivé. Continuer?</NORMAL_LONG_TERM_CONFLICT>
     <LOCAL_WEIGHTED_CONTROL>La valeur de contrôle recommandée moyenne pondérée locale : 12</LOCAL_WEIGHTED_CONTROL>
     <DEVELOPING>Développement…</DEVELOPING>
 </struct>
