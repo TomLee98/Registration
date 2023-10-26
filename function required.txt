@@ -133,14 +133,19 @@ V1.6        Sika deer           梅花鹿
   |     |- [Fix Bugs] fix robust coefficient lost bug on two channels registration
   |     |- [Fix Bugs] fix some big file registration bugs (two channels)
   |- V1.6.4     2023/10/
-  |     |- [Update] channel alignment for screen splitter motion correction (2D rigid only)
-  |     |- [Fix Bugs]
-  |- V1.6.5     2023/10/
+  |     |- [Update] alignment for channel position correction (2D rigid only)
+  |	    |- [Update] long-term registration progress bar
+  |     |- [Update] multi-target tracking and registration(manual patches)
+  |     |- [Update] new help documents for Version 1.6.4
+  |     |- [Fix Bugs] long-term registration wrong estimation before template volume
+  |     |- [Key Note] frames series rely on time, need to be updated to spatial information
+  |- V1.6.5     2023/11/
   |     |- [Update] registration history manager
+  |     |- [Update] long-term perfermance increase
   |     |- [Fix Bugs] 
   |- V1.6.6     2023/
-  |     |- [Update] multi-target tracking and registration
-  |     |- [Update] ANN classifer tools
+  |     |- [Update] ANN classifer tools for one channel alignment
+  |     |- [Fix Bugs] 
   |- V1.6.7
   |     |- [Update] file saving more faster
   |     |- [Fix Bugs: TODO] fix export movie bug: uncertainty resolution

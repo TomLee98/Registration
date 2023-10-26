@@ -33,7 +33,7 @@ end
 
 if exist(aligned_file,"file") && exist(signal_file,"file")
     % ask for load the same name file?
-    overlap_flag = input("There are memory mapping file, loading?(Y/N)","s");
+    overlap_flag = input("There are memory mapping files, loading?(Y/N)","s");
     switch upper(overlap_flag)
         case "Y"
             % just loading and skip regenerating

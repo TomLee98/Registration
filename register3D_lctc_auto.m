@@ -195,6 +195,7 @@ c_order = opts.cOrder;
 % generate global value: fixed volume and data scale
 [MA_MIN, MA_MAX] = getMinMaxIn(mov, pr.Chla, c_order);
 fv = genFixVolProfile(mov, pr, c_order, ds_vx, [MA_MIN, MA_MAX]);
+rv = pr.RefVol;
 
 % extract the key frames
 key_mov = squeeze(mov(:,:,pr.Chla==c_order,:,key_frs_idx));
@@ -231,7 +232,7 @@ reg_param = struct('fixvol',       fv,...
                     'chlS',         pr.Chls,...
                     'chlMode',      c_order);
 
-clearvars -except opts mov key_mov fv reg_param MA_MIN MA_MAX;
+clearvars -except opts mov key_mov fv rv reg_param MA_MIN MA_MAX;
 
 chl = [find(reg_param.chlA==reg_param.chlMode), ...
                    find(reg_param.chlS==reg_param.chlMode)];
@@ -239,8 +240,10 @@ chl = [find(reg_param.chlA==reg_param.chlMode), ...
 clearvars mov;
 
 % generate the registration chain key point
-[tf_affine, tf_nonrigid, ~] = gen_reg_kp(key_mov, fv.fixvol_global_a, opts);
-clearvars fv;
+pinfo.fix = str2double(rv.G(2));     % insert error to avoid multi-frames
+pinfo.keys = reg_param.keyFramesIdx;
+[tf_affine, tf_nonrigid, ~] = gen_reg_kp(key_mov, fv.fixvol_global_a, opts, pinfo);
+clearvars fv rv;
 
 if nargout == 1
     tform = reg(ma_ptr, ms_ptr, tf_affine, tf_nonrigid);
@@ -272,7 +275,8 @@ end
         load_loop_n = ceil(opts.frames/block_n);
 
         % rigid/affine with cpu first
-        parobj = openParpool(min(block_n, wkn)); 
+        parobj = openParpool(min(block_n, wkn));
+        bar = parwaitbar(2*opts.frames,'Waitbar',true);
 
         % extract the params for avoiding data broadcast
         reg_frame = reg_param.regFrames;
@@ -396,6 +400,8 @@ end
                 ma(:,:,:,n) = ma_aligned;
                 
                 tf_affine_block{n} = tfs_affine_fi;
+
+                bar.Send;
             end
 
             tform(st_idx:ed_idx, 1) = tf_affine_block;
@@ -408,7 +414,8 @@ end
         end
 
         if strcmp(rm, 'multi-cpu')
-            [tform_nrd, ms_ptr, ma_ptr] = imregdemons_fast_cpu(ma_ptr, ms_ptr, block_n);
+            [tform_nrd, ms_ptr, ma_ptr] = imregdemons_fast_cpu(ma_ptr, ms_ptr, ...
+                block_n, bar);
         else
             % close parpool and change the parallel
             closeParpool(parobj);
@@ -417,15 +424,18 @@ end
             g_opts.slices = opts.slices;
             block_n = getGpuBlockNumber(g_opts);
             parobj = openParpool(block_n);
-            [tform_nrd, ms_ptr, ma_ptr] = imregdemons_fast_gpu(ma_ptr, ms_ptr, block_n);
+            [tform_nrd, ms_ptr, ma_ptr] = imregdemons_fast_gpu(ma_ptr, ms_ptr, ...
+                block_n, bar);
         end
 
         tform(:, 2) = tform_nrd;
 
         closeParpool(parobj);
+
+        bar.Destroy;
     end
 
-    function [tform, ms_ptr, ma_ptr] = imregdemons_fast_cpu(ma_ptr, ms_ptr, block_n)
+    function [tform, ms_ptr, ma_ptr] = imregdemons_fast_cpu(ma_ptr, ms_ptr, block_n, bar)
         tform = cell(opts.frames, 1);
         load_loop_n = ceil(opts.frames/block_n);
         slice_n = size(ma_ptr, 'mov_aligned', 3);
@@ -499,6 +509,8 @@ end
 
                 tf_nrd_block{n} = tform_(paddings(1)+1:end-paddings(1), ...
                     paddings(2)+1:end-paddings(2), :, :);
+
+                bar.Send;
             end
 
             % crop the boundary
@@ -514,7 +526,7 @@ end
         end
     end
 
-    function [tform, ms_ptr, ma_ptr] = imregdemons_fast_gpu(ma_ptr, ms_ptr, block_n)
+    function [tform, ms_ptr, ma_ptr] = imregdemons_fast_gpu(ma_ptr, ms_ptr, block_n, bar)
         tform = cell(opts.frames, 1);
         load_loop_n = ceil(opts.frames/block_n);
         slice_n = size(ma_ptr, 'mov_aligned', 3);
@@ -591,6 +603,8 @@ end
 
                 tf_nrd_block{n} = tform_(paddings(1)+1:end-paddings(1), ...
                     paddings(2)+1:end-paddings(2), :, :);
+
+                bar.Send;
             end
 
             % crop the boundary
@@ -608,7 +622,7 @@ end
 
 
     % TODO: the tf_affine compatibility problem
-    function [tf_affine, tf_nonrigid, rmses, exit_flag] = gen_reg_kp(mov, fix_init, opts)
+    function [tf_affine, tf_nonrigid, rmses, exit_flag] = gen_reg_kp(mov, fix_init, opts, pinfo)
         % This function generate the key point of registration chain
         % each point will be registered to the settle template
         % Note that: the error propagation will be significant when the
@@ -617,6 +631,8 @@ end
         %   - mov: 4-D uint16 array, the move volume series, [x,y,z,t]
         %   - fix_init: 3-D uint16 array, the fixed volume, [x,y,z]
         %   - opts: 1-by-8 table, channels and frames are wrong because crop
+        %   - pinfo: struct, with field {fix, keys} for frames position
+        %           recording
         % Output:
         %   - tf_affine: t-by-1 cell array, element is affinetform3d or
         %       affine3d object (MATLAB < 9.13, TODO)
@@ -626,15 +642,17 @@ end
         %   - exit_flag: logical, true for normal exit, false for breaking
 
         % expend the mov
-        mov = cat(4, fix_init, mov);
+        % assume that pinfo.keys is ordered
+        fixpos = find(pinfo.fix<=pinfo.keys, 1, "first");
+        mov = cat(4, mov(:,:,:,1:fixpos-1), fix_init, mov(:,:,:,fixpos:end));
         vol_size = size(mov, 1:3);
         frames = size(mov, 4);
 
         % setup the output vars
         tf_affine = cell(frames, 1);
-        tf_affine{1} = affinetform3d(eye(4));
+        tf_affine{fixpos} = affinetform3d(eye(4));
         tf_nonrigid = cell(frames, 1);
-        tf_nonrigid{1} = zeros([vol_size, 3]);
+        tf_nonrigid{fixpos} = zeros([vol_size, 3]);
         rmses = zeros(frames, 1);
         exit_flag = true;
 
@@ -649,7 +667,66 @@ end
         optimizer.MaximumStepLength = reg_param.initStep;
         optimizer.RelaxationFactor = reg_param.iterCoeff;
 
-        for k = 1:frames-1
+        nidx = 1;
+        bar = waitbar(0, "Registration Chain Calculating: 0.0 %");
+        % calculate the "left" side 
+        for k = fixpos:-1:2
+            % generate points cloud
+            fixvol = mov(:,:,:,k);
+            movol = mov(:,:,:,k-1);
+
+            pts_fix = Vol2Pts(fixvol, res_arr);
+            pts_mov = Vol2Pts(movol, res_arr);
+            if pts_fix.Count <= 5 || pts_mov.Count <= 5
+                exit_flag = false;
+                break;
+            end
+
+            movol_ds = DownSampling(movol, reg_param.dsVX);
+            MOV_BKG = prctile(movol, 10, "all");
+
+            % using cloud registration cpd -> affine registration
+            % downsampling, rough registration, make sure the structured space
+            switch reg_param.dsPC
+                case "GA"
+                    pts_fix_ds = pcdownsample(pts_fix, "gridAverage", reg_param.dsParam);
+                    pts_mov_ds = pcdownsample(pts_mov, "gridAverage", reg_param.dsParam);
+                case "RAND"
+                    pts_fix_ds = pcdownsample(pts_fix, "random", reg_param.dsParam);
+                    pts_mov_ds = pcdownsample(pts_mov, "random", reg_param.dsParam);
+                case "NU"
+                    pts_fix_ds = pcdownsample(pts_fix, "nonuniformGridSample", reg_param.dsParam);
+                    pts_mov_ds = pcdownsample(pts_mov, "nonuniformGridSample", reg_param.dsParam);
+                otherwise
+            end
+
+            % first estimation for key k -> key k+1 points cloud registration
+            [tform_affine, ~, rmses(k-1)] = pcregistercpd(pts_mov_ds, pts_fix_ds, ...
+                "Transform","Rigid","OutlierRatio",reg_param.olrRatio,...
+                "MaxIterations",reg_param.maxIterPC, ...
+                "Tolerance",reg_param.errorLimit);
+            tf_affine{k-1} = affinetform3d();
+
+            % update the fixed -> k+1 transformation estimation
+            tf_affine{k-1}.A = tform_affine.A*tf_affine{k}.A;
+
+            % second update tforms again to avoid accumulation of errors
+            tf_affine{k-1} = imregtform(movol_ds, RA_ds, fix_init_ds, RA_ds, "affine", ...
+                optimizer, metric, "InitialTransformation", tf_affine{k-1});
+
+            % update the fixed -> k+1 fine tuned nonrigid estimation
+            reg_affined = imwarp(movol, RA, tf_affine{k-1},"linear",...
+                "OutputView",RA,"FillValues",MOV_BKG);
+            [tf_nonrigid{k-1}, ~] = imregdemons(reg_affined, fix_init, [100,50,25],...
+                "AccumulatedFieldSmoothing",1,"DisplayWaitbar",false);
+
+            waitbar(nidx/(frames-1), bar, ...
+                sprintf("Registration Chain Calculating: %.1f %%", nidx/(frames-1)*100));
+            nidx = nidx + 1;
+        end
+
+        % calculate the "right" side
+        for k = fixpos:1:frames-1
             % generate points cloud
             fixvol = mov(:,:,:,k);
             movol = mov(:,:,:,k+1);
@@ -698,11 +775,19 @@ end
                 "OutputView",RA,"FillValues",MOV_BKG);
             [tf_nonrigid{k+1}, ~] = imregdemons(reg_affined, fix_init, [100,50,25],...
                 "AccumulatedFieldSmoothing",1,"DisplayWaitbar",false);
+
+            waitbar(nidx/(frames-1), bar, ...
+                sprintf("Registration Chain Calculating: %.1f %%", nidx/(frames-1)*100));
+            nidx = nidx + 1;
         end
 
-        % remove the first(init) transformation
-        tf_affine(1) = [];
-        tf_nonrigid(1) = [];
+        % remove the init transformation
+        tf_affine(fixpos) = [];
+        tf_nonrigid(fixpos) = [];
+
+        waitbar(1, bar, "Done.");
+        pause(1);
+        close(bar);
     end
 
 end
