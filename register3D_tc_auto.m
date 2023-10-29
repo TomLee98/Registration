@@ -586,7 +586,7 @@ end
         end
 
         function [t,ms_new,ma_new] = align_global_cpu(ma,ms,t)
-            parobj = openParpool(min(min(cn,getCpuBlockNumber(reg_param.bigfile)),opts.frames));
+            parobj = OpenParpool(min(min(cn,getCpuBlockNumber(reg_param.bigfile)),opts.frames));
 
             if reg_param.bigfile == "on"
                 % using for loop load block data
@@ -713,11 +713,11 @@ end
                 ma_new = ma;
             end
 
-            closeParpool(parobj);
+            CloseParpool(parobj);
         end
 
         function [t,ms_new,ma_new] = align_local_gpu(ma,ms,t)
-            parobj = openParpool(min(getGpuBlockNumber(),opts.frames));
+            parobj = OpenParpool(min(getGpuBlockNumber(),opts.frames));
 
             if reg_param.bigfile == "on"
                 % using for loop load block data
@@ -833,11 +833,11 @@ end
                 ma_new = ma;
             end
 
-            closeParpool(parobj);
+            CloseParpool(parobj);
         end
 
         function [t,ms_new,ma_new] = align_local_cpu(ma,ms,t)
-            parobj = openParpool(min(min(cn,getCpuBlockNumber(reg_param.bigfile)),opts.frames));
+            parobj = OpenParpool(min(min(cn,getCpuBlockNumber(reg_param.bigfile)),opts.frames));
 
             if reg_param.bigfile == "on"
                 % using for loop load block data
@@ -933,7 +933,7 @@ end
                 ma_new = ma;
             end
 
-            closeParpool(parobj);
+            CloseParpool(parobj);
         end
     end
 
@@ -1004,32 +1004,6 @@ end
         end
         % Next line for debugging
         % rm = 'cpu';
-    end
-
-    function parobj = openParpool(n)
-        % generate parcluster
-        % modify
-        pcl = parcluster("Reg3D_Server");
-        % make sure your cpu supports 'hyper-threads' technology
-        pcl.NumThreads = 2;
-        % get present parpool
-        parobj = gcp("nocreate");
-
-        if isempty(parobj)
-            parobj = parpool(pcl, [1,n], 'SpmdEnabled',false);
-        elseif parobj.NumWorkers ~= n
-            % restart parpool
-            delete(gcp);
-            parobj = parpool(pcl, [1,n], 'SpmdEnabled',false);
-        end
-    end
-
-    function closeParpool(parobj)
-        pcl = parcluster("Reg3D_Server");
-        % remove the possible latest failed jobs
-        delete(pcl.Jobs);
-        % close parpool
-        delete(parobj);
     end
 
     function gn = getGpuBlockNumber()

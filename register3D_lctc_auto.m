@@ -242,7 +242,11 @@ clearvars mov;
 % generate the registration chain key point
 pinfo.fix = str2double(rv.G(2));     % insert error to avoid multi-frames
 pinfo.keys = reg_param.keyFramesIdx;
-[tf_affine, tf_nonrigid, ~] = gen_reg_kp(key_mov, fv.fixvol_global_a, opts, pinfo);
+[tf_affine, tf_nonrigid, ~, exit_flag] = gen_reg_kp(key_mov, fv.fixvol_global_a, opts, pinfo);
+if exit_flag == false
+    error("register3D_lctc_auto:invalidRegistrationKeyFrames","Please select " + ...
+        "the better key frames.");
+end
 clearvars fv rv;
 
 if nargout == 1
@@ -275,7 +279,8 @@ end
         load_loop_n = ceil(opts.frames/block_n);
 
         % rigid/affine with cpu first
-        parobj = openParpool(min(block_n, wkn));
+        CloseParpool(gcp("nocreate"));
+        parobj = OpenParpool(min(block_n, wkn));
         bar = parwaitbar(2*opts.frames,'Waitbar',true);
 
         % extract the params for avoiding data broadcast
@@ -418,19 +423,19 @@ end
                 block_n, bar);
         else
             % close parpool and change the parallel
-            closeParpool(parobj);
+            CloseParpool(parobj);
             g_opts.width = round(opts.width*reg_param.dsVX);
             g_opts.height = round(opts.height*reg_param.dsVX);
             g_opts.slices = opts.slices;
             block_n = getGpuBlockNumber(g_opts);
-            parobj = openParpool(block_n);
+            parobj = OpenParpool(block_n);
             [tform_nrd, ms_ptr, ma_ptr] = imregdemons_fast_gpu(ma_ptr, ms_ptr, ...
                 block_n, bar);
         end
 
         tform(:, 2) = tform_nrd;
 
-        closeParpool(parobj);
+        CloseParpool(parobj);
 
         bar.Destroy;
     end
@@ -882,32 +887,6 @@ else
 end
 % Next line for debugging
 % rm = 'cpu';
-end
-
-function parobj = openParpool(n)
-% generate parcluster
-% modify
-pcl = parcluster("Reg3D_Server");
-% make sure your cpu supports 'hyper-threads' technology
-pcl.NumThreads = 2;
-% get present parpool
-parobj = gcp("nocreate");
-
-if isempty(parobj)
-    parobj = parpool(pcl, [1,n], 'SpmdEnabled',false);
-elseif parobj.NumWorkers ~= n
-    % restart parpool
-    delete(gcp);
-    parobj = parpool(pcl, [1,n], 'SpmdEnabled',false);
-end
-end
-
-function closeParpool(parobj)
-pcl = parcluster("Reg3D_Server");
-% remove the possible latest failed jobs
-delete(pcl.Jobs);
-% close parpool
-delete(parobj);
 end
 
 function gn = getGpuBlockNumber(opts)

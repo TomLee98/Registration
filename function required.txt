@@ -91,9 +91,9 @@ V1.5        Xizang antelope    藏羚羊
   |     |- [Update] register3D_auto speed up 400% on "global" mode
   |     |- [Update] new registration function: register3D_batch_rt
   |- V1.5.1     2023/04/18  22:30
-  |     |- [Fix Bugs] fix the volume registration error when little slices
   |     |- [Update] optimize the registration pipeline
   |     |- [Update] auto detect the pyramidlevels
+  |     |- [Fix Bugs] fix the volume registration error when little slices
   |- V1.5.2     2023/05/02  16:30
   |     |- [Update] introduced powerful scale bar
   |     |- [Update] speed up movie output renderer
@@ -138,6 +138,8 @@ V1.6        Sika deer           梅花鹿
   |     |- [Update] multi-target tracking and registration(manual patches)
   |     |- [Update] new help documents for Version 1.6.4
   |     |- [Fix Bugs] long-term registration wrong estimation before template volume
+  |     |- [Fix Bugs] timer error when app update
+  |     |- [Fix Bugs] parpool crash when calculation stop
   |     |- [Key Note] frames series rely on time, need to be updated to spatial information
   |- V1.6.5     2023/11/
   |     |- [Update] registration history manager

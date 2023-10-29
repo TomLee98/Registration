@@ -10,6 +10,7 @@
     <EXIT>Выход</EXIT>
     <IMAGE>Изображений</IMAGE>
     <LIGHT_CONTRAST>Свет/Контраст</LIGHT_CONTRAST>
+    <CHANNEL_ALIGNMENT>Выравнивание каналов</CHANNEL_ALIGNMENT>
     <Z_PROJECTION>Z-проекция</Z_PROJECTION>
     <MAX_Z_PROJECTION>Максимальная Z-проекция</MAX_Z_PROJECTION>
     <MIN_Z_PROJECTION>Минимальная Z-проекция</MIN_Z_PROJECTION>
@@ -295,6 +296,7 @@
     <MASK_MISMATCH>Несоответствие размера маски</MASK_MISMATCH>
     <MASK_LOADED>Маска загружена</MASK_LOADED>
     <RENDERING>Рендеринг...</RENDERING>
+    <CHANNEL_ALIGNING>Выравнивание каналов...</CHANNEL_ALIGNING>
     <MOVIE_EXPORTED_SUCCESS>Видео успешно экспортировано</MOVIE_EXPORTED_SUCCESS>
     <MOVIE_EXPORT_INTERRUPTED>Экспорт фильма прерван</MOVIE_EXPORT_INTERRUPTED>
     <TIME_RANGE>Пожалуйста, введите временной диапазон (кадры):</TIME_RANGE>

@@ -10,6 +10,7 @@
     <EXIT>Salida</EXIT>
     <IMAGE>Imágenes</IMAGE>
     <LIGHT_CONTRAST>Luz/Contraste</LIGHT_CONTRAST>
+    <CHANNEL_ALIGNMENT>Alineación de canales</CHANNEL_ALIGNMENT>
     <Z_PROJECTION>Proyección Z</Z_PROJECTION>
     <MAX_Z_PROJECTION>Proyección Z máxima</MAX_Z_PROJECTION>
     <MIN_Z_PROJECTION>Proyección Z mínima</MIN_Z_PROJECTION>
@@ -295,6 +296,7 @@
     <MASK_MISMATCH>Desajuste del tamaño de la máscara</MASK_MISMATCH>
     <MASK_LOADED>Máscara cargada</MASK_LOADED>
     <RENDERING>Representación...</RENDERING>
+    <CHANNEL_ALIGNING>Alineando canales...</CHANNEL_ALIGNING>
     <MOVIE_EXPORTED_SUCCESS>Vídeo exportado con éxito</MOVIE_EXPORTED_SUCCESS>
     <MOVIE_EXPORT_INTERRUPTED>Exportación de película interrumpida</MOVIE_EXPORT_INTERRUPTED>
     <TIME_RANGE>Ingrese un rango de tiempo (fotogramas):</TIME_RANGE>

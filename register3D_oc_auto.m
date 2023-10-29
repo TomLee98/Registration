@@ -523,7 +523,7 @@ end
             [mov_fixed_rs_par, MOV_REF_FIXED_PAR] = movcrop(...
                 fv_par.fixvol_global_s_ds, bb_fixed_par);
 
-            parobj = openParpool(min(cn, opts.frames));
+            parobj = OpenParpool(min(cn, opts.frames));
             
             parfor m = 1:opts.frames
                 ms_m = squeeze(ms(:,:,1,:,m));
@@ -564,11 +564,11 @@ end
 
             ms_new = ms;
 
-            closeParpool(parobj);
+            CloseParpool(parobj);
         end
 
         function [t,ms_new] = align_local_gpu(ms,t)
-            parobj = openParpool(min(getGpuBlockNumber(),opts.frames));
+            parobj = OpenParpool(min(getGpuBlockNumber(),opts.frames));
 
             % generate the support variables
             [MOV_SIGBKG_PAR, mov_reg_pad_ds_par, fixed_par, gf_par, paddings_par]...
@@ -608,11 +608,11 @@ end
 
             ms_new = ms;
 
-            closeParpool(parobj);
+            CloseParpool(parobj);
         end
 
         function [t,ms_new] = align_local_cpu(ms,t)
-            parobj = openParpool(min(cn, opts.frames));
+            parobj = OpenParpool(min(cn, opts.frames));
 
             % generate the support variables
             [MOV_SIGBKG_PAR, mov_reg_pad_ds_par, fixed_ds_par, gf_par, paddings_par]...
@@ -648,7 +648,7 @@ end
 
             ms_new = ms;
 
-            closeParpool(parobj);
+            CloseParpool(parobj);
         end
 
     end
@@ -761,32 +761,6 @@ end
         end
         % Next line for debugging
         % rm = 'cpu';
-    end
-
-    function parobj = openParpool(n)
-        % generate parcluster
-        % modify
-        pcl = parcluster("Reg3D_Server");
-        % make sure your cpu supports 'hyper-threads' technology
-        pcl.NumThreads = 2;
-        % get present parpool
-        parobj = gcp("nocreate");
-
-        if isempty(parobj)
-            parobj = parpool(pcl, [1,n], 'SpmdEnabled',true);
-        elseif parobj.NumWorkers ~= n
-            % restart parpool
-            delete(gcp);
-            parobj = parpool(pcl, [1,n], 'SpmdEnabled',true);
-        end
-    end
-
-    function closeParpool(parobj)
-        pcl = parcluster("Reg3D_Server");
-        % remove the possible latest failed jobs
-        delete(pcl.Jobs);
-        % close parpool
-        delete(parobj);
     end
 
     function gn = getGpuBlockNumber()
