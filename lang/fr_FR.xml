@@ -11,6 +11,14 @@
     <IMAGE>Images</IMAGE>
     <LIGHT_CONTRAST>Lumière/Contraste</LIGHT_CONTRAST>
     <CHANNEL_ALIGNMENT>Alignement des canaux</CHANNEL_ALIGNMENT>
+    <REMOVE_BACKGROUND>Supprimer l'arrière-plan</REMOVE_BACKGROUND>
+    <FUNCTIONAL_BACKGROUND>Veuillez saisir l'arrière-plan du canal de signal :</FUNCTIONAL_BACKGROUND>
+    <STRUCTURED_BACKGROUND>Veuillez saisir l'arrière-plan sur la chaîne de localisation :</STRUCTURED_BACKGROUND>
+    <INVALID_BACKGROUND>Valeur d'arrière-plan invalide</INVALID_BACKGROUND>
+    <IRRECOVERABLE_BACKGROUND>Valeur de fond irrécupérable</IRRECOVERABLE_BACKGROUND>
+    <REMOVING_BACKGROUND>Suppression de l'arrière-plan…</REMOVING_BACKGROUND>
+    <REMOVED_BACKGROUND>Arrière-plan supprimé.</REMOVED_BACKGROUND>
+    <RECOVERED_BACKGROUND>Fond récupéré.</RECOVERED_BACKGROUND>
     <Z_PROJECTION>Projection Z</Z_PROJECTION>
     <MAX_Z_PROJECTION>Projection Z maximale</MAX_Z_PROJECTION>
     <MIN_Z_PROJECTION>Projection Z minimale</MIN_Z_PROJECTION>
@@ -158,6 +166,7 @@
     <LOCAL_REGISTRATION_AUTO>Enregistrement local (Auto)</LOCAL_REGISTRATION_AUTO>
     <GRID_UNIT_SIZE>Taille de l'unité de grille</GRID_UNIT_SIZE>
     <AUTO>Auto</AUTO>
+    <FIXED>Fixé</FIXED>
     <ACCUMULATIVE_FIELD_SMOOTHING>Lissage de champ cumulatif</ACCUMULATIVE_FIELD_SMOOTHING>
     <GEOMETRIC_TRANSFORMATION>Transformation géométrique</GEOMETRIC_TRANSFORMATION>
     <LONGTERM_REGISTRATION_AUTO>Inscription à long terme (auto)</LONGTERM_REGISTRATION_AUTO>

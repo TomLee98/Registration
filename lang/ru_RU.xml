@@ -11,6 +11,14 @@
     <IMAGE>Изображений</IMAGE>
     <LIGHT_CONTRAST>Свет/Контраст</LIGHT_CONTRAST>
     <CHANNEL_ALIGNMENT>Выравнивание каналов</CHANNEL_ALIGNMENT>
+    <REMOVE_BACKGROUND>Удалить фон</REMOVE_BACKGROUND>
+    <FUNCTIONAL_BACKGROUND>Пожалуйста, введите фон на канале сигнала:</FUNCTIONAL_BACKGROUND>
+    <STRUCTURED_BACKGROUND>Пожалуйста, введите фон на канале местоположения:</STRUCTURED_BACKGROUND>
+    <INVALID_BACKGROUND>Неверное значение фона</INVALID_BACKGROUND>
+    <IRRECOVERABLE_BACKGROUND>Невосстановимая фоновая стоимость</IRRECOVERABLE_BACKGROUND>
+    <REMOVING_BACKGROUND>Удаление фона…</REMOVING_BACKGROUND>
+    <REMOVED_BACKGROUND>Фон удален.</REMOVED_BACKGROUND>
+    <RECOVERED_BACKGROUND>Фон восстановлен.</RECOVERED_BACKGROUND>
     <Z_PROJECTION>Z-проекция</Z_PROJECTION>
     <MAX_Z_PROJECTION>Максимальная Z-проекция</MAX_Z_PROJECTION>
     <MIN_Z_PROJECTION>Минимальная Z-проекция</MIN_Z_PROJECTION>
@@ -158,6 +166,7 @@
     <LOCAL_REGISTRATION_AUTO>Локальная регистрация (авто)</LOCAL_REGISTRATION_AUTO>
     <GRID_UNIT_SIZE>Размер блока сетки</GRID_UNIT_SIZE>
     <AUTO>Авто</AUTO>
+    <FIXED>Зафиксированный</FIXED>
     <ACCUMULATIVE_FIELD_SMOOTHING>Накопительное сглаживание полей</ACCUMULATIVE_FIELD_SMOOTHING>
     <GEOMETRIC_TRANSFORMATION>Геометрическое преобразование</GEOMETRIC_TRANSFORMATION>
     <LONGTERM_REGISTRATION_AUTO>Долгосрочная регистрация(авто)</LONGTERM_REGISTRATION_AUTO>

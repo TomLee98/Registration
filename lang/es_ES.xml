@@ -11,6 +11,14 @@
     <IMAGE>Imágenes</IMAGE>
     <LIGHT_CONTRAST>Luz/Contraste</LIGHT_CONTRAST>
     <CHANNEL_ALIGNMENT>Alineación de canales</CHANNEL_ALIGNMENT>
+    <REMOVE_BACKGROUND>Quitar fondo</REMOVE_BACKGROUND>
+    <FUNCTIONAL_BACKGROUND>Por favor ingrese el fondo en el canal de señal:</FUNCTIONAL_BACKGROUND>
+    <STRUCTURED_BACKGROUND>Ingrese el fondo en el canal de ubicación:</STRUCTURED_BACKGROUND>
+    <INVALID_BACKGROUND>Valor de fondo no válido</INVALID_BACKGROUND>
+    <IRRECOVERABLE_BACKGROUND>Valor de fondo irrecuperable</IRRECOVERABLE_BACKGROUND>
+    <REMOVING_BACKGROUND>Eliminando fondo…</REMOVING_BACKGROUND>
+    <REMOVED_BACKGROUND>Fondo eliminado.</REMOVED_BACKGROUND>
+    <RECOVERED_BACKGROUND>Antecedentes recuperados.</RECOVERED_BACKGROUND>
     <Z_PROJECTION>Proyección Z</Z_PROJECTION>
     <MAX_Z_PROJECTION>Proyección Z máxima</MAX_Z_PROJECTION>
     <MIN_Z_PROJECTION>Proyección Z mínima</MIN_Z_PROJECTION>
@@ -158,6 +166,7 @@
     <LOCAL_REGISTRATION_AUTO>Registro local (automático)</LOCAL_REGISTRATION_AUTO>
     <GRID_UNIT_SIZE>Tamaño de la unidad de cuadrícula</GRID_UNIT_SIZE>
     <AUTO>Auto</AUTO>
+    <FIXED>Fija</FIXED>
     <ACCUMULATIVE_FIELD_SMOOTHING>Suavizado de campo acumulativo</ACCUMULATIVE_FIELD_SMOOTHING>
     <GEOMETRIC_TRANSFORMATION>Transformación Geométrica</GEOMETRIC_TRANSFORMATION>
     <LONGTERM_REGISTRATION_AUTO>Registro a largo plazo (automático)</LONGTERM_REGISTRATION_AUTO>
