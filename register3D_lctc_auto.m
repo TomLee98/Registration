@@ -257,7 +257,7 @@ elseif nargout == 3
     [tform, signal, marker] = reg(ma_ptr, ms_ptr, tf_affine, tf_nonrigid);
 end
 
-    function [tform, ms_ptr, ma_ptr, good_flag] = reg(ma_ptr, ms_ptr, tf_affine, tf_nonrigid)
+    function [tform, ms_ptr_post, ma_ptr_post, good_flag] = reg(ma_ptr_pre, ms_ptr_pre, tf_affine, tf_nonrigid)
         %   (1) register to key point in the chain
         %   (2) apply the chain shift
         %   (3) evaluate the registration result, do twice registration on bad part
@@ -274,13 +274,26 @@ end
         smse = nan(opts.frames, 1);
         good_flag = nan(opts.frames, 1);
 
+        % using for loop load block data
+        mv_size = size(ma_ptr_pre,'mov_aligned');
+        % generate the registration results as preprocess
+        folder_local = fileparts(ma_ptr_pre.Properties.Source);
+        ms_ptr_post = matfile(fullfile(folder_local, 'mov_signal_global.mat'), ...
+            "Writable",true);
+        ms_ptr_post.mov_signal(mv_size(1),mv_size(2),mv_size(3),mv_size(4))...
+            = uint16(0);        % system malloc standby
+        ma_ptr_post = matfile(fullfile(folder_local, 'mov_aligned_global.mat'), ...
+            "Writable",true);
+        ma_ptr_post.mov_aligned(mv_size(1),mv_size(2),mv_size(3),mv_size(4))...
+            = uint16(0);
+
         %  read data as more as possible for speed up
-        block_n = getCpuBlockNumber(opts);
+        block_n = min(getCpuBlockNumber(opts), wkn);
         load_loop_n = ceil(opts.frames/block_n);
 
         % rigid/affine with cpu first
         CloseParpool(gcp("nocreate"));
-        parobj = OpenParpool(min(block_n, wkn));
+        parobj = OpenParpool(block_n);
         bar = parwaitbar(2*opts.frames,'Waitbar',true);
 
         % extract the params for avoiding data broadcast
@@ -311,8 +324,8 @@ end
             ed_idx = (k-1)*block_n + block_frames;
 
             % load the temp data to memory
-            ma = ma_ptr.mov_aligned(:,:,:,st_idx:ed_idx);
-            ms = ms_ptr.mov_signal(:,:,:,st_idx:ed_idx);
+            ma = ma_ptr_pre.mov_aligned(:,:,:,st_idx:ed_idx);
+            ms = ms_ptr_pre.mov_signal(:,:,:,st_idx:ed_idx);
             smse_block = nan(block_frames, 1);
             flag_block =  nan(block_frames, 1);
             tf_affine_block = cell(block_frames, 1);
@@ -414,12 +427,12 @@ end
             good_flag(st_idx:ed_idx) = flag_block;
 
             % modify the raw hard drive data
-            ms_ptr.mov_signal(:,:,:,st_idx:ed_idx) = ms;
-            ma_ptr.mov_aligned(:,:,:,st_idx:ed_idx) = ma;
+            ms_ptr_post.mov_signal(:,:,:,st_idx:ed_idx) = ms;
+            ma_ptr_post.mov_aligned(:,:,:,st_idx:ed_idx) = ma;
         end
 
         if strcmp(rm, 'multi-cpu')
-            [tform_nrd, ms_ptr, ma_ptr] = imregdemons_fast_cpu(ma_ptr, ms_ptr, ...
+            [tform_nrd, ms_ptr_post, ma_ptr_post] = imregdemons_fast_cpu(ma_ptr_post, ms_ptr_post, ...
                 block_n, bar);
         else
             % close parpool and change the parallel
@@ -429,7 +442,7 @@ end
             g_opts.slices = opts.slices;
             block_n = getGpuBlockNumber(g_opts);
             parobj = OpenParpool(block_n);
-            [tform_nrd, ms_ptr, ma_ptr] = imregdemons_fast_gpu(ma_ptr, ms_ptr, ...
+            [tform_nrd, ms_ptr_post, ma_ptr_post] = imregdemons_fast_gpu(ma_ptr_post, ms_ptr_post, ...
                 block_n, bar);
         end
 
@@ -523,6 +536,9 @@ end
                 paddings(2)+1:end-paddings(2), :, :);
             ma_reg = ma_reg(paddings(1)+1:end-paddings(1), ...
                 paddings(2)+1:end-paddings(2), :, :);
+
+            % rescale ma_reg
+            ma_reg = imrescalei(ma_reg, MA_MIN, MA_MAX, false);
 
             % restore data
             tform(st_idx:ed_idx, :) = tf_nrd_block;
@@ -957,4 +973,6 @@ end
 if cn < 1
     error('No available enough memory.');
 end
+
+
 end

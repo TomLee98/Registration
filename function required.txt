@@ -132,7 +132,7 @@ V1.6        Sika deer           梅花鹿
   |     |- [Fix Bugs] solve the parpool cluster bugs when error occured
   |     |- [Fix Bugs] fix robust coefficient lost bug on two channels registration
   |     |- [Fix Bugs] fix some big file registration bugs (two channels)
-  |- V1.6.4     2023/11/6
+  |- V1.6.4     2023/11/7
   |     |- [Update] alignment for channel position correction (2D rigid only)
   |	    |- [Update] long-term registration progress bar
   |     |- [Update] multi-target tracking and registration(manual patches)
@@ -141,6 +141,7 @@ V1.6        Sika deer           梅花鹿
   |     |- [Fix Bugs] long-term registration wrong estimation before template volume
   |     |- [Fix Bugs] timer error when app update
   |     |- [Fix Bugs] parpool crash when calculation stop
+  |     |- [Fix Bugs] sacrifice performance for big file long-term registration
   |     |- [Key Note] frames series rely on time, need to be updated to spatial information
   |- V1.6.5     2023/11/
   |     |- [Update] registration history manager
