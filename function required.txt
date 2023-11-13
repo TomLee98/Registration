@@ -145,8 +145,7 @@ V1.6        Sika deer           梅花鹿
   |     |- [Key Note] frames series rely on time, need to be updated to spatial information
   |- V1.6.5     2023/11/
   |     |- [Update] registration history manager
-  |     |- [Update] long-term perfermance increase
-  |     |- [Fix Bugs] 
+  |     |- [Fix Bugs] fix long-term registration out of memory when key frames is too much
   |- V1.6.6     2023/
   |     |- [Update] ANN classifer tools for one channel alignment
   |     |- [Fix Bugs] 
