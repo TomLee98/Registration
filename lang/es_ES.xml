@@ -3,7 +3,7 @@
     <FILE>archivos</FILE>
     <LOAD_FILE>Cargar archivos</LOAD_FILE>
     <LOAD_WORKSPACE_VARIABLE>Cargar variables del espacio de trabajo</LOAD_WORKSPACE_VARIABLE>
-    <EXPORT_IMAGES>Exportar imágenes</EXPORT_IMAGES>
+    <EXPORT_IMAGES>Exportar pila de imágenes</EXPORT_IMAGES>
     <EXPORT_GEOMETRIC_TRANSFORM>Exportar transformación geométrica</EXPORT_GEOMETRIC_TRANSFORM>
     <EXPORT_TIME>Tiempo de exportación</EXPORT_TIME>
     <EXPORT_MOVIE>Exportar película</EXPORT_MOVIE>
@@ -25,7 +25,8 @@
     <MEDIAN_Z_PROJECTION>Proyección Z mediana</MEDIAN_Z_PROJECTION>
     <MEAN_Z_PROJECTION>Proyección Z media</MEAN_Z_PROJECTION>
     <MASK>Mascarilla</MASK>
-    <GENERATE_MASK>Generación</GENERATE_MASK>
+    <GENERATE_MASK>Generar máscara</GENERATE_MASK>
+    <GENERATION>Generación</GENERATION>
     <IMPORT_MASK>Máscara de importación</IMPORT_MASK>
     <APPEND_COMMENTS>Agregar comentarios</APPEND_COMMENTS>
     <TIME_STAMP>Marca de tiempo</TIME_STAMP>
@@ -52,8 +53,10 @@
     <DOCUMENT>Documento</DOCUMENT>
     <LANGUAGE>Idioma</LANGUAGE>
     <CHECK_UPDATE>Comprueba la actualización</CHECK_UPDATE>
+    <SUBMIT_BUG>Informar errores</SUBMIT_BUG>
     <SLICE_VIEWER>Visor de sectores</SLICE_VIEWER>
     <SLICE>Rebanada</SLICE>
+    <DISPLAY_AREA>Área de visualización</DISPLAY_AREA>
     <TIME_FRAME>Tiempo</TIME_FRAME>
     <CONTROL_PANEL>Panel de control</CONTROL_PANEL>
     <LOG>Registro</LOG>
@@ -233,6 +236,7 @@
     <SOLID>Sólido</SOLID>
     <UNSUPPORTED_CHANNEL_NUMBER>Número de canales no admitido</UNSUPPORTED_CHANNEL_NUMBER>
     <UNSUPPORTED_FEW_LAYERS>No se admite el registro con muy pocas capas (&lt;5)</UNSUPPORTED_FEW_LAYERS>
+    <UNSUPPORTED_FEW_FRAMES>No se admite el registro con muy pocos fotogramas (&lt;2)</UNSUPPORTED_FEW_FRAMES>
     <ERROR>Error</ERROR>
     <WARNING>Advertencia</WARNING>
     <INFORMATION>Información</INFORMATION>
@@ -334,5 +338,37 @@
     <LONG_TERM_NORMAL_CONFLICT>El modo a largo plazo y el modo normal se habilitan al mismo tiempo, el modo normal se desactivará. ¿Continuar?</LONG_TERM_NORMAL_CONFLICT>
     <NORMAL_LONG_TERM_CONFLICT>El modo normal y el modo a largo plazo se activan al mismo tiempo, el modo normal se desactivará. ¿Continuar?</NORMAL_LONG_TERM_CONFLICT>
     <LOCAL_WEIGHTED_CONTROL>Valor de control recomendado promedio ponderado local: 12</LOCAL_WEIGHTED_CONTROL>
+    <MAIN_APP>Aplicación principal</MAIN_APP>
+    <SUB_APP>Subaplicación</SUB_APP>
+    <INTERFACE_CONTROL>Control de interfaz</INTERFACE_CONTROL>
+    <COMPONENT_PROBLEM>Componentes con problemas</COMPONENT_PROBLEM>
+    <COMPONENT_DESCRIPTION>Descripción del problema</COMPONENT_DESCRIPTION>
+    <BUG_TYPE>Tipo de error</BUG_TYPE>
+    <URGENT>Urgente</URGENT>
+    <ORDINARY>Común</ORDINARY>
+    <SUGGESTION>Sugerencia</SUGGESTION>
+    <COMMON_PROBLEM>Problema comun</COMMON_PROBLEM>
+    <SUBMIT>Entregar</SUBMIT>
+    <OFFLINE>Desconectado</OFFLINE>
+    <ONLINE>En línea</ONLINE>
+    <PRP>Procedimiento de notificación de problemas:</PRP>
+    <PRP_PRIVACY_FRIENDLY>El proceso de notificación de problemas no recopila su privacidad</PRP_PRIVACY_FRIENDLY>
+    <ATTACH_FILE_HERE>Aquí se incluyen archivos adicionales para reproducir el problema.</ATTACH_FILE_HERE>
+    <CHECK_COMPONENT_BUG>Por favor verifique los componentes con errores.</CHECK_COMPONENT_BUG>
+    <REPORT_BUG_DETAIL>Describa el problema en el programa en detalle (&gt;10 caracteres)</REPORT_BUG_DETAIL>
+    <URGENT_TIPS>Anomalías graves que pueden inducir a juicios erróneos cualitativos de los datos</URGENT_TIPS>
+    <ORDINARY_TIPS>Excepciones del programa que pueden dificultar el procesamiento como el registro</ORDINARY_TIPS>
+    <SUGGESTION_TIPS>Sugerencias que pueden mejorar la utilidad, facilidad de uso o seguridad del programa.</SUGGESTION_TIPS>
+    <URGENT_EMAIL>Las preguntas urgentes se enviarán al correo electrónico del mantenedor. ¿Continuar?</URGENT_EMAIL>
+    <URGENT_SUBJECT>Excepción urgente: Reg3D App@SiLab, IBP, China</URGENT_SUBJECT>
+    <EMAIL_SUCCESS>¡El correo enviado con éxito!</EMAIL_SUCCESS>
+    <EMAIL_FAILED>Error al enviar correo electrónico</EMAIL_FAILED>
+    <ATTACH_FOLDER>Adjuntar carpeta</ATTACH_FOLDER>
+    <LOGIN_LABNAS>Iniciar sesión - LabNas</LOGIN_LABNAS>
+    <USERNAME>Nombre de usuario</USERNAME>
+    <PASSWORD>Contraseña</PASSWORD>
+    <LOGIN>Acceso</LOGIN>
+    <OTHER>Otra</OTHER>
+    <INVALID_PATH>Ruta no válida</INVALID_PATH>
     <DEVELOPING>Desarrollando…</DEVELOPING>
 </struct>

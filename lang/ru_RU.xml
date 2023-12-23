@@ -3,7 +3,7 @@
     <FILE>Файлы</FILE>
     <LOAD_FILE>Загрузить файлы</LOAD_FILE>
     <LOAD_WORKSPACE_VARIABLE>Загрузить переменные рабочей области</LOAD_WORKSPACE_VARIABLE>
-    <EXPORT_IMAGES>Экспорт изображений</EXPORT_IMAGES>
+    <EXPORT_IMAGES>Экспорт стека изображений</EXPORT_IMAGES>
     <EXPORT_GEOMETRIC_TRANSFORM>Экспорт геометрического преобразования</EXPORT_GEOMETRIC_TRANSFORM>
     <EXPORT_TIME>Время экспорта</EXPORT_TIME>
     <EXPORT_MOVIE>Экспорт фильма</EXPORT_MOVIE>
@@ -25,7 +25,8 @@
     <MEDIAN_Z_PROJECTION>Медианная Z-проекция</MEDIAN_Z_PROJECTION>
     <MEAN_Z_PROJECTION>Средняя проекция Z</MEAN_Z_PROJECTION>
     <MASK>Маска</MASK>
-    <GENERATE_MASK>Поколение</GENERATE_MASK>
+    <GENERATE_MASK>Создать маску</GENERATE_MASK>
+    <GENERATION>Поколение</GENERATION>
     <IMPORT_MASK>Маска импорта</IMPORT_MASK>
     <APPEND_COMMENTS>Добавить комментарии</APPEND_COMMENTS>
     <TIME_STAMP>Отметка времени</TIME_STAMP>
@@ -52,8 +53,10 @@
     <DOCUMENT>Документ</DOCUMENT>
     <LANGUAGE>Язык</LANGUAGE>
     <CHECK_UPDATE>Проверить обновление</CHECK_UPDATE>
+    <SUBMIT_BUG>Сообщить об ошибках</SUBMIT_BUG>
     <SLICE_VIEWER>Просмотр срезов</SLICE_VIEWER>
     <SLICE>Кусочек</SLICE>
+    <DISPLAY_AREA>Область отображения</DISPLAY_AREA>
     <TIME_FRAME>Время</TIME_FRAME>
     <CONTROL_PANEL>Панель управления</CONTROL_PANEL>
     <LOG>Бревно</LOG>
@@ -233,6 +236,7 @@
     <SOLID>Твердый</SOLID>
     <UNSUPPORTED_CHANNEL_NUMBER>Неподдерживаемое количество каналов</UNSUPPORTED_CHANNEL_NUMBER>
     <UNSUPPORTED_FEW_LAYERS>Регистрация со слишком малым количеством слоев (&lt;5) не поддерживается.</UNSUPPORTED_FEW_LAYERS>
+    <UNSUPPORTED_FEW_FRAMES>Регистрация со слишком малым количеством кадров (&lt;2) не поддерживается.</UNSUPPORTED_FEW_FRAMES>
     <ERROR>Ошибка</ERROR>
     <WARNING>Предупреждение</WARNING>
     <INFORMATION>Информация</INFORMATION>
@@ -334,5 +338,37 @@
     <LONG_TERM_NORMAL_CONFLICT>Долгосрочный режим и нормальный режим включены одновременно, нормальный режим будет отключен. Продолжать?</LONG_TERM_NORMAL_CONFLICT>
     <NORMAL_LONG_TERM_CONFLICT>Обычный режим и долгосрочный режим включены одновременно, нормальный режим будет выключен. Продолжать?</NORMAL_LONG_TERM_CONFLICT>
     <LOCAL_WEIGHTED_CONTROL>Рекомендуемое локальное средневзвешенное контрольное значение: 12.</LOCAL_WEIGHTED_CONTROL>
+    <MAIN_APP>Основное приложение</MAIN_APP>
+    <SUB_APP>Подприложение</SUB_APP>
+    <INTERFACE_CONTROL>Управление интерфейсом</INTERFACE_CONTROL>
+    <COMPONENT_PROBLEM>Компоненты с проблемами</COMPONENT_PROBLEM>
+    <COMPONENT_DESCRIPTION>описание проблемы</COMPONENT_DESCRIPTION>
+    <BUG_TYPE>Тип ошибки</BUG_TYPE>
+    <URGENT>Срочный</URGENT>
+    <ORDINARY>Обычный</ORDINARY>
+    <SUGGESTION>Предположение</SUGGESTION>
+    <COMMON_PROBLEM>Общая проблема</COMMON_PROBLEM>
+    <SUBMIT>Представлять на рассмотрение</SUBMIT>
+    <OFFLINE>Не в сети</OFFLINE>
+    <ONLINE>В сети</ONLINE>
+    <PRP>Процедура сообщения о проблеме:</PRP>
+    <PRP_PRIVACY_FRIENDLY>Процесс сообщения о проблемах не обеспечивает конфиденциальность вашей информации.</PRP_PRIVACY_FRIENDLY>
+    <ATTACH_FILE_HERE>Дополнительные файлы для воспроизведения проблемы включены здесь.</ATTACH_FILE_HERE>
+    <CHECK_COMPONENT_BUG>Пожалуйста, проверьте компоненты на наличие ошибок</CHECK_COMPONENT_BUG>
+    <REPORT_BUG_DETAIL>Пожалуйста, подробно опишите проблему в программе (&gt;10 символов)</REPORT_BUG_DETAIL>
+    <URGENT_TIPS>Серьезные аномалии, которые могут привести к качественным ошибкам в оценке данных.</URGENT_TIPS>
+    <ORDINARY_TIPS>Исключения программы, которые могут помешать обработке, например регистрации.</ORDINARY_TIPS>
+    <SUGGESTION_TIPS>Предложения, которые могут улучшить полезность, простоту использования или безопасность программы.</SUGGESTION_TIPS>
+    <URGENT_EMAIL>Срочные вопросы будут отправлены на электронную почту сопровождающего. Продолжить?</URGENT_EMAIL>
+    <URGENT_SUBJECT>Срочное исключение: Reg3D App@SiLab, IBP, Китай.</URGENT_SUBJECT>
+    <EMAIL_SUCCESS>Письмо успешно отправлено!</EMAIL_SUCCESS>
+    <EMAIL_FAILED>Отправка электронной почты не удалась</EMAIL_FAILED>
+    <ATTACH_FOLDER>Прикрепить папку</ATTACH_FOLDER>
+    <LOGIN_LABNAS>Вход - ЛабНас</LOGIN_LABNAS>
+    <USERNAME>Имя пользователя</USERNAME>
+    <PASSWORD>Пароль</PASSWORD>
+    <LOGIN>Авторизоваться</LOGIN>
+    <OTHER>Другой</OTHER>
+    <INVALID_PATH>Неверный путь</INVALID_PATH>
     <DEVELOPING>Разработка…</DEVELOPING>
 </struct>

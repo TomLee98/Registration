@@ -3,7 +3,7 @@
     <FILE>Files</FILE>
     <LOAD_FILE>Load Files</LOAD_FILE>
     <LOAD_WORKSPACE_VARIABLE>Load Workspace Variables</LOAD_WORKSPACE_VARIABLE>
-    <EXPORT_IMAGES>Export Images</EXPORT_IMAGES>
+    <EXPORT_IMAGES>Export Images Stack</EXPORT_IMAGES>
     <EXPORT_GEOMETRIC_TRANSFORM>Export Geometric Transformation</EXPORT_GEOMETRIC_TRANSFORM>
     <EXPORT_TIME>Export Time</EXPORT_TIME>
     <EXPORT_MOVIE>Export Movie</EXPORT_MOVIE>
@@ -25,7 +25,8 @@
     <MEDIAN_Z_PROJECTION>Median Z Projection</MEDIAN_Z_PROJECTION>
     <MEAN_Z_PROJECTION>Mean Z Projection</MEAN_Z_PROJECTION>
     <MASK>Mask</MASK>
-    <GENERATE_MASK>Generation</GENERATE_MASK>
+    <GENERATE_MASK>Generate Mask</GENERATE_MASK>
+    <GENERATION>Generation</GENERATION>
     <IMPORT_MASK>Import mask</IMPORT_MASK>
     <APPEND_COMMENTS>Append Comments</APPEND_COMMENTS>
     <TIME_STAMP>Time Stamp</TIME_STAMP>
@@ -52,8 +53,10 @@
     <DOCUMENT>Document</DOCUMENT>
     <LANGUAGE>Language</LANGUAGE>
     <CHECK_UPDATE>Check Update</CHECK_UPDATE>
+    <SUBMIT_BUG>Report Bugs</SUBMIT_BUG>
     <SLICE_VIEWER>Slice Viewer</SLICE_VIEWER>
     <SLICE>Slice</SLICE>
+    <DISPLAY_AREA>Display Area</DISPLAY_AREA>
     <TIME_FRAME>Time(Frame)</TIME_FRAME>
     <CONTROL_PANEL>Control Panel</CONTROL_PANEL>
     <LOG>Log</LOG>
@@ -233,6 +236,7 @@
     <SOLID>Solid</SOLID>
     <UNSUPPORTED_CHANNEL_NUMBER>Unsupported number of channels</UNSUPPORTED_CHANNEL_NUMBER>
     <UNSUPPORTED_FEW_LAYERS>Registration with too few layers (&lt;5) is not supported</UNSUPPORTED_FEW_LAYERS>
+    <UNSUPPORTED_FEW_FRAMES>Registration with too few frame (&lt;2) is not supported</UNSUPPORTED_FEW_FRAMES>
     <ERROR>Error</ERROR>
     <WARNING>Warning</WARNING>
     <INFORMATION>Information</INFORMATION>
@@ -334,5 +338,37 @@
     <LONG_TERM_NORMAL_CONFLICT>The long-term mode and the normal mode are enabled at the same time, the normal mode will be turned off. Continue?</LONG_TERM_NORMAL_CONFLICT>
     <NORMAL_LONG_TERM_CONFLICT>The normal mode and the long-term mode are enabled at the same time, the normal mode will be turned off. Continue?</NORMAL_LONG_TERM_CONFLICT>
     <LOCAL_WEIGHTED_CONTROL>Local weighted average recommended control value: 12</LOCAL_WEIGHTED_CONTROL>
+    <MAIN_APP>Main Application</MAIN_APP>
+    <SUB_APP>Sub Application</SUB_APP>
+    <INTERFACE_CONTROL>Interface Control</INTERFACE_CONTROL>
+    <COMPONENT_PROBLEM>Components with Problems</COMPONENT_PROBLEM>
+    <COMPONENT_DESCRIPTION>Problem Description</COMPONENT_DESCRIPTION>
+    <BUG_TYPE>Bug Type</BUG_TYPE>
+    <URGENT>Urgent</URGENT>
+    <ORDINARY>Ordinary</ORDINARY>
+    <SUGGESTION>Suggestion</SUGGESTION>
+    <COMMON_PROBLEM>Common Problem</COMMON_PROBLEM>
+    <SUBMIT>Submit</SUBMIT>
+    <OFFLINE>Offline</OFFLINE>
+    <ONLINE>Online</ONLINE>
+    <PRP>Problem reporting procedure:</PRP>
+    <PRP_PRIVACY_FRIENDLY>The problem reporting process does not collect your privacy</PRP_PRIVACY_FRIENDLY>
+    <ATTACH_FILE_HERE>Additional files to reproduce the issue are included here</ATTACH_FILE_HERE>
+    <CHECK_COMPONENT_BUG>Please check the components with bugs</CHECK_COMPONENT_BUG>
+    <REPORT_BUG_DETAIL>Please describe the problem in the program in detail (&gt;10 characters)</REPORT_BUG_DETAIL>
+    <URGENT_TIPS>Serious anomalies that may induce qualitative misjudgments of data</URGENT_TIPS>
+    <ORDINARY_TIPS>Program exceptions that may hinder processing such as registration</ORDINARY_TIPS>
+    <SUGGESTION_TIPS>Suggestions that may improve the utility, ease of use, or security of the program</SUGGESTION_TIPS>
+    <URGENT_EMAIL>Urgent questions will be sent to the maintainer's email. Continue?</URGENT_EMAIL>
+    <URGENT_SUBJECT>Urgent exception: Reg3D App@SiLab, IBP, China</URGENT_SUBJECT>
+    <EMAIL_SUCCESS>Mail sent successfully!</EMAIL_SUCCESS>
+    <EMAIL_FAILED>Email sending failed</EMAIL_FAILED>
+    <ATTACH_FOLDER>Attach Folder</ATTACH_FOLDER>
+    <LOGIN_LABNAS>Login - LabNas</LOGIN_LABNAS>
+    <USERNAME>User Name</USERNAME>
+    <PASSWORD>Password</PASSWORD>
+    <LOGIN>Login</LOGIN>
+    <OTHER>Other</OTHER>
+    <INVALID_PATH>Invalid path</INVALID_PATH>
     <DEVELOPING>Developing…</DEVELOPING>
 </struct>
