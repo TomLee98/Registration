@@ -132,7 +132,7 @@ V1.6        Sika deer           梅花鹿
   |     |- [Fix Bugs] solve the parpool cluster bugs when error occured
   |     |- [Fix Bugs] fix robust coefficient lost bug on two channels registration
   |     |- [Fix Bugs] fix some big file registration bugs (two channels)
-  |- V1.6.4     2023/12/26
+  |- V1.6.4     2023/12/24  19:00
   |     |- [Update] alignment for channel position correction (2D rigid only)
   |	    |- [Update] long-term registration progress bar
   |     |- [Update] multi-target tracking and registration(manual patches)
