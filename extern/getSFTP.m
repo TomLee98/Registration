@@ -16,7 +16,13 @@ end
 
 % take the information and delete app
 username = lnl_handle.username;
-password = aes_unlocker.decrypt(lnl_handle.password);
+if ispc()
+    password = aes_unlocker.decrypt(lnl_handle.password);
+elseif isunix()
+    % security warning:
+    % may lost password, bugs on unix for AES object
+    password = lnl_handle.password;
+end
 
 % try to connect the labnas with sftp
 n = 0;
