@@ -3,7 +3,6 @@ function sftp_handle = getSFTP(host)
 %pcode for LabNas user name and password security
 % Assume that pcode inner is protected
 
-aes_unlocker = aesobj();
 sftp_handle = [];
 N = 3;
 
@@ -17,6 +16,7 @@ end
 % take the information and delete app
 username = lnl_handle.username;
 if ispc()
+    aes_unlocker = aesobj();
     password = aes_unlocker.decrypt(lnl_handle.password);
 elseif isunix()
     % security warning:
