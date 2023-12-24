@@ -94,6 +94,7 @@
     <IMAGE_PARAMETER>Image Parameters</IMAGE_PARAMETER>
     <CAMERA_TIME>Camera Time</CAMERA_TIME>
     <CLOSE>Close</CLOSE>
+    <CONTINUE>Continue</CONTINUE>
     <PIXEL_HISTOGRAM>Pixel Histogram</PIXEL_HISTOGRAM>
     <LIGHT>Light</LIGHT>
     <CONTRAST>Contrast</CONTRAST>
@@ -361,6 +362,7 @@
     <SUGGESTION_TIPS>Suggestions that may improve the utility, ease of use, or security of the program</SUGGESTION_TIPS>
     <URGENT_EMAIL>Urgent questions will be sent to the maintainer's email. Continue?</URGENT_EMAIL>
     <URGENT_SUBJECT>Urgent exception: Reg3D App@SiLab, IBP, China</URGENT_SUBJECT>
+    <FEEDBACK_SUCCESS>Problem feedback successfully!</FEEDBACK_SUCCESS>
     <EMAIL_SUCCESS>Mail sent successfully!</EMAIL_SUCCESS>
     <EMAIL_FAILED>Email sending failed</EMAIL_FAILED>
     <ATTACH_FOLDER>Attach Folder</ATTACH_FOLDER>

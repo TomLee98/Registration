@@ -94,6 +94,7 @@
     <IMAGE_PARAMETER>Параметры изображения</IMAGE_PARAMETER>
     <CAMERA_TIME>Время камеры</CAMERA_TIME>
     <CLOSE>Закрывать</CLOSE>
+    <CONTINUE>Продолжать</CONTINUE>
     <PIXEL_HISTOGRAM>Пиксельная гистограмма</PIXEL_HISTOGRAM>
     <LIGHT>Свет</LIGHT>
     <CONTRAST>Контраст</CONTRAST>
@@ -361,6 +362,7 @@
     <SUGGESTION_TIPS>Предложения, которые могут улучшить полезность, простоту использования или безопасность программы.</SUGGESTION_TIPS>
     <URGENT_EMAIL>Срочные вопросы будут отправлены на электронную почту сопровождающего. Продолжить?</URGENT_EMAIL>
     <URGENT_SUBJECT>Срочное исключение: Reg3D App@SiLab, IBP, Китай.</URGENT_SUBJECT>
+    <FEEDBACK_SUCCESS>Проблема обратная связь успешно!</FEEDBACK_SUCCESS>
     <EMAIL_SUCCESS>Письмо успешно отправлено!</EMAIL_SUCCESS>
     <EMAIL_FAILED>Отправка электронной почты не удалась</EMAIL_FAILED>
     <ATTACH_FOLDER>Прикрепить папку</ATTACH_FOLDER>

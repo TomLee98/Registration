@@ -94,6 +94,7 @@
     <IMAGE_PARAMETER>Parámetros de imagen</IMAGE_PARAMETER>
     <CAMERA_TIME>Tiempo de cámara</CAMERA_TIME>
     <CLOSE>Cerca</CLOSE>
+    <CONTINUE>Continuar</CONTINUE>
     <PIXEL_HISTOGRAM>Histograma de píxeles</PIXEL_HISTOGRAM>
     <LIGHT>Luz</LIGHT>
     <CONTRAST>Contraste</CONTRAST>
@@ -361,6 +362,7 @@
     <SUGGESTION_TIPS>Sugerencias que pueden mejorar la utilidad, facilidad de uso o seguridad del programa.</SUGGESTION_TIPS>
     <URGENT_EMAIL>Las preguntas urgentes se enviarán al correo electrónico del mantenedor. ¿Continuar?</URGENT_EMAIL>
     <URGENT_SUBJECT>Excepción urgente: Reg3D App@SiLab, IBP, China</URGENT_SUBJECT>
+    <FEEDBACK_SUCCESS>¡Retroalimentación del problema exitosamente!</FEEDBACK_SUCCESS>
     <EMAIL_SUCCESS>¡El correo enviado con éxito!</EMAIL_SUCCESS>
     <EMAIL_FAILED>Error al enviar correo electrónico</EMAIL_FAILED>
     <ATTACH_FOLDER>Adjuntar carpeta</ATTACH_FOLDER>
