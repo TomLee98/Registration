@@ -144,10 +144,12 @@ V1.6        Sika deer           梅花鹿
   |     |- [Fix Bugs] sacrifice performance for big file long-term registration
   |     |- [Fix bugs] error occured when loading one frame movie
   |     |- [Key Note] frames series rely on time, need to be updated to spatial information
+  |     |- [Note] when using computation server, reg3D can't connect to labnas
   |- V1.6.5     2024/
   |     |- [Update]
   |     |- [Update] new help documents for Version 1.6.5
   |     |- [Fix Bugs] fix long-term registration out of memory when key frames is too much
+  |     |- [Fix Bugs] computation server connect to labnas
   |- V1.6.6     2024/
   |     |- [Update] registration history manager
   |     |- [Fix Bugs]
