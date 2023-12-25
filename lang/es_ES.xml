@@ -353,7 +353,8 @@
     <OFFLINE>Desconectado</OFFLINE>
     <ONLINE>En línea</ONLINE>
     <PRP>Procedimiento de notificación de problemas:</PRP>
-    <PRP_PRIVACY_FRIENDLY>El proceso de notificación de problemas no recopila su privacidad</PRP_PRIVACY_FRIENDLY>
+    <PRP_PRIVACY_FRIENDLY>El proceso de informe de problemas no recopila su</PRP_PRIVACY_FRIENDLY>
+    <PRIVACY>privacidad</PRIVACY>
     <ATTACH_FILE_HERE>Aquí se incluyen archivos adicionales para reproducir el problema.</ATTACH_FILE_HERE>
     <CHECK_COMPONENT_BUG>Por favor verifique los componentes con errores.</CHECK_COMPONENT_BUG>
     <REPORT_BUG_DETAIL>Describa el problema en el programa en detalle (&gt;10 caracteres)</REPORT_BUG_DETAIL>

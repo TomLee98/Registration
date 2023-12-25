@@ -353,7 +353,8 @@
     <OFFLINE>Не в сети</OFFLINE>
     <ONLINE>В сети</ONLINE>
     <PRP>Процедура сообщения о проблеме:</PRP>
-    <PRP_PRIVACY_FRIENDLY>Процесс сообщения о проблемах не обеспечивает конфиденциальность вашей информации.</PRP_PRIVACY_FRIENDLY>
+    <PRP_PRIVACY_FRIENDLY>Процесс сообщения о проблемах не собирает ваши</PRP_PRIVACY_FRIENDLY>
+    <PRIVACY>конфиденциальность</PRIVACY>
     <ATTACH_FILE_HERE>Дополнительные файлы для воспроизведения проблемы включены здесь.</ATTACH_FILE_HERE>
     <CHECK_COMPONENT_BUG>Пожалуйста, проверьте компоненты на наличие ошибок</CHECK_COMPONENT_BUG>
     <REPORT_BUG_DETAIL>Пожалуйста, подробно опишите проблему в программе (&gt;10 символов)</REPORT_BUG_DETAIL>

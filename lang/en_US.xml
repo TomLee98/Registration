@@ -353,7 +353,8 @@
     <OFFLINE>Offline</OFFLINE>
     <ONLINE>Online</ONLINE>
     <PRP>Problem reporting procedure:</PRP>
-    <PRP_PRIVACY_FRIENDLY>The problem reporting process does not collect your privacy</PRP_PRIVACY_FRIENDLY>
+    <PRP_PRIVACY_FRIENDLY>The problem reporting process does not collect your</PRP_PRIVACY_FRIENDLY>
+    <PRIVACY>privacy</PRIVACY>
     <ATTACH_FILE_HERE>Additional files to reproduce the issue are included here</ATTACH_FILE_HERE>
     <CHECK_COMPONENT_BUG>Please check the components with bugs</CHECK_COMPONENT_BUG>
     <REPORT_BUG_DETAIL>Please describe the problem in the program in detail (&gt;10 characters)</REPORT_BUG_DETAIL>

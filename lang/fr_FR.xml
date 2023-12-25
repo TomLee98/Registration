@@ -353,7 +353,8 @@
     <OFFLINE>Hors ligne</OFFLINE>
     <ONLINE>En ligne</ONLINE>
     <PRP>Procédure de signalement des problèmes :</PRP>
-    <PRP_PRIVACY_FRIENDLY>Le processus de signalement de problèmes ne collecte pas votre vie privée</PRP_PRIVACY_FRIENDLY>
+    <PRP_PRIVACY_FRIENDLY>Le processus de signalement de problèmes ne collecte pas vos</PRP_PRIVACY_FRIENDLY>
+    <PRIVACY>confidentialité</PRIVACY>
     <ATTACH_FILE_HERE>Des fichiers supplémentaires pour reproduire le problème sont inclus ici</ATTACH_FILE_HERE>
     <CHECK_COMPONENT_BUG>Veuillez vérifier les composants avec des bugs</CHECK_COMPONENT_BUG>
     <REPORT_BUG_DETAIL>Veuillez décrire le problème dans le programme en détail (&gt; 10 caractères)</REPORT_BUG_DETAIL>
