@@ -389,8 +389,10 @@ end
         % datetime array t, change it to seconds
         rt = [0,cumsum(seconds(diff(t)))]';
         rt(frames+1:end) = [];
-        rt(1) = (rt(end)-rt(2))/(frames - 2 + eps);   % average estimation
-        rt = rt + dt;
+        if frames > 1
+            rt(1) = (rt(end)-rt(2))/(frames - 2 + eps);   % average estimation
+            rt = rt + dt;
+        end
 
         % control the precision: ms
         rt = round(rt, 3);
