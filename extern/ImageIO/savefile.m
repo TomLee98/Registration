@@ -150,6 +150,7 @@ if pyflag == true
     metadata.compression = compr;
     % generate a python dictionary
     mdata = py.dict(metadata);
+
     % permute I as imageJ hyperstack dimorder: 'TZCYXS', ordinary: 'XYCZT'
     I = permute(I, [5,4,3,1,2]);
     v = py.numpy.array(I).astype("uint16");

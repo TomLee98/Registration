@@ -1,10 +1,10 @@
+import sys
 from tifffile import imwrite
 
 def savetiff(file_name, volume, meta_data):
     try:
         imwrite(file_name,
                 volume,
-                bigtiff=True,
                 imagej=True,
                 metadata=meta_data)
     except IOError:
