@@ -148,9 +148,10 @@ V1.6        Sika deer           梅花鹿
   |- V1.6.5     2024/
   |     |- [Update] bug reporter also sends the app version
   |     |- [Update] add privacy file for Bug Reporter
+  |     |- [Update] fast tiff save by tifffile(python) ~10X faster than bio-formats
   |     |- [Update] long-term registration review at points cloud registration
   |     |- [Update] new help documents for Version 1.6.5
-  |     |- [Fix Bugs] fix one volume can't do registration
+  |     |- [Fix Bugs] fix one volume can't do registration(avoid loading)
   |     |- [Fix Bugs] fix long-term registration out of memory when key frames is too much
   |     |- [Fix Bugs] fix computation server can't connect to labnas in MATLAB
   |- V1.6.6     2024/
