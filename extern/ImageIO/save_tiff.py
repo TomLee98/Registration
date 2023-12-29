@@ -1,3 +1,16 @@
-from tifffile import TiffWriter
+from tifffile import imwrite
 
-def save_tiff(file_name, meta_data, )
+def savetiff(file_name, volume, meta_data):
+    try:
+        imwrite(file_name,
+                volume,
+                imagej=True,
+                metadata=meta_data)
+    except IOError:
+        status = -1
+    else:
+        status = 0
+    
+    return status
+
+status = savetiff(file, vol, mdata)
