@@ -1,5 +1,6 @@
-import sys
+import warnings
 from tifffile import imwrite
+warnings.filterwarnings("ignore")
 
 def savetiff(file_name, volume, meta_data):
     try:
