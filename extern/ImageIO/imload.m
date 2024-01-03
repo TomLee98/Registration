@@ -308,7 +308,20 @@ info.rt = rt;
 status = 0;
 
 if nargout == 3
-    img = bfOpen3DVolume_reg(file, wbar_flag);
+    % check the environment
+    pyflag = isPyReady();
+
+    if pyflag == true
+        % check the python environment path
+        if count(py.sys.path,'/extern/ImageIO/load_tiff.py') == 0
+            insert(py.sys.path,int32(0), ...
+                '/extern/ImageIO/load_tiff.py');
+        end
+        fname = py.str(file);
+        img = load_tiff(fname);     % imagej stack: 'TZCYXS'
+    else
+        img = bfOpen3DVolume_reg(file, wbar_flag);
+    end
 
     % reconstruct the image stack
     img = imreshape(img, opts);

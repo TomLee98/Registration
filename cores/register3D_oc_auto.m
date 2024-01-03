@@ -375,7 +375,7 @@ end
 
                                 % transform from double to single and downsampling
                                 % for decreasing memory allocation
-                                tform{k,2} = downsamplingDisplacement(tform{k,2}, reg_param.LRTDS);
+                                tform{k,2} = DownsamplingDisplacement(tform{k,2}, reg_param.LRTDS);
 
                                 waitbar(k/opts.frames,bar,"register processing "...
                                     +num2str(k/opts.frames*100,3)+"% ...");
@@ -603,7 +603,7 @@ end
             end
 
             for m = 1:opts.frames
-                t{m, 2} = downsamplingDisplacement(t{m, 2}, reg_param.LRTDS);
+                t{m, 2} = DownsamplingDisplacement(t{m, 2}, reg_param.LRTDS);
             end
 
             ms_new = ms;
@@ -643,7 +643,7 @@ end
             end
 
             for m = 1:opts.frames
-                t{m, 2} = downsamplingDisplacement(t{m, 2}, reg_param.LRTDS);
+                t{m, 2} = DownsamplingDisplacement(t{m, 2}, reg_param.LRTDS);
             end
 
             ms_new = ms;

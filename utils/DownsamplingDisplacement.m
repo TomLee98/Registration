@@ -1,4 +1,4 @@
-function A = downsamplingDisplacement(A, c)
+function A = DownsamplingDisplacement(A, c)
 % This function downsampling tensor A (m*n*p*3) by c and cast type as
 % single for decreasing memory allcation, where p for phase
 
