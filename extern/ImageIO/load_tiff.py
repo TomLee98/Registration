@@ -10,4 +10,4 @@ def loadtiff(file_name):
     
     return status, vol
 
-~, vol = loadtiff(file)
+_, vol = loadtiff(file)

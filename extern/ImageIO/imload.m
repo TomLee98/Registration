@@ -308,17 +308,12 @@ info.rt = rt;
 status = 0;
 
 if nargout == 3
+    tic;
     % check the environment
     pyflag = isPyReady();
 
     if pyflag == true
-        % check the python environment path
-        if count(py.sys.path,'/extern/ImageIO/load_tiff.py') == 0
-            insert(py.sys.path,int32(0), ...
-                '/extern/ImageIO/load_tiff.py');
-        end
-        fname = py.str(file);
-        img = load_tiff(fname);     % imagej stack: 'TZCYXS'
+        img = pyOpen3DVolume_reg(file, wbar_flag);
     else
         img = bfOpen3DVolume_reg(file, wbar_flag);
     end
@@ -326,6 +321,45 @@ if nargout == 3
     % reconstruct the image stack
     img = imreshape(img, opts);
 end
+
+    function mov = pyOpen3DVolume_reg(file, wbar_flag)
+        % check the python environment path
+        if count(py.sys.path,'/extern/ImageIO/load_tiff.py') == 0
+            insert(py.sys.path,int32(0), ...
+                '/extern/ImageIO/load_tiff.py');
+        end
+        fname = py.str(file);
+        if wbar_flag == true
+            fig = uifigure("Visible","off","WindowStyle","modal");
+            fig.Position(3:4) = [300, 75];
+            set(fig, "Visible", "on");
+            uiprogressdlg(fig,'Indeterminate','on', ...
+                'Message', '        loading...','Icon','info',...
+                "Interpreter","tex");
+        end
+        try
+            % imagej stack: 'TZCYXS'
+            mov = pyrunfile("load_tiff.py", "vol", file=fname);
+        catch ME
+            throwAsCaller(ME);
+        end
+        % convert img from ndarray to matlab value
+        mov = cast(mov, dataType);
+        if ndims(mov) == 3
+            mov = permute(mov, [2,3,1]);   % to (Y,X,Z)
+        elseif ndims(mov) == 4
+            mov = permute(mov, [3,4,2,1]); % to (Y,X,Z,T)
+        elseif ndims(mov) == 5
+            mov = permute(mov, [4,5,3,2,1]); % to (Y,X,C,Z,T)
+        else
+            throw(MException("imload:invalidImagesStackDimension", ...
+                "Image stack dimension > 5 is not supported."));
+        end
+
+        if wbar_flag == true && isvalid(fig)
+            delete(fig);
+        end
+    end
 
     function cOrder = getChannelOrder(info)
         cc = info.getChannelCount(0);
