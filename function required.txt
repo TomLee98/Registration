@@ -150,6 +150,7 @@ V1.6        Sika deer           梅花鹿
   |     |- [Update] add privacy file for Bug Reporter
   |     |- [Update] fast tiff save/load by tifffile(python) ~10X faster than bio-formats
   |     |- [Update] optimize the Reg3D main app outward
+  |     |- [Update] remove background on aligned is supported
   |     |- [Update] TODO:fast nd2 read by  ~3X faster than bio-formats
   |     |- [Update] TODO:long-term registration review at points cloud registration
   |     |- [Update] TODO:new help documents for Version 1.6.5

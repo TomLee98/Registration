@@ -99,6 +99,10 @@ function status = savetiff(I, filename, metadata, dimOrder, compr)
 pyflag = isPyReady();
 
 if pyflag == true
+    if count(py.sys.path,'/extern/ImageIO/TIFFRW/save_tiff.py') == 0
+        insert(py.sys.path,int32(0), ...
+            '/extern/ImageIO/TIFFRW/save_tiff.py');
+    end
     % append axes information in metadata
     metadata.axes = 'TZCYX';
     % append compression information
