@@ -173,7 +173,12 @@ info.rt = rt;
 status = 0;
 
 if nargout == 3
-    img = nd2Open3DVolume_reg(file, wbar_flag);
+    if ispc()
+        % only PC support fast loading
+        img = nd2Open3DVolume_reg(file, wbar_flag);
+    elseif isunix()
+        img = bfOpen3DVolume_reg(file, wbar_flag);
+    end
 
      % reconstruct the image stack
     img = imreshape(img, opts);
