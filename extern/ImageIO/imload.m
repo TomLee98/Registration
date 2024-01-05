@@ -10,6 +10,17 @@ function [status, info, img] = imload(file, wbar_flag, omitif)
 %           stamp [rt](vector)
 %   - img: the image stack data, 5-D matrix
 
+% Copyright (c) 2022-2024, Weihan Li
+% SAVEFILE: 
+% Version: 1.0.0
+%   *** basic saving function
+%   *** status indicate the function status
+%   *** many export data format support
+% Version: 1.1.0
+%   *** import *.ims support library for fast reading
+%   *** import *.nd2 support library(extern C) for fast reading
+%   *** import *.tiff support library(extern Python) for fast reading
+
 arguments
     file (1,1) string {mustBeFile};
     wbar_flag (1,1) logical = true;
@@ -208,7 +219,7 @@ end
             mov{n} = [];    % free memory
         end
         mov = mov{1};
-        % permute as (Y,X,C,Z(T))
+        % permute as (Y,X,C,Z(T)): nd2 file fixed dimension order
         mov = permute(mov, [1,2,4,3]);
 
         if wbar_flag == true

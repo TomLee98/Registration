@@ -152,17 +152,19 @@ V1.6        Sika deer           梅花鹿
   |     |- [Update] optimize the Reg3D main app outward
   |     |- [Update] remove background on aligned is supported
   |     |- [Update] (PC only) fast nd2 read by nd2readsdk ~4X faster than bio-formats
-  |     |- [Update] TODO:long-term registration review at points cloud registration
-  |     |- [Update] TODO:new help documents for Version 1.6.5
+  |     |- [Update] TODO: auto deploy the parallel environment on all platform
+  |     |- [Update] TODO: new help documents for Version 1.6.5
   |     |- [Fix Bugs] fix one volume can't do registration(avoid loading)
-  |     |- [Fix Bugs] TODO:fix long-term registration out of memory when key frames is too much
-  |     |- [Fix Bugs] TODO:fix computation server can't connect to labnas in MATLAB
+  |     |- [Fix Bugs] fix the timer bug after multi-loading
+  |     |- [Fix Bugs] TODO: fix long-term registration out of memory when key frames is too much
+  |     |- [Fix Bugs] TODO: fix computation server can't connect to labnas in MATLAB
   |- V1.6.6     2024/
-  |     |- [Update] registration history manager
+  |     |- [Update] TODO: registration history manager
+  |     |- [Update] TODO: long-term registration review at points cloud registration
   |     |- [Fix Bugs]
   |- V1.6.7     2024/
   |     |- [Update] 
-  |     |- [Fix Bugs: TODO] fix export movie bug: uncertainty resolution
+  |     |- [Fix Bugs] TODO: fix export movie bug: uncertainty resolution
   |- V1.6.8     2024/
   |     |- [Update] 
   |     |- 

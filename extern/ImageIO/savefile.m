@@ -20,12 +20,16 @@ function [status, path] = savefile(I,filepath,varargin)
 %
 %   see also: bfsave
 
-% Copyright (c) 2021, Weihan Li
+% Copyright (c) 2022-2024, Weihan Li
 % SAVEFILE: 
 % Version: 1.0.0
 %   *** basic saving function
 %   *** status indicate the function status
 %   *** many export data format support
+% Version: 1.1.0
+%   *** import *.ims support library for fast reading
+%   *** import *.nd2 support library(extern C) for fast reading
+%   *** import *.tiff support library(extern Python) for fast reading
 
 SAVE_SUCCESS = 0;
 SAVE_FAILED = -1;
@@ -57,9 +61,9 @@ while n < numel(varargin)
 end
 
 file_suppoted = {'*.tif','Tag Image File Format (*.tif)';...
-                             '*.mat','MAT file (*.mat)';...
-                             '*.avi','Audio Video Interleaved file (*.avi)';...
-                             '*.mp4','MPEG-4 Part 14 (*.mp4)'};
+                 '*.mat','MAT file (*.mat)';...
+                 '*.png','Portable Network Graphic (*.png)';...
+                 '*.gif','Graphical Interchange Format file (*.avi)'};
 
 if ~exist("filepath","var") || isempty(filepath) || ~exist(filepath,"dir")
     [file,path] = uiputfile(file_suppoted,'Save',fname);
@@ -81,7 +85,7 @@ else
     s = size(I);
     I = reshape(I,[s(1:2),1,s(3:4)]);   % increase 4D to 5D
     switch ext
-        case ".tif"
+        case [".tif",".png",".gif"]
             status = savetiff(I, filename, metadata, dimOrder, compr);
         case ".mat"
             save(filename,"I","-mat");% based on htf5 is fast enough
