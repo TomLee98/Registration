@@ -1,18 +1,15 @@
-Before using, we need to setup the parallel computing environment:
-0. Make sure your MATLAB Version is not lower than R2021b.
-1. If you are using this tool on your local machine, please use parallel 
-profile 'local' as default. If your MATLAB version is higher than R2022a,
-use profile 'processes' as recommanded.
-2. If you are using this tool on computing server(IW4220@SiLab), please 
-set the parallel profile 'Reg3D_Server.mlsettings' in 'bin\' for stable running.
-NOTE: For advanced user, you can modify the parallel setting in manual if 
-there are some parallel bugs (lost connection, out of memory, ... etc).
-If bugs come, just reduce the number of workers and run registration again.
-NOTE: For advanced user, you can modify the threads number per worker, such
-as setting between 1 and 2. Because of the 'hyper-thread' technology, you can 
-get fully performance, but parpool may be not very stable. (modify the file
-register3D_tc_auto.m -> line 1035, register3D_oc_auto.m -> line 
-or Reg3D_Server.mlsettings)
+Before using 
+(A) 
+1. Make sure your MATLAB Version is not lower than R2021b.
+2. (Optional) You can install python with package: tifffile and numpy, on 
+your local machine for fast IO support when processing tiff file
+3. (Optional) For advanced user, you can change the threads number per worker 
+by configurating Reg3D_local.mlsettings or Reg3D_server.mlsettings. 
+Because of the 'hyper-thread' technology, you can get fully performance. 
+
+(B) (Optional) You can install 
+
+
 
 [Two Channels Registration Pipeline]
 1. select the template as fix frame, for better performance, we recommand

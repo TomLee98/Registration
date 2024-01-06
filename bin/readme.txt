@@ -1,3 +1,5 @@
-When using the Registration on Computing Server (Unix System, 56 cpu cores, host @SiLab),
+This folder with two parallel configurations: server configuration and 
+local configuration.
 
-PLEASE PRESET THE Reg3D_Server.mlsettings ON IT BEFORE RUNNING!
+Note that the configuration files will be auto selected by locating the 
+local computer.

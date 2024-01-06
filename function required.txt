@@ -159,11 +159,11 @@ V1.6        Sika deer           梅花鹿
   |     |- [Fix Bugs] TODO: fix long-term registration out of memory when key frames is too much
   |     |- [Fix Bugs] TODO: fix computation server can't connect to labnas in MATLAB
   |- V1.6.6     2024/
-  |     |- [Update] TODO: registration history manager
+  |     |- [Update] TODO: system computation source manager, for avoiding differnent user confliction parpool
   |     |- [Update] TODO: long-term registration review at points cloud registration
   |     |- [Fix Bugs]
   |- V1.6.7     2024/
-  |     |- [Update] 
+  |     |- [Update] TODO: registration history manager
   |     |- [Fix Bugs] TODO: fix export movie bug: uncertainty resolution
   |- V1.6.8     2024/
   |     |- [Update] 
