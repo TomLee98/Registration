@@ -1,4 +1,4 @@
-Before using 
+Writing in front:
 (A) 
 1. Make sure your MATLAB Version is not lower than R2021b.
 2. (Optional) You can install python with package: tifffile and numpy, on 
@@ -7,8 +7,8 @@ your local machine for fast IO support when processing tiff file
 by configurating Reg3D_local.mlsettings or Reg3D_server.mlsettings. 
 Because of the 'hyper-thread' technology, you can get fully performance. 
 
-(B) (Optional) You can install 
-
+(B) (Optional) You can install VC_redist.x64.exe for fast nd2 file loading, 
+read README in \extern\microsoft support for more detail.
 
 
 [Two Channels Registration Pipeline]
@@ -29,7 +29,7 @@ Until the app is stopped, you can go to next step#
 motion or stretch motion, using 'rotation' or 'similarity' as transformation
 9. you may decrease the minimal iteration step for good accuracy, such as 
 1e-6 or smaller, where 1e-5 as default
-10. set the initial iteration step as default(6.25e-2)
+10. set the initial iteration step as default(6.25e-2) or smaller
 11. set the iteration factor as default(0.5) or smaller
 12. set the robustness factor smaller than default(0.5), which could be choosed
 from 0.01 to 0.2
@@ -53,6 +53,9 @@ Until the app is stopped, you can go to next step#
 registration(manual) for manual resiatration
 
 [One Channel Registration Pipeline]
+1. same as two channel but functional channel is also the structured channel
+
+[Longterm Registration Pipeline]
 1. 
 
 Go and have fun!
