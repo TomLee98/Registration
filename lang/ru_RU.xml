@@ -26,6 +26,7 @@
     <MEAN_Z_PROJECTION>Средняя проекция Z</MEAN_Z_PROJECTION>
     <MASK>Маска</MASK>
     <GENERATE_MASK>Создать маску</GENERATE_MASK>
+    <EXPORT_MASK>Экспортировать маску</EXPORT_MASK>
     <GENERATION>Поколение</GENERATION>
     <IMPORT_MASK>Маска импорта</IMPORT_MASK>
     <APPEND_COMMENTS>Добавить комментарии</APPEND_COMMENTS>
@@ -373,5 +374,8 @@
     <LOGIN>Авторизоваться</LOGIN>
     <OTHER>Другой</OTHER>
     <INVALID_PATH>Неверный путь</INVALID_PATH>
+    <TOO_MUCH_ROI>Слишком много ROI, перерисуйте и попробуйте добавить их.</TOO_MUCH_ROI>
+    <EXPORT_MASK_SUCCESS>Атрибуты маски и области успешно экспортированы.</EXPORT_MASK_SUCCESS>
+    <MULTI_CONNECTION>Обнаружены многосвязные регионы и выбрано наибольшее односвязное подмножество.</MULTI_CONNECTION>
     <DEVELOPING>Разработка…</DEVELOPING>
 </struct>

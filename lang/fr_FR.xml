@@ -26,6 +26,7 @@
     <MEAN_Z_PROJECTION>Projection Z moyenne</MEAN_Z_PROJECTION>
     <MASK>Masque</MASK>
     <GENERATE_MASK>Générer un masque</GENERATE_MASK>
+    <EXPORT_MASK>Masque d'exportation</EXPORT_MASK>
     <GENERATION>Génération</GENERATION>
     <IMPORT_MASK>Masque d'importation</IMPORT_MASK>
     <APPEND_COMMENTS>Ajouter des commentaires</APPEND_COMMENTS>
@@ -373,5 +374,8 @@
     <LOGIN>Se connecter</LOGIN>
     <OTHER>Autre</OTHER>
     <INVALID_PATH>Chemin invalide</INVALID_PATH>
+    <TOO_MUCH_ROI>Il y a trop de ROI, veuillez redessiner et essayer de les ajouter.</TOO_MUCH_ROI>
+    <EXPORT_MASK_SUCCESS>Attributs de masque et de zone exportés avec succès.</EXPORT_MASK_SUCCESS>
+    <MULTI_CONNECTION>Des régions multi-connectées sont trouvées et le plus grand sous-ensemble mono-connecté a été sélectionné</MULTI_CONNECTION>
     <DEVELOPING>Développement…</DEVELOPING>
 </struct>

@@ -197,7 +197,8 @@ end
 
     function mov = nd2Open3DVolume_reg(file, wbar_flag)
         if wbar_flag == true
-            fig = uifigure("Visible","off","WindowStyle","modal");
+            fig = uifigure("Visible","off","WindowStyle","modal",...
+                "Resize","off");
             fig.Position(3:4) = [300, 75];
             set(fig, "Visible", "on");
             uiprogressdlg(fig,'Indeterminate','on', ...
@@ -377,7 +378,8 @@ end
         end
         fname = py.str(file);
         if wbar_flag == true
-            fig = uifigure("Visible","off","WindowStyle","modal");
+            fig = uifigure("Visible","off","WindowStyle","modal",...
+                "Resize","off");
             fig.Position(3:4) = [300, 75];
             set(fig, "Visible", "on");
             uiprogressdlg(fig,'Indeterminate','on', ...

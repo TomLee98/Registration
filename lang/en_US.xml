@@ -26,6 +26,7 @@
     <MEAN_Z_PROJECTION>Mean Z Projection</MEAN_Z_PROJECTION>
     <MASK>Mask</MASK>
     <GENERATE_MASK>Generate Mask</GENERATE_MASK>
+    <EXPORT_MASK>Export mask</EXPORT_MASK>
     <GENERATION>Generation</GENERATION>
     <IMPORT_MASK>Import mask</IMPORT_MASK>
     <APPEND_COMMENTS>Append Comments</APPEND_COMMENTS>
@@ -373,5 +374,8 @@
     <LOGIN>Login</LOGIN>
     <OTHER>Other</OTHER>
     <INVALID_PATH>Invalid path</INVALID_PATH>
+    <TOO_MUCH_ROI>There are too many ROIs, please redraw and try to add them.</TOO_MUCH_ROI>
+    <EXPORT_MASK_SUCCESS>Mask and area attributes exported successfully.</EXPORT_MASK_SUCCESS>
+    <MULTI_CONNECTION>Multi-connected regions are found, and the largest singly connected subset has been selected</MULTI_CONNECTION>
     <DEVELOPING>Developing…</DEVELOPING>
 </struct>

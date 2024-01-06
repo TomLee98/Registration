@@ -4,27 +4,13 @@
 <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
 </head>
 <body>
-<p align="left"><font face="宋体"><strong>1.2.4 添加注释</strong></font></p>
+<p align="left"><font size="4" face="宋体"><strong>1.2.4 移除背景</strong></font></p>
 <blockquote style="MARGIN-RIGHT: 0px" dir="ltr">
-<p align="left"><img src="image4.bmp"></p>
-<p align="left">添加注释可用于在当前图像上叠加注释，包括时间戳，比例尺与元数据。</p>
-<p align="left"><img src="time_stamp.bmp">
-</p>
-<p align="left">时间戳的显示格式为hh:mm:ss.SSS, 即时分秒形式。</p>
-<p align="left"><img src="meta_data.bmp">
-</p>
-<p align="left">
-通过读入具有特定格式的元数据文件(Excel表格文件)，可在当前图像上叠加显示额外信息。图例标记为两种固定浓度的气味分子混合溶液。</p>
-<p align="left"><img src="scalebar.bmp">
-</p>
-<p align="left">
-点击比例尺，在弹出的窗口中调整分辨率(通常情况下可从图像文件中自动读取)。设置比例尺在X或Y方向的长度，勾选“水平”或“垂直”可得对应线段。另外，也可调整比例尺的颜色等属性。</p>
-<p align="left">注1：鼠标左键单击文本标签，此时激活“移动”模式，标签将跟随鼠标运动，直至再次单击。</p>
-<p align="left">注2：鼠标左键单击比例尺，此时激活“移动”模式，比例尺将跟随鼠标运动，直至再次单击。</p>
-<p align="left">注3：鼠标中键单击文本标签，此时可更改标签字体。</p>
-<p align="left">注4：鼠标右键单击文本标签，此时可更改字体颜色。</p>
-<p align="left">注5：所有注释在“导出影片”时均被保留，但不影响“导出图像”。</p>
-
+<p align="left"><strong><font size="4" face="宋体"><img src="rm_bkg.bmp"></font></strong></p>
+<p align="left"><font face="宋体"><u>移除背景</u>包括<u>自动</u>设置或<u>手动</u>设置。</font></p>
+<p align="left"><font face="宋体"><u>自动</u>设置将提取图像边缘部分像素，自动估计相机背景均值，并从原始图像中减去这一固有值。</font></p>
+<p align="left"><font face="宋体"><u>固定</u>设置允许您输入自定义背景均值，并从原始图像中减去这一固有值。</font></p>
+<p align="left"><font face="宋体">注：背景估计仅当该值不超过原始图像中最小像素值时，可完全恢复原始图像而不丢失强度信息。</font></p>
 </blockquote>
 </body>
 </html>

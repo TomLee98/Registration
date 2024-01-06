@@ -4,19 +4,27 @@
 <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
 </head>
 <body>
-<p align="left"><font face="宋体"><strong>1.2.6 帧裁剪</strong></font></p>
+<p align="left"><font face="宋体"><strong>1.2.6 添加注释</strong></font></p>
 <blockquote style="MARGIN-RIGHT: 0px" dir="ltr">
-<p align="left"><img src="image6.bmp"></p>
-<p align="left"><font face="宋体"><u>帧裁剪</u>用于裁剪数据的时间范围。</font></p>
-<p align="left">&nbsp;帧裁剪首先使用设计更为人性化的GUI界面，如下图所示</p>
-<u><font face="宋体"><img src="crop_t_gui.bmp" alt=""/></font></u>
-<p align="left">&nbsp;配合主面板显示不同帧图像，可以通过在主面板上点击"Ctrl + a"(不区分大小写) 组合键增加裁剪端点，也可以通过点击“添加”按钮增加裁剪端点。</p>
-<p align="left">&nbsp;左下方显示丢弃帧的比率以及关于丢弃帧随机性的假设检验，这里假设坏帧出现的时间服从泊松分布(正在开发)。</p>
-<p align="left">&nbsp;右下方显示当前输入状态，等待输入开始代表接下来选定的裁剪端点作为一段保留帧的起始端点，反之则为结束端点。完成后点击“确定”按钮即可。&nbsp;</p>
-<p align="left">&nbsp;如果您对此GUI界面或裁剪方案持否定态度，也可以选择关闭该GUI，此时将弹出帧裁剪(经典)对话框，如下图所示</p>
-<p align="left"><font face="宋体">请在提示框内输入裁剪(保留)范围。框内使用<em>MATLAB切片</em>语法，end代表最后一帧。如果此时仍然取消，将取消帧裁剪操作。</font></p>
-<p align="left"><font face="宋体"><img src="crop_t.bmp"></font></p>
-<p align="left"><font face="宋体"><font face="宋体"><strong>注：所有裁剪操作均<em>不可逆</em>，这意味着如果裁剪出错需要重新读入原始文件或工作区变量，请谨慎操作！</strong></font></font></p>
+<p align="left"><img src="image4.bmp"></p>
+<p align="left">添加注释可用于在当前图像上叠加注释，包括时间戳，比例尺与元数据。</p>
+<p align="left"><img src="time_stamp.bmp">
+</p>
+<p align="left">时间戳的显示格式为hh:mm:ss.SSS, 即时分秒形式。</p>
+<p align="left"><img src="meta_data.bmp">
+</p>
+<p align="left">
+通过读入具有特定格式的元数据文件(Excel表格文件)，可在当前图像上叠加显示额外信息。图例标记为两种固定浓度的气味分子混合溶液。</p>
+<p align="left"><img src="scalebar.bmp">
+</p>
+<p align="left">
+点击比例尺，在弹出的窗口中调整分辨率(通常情况下可从图像文件中自动读取)。设置比例尺在X或Y方向的长度，勾选“水平”或“垂直”可得对应线段。另外，也可调整比例尺的颜色等属性。</p>
+<p align="left">注1：鼠标左键单击文本标签，此时激活“移动”模式，标签将跟随鼠标运动，直至再次单击。</p>
+<p align="left">注2：鼠标左键单击比例尺，此时激活“移动”模式，比例尺将跟随鼠标运动，直至再次单击。</p>
+<p align="left">注3：鼠标中键单击文本标签，此时可更改标签字体。</p>
+<p align="left">注4：鼠标右键单击文本标签，此时可更改字体颜色。</p>
+<p align="left">注5：所有注释在“导出影片”时均被保留，但不影响“导出图像”。</p>
+
 </blockquote>
 </body>
 </html>
