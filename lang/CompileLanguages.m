@@ -12,8 +12,13 @@ arguments
 end
 
 % load the identifier-language pair file
-p = readtable("lang\words_dict.xlsx","TextType","string",...
-    "FileType","spreadsheet","ExpectedNumVariables",6);
+if ispc()
+    p = readtable("lang\words_dict.xlsx","TextType","string",...
+        "FileType","spreadsheet","ExpectedNumVariables",6);
+elseif isunix()
+    p = readtable("lang/words_dict.xlsx","TextType","string",...
+        "FileType","spreadsheet","ExpectedNumVariables",6);
+end
 
 mapping = struct();
 
@@ -27,10 +32,12 @@ for lang = langs
     for k = 1:size(p,1)
         mapping.(p.ID(k)) = p.(lang)(k);
     end
-    writestruct(mapping,"lang\"+lang+".xml","FileType","xml");
-
+    if ispc()
+        writestruct(mapping,"lang\"+lang+".xml","FileType","xml");
+    elseif isunix()
+        writestruct(mapping,"lang/"+lang+".xml","FileType","xml");
+    end
 end
 
 status = 0;
 end
-
