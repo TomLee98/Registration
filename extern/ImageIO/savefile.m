@@ -137,7 +137,12 @@ else
             string(metadata.(fields{k}));
         miniMetadata.setDatasetDescription(data_store, k);
     end
-    bfsave(I,filename,'Compression',compr,...
-        'BigTiff',true,'metadata',miniMetadata);
+    try
+        bfsave(I,filename,'Compression',compr,...
+            'BigTiff',true,'metadata',miniMetadata);
+        status = 0;
+    catch ME
+        throwAsCaller(ME);
+    end
 end
 end
