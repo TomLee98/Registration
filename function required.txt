@@ -145,7 +145,7 @@ V1.6        Sika deer           梅花鹿
   |     |- [Fix bugs] error occured when loading one frame movie
   |     |- [Key Note] frames series rely on time, need to be updated to spatial information
   |     |- [Note] when using computation server, reg3D can't connect to labnas
-  |- V1.6.5     2024/01/08   2:00
+  |- V1.6.5     2024/01/10   15:00
   |     |- [Update] bug reporter also sends the app version
   |     |- [Update] add privacy file for Bug Reporter
   |     |- [Update] fast tiff save/load by tifffile(python) ~10X faster than bio-formats
