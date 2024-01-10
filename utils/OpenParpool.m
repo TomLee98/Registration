@@ -6,9 +6,10 @@ function parobj = OpenParpool(n)
 % Output
 %   - parobj: parpool object
 
-pcl = parcluster("Reg3D_Server");
+% using default profile
+pcl = parcluster(parallel.defaultProfile);
 % make sure your cpu supports 'hyper-threads' technology
-pcl.NumThreads = 2;
+% pcl.NumThreads = 2;
 % get present parpool
 parobj = gcp("nocreate");
 

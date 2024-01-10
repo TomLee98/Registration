@@ -9,6 +9,6 @@ function CloseParpool(parobj)
 delete(parobj);
 
 % remove the possible latest failed jobs
-pcl = parcluster("Reg3D_Server");
+pcl = parcluster(parallel.defaultProfile);
 delete(pcl.Jobs);
 end
