@@ -132,7 +132,6 @@
     <LOSSLESS>Sans perte</LOSSLESS>
     <TARGET_BITRATE>Débit cible</TARGET_BITRATE>
     <INTERPOLATION>Interpolation</INTERPOLATION>
-    <NEAREST>La plus proche</NEAREST>
     <BILINEAR>Bilinéaire</BILINEAR>
     <BICUBIC>Bicubique</BICUBIC>
     <CANCEL>Annuler</CANCEL>
@@ -165,7 +164,7 @@
     <MAX_ITERATION_N>Nombre maximal d'itérations</MAX_ITERATION_N>
     <ITERATION_COEFFICIENT>Coefficient d'itération</ITERATION_COEFFICIENT>
     <CUBIC_HIGH_QUALITY>Cubique (haute qualité)</CUBIC_HIGH_QUALITY>
-    <NEAREST_FAST>Le plus proche (rapide)</NEAREST_FAST>
+    <LINEAR_FAST>linéaire (rapide)</LINEAR_FAST>
     <PYRAMID_COEFFICIENT>Coefficient pyramidal</PYRAMID_COEFFICIENT>
     <ENABLE>Activer</ENABLE>
     <LOCAL_REGISTRATION_AUTO>Enregistrement local (Auto)</LOCAL_REGISTRATION_AUTO>

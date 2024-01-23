@@ -428,7 +428,6 @@ end
                     ma_ptr_ds = DownSampling(ma_ptr, ds_scale);
 
                     % align each volume with the fixed volume
-%                     profile on
                     for k = 1:opts.frames
                         if getappdata(bar,'canceling')
                             break;
@@ -439,7 +438,7 @@ end
                                 %%%%%%%%% global align %%%%%%%%
                                 % coarse registration transformation -> (x,y) translation
                                 % [WARNING] tform3D is affine3d object
-                                if reg_param.tform == "translation" || reg_param.tform == "affine"
+                                if reg_param.tform == "translation"
                                     pseudo_tform3D_ds = coreg3D(ma_ptr_ds(:,:,:,k),...
                                         Reg3D_ds, fixvolEst_ds, borderval_global_a,...
                                         denoise_dim, reg_param, opts);
@@ -477,7 +476,7 @@ end
                                     reg_param.interpNonRigid,'SmoothEdge',true);
                             case 'mix'
                                 % [WARNING] tform3D is affine3d object
-                                if reg_param.tform == "translation" || reg_param.tform == "affine"
+                                if reg_param.tform == "translation"
                                     % pseudo tform3D for translation and affine
                                     pseudo_tform3D_ds = coreg3D(ma_ptr_ds(:,:,:,k),...
                                         Reg3D_ds, fixvolEst_ds, borderval_global_a,...
@@ -536,8 +535,6 @@ end
                             +num2str(k/opts.frames*100,3)+"% ...");
                     end
 
-%                     profile viewer
-
                     if k == opts.frames,msg = "register succeed.";else, ...
                             msg = "register canceled.";end
                     waitbar(k/opts.frames,bar,msg);
@@ -588,6 +585,8 @@ end
         function [t,ms_new,ma_new] = align_global_cpu(ma,ms,t)
             parobj = OpenParpool(min(min(cn,getCpuBlockNumber(reg_param.bigfile)),opts.frames));
 
+            mpiprofile on
+
             if reg_param.bigfile == "on"
                 % using for loop load block data
                 mv_size = size(ma,'mov_aligned');
@@ -625,7 +624,7 @@ end
                         end
                         optimizer_par.MaximumIterations = reg_param.maxIterNumRigid;
 
-                        if reg_param.tform == "translation" || reg_param.tform == "affine"
+                        if reg_param.tform == "translation"
                             % TMPDATA MUST BE CLAIM EXPLICITLY IN PARFOR!!!
                             % coarse registration
                             pstf3D_ds = coreg3D(ma_block_ds(:,:,:,m),...
@@ -680,7 +679,7 @@ end
                     % genearte the down sampling aligned channel data
                     ma_m_ds = DownSampling(ma(:,:,:,m), ds_scale);
 
-                    if reg_param.tform == "translation" || reg_param.tform == "affine"
+                    if reg_param.tform == "translation"
                         % TMPDATA MUST BE CLAIM EXPLICITLY IN PARFOR!!!
                         % coarse registration
                         pstf3D_ds = coreg3D(ma_m_ds,...
@@ -713,11 +712,15 @@ end
                 ma_new = ma;
             end
 
+            mpiprofile viewer
+
             CloseParpool(parobj);
         end
 
         function [t,ms_new,ma_new] = align_local_gpu(ma,ms,t)
             parobj = OpenParpool(min(getGpuBlockNumber(),opts.frames));
+
+            mpiprofile on
 
             if reg_param.bigfile == "on"
                 % using for loop load block data
@@ -833,11 +836,15 @@ end
                 ma_new = ma;
             end
 
+            mpiprofile viewer
+
             CloseParpool(parobj);
         end
 
         function [t,ms_new,ma_new] = align_local_cpu(ma,ms,t)
             parobj = OpenParpool(min(min(cn,getCpuBlockNumber(reg_param.bigfile)),opts.frames));
+
+            mpiprofile on
 
             if reg_param.bigfile == "on"
                 % using for loop load block data
@@ -932,6 +939,8 @@ end
                 ms_new = ms;
                 ma_new = ma;
             end
+
+            mpiprofile viewer
 
             CloseParpool(parobj);
         end

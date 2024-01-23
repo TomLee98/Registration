@@ -14,11 +14,11 @@ pcl = parcluster(parallel.defaultProfile);
 parobj = gcp("nocreate");
 
 if isempty(parobj)
-    parobj = parpool(pcl, [1,n], 'SpmdEnabled',false);
+    parobj = parpool(pcl, [1,n], 'SpmdEnabled',true);
 elseif parobj.NumWorkers ~= n
     % restart parpool
     delete(gcp);
-    parobj = parpool(pcl, [1,n], 'SpmdEnabled',false);
+    parobj = parpool(pcl, [1,n], 'SpmdEnabled',true);
 end
 end
 

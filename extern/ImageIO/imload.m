@@ -393,7 +393,7 @@ end
             throwAsCaller(ME);
         end
         % convert img from ndarray to matlab value
-        mov = cast(mov, dataType);
+        mov = cast(mov.astype('single'), dataType);
         if ndims(mov) == 3
             mov = permute(mov, [2,3,1]);   % to (Y,X,Z)
         elseif ndims(mov) == 4

@@ -132,7 +132,6 @@
     <LOSSLESS>Без потерь</LOSSLESS>
     <TARGET_BITRATE>Целевой битрейт</TARGET_BITRATE>
     <INTERPOLATION>Интерполяция</INTERPOLATION>
-    <NEAREST>Ближайший</NEAREST>
     <BILINEAR>Билинейный</BILINEAR>
     <BICUBIC>Бикубический</BICUBIC>
     <CANCEL>Отмена</CANCEL>
@@ -165,7 +164,7 @@
     <MAX_ITERATION_N>Максимальное количество итераций</MAX_ITERATION_N>
     <ITERATION_COEFFICIENT>Коэффициент итерации</ITERATION_COEFFICIENT>
     <CUBIC_HIGH_QUALITY>Кубический (высокое качество)</CUBIC_HIGH_QUALITY>
-    <NEAREST_FAST>Ближайший (быстро)</NEAREST_FAST>
+    <LINEAR_FAST>линейный (быстро)</LINEAR_FAST>
     <PYRAMID_COEFFICIENT>Коэффициент пирамиды</PYRAMID_COEFFICIENT>
     <ENABLE>Давать возможность</ENABLE>
     <LOCAL_REGISTRATION_AUTO>Локальная регистрация (авто)</LOCAL_REGISTRATION_AUTO>
