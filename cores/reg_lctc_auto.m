@@ -1,4 +1,4 @@
-function [signal, tform, marker] = register3D_lctc_auto(varargin)
+function [signal, tform, marker] = reg_lctc_auto(varargin)
 %REGISTER3D_LCTC This function (long-term chain with two channels) uses point 
 % clouds and registration chain do long term 3d registration, note that 
 % the registration mode uses rigid、affine and non-rigid algorithms on the whole image
@@ -74,6 +74,8 @@ function [signal, tform, marker] = register3D_lctc_auto(varargin)
 % Version: 1.0.0
 %   *** Basic registration functions
 %   *** using same file when registration, for disk space saving
+% Version: 1.1.0
+%   *** append task manager for multi-user registration
 
 % Copyright (c) 2022-2023, Weihan Li
 
@@ -261,7 +263,8 @@ end
         %   (1) register to key point in the chain
         %   (2) apply the chain shift
         %   (3) evaluate the registration result, do twice registration on bad part
-        [rm, wkn] = getRunningMode();
+
+        [rm, wkn] = GetRunningMode();
 
         if strcmp(rm, 'cpu')
             tform = cell.empty(0, 2);
@@ -293,7 +296,14 @@ end
 
         % rigid/affine with cpu first
         CloseParpool(gcp("nocreate"));
-        parobj = OpenParpool(block_n);
+
+        task_mgr = TaskManager(opts, reg_param, opts.frames);
+        [~, nw] = task_mgr.Allocate("cpu");
+
+        parobj = OpenParpool(nw);
+
+        mpiprofile on
+
         bar = parwaitbar(2*opts.frames,'Waitbar',true);
 
         % extract the params for avoiding data broadcast
@@ -437,18 +447,30 @@ end
         else
             % close parpool and change the parallel
             CloseParpool(parobj);
+
+            task_mgr.Free();
+
             g_opts.width = round(opts.width*reg_param.dsVX);
             g_opts.height = round(opts.height*reg_param.dsVX);
             g_opts.slices = opts.slices;
-            block_n = getGpuBlockNumber(g_opts);
-            parobj = OpenParpool(block_n);
+            g_opts.channels = opts.channels;
+            g_opts.frames = opts.frames;
+
+            task_mgr = TaskManager(g_opts, reg_param, opts.frames);
+            [~, nw] = task_mgr.Allocate("gpu");
+
+            parobj = OpenParpool(nw);
             [tform_nrd, ms_ptr_post, ma_ptr_post] = imregdemons_fast_gpu(ma_ptr_post, ms_ptr_post, ...
-                block_n, bar);
+                nw, bar);
         end
 
         tform(:, 2) = tform_nrd;
 
+        mpiprofile viewer
+
         CloseParpool(parobj);
+
+        task_mgr.Free();
 
         bar.Destroy;
     end
@@ -870,39 +892,6 @@ tform(:,:,:,3) = interp3(X, Y, Z, dispF_Z, Xq, Yq, Zq, alg);
 
 % refine the border
 tform(isnan(tform)) = 0;
-end
-
-% this function for detecting the best running mode for local hardware setting
-function [rm, workers_n_stable, gpu_cores_n] = getRunningMode()
-% detect the hardware and output the best section
-cpu_cores_n=feature('numCores');
-if cpu_cores_n <= 8
-    workers_n_stable = cpu_cores_n;
-else
-    % TODO:
-    % worker_n_stable depends on image file size
-    workers_n_stable = round(0.85*cpu_cores_n);
-end
-gpu_cores_n = gpuDeviceCount('available');
-fprintf('-> available cpu core: %d \n-> available gpu: %d\n',...
-    cpu_cores_n,gpu_cores_n);
-fprintf('-> maximum stable workers number: %d\n',workers_n_stable);
-if gpu_cores_n > 0
-    if gpu_cores_n == 1
-        rm = 'gpu';
-    else
-        rm = 'multi-gpu';
-    end
-else
-    if cpu_cores_n > 1
-        rm = 'multi-cpu';
-    else
-        % you know, single core for debugging forever
-        rm = 'cpu';
-    end
-end
-% Next line for debugging
-% rm = 'cpu';
 end
 
 function gn = getGpuBlockNumber(opts)

@@ -16,7 +16,7 @@ movie = [];
 rt = [];
 varnames = [];
 
-vs_handle = VarSelecter_GUI();
+vs_handle = VarSelecter();
 
 waitfor(vs_handle,"is_closing",true);
 

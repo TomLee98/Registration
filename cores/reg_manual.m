@@ -1,4 +1,4 @@
-function [registered, tform] = register3D_manual(template,moving,varargin)
+function [registered, tform] = reg_manual(template,moving,varargin)
 %REGISTER2D_MAMUAL This function for manual register by using control point
 % algorithm
 %   Input:

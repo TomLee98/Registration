@@ -1,4 +1,4 @@
-function [signal,tform,marker] = register3D_tc_auto(varargin)
+function [signal,tform,marker] = reg_tc_auto(varargin)
 %REGISTER - This function help to align 3D volume series
 %   This function can automatically align two channels volumetric images
 %
@@ -142,6 +142,8 @@ function [signal,tform,marker] = register3D_tc_auto(varargin)
 % Version: 1.2.5
 %   *** Remove and clean up file pointer to a function
 %   *** fix file pointer bug
+% Version: 1.2.6
+%   *** append task manager for multi-user registration
 
 % Copyright (c) 2022-2023, Weihan Li
 
@@ -382,7 +384,7 @@ end
 
         tform = cell(opts.frames,2);
 
-        [rm,cn,~] = getRunningMode();
+        rm = GetRunningMode();
 
         % !!! HERE IS THE FIRST DENOISE USING !!!
         [fixvolEst_ds,denoise_dim] = denoise3D(fixvol_global_a_ds,'CRC',reg_param.coRegC);
@@ -583,7 +585,10 @@ end
         end
 
         function [t,ms_new,ma_new] = align_global_cpu(ma,ms,t)
-            parobj = OpenParpool(min(min(cn,getCpuBlockNumber(reg_param.bigfile)),opts.frames));
+            task_mgr = TaskManager(opts, reg_param, opts.frames);
+            [~, nw] = task_mgr.Allocate("cpu");
+
+            parobj = OpenParpool(nw);
 
             mpiprofile on
 
@@ -715,12 +720,15 @@ end
             mpiprofile viewer
 
             CloseParpool(parobj);
+
+            task_mgr.Free();
         end
 
         function [t,ms_new,ma_new] = align_local_gpu(ma,ms,t)
-            parobj = OpenParpool(min(getGpuBlockNumber(),opts.frames));
+            task_mgr = TaskManager(opts, reg_param, opts.frames);
+            [~, nw] = task_mgr.Allocate("gpu");
 
-            mpiprofile on
+            parobj = OpenParpool(nw);
 
             if reg_param.bigfile == "on"
                 % using for loop load block data
@@ -836,15 +844,16 @@ end
                 ma_new = ma;
             end
 
-            mpiprofile viewer
-
             CloseParpool(parobj);
+
+            task_mgr.Free();
         end
 
         function [t,ms_new,ma_new] = align_local_cpu(ma,ms,t)
-            parobj = OpenParpool(min(min(cn,getCpuBlockNumber(reg_param.bigfile)),opts.frames));
+            task_mgr = TaskManager(opts, reg_param, opts.frames);
+            [~, n] = task_mgr.Allocate("cpu");
 
-            mpiprofile on
+            parobj = OpenParpool(n);
 
             if reg_param.bigfile == "on"
                 % using for loop load block data
@@ -940,9 +949,9 @@ end
                 ma_new = ma;
             end
 
-            mpiprofile viewer
-
             CloseParpool(parobj);
+
+            task_mgr.Free();
         end
     end
 
@@ -981,129 +990,6 @@ end
                     fixvol_global_a, 1/str2double(ds.extract(1)));
         end
     end
-
-% this function for detecting the best running mode for local hardware setting
-    function [rm, workers_n_stable, gpu_cores_n] = getRunningMode()
-        % detect the hardware and output the best section
-        cpu_cores_n=feature('numCores');
-        if cpu_cores_n <= 8
-            workers_n_stable = cpu_cores_n;
-        else
-            % TODO:
-            % worker_n_stable depends on image file size
-            workers_n_stable = round(0.85*cpu_cores_n);
-        end
-        gpu_cores_n = gpuDeviceCount('available');
-        fprintf('-> available cpu core: %d \n-> available gpu: %d\n',...
-            cpu_cores_n,gpu_cores_n);
-        fprintf('-> maximum stable workers number: %d\n',workers_n_stable);
-        if gpu_cores_n > 0
-            if gpu_cores_n == 1
-                rm = 'gpu';
-            else
-                rm = 'multi-gpu';
-            end
-        else
-            if cpu_cores_n > 1
-                rm = 'multi-cpu';
-            else
-                % you know, single core for debugging forever
-                rm = 'cpu';
-            end
-        end
-        % Next line for debugging
-        % rm = 'cpu';
-    end
-
-    function gn = getGpuBlockNumber()
-        % This function get the avaiable gpu memory size and give a bench
-        % size of a processing job, which is the frame could be loaded
-        SINGLE_BYTES = 4;
-        FOLD_RATIO = 160;   % the linear estimation may be wrong
-        SECURATY_RATIO = 0.85;
-
-        % THE MAXSIZE OF GRAPHICS CARD MEMORY CONTAINS MODEL CAN BE
-        % CALCULATE BY LINEAR SIMILARITY
-
-        gpu_memory = zeros(1,gpuDeviceCount);
-        for k = 1:gpuDeviceCount
-            c = gpuDevice(k);
-            gpu_memory(k) = c.AvailableMemory;
-        end
-        minimal_aval_memory = min(gpu_memory);
-
-        mem_per_volume = opts.width*opts.height*opts.slices ...
-            *SINGLE_BYTES;
-
-        if ispc()
-            mem_per_worker = 800*1024*1024; % bytes
-        elseif isunix()
-            mem_per_worker = 1100*1024*1024; %bytes
-        else
-            % what is the fuck?
-            error('Your operation system is so coooool.');
-        end
-
-        gn = round(gpuDeviceCount*minimal_aval_memory*SECURATY_RATIO/...
-            (mem_per_volume*FOLD_RATIO+mem_per_worker));
-        % for even gn to balance
-        if gn < 1 || mem_per_volume > minimal_aval_memory
-            error('No available enough gpu memory.');
-        else
-            if gn >gpuDeviceCount
-                % balance different GPU loading
-                gn = gn - mod(gn,gpuDeviceCount);
-            end
-        end
-
-    end
-
-% TODO: fold ratio relys on whether the data is big file
-    function cn = getCpuBlockNumber(useBigFile)
-        if ~exist("isBigFile","var") || isempty(useBigFile)
-            useBigFile = "off";
-        elseif ~isstring(useBigFile)
-            error("Invalid input argument.");
-        end
-        % This function get the avaiable memory size and give a bench
-        % size of a processing job, which is the frame could be loaded
-        UINT16_BYTES = 2;
-
-        if useBigFile == "on"
-            FOLD_RATIO = 2+3;
-        elseif useBigFile == "off"
-            % 2 for two channel(aligned,signal),2 for argument and temporary
-            % variable (pyramid levels algorithm), 3 for tmpdata (coreg3D)
-            FOLD_RATIO = 2*2+3;
-        end
-
-        % left ?% avaiable memory for system running AND O(1) memory
-        % alloc
-        SECURATY_RATIO = 0.8;
-
-        % THE MAXSIZE OF MEMORY CONTAINS MODEL CAN BE
-        % CALCULATE BY LINEAR SIMILARITY
-        mem_per_volume = opts.width*opts.height*opts.slices ...
-            *UINT16_BYTES;
-
-        % SELECT PRESENT PLATFORM
-        if ispc()
-            mem_per_worker = 800*1024*1024; % bytes
-            cn = fix(GetAvailableMemory()*SECURATY_RATIO...
-                /(mem_per_volume*FOLD_RATIO+mem_per_worker));
-        elseif isunix()
-            mem_per_worker = 1100*1024*1024; %bytes
-            cn = fix(GetAvailableMemory()*SECURATY_RATIO...
-                /(mem_per_volume*FOLD_RATIO+mem_per_worker));
-        else
-            % what is the fuck?
-            error('Your operation system is so coooool.');
-        end
-        if cn < 1
-            error('No available enough memory.');
-        end
-    end
-
 end
 
 % About maximum 3 fold memory of movol used <coreg3D>

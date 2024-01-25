@@ -159,9 +159,12 @@ V1.6        Sika deer           梅花鹿
   |     |- [Fix Bugs] disable the bug-report menu on linux platform
   |- V1.6.6     2024/01/
   |     |- [Update] TODO: system computation source manager, for avoiding different user confliction parpool
-  |     |- [Update] TODO: auto registration template by mass center estimation
+  |     |- [Update] TODO: add mouse roller z slice controlling
+  |     |- [Update] remove nearest interpolation in registration
   |     |- [Update] TODO: long-term registration review at points cloud registration
   |     |- [Fix Bugs] fix the registration frames number lost synchronize bug
+  |     |- [Fix Bugs] fix one channel registration(manual) output
+  |     |- [Fix Bugs] fix mode 'affine' can not run
   |     |- [Fix Bugs] TODO: fix long-term registration out of memory when key frames is too much
   |- V1.6.7     2024/
   |     |- [Update] TODO: registration history manager

@@ -14,7 +14,7 @@ pcl = parcluster(parallel.defaultProfile);
 parobj = gcp("nocreate");
 
 if isempty(parobj)
-    parobj = parpool(pcl, [1,n], 'SpmdEnabled',true);
+    parobj = parpool(pcl, [1,n], 'SpmdEnabled',true);       % spmd set true for mpiprofile: test
 elseif parobj.NumWorkers ~= n
     % restart parpool
     delete(gcp);
