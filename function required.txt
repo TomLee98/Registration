@@ -157,24 +157,27 @@ V1.6        Sika deer           梅花鹿
   |     |- [Fix Bugs] fix one volume can't do registration(avoid loading)
   |     |- [Fix Bugs] fix the timer bug after multi-loading
   |     |- [Fix Bugs] disable the bug-report menu on linux platform
-  |- V1.6.6     2024/01/
+  |- V1.6.6     2024/01/26
   |     |- [Update] TODO: system computation source manager, for avoiding different user confliction parpool
-  |     |- [Update] TODO: add mouse roller z slice controlling
   |     |- [Update] remove nearest interpolation in registration
-  |     |- [Update] TODO: long-term registration review at points cloud registration
+  |     |- [Update] clean up project for clearly calling
   |     |- [Fix Bugs] fix the registration frames number lost synchronize bug
   |     |- [Fix Bugs] fix one channel registration(manual) output
   |     |- [Fix Bugs] fix mode 'affine' can not run
+  #     #
+
+V1.7        Golden monkey       金丝猴
+  |- V1.7.0
+  |     |- [Update] TODO: add mouse roller z slice controlling
+  |     |- [Update] TODO: more powerful task manager introduced
+  |     |- [Update] TODO: long-term registration review at points cloud registration
   |     |- [Fix Bugs] TODO: fix long-term registration out of memory when key frames is too much
-  |- V1.6.7     2024/
+  |- V1.7.1
   |     |- [Update] TODO: registration history manager
-  |     |- [Fix Bugs] TODO: fix export movie bug: uncertainty resolution
-  |- V1.6.8     2024/
-  |     |- [Update] 
   |     |- 
 
 
-V1.7        Crested ibis        朱鹮
+V1.8        Crested ibis        朱鹮
 
 
 

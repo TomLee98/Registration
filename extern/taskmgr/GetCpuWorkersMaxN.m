@@ -58,6 +58,9 @@ else
         throw(MException("GetCPUWorkersMaxN:noEnoughMemory", ...
             "No available enough memory."));
     end
+
+    [~, wkn] = GetRunningMode();
+    n = min(n, wkn);
 end
 
 end

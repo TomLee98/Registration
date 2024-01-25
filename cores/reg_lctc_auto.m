@@ -264,7 +264,7 @@ end
         %   (2) apply the chain shift
         %   (3) evaluate the registration result, do twice registration on bad part
 
-        [rm, wkn] = GetRunningMode();
+        rm = GetRunningMode();
 
         if strcmp(rm, 'cpu')
             tform = cell.empty(0, 2);
@@ -291,7 +291,7 @@ end
             = uint16(0);
 
         %  read data as more as possible for speed up
-        block_n = min(getCpuBlockNumber(opts), wkn);
+        block_n = GetCpuWorkersMaxN(opts, true, true);
         load_loop_n = ceil(opts.frames/block_n);
 
         % rigid/affine with cpu first
@@ -892,76 +892,4 @@ tform(:,:,:,3) = interp3(X, Y, Z, dispF_Z, Xq, Yq, Zq, alg);
 
 % refine the border
 tform(isnan(tform)) = 0;
-end
-
-function gn = getGpuBlockNumber(opts)
-% This function get the avaiable gpu memory size and give a bench
-% size of a processing job, which is the frame could be loaded
-SINGLE_BYTES = 4;
-FOLD_RATIO = 160;   % the linear estimation may be wrong
-SECURATY_RATIO = 0.85;
-
-% THE MAXSIZE OF GRAPHICS CARD MEMORY CONTAINS MODEL CAN BE
-% CALCULATE BY LINEAR SIMILARITY
-
-gpu_memory = zeros(1,gpuDeviceCount);
-for k = 1:gpuDeviceCount
-    c = gpuDevice(k);
-    gpu_memory(k) = c.AvailableMemory;
-end
-minimal_aval_memory = min(gpu_memory);
-
-mem_per_volume = opts.width*opts.height*opts.slices ...
-    *SINGLE_BYTES;
-
-if ispc()
-    mem_per_worker = 800*1024*1024; % bytes
-elseif isunix()
-    mem_per_worker = 1100*1024*1024; %bytes
-else
-    % what is the fuck?
-    error('Your operation system is so coooool.');
-end
-
-gn = round(gpuDeviceCount*minimal_aval_memory*SECURATY_RATIO/...
-    (mem_per_volume*FOLD_RATIO+mem_per_worker));
-% for even gn to balance
-if gn < 1 || mem_per_volume > minimal_aval_memory
-    error('No available enough gpu memory.');
-else
-    if gn >gpuDeviceCount
-        % balance different GPU loading
-        gn = gn - mod(gn,gpuDeviceCount);
-    end
-end
-
-end
-
-function cn = getCpuBlockNumber(opts)
-% This function get the avaiable memory size and give a bench
-% size of a processing job, which is the frame could be loaded
-UINT16_BYTES = 2;
-FOLD_RATIO = 5;
-SECURATY_RATIO = 0.8;
-
-% THE MAXSIZE OF MEMORY CONTAINS MODEL CAN BE
-% CALCULATE BY LINEAR SIMILARITY
-mem_per_volume = opts.width*opts.height*opts.slices ...
-    *UINT16_BYTES;
-
-% SELECT PRESENT PLATFORM
-if ispc()
-    mem_per_worker = 800*1024*1024; % bytes
-    cn = fix(GetAvailableMemory()*SECURATY_RATIO...
-        /(mem_per_volume*FOLD_RATIO+mem_per_worker));
-elseif isunix()
-    mem_per_worker = 1100*1024*1024; %bytes
-    cn = fix(GetAvailableMemory()*SECURATY_RATIO...
-        /(mem_per_volume*FOLD_RATIO+mem_per_worker));
-end
-if cn < 1
-    error('No available enough memory.');
-end
-
-
 end
