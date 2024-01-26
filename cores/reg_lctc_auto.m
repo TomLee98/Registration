@@ -87,7 +87,7 @@ DEFAULT_CHAIN_LENGTH = 20;
 
 p = inputParser;
 valid_file =        @(x)assert(isempty(x)||((isstring(x) || ischar(x)) && exist(x,"file")));
-valid_movinfo =     @(x)assert(isstruct(x) && all(ismember(["mov","opts"],string(fieldnames(x)))));
+valid_movinfo =     @(x)assert(isstruct(x) && all(ismember(["mptr","opts"],string(fieldnames(x)))));
 valid_refvol =      @(x)assert(isstruct(x) && all(ismember(string(fieldnames(x)),["G","L"])));
 valid_regframes =   @(x)validateattributes(x,{'numeric'},{'row','positive','integer','increasing'});
 valid_keyframes =   @(x)validateattributes(x, {'string'},{'scalar'});

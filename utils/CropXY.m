@@ -12,9 +12,8 @@ function [C, status] = CropXY(A, ROI)
 % Copyright (c) 2022-2023, Weihan Li
 
 arguments
-    A;
-    ROI (2,2) double {mustBeInteger,mustBePositive} ...
-        = [1,1;size(A,[1,2])];  % (x1,y1;x2,y2)
+    A
+    ROI (2,2) double {mustBeInteger,mustBePositive} % (x1,y1;x2,y2)
 end
 if numel(size(A)) < 2
     error("Invalid Matrix A");

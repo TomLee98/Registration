@@ -168,7 +168,7 @@ V1.6        Sika deer           梅花鹿
 
 V1.7        Golden monkey       金丝猴
   |- V1.7.0
-  |     |- [Update] TODO: add mouse roller z slice controlling
+  |     |- [Update] add mouse roller z slice controlling
   |     |- [Update] TODO: more powerful task manager introduced
   |     |- [Update] TODO: long-term registration review at points cloud registration
   |     |- [Fix Bugs] TODO: fix long-term registration out of memory when key frames is too much

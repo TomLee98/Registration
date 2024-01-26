@@ -84,7 +84,7 @@ VALID_GRID_UNIT = ["auto","1 1 1","2 2 1","3 3 1","4 4 1"];
 
 p = inputParser;
 valid_file = @(x) isempty(x)||((isstring(x) || ischar(x)) && exist(x,"file"));
-valid_movinfo = @(x) isstruct(x) && all(ismember(["mov","opts"],string(fieldnames(x))));
+valid_movinfo = @(x) isstruct(x) && all(ismember(["mptr","opts"],string(fieldnames(x))));
 valid_refvol = @(x)isstruct(x) && all(ismember(string(fieldnames(x)),["G","L"]));
 valid_regframes = @(x) validateattributes(x,{'numeric'},{'row','positive','integer','increasing'});
 valid_regmode = @(x)(ismember(x,VALID_REGMODE_METHOD));

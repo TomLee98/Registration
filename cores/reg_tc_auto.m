@@ -157,7 +157,7 @@ VALID_COMP_ACC = [512, 1024, 2048, 4096];
 
 p = inputParser;
 valid_file = @(x) isempty(x)||((isstring(x) || ischar(x)) && exist(x,"file"));
-valid_movinfo = @(x) isstruct(x) && all(ismember(["mov","opts"],string(fieldnames(x))));
+valid_movinfo = @(x) isstruct(x) && all(ismember(["mptr","opts"],string(fieldnames(x))));
 valid_refvol = @(x)isstruct(x) && all(ismember(string(fieldnames(x)),["G","L"]));
 valid_regframes = @(x) validateattributes(x,{'numeric'},{'row','positive','integer','increasing'});
 valid_regmode = @(x)(ismember(x,VALID_REGMODE_METHOD));
@@ -289,18 +289,18 @@ else
 end
 
 % load the file
-if isempty(parser_results.movinfo.mov)
-    [opts,mov,~,~] = loadfile(parser_results.filename);
+if isempty(parser_results.movinfo.mptr)
+    [opts,mptr,~,~] = loadfile(parser_results.filename);
 else
-    mov = parser_results.movinfo.mov;
+    mptr = parser_results.movinfo.mptr;
     opts = parser_results.movinfo.opts;
 end
 
 channel_order = opts.cOrder;
 
 % generate global value: fixed volume and data scale
-[MA_MIN, MA_MAX] = getMinMaxIn(mov, parser_results.Chla, channel_order);
-fv = GenFixVolProfile(mov, parser_results, channel_order, parser_results.DS);
+[MA_MIN, MA_MAX] = getMinMaxIn(mptr, parser_results.Chla, channel_order);
+fv = GenFixVolProfile(mptr, parser_results, channel_order, parser_results.DS);
 
 % pre-processing data that was RegFrames mentioned
 if isequal(parser_results.RegFrames,intmax("uint16"))
@@ -308,7 +308,7 @@ if isequal(parser_results.RegFrames,intmax("uint16"))
 else
     reg_frames = intersect(parser_results.RegFrames, 1:opts.frames);
 end
-mov(:,:,:,:,setdiff(1:opts.frames,reg_frames)) = []; % remove the kept data
+mptr(:,:,:,:,setdiff(1:opts.frames,reg_frames)) = []; % remove the kept data
 opts.frames = numel(reg_frames); % adjust the frames
 opts.images = opts.frames*opts.slices*opts.channels; % adjust the total images
 
@@ -340,17 +340,17 @@ reg_param = struct( 'regmode',      parser_results.RegMode,...
 % clear vars for debug easy
 clearvars -except opts mov reg_param CONTRAST_CONSTANT MA_MIN MA_MAX;
 
-if ~isempty(mov)
+if ~isempty(mptr)
     switch reg_param.bigfile
         case "on"
             chl = [find(reg_param.chlA==reg_param.chlMode), ...
                    find(reg_param.chlS==reg_param.chlMode)];
-            [ma_ptr, ms_ptr] = GenFilePointer(mov, chl);
+            [ma_ptr, ms_ptr] = GenFilePointer(mptr, chl);
         case "off"
             % use the memory variable directly
-            ma_ptr = squeeze(uint16(mov(:,:,...
+            ma_ptr = squeeze(uint16(mptr.Data(:,:,...
                 reg_param.chlA==reg_param.chlMode,:,:)));
-            ms_ptr = squeeze(uint16(mov(:,:,...
+            ms_ptr = squeeze(uint16(mptr.Data(:,:,...
                 reg_param.chlS==reg_param.chlMode,:,:)));
         otherwise
     end
@@ -955,18 +955,18 @@ end
         end
     end
 
-    function [MA_MIN, MA_MAX] = getMinMaxIn(mov, ch_slt, ch_ord)
-        MA_MIN = min(mov(:,:,ch_slt==ch_ord,:,:),[],"all");
-        MA_MAX = max(mov(:,:,ch_slt==ch_ord,:,:),[],"all");
+    function [MA_MIN, MA_MAX] = getMinMaxIn(mptr, ch_slt, ch_ord)
+        MA_MIN = min(mptr.Data(:,:,ch_slt==ch_ord,:,:),[],"all");
+        MA_MAX = max(mptr.Data(:,:,ch_slt==ch_ord,:,:),[],"all");
     end
 
-    function fv = GenFixVolProfile(mov, ps, cd, ds)
-        tmp_ma = squeeze(mov(:,:,ps.Chla==cd,:,:));
+    function fv = GenFixVolProfile(mptr, ps, cd, ds)
+        tmp_ma = squeeze(mptr.Data(:,:,ps.Chla==cd,:,:));
         fixvol_global_a = GetFixedVol(tmp_ma, ps.RefVol.G);
         fixvol_local_a = GetFixedVol(tmp_ma, ps.RefVol.L);
         clearvars tmp_ma;
 
-        tmp_ms = squeeze(mov(:,:,ps.Chls==cd,:,:));
+        tmp_ms = squeeze(mptr.Data(:,:,ps.Chls==cd,:,:));
         fixvol_global_s = GetFixedVol(tmp_ms, ps.RefVol.G);
         clearvars tmp_ms;
         

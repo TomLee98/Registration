@@ -14,10 +14,10 @@ function A = Projection(A, method, dim, range)
 % Copyright (c) 2022-2023, Weihan Li
 
 arguments
-    A (:,:,:,:,:);
-    method (1,1) {ismember(method,["max","min","median","mean"])} = "mean";
-    dim (1,1) double {mustBeInRange(dim,1,5)} = 4;
-    range {mustBeTextScalar} = string(1:size(A, dim)).join(",");
+    A
+    method (1,1) {ismember(method,["max","min","median","mean"])} = "mean"
+    dim (1,1) double {mustBeInRange(dim,1,5)} = 4
+    range {mustBeTextScalar} = string(1:size(A, dim)).join(",")
 end
 
 % calculate the slice of A

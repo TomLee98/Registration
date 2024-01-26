@@ -21,7 +21,7 @@ vs_handle = VarSelecter();
 waitfor(vs_handle,"is_closing",true);
 
 % take the information and delete app
-info = vs_handle.UIFigure.UserData;
+info = vs_handle.VarSelectorUIFigure.UserData;
 delete(vs_handle);
 
 s = validateinfo(info);
