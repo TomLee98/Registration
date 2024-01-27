@@ -168,6 +168,11 @@ classdef mpimg < handle
             end
         end
 
+        function link(this, file_, format_, dimorder_)
+            % this function will link to an exist file
+            
+        end
+
         function r = isempty(this)
             r = isempty(this.memptr);
         end
@@ -227,7 +232,7 @@ classdef mpimg < handle
                 end
 
                 % memmapping
-                this.newmapfilefile_, data_);
+                this.newmapfile(file_, data_);
 
             else
                 throw(MException("mpimg:genmptr:invalidUse", ...
@@ -240,11 +245,8 @@ classdef mpimg < handle
             msize = size(data_);
             this.datatype = class(data_);
 
-            if isempty(this.fmt) || any(cellfun(@(x)isempty(x), this.fmt)) ...
-                    || (numel(this.fmt)~=3)
-                % replace the format
-                this.fmt = {this.datatype, msize, 'mov'};
-            end
+            % replace the format
+            this.fmt = {this.datatype, msize, 'mov'};
 
             if this.isdisplay, fprintf("Memery mapping -> %s ...\n", file_); end
 
