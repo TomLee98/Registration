@@ -1,4 +1,4 @@
-function [opts,rt,memptr,filename] = loadfile_test(filename, tmpfolder, omitif, order_out)
+function [opts,rt,mptr,filename] = loadfile_test(filename, tmpfolder, omitif, order_out)
 %LOADFILE: This function for loading data (.ims,.tif,.nd2)
 % input:
 %   - filename:char array or string, the movie file name (with full path), can be empty
@@ -8,7 +8,7 @@ function [opts,rt,memptr,filename] = loadfile_test(filename, tmpfolder, omitif, 
 %   - opts: some useful movie information, 1 X 12 table, with variables:
 %           width   height  channels slices  frames images  xRes    yRes
 %           zRes    bitDepth    dimOrder    cOrder
-%   - memptr: the memmapper object, which is file manage interface
+%   - mptr: the mpimg object, which is dynamic image file object
 %   - rt: the relative camera time, n*1 array, seconds as unit
 %   - filename: the file name, char array
 %
@@ -29,7 +29,7 @@ end
 nargoutchk(1, 4);
 
 opts = [];
-memptr = [];
+mptr = [];
 rt = [];
 
 % check whether file is existing or not
@@ -61,7 +61,8 @@ else
         % using order_out for transformed order
         mov = reorder(mov, opts.dimOrder, order_out);
 
-        memptr = mpimg(tmpfolder, mov, order_out, true);
+        % generate a new mapping file
+        mptr = mpimg(tmpfolder, [], mov);
 
         disp("Loading success.");
     end

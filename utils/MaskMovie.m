@@ -15,9 +15,9 @@ function A = MaskMovie(A, mask, inverse)
 % Copyright (c) 2022-2023, Weihan Li
 
 arguments
-    A {mustBeNumeric};
-    mask (:,:,:) logical;
-    inverse (1,1) logical = false;
+    A
+    mask (:,:,:) logical
+    inverse (1,1) logical = false
 end
 
 if isempty(A), return; end
@@ -40,7 +40,11 @@ assert(all(size_mask==vol_size_A),"MaskMovie:sizeNotMatch",...
 
 if inverse, mask = ~ mask; end %#ok<NASGU> 
 
-mask = eval([class(A),'(mask)']);
+if class(A) ~= "mpimg"
+    mask = eval([class(A),'(mask)']);
+else
+    mask = eval([get_datatype(A), '(mask)']);
+end
 
 switch D
     case 5

@@ -338,7 +338,7 @@ reg_param = struct( 'regmode',      parser_results.RegMode,...
     'bigfile',      parser_results.BigFile);
 
 % clear vars for debug easy
-clearvars -except opts mov reg_param CONTRAST_CONSTANT MA_MIN MA_MAX;
+clearvars -except opts mptr reg_param CONTRAST_CONSTANT MA_MIN MA_MAX;
 
 if ~isempty(mptr)
     switch reg_param.bigfile
