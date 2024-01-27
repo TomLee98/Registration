@@ -21,7 +21,7 @@ function [opts,rt,mptr,filename] = loadfile_test(filename, tmpfolder, omitif, or
 
 arguments
     filename string
-    tmpfolder (1,1) string {mustBeFolder} = "E:\si lab\Matlab Projects\Registration";
+    tmpfolder (1,1) string {mustBeFolder} = "E:\";
     omitif (1,1) logical = false
     order_out (1,5) string = ["X","Y","C","Z","T"]
 end

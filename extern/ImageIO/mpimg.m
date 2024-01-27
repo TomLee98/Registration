@@ -30,32 +30,39 @@ classdef mpimg < handle
         DataDims        % variable, get
         DataBytes       % variable, get
     end
-    
+
     methods
-        function this = mpimg(folder_, file_, data_, format_, dimorder_, autoclear_, const_, display_)
+        function this = mpimg(folder_, file_, data_, dimorder_, autoclear_, const_, display_)
             %MEMMAPPER A Constructor
-            % case 1: folder ~= [], file_ == [], data_ ~= [], format_~    % new file
-            % case 2: folder ~, file_ ~= [], data == [], format_ ~= []    % link exist file
-            % case 3: folder ~, file_ ~= [], data ~= [], format_~         % new file with file_ as file name
+            % case 1: folder ~= [], file_ == [], data_ ~= []    % new file with random name
+            % case 2: folder ~, file_ ~= [], data ~= []         % new file with given name
             % otherwise: throw exception: invalid use
             arguments
                 folder_
                 file_
                 data_
-                format_    (1,:)    cell = cell(1,3)
                 dimorder_  (1,:)    string = ["X","Y","C","Z","T"]
                 autoclear_ (1,1)    logical = true
                 const_     (1,1)    logical = false
                 display_   (1,1)    logical = false     % for debugging
             end
 
-            this.fmt = format_;
             this.dimorder = dimorder_;
             this.isdisplay = display_;
             this.isautoclear = autoclear_;
             this.isconst = const_;
 
-            genmptr(this, folder_, file_, data_);
+            if (~isempty(folder_) && isfolder(folder_)) ...
+                    && isempty(file_) && ~isempty(data_)
+                file_ = mpimg.genfilename(folder_);
+                this.newmapfile(file_, data_);
+            elseif isempty(folder_) && (~isempty(file_)&&~isfile(file_)) ...
+                    && ~isempty(data_)
+                this.newmapfile(file_, data_);
+            else
+                throw(MException("mpimg:invalidUse", ...
+                    "Can not parse input arguments."));
+            end
         end
 
         function r = get.Data(this)
@@ -70,8 +77,7 @@ classdef mpimg < handle
                     this.memptr.Data.mov = r;
                 else
                     % remapping a new file, but keep the name
-                    file_ = this.memptr.Filename;
-                    this.genmptr([], file_, r);
+                    this.remaptr(r);
                 end
             else
                 throw(MException("mpimg:tryToModifyConstant", ...
@@ -170,7 +176,41 @@ classdef mpimg < handle
 
         function link(this, file_, format_, dimorder_)
             % this function will link to an exist file
-            
+            arguments
+                this
+                file_
+                format_    (1,:)    cell = cell(1,3)
+                dimorder_  (1,:)    string = ["X","Y","C","Z","T"]
+            end
+
+            if (numel(format_) ~= 3) || ~ismember(format_{1}, ...
+                    ["uint8","uint16","uint32","uint64","int8","int16", ...
+                    "int32","int64","single","double"]) ...
+                    || ~(isvector(format_{2})&&isPositiveIntegerValuedNumeric(format_{2})) ...
+                    || ~isvarname(format_{3})
+                throw(MException("mpimg:invalidFormatArg", ...
+                    "Invalid file format argument."));
+            end
+
+            if isfile(file_)
+                [~, ~, ext] = fileparts(file_);
+                if ~strcmp(ext, '.dat')
+                    throw(MException("mpimg:genmptr:invalidUse", ...
+                        "Invalid file format."));
+                end
+
+                this.fmt = format_;
+                this.dimorder = dimorder_;
+
+                this.memptr = memmapfile(file_, ...
+                    "Format", this.fmt, ...
+                    "Writable", ~this.isconst);
+
+                if this.isdisplay, fprintf("Memery mapping linked.\n"); end
+            else
+                throw(MException("mpimg:genmptr:invalidUse", ...
+                    "File is not found or access permission denied."));
+            end
         end
 
         function r = isempty(this)
@@ -179,65 +219,25 @@ classdef mpimg < handle
     end
 
     methods(Access = private)
-        function genmptr(this, folder_, file_, data_)
-            % this function generates the memmapfile object
 
-            if (~isempty(folder_) && isfolder(folder_)) ...
-                    && isempty(file_) && ~isempty(data_)
-                %% =========== generare new file on disk ==============
-                % generate random file name
-                file_ = mpimg.genfilename(folder_);
+        function remaptr(this, data_)
+            % remove file and release resource
+            file_ = this.memptr.Filename;
 
-                % memmapping
-                this.newmapfile(file_, data_);
-
-            elseif ~isempty(file_) && isempty(data_)
-                %% ============ relink the exist file =================
-                if all(cellfun(@(x)~isempty(x), this.fmt))
-                    if isfile(file_)
-                        [~, ~, ext] = fileparts(file_);
-                        if ~strcmp(ext, '.dat')
-                            throw(MException("mpimg:genmptr:invalidUse", ...
-                                "Invalid file format."));
-                        end
-                        this.memptr = memmapfile(file_, ...
-                                               "Format", this.fmt, ...
-                                               "Writable", ~this.isconst);
-
-                        if this.isdisplay, fprintf("Memery mapping relinked.\n"); end
-                    else
-                        throw(MException("mpimg:genmptr:invalidUse", ...
-                            "File is not found or access permission denied."));
-                    end
-                else
-                    throw(MException("mpimg:genmptr:invalidUse", ...
-                        "Relinking existed file needs its format."));
-                end
-
-            elseif ~isempty(file_) && ~isempty(data_)
-                %% ====== generate new file with file_ as name ======
-                % remove file and release resource
-                if isfile(file_)
+            if isfile(file_)
+                if this.isautoclear
                     this.memptr = [];
-                    if this.isautoclear
-                        delete(file_);
-                    else
-                        if file_ == this.memptr.Filename
-                            throw(MException("mpimg:invalidFileName", ...
-                                "Can not create a file has the same name with " + ...
-                                "an already existed file when auto clear is " + ...
-                                "not working."));
-                        end
-                    end
+                    delete(file_);
+                else
+                    throw(MException("mpimg:invalidFileName", ...
+                        "Can not create a file has the same name with " + ...
+                        "an already existed file when auto clear is " + ...
+                        "not working."));
                 end
-
-                % memmapping
-                this.newmapfile(file_, data_);
-
-            else
-                throw(MException("mpimg:genmptr:invalidUse", ...
-                    "Invalid calling of genmptr."));
             end
+
+            % memmapping
+            this.newmapfile(file_, data_);
         end
 
         function newmapfile(this, file_, data_)
