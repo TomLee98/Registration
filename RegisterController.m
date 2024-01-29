@@ -15,11 +15,7 @@ classdef RegisterController < handle
     properties(Access = private)
         regopt              % registration options
         volopt              % image volumes options
-
-        mov_aligned         % the aligned mov
-        mov_aligned_zproj   % the aligned mov z-projection
-        mov_aligned_tproj   % the aligned mov t-projection
-        tform               % the transform, n-by-3 cell
+        sinfo               % source_info struct
     end
 
     properties(Access = private, Hidden)
@@ -28,7 +24,22 @@ classdef RegisterController < handle
         regworker   % RegisterWorker object
         state       % 1-by-1 OnOffSwitchState enum, can be "on" or "off" 
     end
+
+    properties(GetAccess=public, Dependent)
+        RegisterOptions
+        State
+    end
     
+    methods
+        function r = get.RegisterOptions(this)
+            r = this.regopt;
+        end
+
+        function r = get.State(this)
+            r = this.state;
+        end
+    end
+
     methods
         function this = RegisterController(caller_, volopt_)
             %REGISTER A constructor
@@ -44,12 +55,10 @@ classdef RegisterController < handle
             this.init_regopt(volopt_.cOrder, volopt_.slices);
         end
 
-        function status = Run(this, sinfo_, regopt_, regfr_)
+        function status = Run(this, regfr_)
             % This function is the controller of registration
             arguments
                 this
-                sinfo_  (1,1)  struct    % source informaton struct
-                regopt_ (1,1)  struct    % registration options
                 regfr_  (1,:)  double {mustBePositive, mustBeInteger} 
             end
 
@@ -57,24 +66,6 @@ classdef RegisterController < handle
             this.taskmgr = TaskManager(this.volopt, regopt_);
 
             
-        end
-
-        function [status, path] = Save(this, fname, mdata, cidx)
-            % This function save aligned movie
-            arguments
-                this
-                fname   (1,1) string    % full file name
-                mdata   (1,1) struct    % meta data struct
-                cidx    (1,1) double {mustBeMember(cidx, [1,2])} = 1
-            end
-
-            data_export = squeeze(this.mov_aligned(:,:,cidx,:,:));
-
-            % call the external function: savefile
-            [status, path] = savefile(data_export,[],...
-                'filename', fname, ...
-                'metadata', mdata);
-
         end
 
         function status = Stop(this)

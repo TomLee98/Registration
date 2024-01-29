@@ -66,8 +66,7 @@ else
             wbar = loadbar("memmory mapping");
             % generate a new mapping file
             mptr = mpimg(tmpfolder, [], mov, order_out);
-
-            mptr_cp = mptr.copy();
+            
             delete(wbar);
         else
             mptr = mov;

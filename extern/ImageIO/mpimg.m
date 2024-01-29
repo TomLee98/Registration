@@ -32,6 +32,7 @@ classdef mpimg < matlab.mixin.Copyable
         DataSize        % variable, get
         DataDims        % variable, get
         DataBytes       % variable, get
+        Filename        % variable, get
     end
 
     methods
@@ -84,7 +85,8 @@ classdef mpimg < matlab.mixin.Copyable
         function set.Data(this, r)
             if this.isconst == false
                 if all(size(this.memptr.Data.mov) ...
-                        == size(r))
+                        == size(r)) ...
+                        && strcmp(this.DataType, class(r))
                     % only change the value, write to disk
                     this.memptr.Data.mov = r;
                 else
@@ -113,7 +115,7 @@ classdef mpimg < matlab.mixin.Copyable
             end
 
             % permute the data
-            [~, p] = ismember(r, this.fmt);
+            [~, p] = ismember(upper(r), this.fmt);
 
             if any(p==0)
                 throw(MException("mpimg:invalidDimensionIndicator", ...
@@ -126,7 +128,7 @@ classdef mpimg < matlab.mixin.Copyable
 
             this.Data = permute(this.Data, p);  % easy calling
 
-            this.dimorder = r;
+            this.dimorder = upper(r);
         end
 
         function r = get.IsAutoClear(this)
@@ -162,9 +164,12 @@ classdef mpimg < matlab.mixin.Copyable
             end
             r = prod(this.DataSize)*bytes_per_elem;
         end
+
+        function r = get.Filename(this)
+            r = this.memptr.Filename;
+        end
     end
 
-    % Public interface: operation on mpimg
     methods(Access = public)
         function link(this, file_, format_, dimorder_)
             % this function will link to an exist file
@@ -194,99 +199,38 @@ classdef mpimg < matlab.mixin.Copyable
             end
         end
 
-        function mptr = crop_xy(this, x, y)
+        function mptr = crop(this, dim_, r_)
             arguments
                 this
-                x   (1,2)   double {mustBePositive, mustBeInteger}
-                y   (1,2)   double {mustBePositive, mustBeInteger}
+                dim_  (1,1) string
+                r_    (:,2) double {mustBePositive, mustBeInteger}
             end
 
-            if any(~ismember(["X","Y"], this.dimorder))
+            dim_ = upper(dim_).split("");
+            dim_ = dim_(2:end-1);    % remove "" at front and tail
+            [s, ~] = ismember(dim_, this.dimorder);
+            if any(~s)
                 throw(MException("mpimg:invalidCrop", ...
                     "No dimension for this operation."));
             end
-            if any(x > this.DataSize(this.DimOrder=="X")) ...
-                    || any(y > this.DataSize(this.DimOrder=="Y"))
-                throw(MException("mpimg:invalidCropRange", ...
-                    "Crop range is out of data size."));
-            end
-
-            validateattributes(x, "double", "nondecreasing");
-            validateattributes(y, "double", "nondecreasing");
-
-            % inner dimension order: XYCZT
-            sz = {x,y,':',':',':'};
-
-            mptr = this.crop(sz);
-        end
-
-        function mptr = crop_z(this, z)
-            arguments
-                this
-                z   (1,2)   double {mustBePositive, mustBeInteger}
-            end
-            
-            if ~ismember("Z", this.dimorder)
+            if numel(dim_) ~= size(r_, 1)
                 throw(MException("mpimg:invalidCrop", ...
-                    "No dimension for this operation."));
+                    "Crop dimension not match."));
             end
-            if any(z > this.DataSize(this.DimOrder=="Z"))
-                throw(MException("mpimg:invalidCropRange", ...
-                    "Crop range is out of data size."));
-            end
+            validateattributes(r_, "double", "nondecreasing");
 
-            validateattributes(z, "double", "nondecreasing");
-
-            % inner dimension order: XYCZT
-            sz = {':',':',':',z,':'};
-
-            mptr = this.crop(sz);
-        end
-
-        function mptr = crop_t(this, t)
-            arguments
-                this
-                t   (1,2)   double {mustBePositive, mustBeInteger}
+            sz = repmat({':'}, 1, numel(this.INNER_DIMENSION_ORDER));
+            [~, p] = ismember(dim_, this.INNER_DIMENSION_ORDER);
+            for n = 1:numel(p)
+                if r_(n, 2) > this.DataSize(dim_(n)==this.dimorder)
+                    throw(MException("mpimg:invalidCropRange", ...
+                        "Crop range is out of data size."));
+                end
+                sz{p(n)} = r_(n, :);
             end
 
-            if ~ismember("T", this.dimorder)
-                throw(MException("mpimg:invalidCrop", ...
-                    "No dimension for this operation."));
-            end
-            if any(t > this.DataSize(this.DimOrder=="T"))
-                throw(MException("mpimg:invalidCropRange", ...
-                    "Crop range is out of data size."));
-            end
+            mptr = this.crop_(sz);
 
-            validateattributes(t, "double", "nondecreasing");
-
-            % inner dimension order: XYCZT
-            sz = {':',':',':',':',t};
-
-            mptr = this.crop(sz);
-        end
-
-        function mptr = crop_c(this, c)
-            arguments
-                this
-                c   (1,2)   double {mustBePositive, mustBeInteger}
-            end
-
-            if ~ismember("C", this.dimorder)
-                throw(MException("mpimg:invalidCrop", ...
-                    "No dimension for this operation."));
-            end
-            if any(c > this.DataSize(this.DimOrder=="C"))
-                throw(MException("mpimg:invalidCropRange", ...
-                    "Crop range is out of data size."));
-            end
-
-            validateattributes(c, "double", "nondecreasing");
-
-            % inner dimension order: XYCZT
-            sz = {':',':',c,':',':'};
-
-            mptr = this.crop(sz);
         end
 
         function r = isempty(this)
@@ -407,11 +351,11 @@ classdef mpimg < matlab.mixin.Copyable
 
         % This function crop data and reture another mpimg object, which
         % contains the cropped data
-        function mptr = crop(this, sz_)
+        function mptr = crop_(this, sz_)
             % sz must has the same dimension with dimorder
-            if numel(sz_) ~= numel(this.dimorder)
+            if numel(sz_) ~= numel(this.INNER_DIMENSION_ORDER)
                 throw(MException("mpimg:crop:invalidUse", ...
-                    "Cropped input dimension not match."));
+                    "Dimension not match."));
             end
 
             % parse the cropped range
