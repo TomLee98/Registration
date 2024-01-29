@@ -1,4 +1,4 @@
-classdef RegWorker < handle
+classdef RegisterController < handle
     %REGWORKER This class is regworker object defination
     % The RegWorker object can select registration algorithm and use the
     % TaskManager for multi-user calculation scheduling
@@ -24,12 +24,13 @@ classdef RegWorker < handle
 
     properties(Access = private, Hidden)
         caller      % caller, must be Register object
-        taskmgr     % TaskManager Object
+        taskmgr     % TaskManager object
+        regworker   % RegisterWorker object
         state       % 1-by-1 OnOffSwitchState enum, can be "on" or "off" 
     end
     
     methods
-        function this = RegWorker(caller_, volopt_)
+        function this = RegisterController(caller_, volopt_)
             %REGISTER A constructor
             arguments
                 caller_ (1,1)  Register
@@ -53,7 +54,9 @@ classdef RegWorker < handle
             end
 
             % 1. initialize task manager
-            this.taskmgr = TaskManager(this.volopt, regopt_)
+            this.taskmgr = TaskManager(this.volopt, regopt_);
+
+            
         end
 
         function [status, path] = Save(this, fname, mdata, cidx)

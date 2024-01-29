@@ -1,4 +1,4 @@
-function [opts,rt,movie,filename] = loadfile(filename,omitif,order_out)
+function [opts,rt,mptr,filename] = loadfile(filename, tmpfolder, omitif, order_out, memmap)
 %LOADFILE: This function for loading data (.ims,.tif,.nd2)
 % input:
 %   - filename:char array or string, the movie file name (with full path), can be empty
@@ -8,7 +8,7 @@ function [opts,rt,movie,filename] = loadfile(filename,omitif,order_out)
 %   - opts: some useful movie information, 1 X 12 table, with variables:
 %           width   height  channels slices  frames images  xRes    yRes
 %           zRes    bitDepth    dimOrder    cOrder
-%   - movie: 5-D or 4-D grayscale matrix, type as source
+%   - mptr: the mpimg object, which is dynamic image file object
 %   - rt: the relative camera time, n*1 array, seconds as unit
 %   - filename: the file name, char array
 %
@@ -20,15 +20,17 @@ function [opts,rt,movie,filename] = loadfile(filename,omitif,order_out)
 %   *** basic loading function
 
 arguments
-    filename string;
-    omitif (1,1) logical = false;
-    order_out (1,5) string = ["X","Y","C","Z","T"];
+    filename        string
+    tmpfolder (1,1) string {mustBeFolder} = "E:\"   % debug
+    omitif    (1,1) logical = false
+    order_out (1,5) string = ["X","Y","C","Z","T"]
+    memmap    (1,1) logical = true
 end
 
 nargoutchk(1, 4);
 
 opts = [];
-movie = [];
+mptr = [];
 rt = [];
 
 % check whether file is existing or not
@@ -47,7 +49,7 @@ end
 if nargout < 3
     [status, info] = imload(filename, true, omitif);
 else
-    [status, info, img] = imload(filename, true, omitif);
+    [status, info, mov] = imload(filename, true, omitif);
 end
 
 if status == -1
@@ -58,11 +60,22 @@ else
 
     if nargout >= 3
         % using order_out for transformed order
-        movie = reorder(img, opts.dimOrder, order_out);
+        mov = reorder(mov, opts.dimOrder, order_out);
+
+        if memmap == true
+            wbar = loadbar("memmory mapping");
+            % generate a new mapping file
+            mptr = mpimg(tmpfolder, [], mov, order_out);
+
+            mptr_cp = mptr.copy();
+            delete(wbar);
+        else
+            mptr = mov;
+        end
+            
         disp("Loading success.");
     end
 end
-
 
     function mov = reorder(mov, order_old, order_new)
         [~, order] = ismember(order_new, order_old);

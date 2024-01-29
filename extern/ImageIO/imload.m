@@ -197,13 +197,7 @@ end
 
     function mov = nd2Open3DVolume_reg(file, wbar_flag)
         if wbar_flag == true
-            fig = uifigure("Visible","off","WindowStyle","modal",...
-                "Resize","off");
-            fig.Position(3:4) = [300, 75];
-            set(fig, "Visible", "on");
-            uiprogressdlg(fig,'Indeterminate','on', ...
-                'Message', '        loading...','Icon','info',...
-                "Interpreter","tex");
+            wbar = loadbar();
         end
 
         % use nd2 library load total volumes
@@ -224,7 +218,7 @@ end
         mov = permute(mov, [1,2,4,3]);
 
         if wbar_flag == true
-            delete(fig);
+            delete(wbar);
         end
     end
 

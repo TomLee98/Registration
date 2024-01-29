@@ -1,5 +1,6 @@
 classdef TaskManager < handle
     %TASKMANAGER This class is task manager object defination
+    % 
     
     properties(SetAccess=private, GetAccess=private)
         regopt      % 1-by-1 struct, the registration options
@@ -8,6 +9,7 @@ classdef TaskManager < handle
         rcf         % 1-by-1 struct, the content of resource communication file
                     % note that RCF should be a public protocal, shared
                     % with different apps running
+        taskqueue   % 1-by-1 mQueue, queue with Task object
     end
 
     properties(Hidden, Access=private)
@@ -37,18 +39,17 @@ classdef TaskManager < handle
         % GLOBAL REGISTRATION HIDDEN PARAMETERS
         IMREGTFORM_TRS_PPS = 2.60E5     % pixels per second
         IMWARP_TRS_CUBIC_PPS = 3.26E5
-        IMWARP_TRS_LINEAR_CUBIC_RATIO = [2.5, 1];      
+        IMWARP_TRS_LINEAR_CUBIC_RATIO = [3, 1];      
         CODENOISE_TRS_PPS = 1.56E6
         IMREGTFORM_TRS_RID_AFF_RATIO = [3,2,1]     % processing speed ratio: imregtform
         IMWARP_TRS_CUBIC_RID_AFF_RATIO  = [6,7,8]  % processing speed ratio: imwarp
         CODENOISE_TRS_RID_AFF_RATIO = [1,0,0]      % ~
 
         % LOCAL REGISTRATION HIDDEN PARAMETERS
-        IMWARP_DEMON_TUSE = 10                      % typical using
-        % IMREGDEMONS_ACF_1_PPS = 
-        % IMREGDEMONS_ACF_RATIO = 
+        IMWARP_DEMON_TUSE = 10                      % typical using, actually can be omitted
+        IMREGDEMONS_ACF_1_PPS = 1.04E5              % pixels per second
     end
-    
+
     methods(Access = public)
         function this = TaskManager(volopt_, regopt_, regfn_, hostname_)
             %TASKMANAGER A constructor
@@ -184,7 +185,7 @@ classdef TaskManager < handle
             cr = (this.codenoise_time_use() ...
                 + this.imregtform_time_use() ...
                 + this.imwarp_time_use() ...
-                + this.imregtform_time_use()) / 100;
+                + this.imregdemons_time_use()) / 100;
         end
 
         function t_use = imregtform_time_use(this)
@@ -239,7 +240,14 @@ classdef TaskManager < handle
         end
 
         function t_use = imregdemons_time_use(this)
-
+            switch this.regopt.RegMode
+                case {'local-only', 'mix'}
+                    pn =  this.volopt.width*this.volopt.height*this.volopt.slices*this.regfn;
+                    t_use = pn / this.IMREGDEMONS_ACF_1_PPS;
+                    t_use = 0.5*t_use *(this.regopt.AFS+1);
+                otherwise
+                    t_use = 0;
+            end
         end
 
         function pn = pixels_calc_num(this)

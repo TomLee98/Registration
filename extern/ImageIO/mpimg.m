@@ -1,4 +1,4 @@
-classdef mpimg < handle
+classdef mpimg < matlab.mixin.Copyable
     %MEMMAPPER This is memmepfile interface defination
     % which is considered as value class, as same as matfile class but more
     % fast when mapped file is not big enough(<20GB)
@@ -8,16 +8,19 @@ classdef mpimg < handle
         BYTES_UINT16 = 2
         BYTES_UINT32 = 4
         BYTES_UINT64 = 8
+        INNER_DIMENSION_ORDER = ["X","Y","C","Z","T"]
     end
 
-    properties(Access = private, Hidden)
-        memptr          % 1-by-1 memmapfile object
+    properties(Access = protected, Hidden)
         fmt             % 1-by-3 cell array, with {datatype, size, field}
         dimorder        % 1-by-d string array, dimension order of data
         isdisplay       % 1-by-1 logical, display flag
         isautoclear     % 1-by-1 logical, auto clear disk file flag
         isconst         % 1-by-1 logical, mark the file is constant or variable
-        datatype        % 1-by-n char array, indicate data type, such as 'uint16', etc
+    end
+
+    properties(Access = protected, NonCopyable)
+        memptr          % 1-by-1 memmapfile object
     end
 
     properties(Access=public, Dependent)
@@ -47,7 +50,16 @@ classdef mpimg < handle
                 display_   (1,1)    logical = false     % for debugging
             end
 
-            this.dimorder = dimorder_;
+            if any(~ismember(upper(dimorder_), this.INNER_DIMENSION_ORDER))
+                throw(MException("mpimg:invalidDimensionIndicator", ...
+                    "Unknown dimension indicator."));
+            end
+            if numel(unique(dimorder_)) ~= numel(dimorder_)
+                throw(MException("mpimg:invalidDimensionIndicator", ...
+                    "Dimension indicators must be unique."));
+            end
+
+            this.dimorder = upper(dimorder_);
             this.isdisplay = display_;
             this.isautoclear = autoclear_;
             this.isconst = const_;
@@ -126,7 +138,7 @@ classdef mpimg < handle
         end
 
         function r = get.DataType(this)
-            r = this.datatype;
+            r = class(this.memptr.Data.mov);
         end
 
         function r = get.DataSize(this)
@@ -138,7 +150,7 @@ classdef mpimg < handle
         end
 
         function r = get.DataBytes(this)
-            switch this.datatype
+            switch this.DataType
                 case {'uint8', 'int8'}
                     bytes_per_elem = this.BYTES_UINT8;
                 case {'uint16','int16'}
@@ -150,30 +162,10 @@ classdef mpimg < handle
             end
             r = prod(this.DataSize)*bytes_per_elem;
         end
+    end
 
-        function delete(this)
-            free(this);
-
-            % calling default destructor
-            % ~
-        end
-
-        function free(this)
-            % this function will free the linked data
-            % if autoclear is true, the disk file will be removed
-            if ~isempty(this.memptr)
-                file_ = this.memptr.Filename;
-
-                % auto free by memmapfile->cleanup
-                this.memptr = [];
-
-                if this.isautoclear == true
-                    % free disk file
-                    delete(file_);
-                end
-            end
-        end
-
+    % Public interface: operation on mpimg
+    methods(Access = public)
         function link(this, file_, format_, dimorder_)
             % this function will link to an exist file
             arguments
@@ -188,23 +180,12 @@ classdef mpimg < handle
                     "int32","int64","single","double"]) ...
                     || ~(isvector(format_{2})&&isPositiveIntegerValuedNumeric(format_{2})) ...
                     || ~isvarname(format_{3})
-                throw(MException("mpimg:invalidFormatArg", ...
+                throw(MException("mpimg:link:invalidFormatArg", ...
                     "Invalid file format argument."));
             end
 
             if isfile(file_)
-                [~, ~, ext] = fileparts(file_);
-                if ~strcmp(ext, '.dat')
-                    throw(MException("mpimg:genmptr:invalidUse", ...
-                        "Invalid file format."));
-                end
-
-                this.fmt = format_;
-                this.dimorder = dimorder_;
-
-                this.memptr = memmapfile(file_, ...
-                    "Format", this.fmt, ...
-                    "Writable", ~this.isconst);
+                this.linkextmptr(file_, format_, dimorder_);
 
                 if this.isdisplay, fprintf("Memery mapping linked.\n"); end
             else
@@ -213,13 +194,140 @@ classdef mpimg < handle
             end
         end
 
+        function mptr = crop_xy(this, x, y)
+            arguments
+                this
+                x   (1,2)   double {mustBePositive, mustBeInteger}
+                y   (1,2)   double {mustBePositive, mustBeInteger}
+            end
+
+            if any(~ismember(["X","Y"], this.dimorder))
+                throw(MException("mpimg:invalidCrop", ...
+                    "No dimension for this operation."));
+            end
+            if any(x > this.DataSize(this.DimOrder=="X")) ...
+                    || any(y > this.DataSize(this.DimOrder=="Y"))
+                throw(MException("mpimg:invalidCropRange", ...
+                    "Crop range is out of data size."));
+            end
+
+            validateattributes(x, "double", "nondecreasing");
+            validateattributes(y, "double", "nondecreasing");
+
+            % inner dimension order: XYCZT
+            sz = {x,y,':',':',':'};
+
+            mptr = this.crop(sz);
+        end
+
+        function mptr = crop_z(this, z)
+            arguments
+                this
+                z   (1,2)   double {mustBePositive, mustBeInteger}
+            end
+            
+            if ~ismember("Z", this.dimorder)
+                throw(MException("mpimg:invalidCrop", ...
+                    "No dimension for this operation."));
+            end
+            if any(z > this.DataSize(this.DimOrder=="Z"))
+                throw(MException("mpimg:invalidCropRange", ...
+                    "Crop range is out of data size."));
+            end
+
+            validateattributes(z, "double", "nondecreasing");
+
+            % inner dimension order: XYCZT
+            sz = {':',':',':',z,':'};
+
+            mptr = this.crop(sz);
+        end
+
+        function mptr = crop_t(this, t)
+            arguments
+                this
+                t   (1,2)   double {mustBePositive, mustBeInteger}
+            end
+
+            if ~ismember("T", this.dimorder)
+                throw(MException("mpimg:invalidCrop", ...
+                    "No dimension for this operation."));
+            end
+            if any(t > this.DataSize(this.DimOrder=="T"))
+                throw(MException("mpimg:invalidCropRange", ...
+                    "Crop range is out of data size."));
+            end
+
+            validateattributes(t, "double", "nondecreasing");
+
+            % inner dimension order: XYCZT
+            sz = {':',':',':',':',t};
+
+            mptr = this.crop(sz);
+        end
+
+        function mptr = crop_c(this, c)
+            arguments
+                this
+                c   (1,2)   double {mustBePositive, mustBeInteger}
+            end
+
+            if ~ismember("C", this.dimorder)
+                throw(MException("mpimg:invalidCrop", ...
+                    "No dimension for this operation."));
+            end
+            if any(c > this.DataSize(this.DimOrder=="C"))
+                throw(MException("mpimg:invalidCropRange", ...
+                    "Crop range is out of data size."));
+            end
+
+            validateattributes(c, "double", "nondecreasing");
+
+            % inner dimension order: XYCZT
+            sz = {':',':',c,':',':'};
+
+            mptr = this.crop(sz);
+        end
+
         function r = isempty(this)
             r = isempty(this.memptr);
         end
+
+        % destructer
+        function delete(this)
+            free(this);
+
+            % calling default destructor
+            % ~
+        end
     end
 
-    methods(Access = private)
+    methods(Access = protected)
+        % Override copyElement method:
+        function cpt = copyElement(this)
+            % Make a shallow copy of all properties except memptr
+            cpt = copyElement@matlab.mixin.Copyable(this);
 
+            % Make a deep copy of the memptr object
+            [folder_, ~, ~] = fileparts(this.memptr.Filename);
+            file_ = mpimg.genfilename(folder_);
+            try
+                fid = fopen(file_, "w");
+                fwrite(fid, this.Data, this.DataType);
+                fclose(fid);
+            catch ME
+                throwAsCaller(ME);
+            end
+            cpt.memptr = memmapfile(file_, ...
+                "Format", this.fmt, ...
+                "Writable", ~this.isconst);
+        end
+    end
+
+    methods(Access = private, Hidden)
+
+        % This function remaps this to a new file which contains data_
+        % and keeps this io properties and file name
         function remaptr(this, data_)
             % remove file and release resource
             file_ = this.memptr.Filename;
@@ -240,19 +348,20 @@ classdef mpimg < handle
             this.newmapfile(file_, data_);
         end
 
+        % This function create a new file contains data_
         function newmapfile(this, file_, data_)
             % memmapping
-            msize = size(data_);
-            this.datatype = class(data_);
+            msize_ = size(data_);
+            datatype_ = class(data_);
 
             % replace the format
-            this.fmt = {this.datatype, msize, 'mov'};
+            this.fmt = {datatype_, msize_, 'mov'};
 
             if this.isdisplay, fprintf("Memery mapping -> %s ...\n", file_); end
 
             try
                 fid = fopen(file_, "w");
-                fwrite(fid, data_, this.datatype);
+                fwrite(fid, data_, datatype_);
                 fclose(fid);
             catch ME
                 throwAsCaller(ME);
@@ -265,9 +374,72 @@ classdef mpimg < handle
             if this.isdisplay, fprintf("Memery mapping done.\n"); end
         end
 
+        function linkextmptr(this, file_, format_, dimorder_)
+            [~, ~, ext] = fileparts(file_);
+            if ~strcmp(ext, '.dat')
+                throw(MException("mpimg:linkextmptr:invalidUse", ...
+                    "Can not link to invalid file with suffix is not .dat."));
+            end
+
+            this.fmt = format_;
+            this.dimorder = dimorder_;
+
+            this.memptr = memmapfile(file_, ...
+                "Format", this.fmt, ...
+                "Writable", ~this.isconst);
+        end
+
+        function free(this)
+            % this function will free the linked data
+            % if autoclear is true, the disk file will be removed
+            if ~isempty(this.memptr)
+                file_ = this.memptr.Filename;
+
+                % auto free by memmapfile->cleanup
+                this.memptr = [];
+
+                if this.isautoclear == true
+                    % free disk file
+                    delete(file_);
+                end
+            end
+        end
+
+        % This function crop data and reture another mpimg object, which
+        % contains the cropped data
+        function mptr = crop(this, sz_)
+            % sz must has the same dimension with dimorder
+            if numel(sz_) ~= numel(this.dimorder)
+                throw(MException("mpimg:crop:invalidUse", ...
+                    "Cropped input dimension not match."));
+            end
+
+            % parse the cropped range
+            for n = 1:numel(sz_)
+                if ~ischar(sz_{n})
+                    sz_{n} = [num2str(sz_{n}(1)),':',num2str(sz_{n}(2))];
+                end
+            end
+            [~, p] = ismember(this.dimorder, this.INNER_DIMENSION_ORDER);
+            sz_ = sz_(p);
+
+            % generate the cropped data
+            data_ = this.Data; %#ok<NASGU>
+            expr = "data_("+string(sz_).join(",")+");";
+            data_ = eval(expr);
+
+            % generate new memmapping
+            [folder_, ~, ~] = fileparts(this.memptr.Filename);
+            mptr = mpimg(string(folder_), [], data_, ...
+                this.dimorder, this.isautoclear, this.isconst, this.isdisplay);
+
+            if this.isdisplay == true
+                fprintf("New mpimg object inherits this properites.")
+            end
+        end
     end
 
-    methods(Static)
+    methods(Static, Hidden)
         function file_ = genfilename(folder_)
             % generate file name code: 18 chars
             code_idx = [randi(26,1,6)+64, randi(26,1,6)+96, randi(10,1,6)+47];
@@ -276,7 +448,10 @@ classdef mpimg < handle
             % random suffix for avoiding same filename
             % and hidden the file information
             filename_ = char(code_idx);
-            file_ = [folder_.char(), filesep, filename_, '.dat'];
+
+            if isstring(folder_), folder_ = folder_.char(); end
+
+            file_ = [folder_, filesep, filename_, '.dat'];
         end
     end
 end

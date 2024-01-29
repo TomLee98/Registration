@@ -712,6 +712,9 @@ end
 
         nidx = 1;
         bar = waitbar(0, "Registration Chain Calculating: 0.0 %");
+
+        %TODO: two sides with two workers
+
         % calculate the "left" side 
         for k = fixpos:-1:2
             % generate points cloud
