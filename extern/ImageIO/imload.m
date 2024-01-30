@@ -79,7 +79,7 @@ dataType = string(dataobj.DataType);
 if dataType == "float"
     dataType = "single";
 end
-dimOrder = ["X","Y","Z","C","T"];
+dimOrder = ["Y","X","Z","C","T"];
 cOrder = getChannelOrder(dataobj.ChannelInfo);
 
 % generate opts
@@ -255,7 +255,7 @@ end
     end
 
     function mov = imreshape(mov, opts)
-        bindingArray = ["X",    "Y",    "C",    "Z",    "T";...
+        bindingArray = ["Y",    "X",    "C",    "Z",    "T";...
             "height","width","channels","slices","frames"];
         [~,Loc] = ismember(opts.dimOrder,bindingArray(1,:));
         mov = reshape(mov,...
@@ -489,7 +489,7 @@ end
     end
 
     function mov = imreshape(mov, opts)
-        bindingArray = ["X",    "Y",    "C",    "Z",    "T";...
+        bindingArray = ["Y",    "X",    "C",    "Z",    "T";...
                         "height","width","channels","slices","frames"];
         [~,Loc] = ismember(opts.dimOrder,bindingArray(1,:));
         mov = reshape(mov,...

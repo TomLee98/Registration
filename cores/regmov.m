@@ -3,24 +3,26 @@ classdef regmov
     %struct for Register
 
     properties(Constant, Hidden)
-        
+        BYTES_UINT8 = 1
+        BYTES_UINT16 = 2
+        BYTES_UINT32 = 4
+        BYTES_UINT64 = 8
     end
 
     properties(Access=private, Hidden)
-        mptr            % 1-by-1 mpimg/mpimgs object
+        mptr            % 1-by-1 mpimg/mpimgs object or numeric array
         mopt            % 1-by-12 table, with movie options
         t               % t-by-1 double, camera time
-        zproj           % double, z-projection of mptr.Data
         zprojalg        % 1-by-1 string, method of z-projection
         tform           % t-by-3 cell, with {global, local, manual} transformation unit
         bkg             % c-by-1 double, c for color channel number
     end
 
-    properties(GetAccess=public, Dependent)
+    properties(Access=public, Dependent)
         Movie           % variable, get/set, manual update
         MetaData        % variable, get/set, manual update
         Time            % variable, get/set, manual update
-        MovieZProj      % variable, get    , auto update
+        MovieZProj      % variable, get    , /
         ZProjMethod     % variable, set/get, manual update
         Transformation  % variable, get/set, manual update
         Bytes           % variable, get    , /
@@ -32,15 +34,21 @@ classdef regmov
         function this = regmov(mptr_, mopt_, t_, bkg_)
             %REGMOV A constructor
             arguments
-                mptr_   (1,1)
-                mopt_   (1,12)  table  {mustBeMovieOptions}
+                mptr_   
+                mopt_   (1,12)  table  {regmov.mustBeMovieOptions}
                 t_      (:,1)   double {mustBeNonnegative}
                 bkg_    (1,:)   double {mustBeNonnegative}
             end
-
-            if ~ismember(class(mptr_), ["mpimg", "mpimgs"])
+            if ~ismember(class(mptr_), ["mpimg", "mpimgs"]) ...
+                    && ~isnumeric(mptr_)
                 throw(MException("regmov:invalidMoviePointer", ...
-                    "Invalid movie pointer, Only mpimg or mpimgs object is supported."));
+                    "Invalid movie pointer, Only mpimg, mpimgs object or array are supported."));
+            else
+                if ismember(class(mptr_), ["mpimg", "mpimgs"]) ...
+                        && (numel(mptr_)  ~= 1)
+                    throw(MException("regmov:invalidMoviePointer", ...
+                        "Only one movie pointer is supported."));
+                end
             end
             if numel(t_) ~= mopt_.frames
                 throw(MException("regmov:badTime", ...
@@ -54,26 +62,51 @@ classdef regmov
             this.mptr = mptr_;
             this.mopt = mopt_;
             this.t = t_;
+            this.zprojalg = "max";
+            this.tform = cell(0,3);
             this.bkg = bkg_;
         end
 
         function r = get.Movie(this)
-            % this operation will call deep copy (constructor)
-            r = this.mptr;
+            % this operation will call deep copy (constructor) if mptr is
+            % mpimg or mpimgs object
+            if ismember(class(this.mptr), ["mpimg", "mpimgs"])
+                % hide other properties
+                r = this.mptr.Data;
+            elseif isnumeric(this.mptr)
+                r = this.mptr;
+            end
         end
 
         function this = set.Movie(this, r_)
             arguments
                 this
-                r_  (1,1)
+                r_  
             end
 
-            if ~ismember(class(r_), ["mpimg", "mpimgs"])
+            if ~ismember(class(r_), ["mpimg", "mpimgs"]) ...
+                    && ~isnumeric(r_)
                 throw(MException("regmov:invalidMoviePointer", ...
-                    "Invalid movie pointer, Only mpimg or mpimgs object is supported."));
+                    "Invalid movie pointer, Only mpimg, mpimgs object or array are supported."));
+            else
+                if ismember(class(r_), ["mpimg", "mpimgs"]) ...
+                        && (numel(r_)  ~= 1)
+                    throw(MException("regmov:invalidMoviePointer", ...
+                        "Only one movie pointer is supported."));
+                end
             end
 
-            this.mptr = r_;
+            if (ismember(class(this.mptr), ["mpimg", "mpimgs"]) ...
+                    && ismember(class(r_), ["mpimg", "mpimgs"])) ...
+                    || (isnumeric(this.mptr) && isnumeric(r_))
+                this.mptr = r_;
+            elseif ismember(class(this.mptr), ["mpimg", "mpimgs"]) ...
+                    && isnumeric(r_)
+                this.mptr.Data = r_;
+            elseif isnumeric(this.mptr) ...
+                    && ismember(class(r_), ["mpimg", "mpimgs"])
+                this.mptr = r_.Data;
+            end
         end
 
         function r = get.MetaData(this)
@@ -113,21 +146,23 @@ classdef regmov
         end
 
         function r = get.MovieZProj(this)
-            [vz, pz] = ismember("Z", this.mptr.DimOrder);
-            if ~vz
-                throw(MException("regmov:invalidOperation", ...
-                    "Movie does not have dimension: 'Z'."));
-            end
-            sz_noz = this.mptr.DataSize;
-            sz_noz(pz) = [];
-            
-            if any(size(this.zproj)~=sz_noz)
-                % update z projection automatically
-                this.zproj = Projection(this.mptr.Data, this.zprojalg, ...
-                    pz);
-            end
+            if ismember(class(this.mptr), ["mpimg", "mpimgs"])
+                [vz, pz] = ismember("Z", this.mptr.DimOrder);
+                if ~vz
+                    throw(MException("regmov:invalidOperation", ...
+                        "Movie does not have dimension: 'Z'."));
+                end
 
-            r = this.zproj;
+                r = Projection(this.mptr.Data, this.zprojalg, pz);
+            elseif isnumeric(this.mptr)
+                [vz, pz] = ismember("Z", this.mopt.dimOrder);
+                if ~vz
+                    throw(MException("regmov:invalidOperation", ...
+                        "Movie does not have dimension: 'Z'."));
+                end
+
+                r = Projection(this.mptr, this.zprojalg, pz);
+            end
         end
 
         function r = get.ZProjMethod(this)
@@ -162,10 +197,30 @@ classdef regmov
         end
 
         function r = get.Bytes(this)
-            zproj_ = this.zproj; %#ok<NASGU>
-            prop_ = whos("zproj_");
-            r.mem = prop_.Bytes;
-            r.map = this.mptr.DataBytes;
+            mopt_ = this.mopt; %#ok<NASGU>
+            t_ = this.t; %#ok<NASGU>
+            zprojalg_ = this.zprojalg; %#ok<NASGU>
+            tform_ = this.tform; %#ok<NASGU>
+            bkg_ = this.bkg; %#ok<NASGU>
+            prop_ = struct2table(whos("mopt_","t_","zprojalg_","tform_","bkg_"));
+            r.mem = sum(prop_.bytes);
+
+            if ismember(class(mptr_), ["mpimg", "mpimgs"])
+                r.map = this.mptr.DataBytes;
+            elseif isnumeric(this.mptr)
+                r.map = 0;
+                switch class(this.mptr)
+                    case {'uint8', 'int8'}
+                        bytes_per_elem = this.BYTES_UINT8;
+                    case {'uint16','int16'}
+                        bytes_per_elem = this.BYTES_UINT16;
+                    case {'uint32','int32','single'}
+                        bytes_per_elem = this.BYTES_UINT32;
+                    case {'uint64','int64','double'}
+                        bytes_per_elem = this.BYTES_UINT64;
+                end
+                r.mem = r.mem + numel(this.mptr)*bytes_per_elem;
+            end
         end
 
         function r = get.Background(this)
@@ -187,11 +242,8 @@ classdef regmov
 
     end
 
-    methods(Static)
+    methods(Static, Hidden)
         function mustBeMovieOptions(A)
-            arguments
-                A   (1, 12) table
-            end
             MOVIE_OPTIONS_FIELD = ["width", "height", "slices", "channels", "frames", ...
                 "images", "xRes", "yRes", "zRes", "dataType","dimOrder", "cOrder"];
             varnames = A.Properties.VariableNames;

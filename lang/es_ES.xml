@@ -49,6 +49,9 @@
     <REGISTRATION_RANGE>Rango de registro</REGISTRATION_RANGE>
     <REGISTRATION_EVALUATION>Evaluación de registro</REGISTRATION_EVALUATION>
     <REGISTRATION_HISTORY>Historial de registro</REGISTRATION_HISTORY>
+    <RUN_MODAL>Ejecutar modal</RUN_MODAL>
+    <SHARED>Compartido</SHARED>
+    <EXCLUSIVE>Exclusivo</EXCLUSIVE>
     <HELP>Ayuda</HELP>
     <ABOUT>Acerca de</ABOUT>
     <DOCUMENT>Documento</DOCUMENT>

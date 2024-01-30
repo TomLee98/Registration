@@ -49,6 +49,9 @@
     <REGISTRATION_RANGE>Plage d'enregistrement</REGISTRATION_RANGE>
     <REGISTRATION_EVALUATION>Évaluation de l'inscription</REGISTRATION_EVALUATION>
     <REGISTRATION_HISTORY>Historique des inscriptions</REGISTRATION_HISTORY>
+    <RUN_MODAL>Exécuter modal</RUN_MODAL>
+    <SHARED>partagé</SHARED>
+    <EXCLUSIVE>Exclusif</EXCLUSIVE>
     <HELP>Aider</HELP>
     <ABOUT>À propos</ABOUT>
     <DOCUMENT>Document</DOCUMENT>

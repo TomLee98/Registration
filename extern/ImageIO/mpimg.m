@@ -8,7 +8,7 @@ classdef mpimg < matlab.mixin.Copyable
         BYTES_UINT16 = 2
         BYTES_UINT32 = 4
         BYTES_UINT64 = 8
-        INNER_DIMENSION_ORDER = ["X","Y","C","Z","T"]
+        INNER_DIMENSION_ORDER = ["Y","X","C","Z","T"]
     end
 
     properties(Access = protected, Hidden)
@@ -45,7 +45,7 @@ classdef mpimg < matlab.mixin.Copyable
                 folder_
                 file_
                 data_
-                dimorder_  (1,:)    string = ["X","Y","C","Z","T"]
+                dimorder_  (1,:)    string = ["Y","X","C","Z","T"]
                 autoclear_ (1,1)    logical = true
                 const_     (1,1)    logical = false
                 display_   (1,1)    logical = false     % for debugging
@@ -106,20 +106,20 @@ classdef mpimg < matlab.mixin.Copyable
         function set.DimOrder(this, r)
             arguments
                 this
-                r   (1,:) string = ["X","Y","C","Z","T"]
+                r   (1,:) string = ["Y","X","C","Z","T"]
             end
 
-            if numel(r) ~= numel(this.fmt)
+            if numel(r) ~= numel(this.dimorder)
                 throw(MException("mpimg:invalidDimensions", ...
                     "Permute data need compelete dimension order."));
             end
 
             % permute the data
-            [~, p] = ismember(upper(r), this.fmt);
+            [~, p] = ismember(upper(r), this.dimorder);
 
             if any(p==0)
                 throw(MException("mpimg:invalidDimensionIndicator", ...
-                    sprintf("Dimensions indicator must be in [%s]", this.fmt.join(","))));
+                    sprintf("Dimensions indicator must be in [%s]", this.dimorder.join(","))));
             end
             if numel(unique(p)) ~= numel(p)
                 throw(MException("mpimg:invalidDimensionIndicator", ...
@@ -177,7 +177,7 @@ classdef mpimg < matlab.mixin.Copyable
                 this
                 file_
                 format_    (1,:)    cell = cell(1,3)
-                dimorder_  (1,:)    string = ["X","Y","C","Z","T"]
+                dimorder_  (1,:)    string = ["Y","X","C","Z","T"]
             end
 
             if (numel(format_) ~= 3) || ~ismember(format_{1}, ...
@@ -396,6 +396,74 @@ classdef mpimg < matlab.mixin.Copyable
             if isstring(folder_), folder_ = folder_.char(); end
 
             file_ = [folder_, filesep, filename_, '.dat'];
+        end
+    end
+
+    methods(Static)
+        function folder_ = findtmpfolder(volopt_, numhistory_)
+            %FINDTMPFOLDER This function find a temporary folder in a disk part, which
+            %could contains the memory mapping files
+            % input:
+            %   - volopt: 1-by-12 table, with image options
+            %   - numhistory: 1-by-1 positive integer, the number of operation history
+            %                   list, for space estimation
+            % output:
+            %   - tf: 1-by-1 string, the temprory folder
+
+            arguments
+                volopt_      (1,12)  table
+                numhistory_  (1,1)   double {mustBeNonnegative, mustBeInteger} = 0
+            end
+
+            if ispc()
+                % iteration on each possible disk part
+                disk_table = cell(26, 4);   % [letter, free, readable, writable]
+                for p = 1:26
+                    disk_table{p, 1} = char(p+64);
+                    f = java.io.File(disk_table{p,1});
+                    disk_table{p, 2} = f.getFreeSpace();
+                    disk_table{p, 3} = f.canRead();
+                    disk_table{p, 4} = f.canWrite();
+                end
+
+                % find the maximum diskpart as temporary root
+                vp = cell2mat(disk_table(:,3))&cell2mat(disk_table(:,4));
+                disk_table = disk_table(vp, :);
+                [free_size, idx] = max(cell2mat(disk_table(:, 2)));
+                if free_size <= calc_volsize(volopt_, numhistory_)
+                    throw(MException("findtmpfolder:noValidSpace", ...
+                        "Data is too big, try to reduce number of histories or using " + ...
+                        "mpimgs object instead."));
+                end
+
+                folder_ = [disk_table{idx,1}, filesep, '~regtemp'];
+                try
+                    mkdir(folder_);
+                catch ME
+                    switch ME.identifier
+                        case "matlab.io.FileError"
+                            % ??
+                    end
+                end
+
+            elseif isunix()
+
+            end
+
+            function sz_ = calc_volsize(volopt_, numhistory_)
+                switch volopt_.dataType
+                    case {'uint8', 'int8'}
+                        bytes_per_elem = 1;
+                    case {'uint16','int16'}
+                        bytes_per_elem = 2;
+                    case {'uint32','int32','single'}
+                        bytes_per_elem = 4;
+                    case {'uint64','int64','double'}
+                        bytes_per_elem = 8;
+                end
+                sz_ = volopt_.width * volopt_.height * volopt_.images ...
+                    * bytes_per_elem * (numhistory_+1);
+            end
         end
     end
 end

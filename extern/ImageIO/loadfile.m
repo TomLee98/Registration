@@ -1,9 +1,11 @@
-function [opts,rt,mptr,filename] = loadfile(filename, tmpfolder, omitif, order_out, memmap)
+function [opts,rt,mptr,filename] = loadfile(filename, omitif, order_out, memmap, num_history)
 %LOADFILE: This function for loading data (.ims,.tif,.nd2)
 % input:
 %   - filename:char array or string, the movie file name (with full path), can be empty
 %   - omitif: the flag for omit tiff file information lost, false as default
 %   - order_out: the output stacks order, ["X","Y","C","Z","T"] as default
+%   - memmap: the flag for memory mapping enabled
+%   - num_history: the number of movies history kept
 % output:
 %   - opts: some useful movie information, 1 X 12 table, with variables:
 %           width   height  channels slices  frames images  xRes    yRes
@@ -21,10 +23,10 @@ function [opts,rt,mptr,filename] = loadfile(filename, tmpfolder, omitif, order_o
 
 arguments
     filename        string
-    tmpfolder (1,1) string {mustBeFolder} = "E:\"   % debug
-    omitif    (1,1) logical = false
-    order_out (1,5) string = ["X","Y","C","Z","T"]
-    memmap    (1,1) logical = true
+    omitif      (1,1) logical = false
+    order_out   (1,5) string = ["Y","X","C","Z","T"]
+    memmap      (1,1) logical = true
+    num_history (1,1) double {mustBeNonnegative, mustBeInteger} = 0
 end
 
 nargoutchk(1, 4);
@@ -64,9 +66,12 @@ else
 
         if memmap == true
             wbar = loadbar("memmory mapping");
+
+            tmpfolder = "E:\";  % debug
             % generate a new mapping file
+            % tmpfolder = mpimg.findtmpfolder(opts, num_history);
             mptr = mpimg(tmpfolder, [], mov, order_out);
-            
+
             delete(wbar);
         else
             mptr = mov;
@@ -75,9 +80,9 @@ else
         disp("Loading success.");
     end
 end
+end
 
-    function mov = reorder(mov, order_old, order_new)
-        [~, order] = ismember(order_new, order_old);
-        mov = permute(mov, order);
-    end
+function mov = reorder(mov, order_old, order_new)
+[~, order] = ismember(order_new, order_old);
+mov = permute(mov, order);
 end

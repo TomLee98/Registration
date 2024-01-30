@@ -49,6 +49,9 @@
     <REGISTRATION_RANGE>Диапазон регистрации</REGISTRATION_RANGE>
     <REGISTRATION_EVALUATION>Регистрация Оценка</REGISTRATION_EVALUATION>
     <REGISTRATION_HISTORY>История регистрации</REGISTRATION_HISTORY>
+    <RUN_MODAL>Запустить модальное окно</RUN_MODAL>
+    <SHARED>Общий</SHARED>
+    <EXCLUSIVE>Эксклюзивный</EXCLUSIVE>
     <HELP>Помощь</HELP>
     <ABOUT>О</ABOUT>
     <DOCUMENT>Документ</DOCUMENT>
