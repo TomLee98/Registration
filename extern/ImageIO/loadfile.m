@@ -67,9 +67,9 @@ else
         if memmap == true
             wbar = loadbar("memmory mapping");
 
-            tmpfolder = "E:\";  % debug
+            % tmpfolder = "E:\";  % debug
             % generate a new mapping file
-            % tmpfolder = mpimg.findtmpfolder(opts, num_history);
+            tmpfolder = mpimg.findtmpfolder(opts, num_history);
             mptr = mpimg(tmpfolder, [], mov, order_out);
 
             delete(wbar);

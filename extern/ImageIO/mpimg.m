@@ -409,34 +409,40 @@ classdef mpimg < matlab.mixin.Copyable
             %                   list, for space estimation
             % output:
             %   - tf: 1-by-1 string, the temprory folder
-
             arguments
                 volopt_      (1,12)  table
                 numhistory_  (1,1)   double {mustBeNonnegative, mustBeInteger} = 0
             end
 
+            import java.io.File;
+            import javax.swing.filechooser.FileSystemView;
+            import java.lang.System;
+
             if ispc()
-                % iteration on each possible disk part
-                disk_table = cell(26, 4);   % [letter, free, readable, writable]
-                for p = 1:26
-                    disk_table{p, 1} = char(p+64);
-                    f = java.io.File(disk_table{p,1});
-                    disk_table{p, 2} = f.getFreeSpace();
-                    disk_table{p, 3} = f.canRead();
-                    disk_table{p, 4} = f.canWrite();
+                files_ = File.listRoots();
+                disk_table = table('Size',[numel(files_), 5], ...
+                    'VariableTypes',{'string','double','logical','logical','logical'}, ...
+                    'VariableNames',{'letter','free_size','readable','writable','is_local'});
+                for p = 1:numel(files_)
+                    disk_table.letter(p) = string(files_(p).getPath());
+                    disk_table.free_size(p) = files_(p).getFreeSpace();
+                    disk_table.readable(p) = files_(p).canRead();
+                    disk_table.writable(p) = files_(p).canWrite();
+                    disk_table.is_local(p) = is_local_disk(files_(p));
                 end
 
                 % find the maximum diskpart as temporary root
-                vp = cell2mat(disk_table(:,3))&cell2mat(disk_table(:,4));
+                vp = disk_table.readable & disk_table.writable ...
+                    & disk_table.is_local;
                 disk_table = disk_table(vp, :);
-                [free_size, idx] = max(cell2mat(disk_table(:, 2)));
-                if free_size <= calc_volsize(volopt_, numhistory_)
+                [fs, idx] = max(disk_table.free_size);
+                if fs <= calc_volsize(volopt_, numhistory_)
                     throw(MException("findtmpfolder:noValidSpace", ...
                         "Data is too big, try to reduce number of histories or using " + ...
                         "mpimgs object instead."));
                 end
 
-                folder_ = [disk_table{idx,1}, filesep, '~regtemp'];
+                folder_ = [disk_table.letter(idx).char(), filesep, '~regtemp'];
                 try
                     mkdir(folder_);
                 catch ME
@@ -447,7 +453,7 @@ classdef mpimg < matlab.mixin.Copyable
                 end
 
             elseif isunix()
-
+                % TODO: 
             end
 
             function sz_ = calc_volsize(volopt_, numhistory_)
@@ -463,6 +469,23 @@ classdef mpimg < matlab.mixin.Copyable
                 end
                 sz_ = volopt_.width * volopt_.height * volopt_.images ...
                     * bytes_per_elem * (numhistory_+1);
+            end
+
+            function tf_ = is_local_disk(file_)
+                % NOTE: This function can't distinguish movable disk and 
+                % local disk
+
+                % construct java object
+                lang = System.getProperty("user.language");
+                fileSystemView = FileSystemView.getFileSystemView();
+
+                if string(lang) == "zh"
+                    marker = "本地磁盘";
+                else 
+                    marker = "LocalDisk"; % ??
+                end
+                diskType = fileSystemView.getSystemTypeDescription(file_);
+                tf_ = (string(diskType) == marker);
             end
         end
     end
