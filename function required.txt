@@ -157,43 +157,23 @@ V1.6        Sika deer           梅花鹿
   |     |- [Fix Bugs] fix one volume can't do registration(avoid loading)
   |     |- [Fix Bugs] fix the timer bug after multi-loading
   |     |- [Fix Bugs] disable the bug-report menu on linux platform
-  |- V1.6.6     2024/01/26
-  |     |- [Update] TODO: system computation source manager, for avoiding different user confliction parpool
+  #     #
+
+====================Important Architecture Update =========================
+V2.0        Sun Wukong          孙悟空
+  |-V2.0.0      2024/02/08   12:00
+  |     |- [Update] add mouse roller z slice controlling
   |     |- [Update] remove nearest interpolation in registration
   |     |- [Update] clean up project for clearly calling
+  |     |- [Update] TODO: more powerful task manager introduced
+  |     |- [Update] TODO: long-term registration review at points cloud registration
+  |     |- [Update] 
   |     |- [Fix Bugs] fix the registration frames number lost synchronize bug
   |     |- [Fix Bugs] fix one channel registration(manual) output
   |     |- [Fix Bugs] fix mode 'affine' can not run
-  #     #
-
-V1.7        Golden monkey       金丝猴
-  |- V1.7.0
-  |     |- [Update] add mouse roller z slice controlling
-  |     |- [Update] TODO: more powerful task manager introduced
-  |     |- [Update] TODO: long-term registration review at points cloud registration
   |     |- [Fix Bugs] TODO: fix long-term registration out of memory when key frames is too much
-  |- V1.7.1
+  |     |- [Fix Bugs]
+  |- V2.0.1     2024/03/
   |     |- [Update] TODO: registration history manager
   |     |- 
 
-
-V1.8        Crested ibis        朱鹮
-
-
-
-
-V2.0        Cathaya argyrophylla    银杉
-  |-V2.0.0  
-  |     |- [Update] 
-  |     |- []
-V2.1        Cymbidium tortisepalum  菅草兰
-
-V2.2        Davidia involucrata     珙桐
-
-V2.3        Dendrobium huoshanense  霍山石斛
-
-V2.4        Euryodendron excelsum   猪血木
-
-V2.5        Garcinia paucinervis    金丝李
-
-V2.6        Ginkgo biloba           银杏

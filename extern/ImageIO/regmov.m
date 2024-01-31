@@ -19,17 +19,16 @@ classdef regmov
     end
 
     properties(Access=public, Dependent)
-        Movie           % variable, get/set, manual update
-        MetaData        % variable, get/set, manual update
-        Time            % variable, get/set, manual update
-        MovieZProj      % variable, get    , /
-        ZProjMethod     % variable, set/get, manual update
-        Transformation  % variable, get/set, manual update
-        Bytes           % variable, get    , /
-        Background      % variable, get/set, manual update
+        Movie           % variable, get/set, stored
+        MetaData        % variable, get/set, stored
+        Time            % variable, get/set, stored
+        MovieZProj      % variable,     get, not stored
+        ZProjMethod     % variable, get/set, stored
+        Transformation  % variable, get/set, stored
+        Bytes           % variable,     get, not stored
+        Background      % variable, get/set, stored
     end
 
-    
     methods
         function this = regmov(mptr_, mopt_, t_, bkg_)
             %REGMOV A constructor
@@ -63,7 +62,7 @@ classdef regmov
             this.mopt = mopt_;
             this.t = t_;
             this.zprojalg = "max";
-            this.tform = cell(0,3);
+            this.tform = cell(mopt_.frames, 3);
             this.bkg = bkg_;
         end
 
@@ -116,7 +115,7 @@ classdef regmov
         function this = set.MetaData(this, r_)
             arguments
                 this
-                r_  (1,12)  table
+                r_  (1,12)  table   {regmov.mustBeMovieOptions}
             end
 
             this.mopt = r_;
@@ -146,6 +145,9 @@ classdef regmov
         end
 
         function r = get.MovieZProj(this)
+            % NOTE: This function is not real-time function, do not call in
+            % real-time situation
+
             if ismember(class(this.mptr), ["mpimg", "mpimgs"])
                 [vz, pz] = ismember("Z", this.mptr.DimOrder);
                 if ~vz
@@ -205,7 +207,7 @@ classdef regmov
             prop_ = struct2table(whos("mopt_","t_","zprojalg_","tform_","bkg_"));
             r.mem = sum(prop_.bytes);
 
-            if ismember(class(mptr_), ["mpimg", "mpimgs"])
+            if ismember(class(this.mptr), ["mpimg", "mpimgs"])
                 r.map = this.mptr.DataBytes;
             elseif isnumeric(this.mptr)
                 r.map = 0;
@@ -242,6 +244,82 @@ classdef regmov
 
     end
 
+    methods(Access=public, Hidden)
+        function r = isempty(this)
+            r = isempty(this.Movie);
+        end
+
+        function movobj = crop(this, dim_, r_)
+            arguments
+                this
+                dim_  (1,1) string
+                r_    (:,2) double {mustBePositive, mustBeInteger}
+            end
+
+            mopt_ = this.mopt;
+            t_ = this.t;
+            tf_ = this.tform;
+            bkg_ = this.bkg;
+
+            if ismember(class(this.mptr), ["mpimg", "mpimgs"])
+                mptr_ = this.mptr.crop(dim_, r_);
+                dim_ = dim_.split("");
+                dim_ = dim_(2:end);
+                for n = 1:numel(dim_)
+                    switch dim_(n)
+                        case "X"
+                            mopt_.width = mopt_.width - (diff(r_(n,:))+1);
+                        case "Y"
+                            mopt_.height = mopt_.height - (diff(r_(n,:))+1);
+                        case "C"
+                            mopt_.channels = mopt_.channels - (diff(r_(n,:))+1);
+                            bkg_ = bkg_(r_(n,1):r_(n:2));
+                        case "Z"
+                            mopt_.slices = mopt_.slices - (diff(r_(n,:))+1);
+                        case "T"
+                            mopt_.frames = mopt_.frames - (diff(r_(n,:))+1);
+                            t_ = t_(r_(n,1):r_(n:2));
+                            tf_ = tf_(r_(n,1):r_(n:2), :);
+                    end
+                end
+                mopt_.images = mopt_.slices*mopt_.channels*mopt_.frames;
+
+                movobj = regmov(mptr_, mopt_, t_, bkg_);
+                movobj.Transformation = tf_;
+            elseif isnumeric(this.mptr)
+                if numel(dim_) ~= size(r_, 1)
+                    throw(MException("regmov:invalidCrop", ...
+                        "Crop dimension not match."));
+                end
+                validateattributes(r_, "double", "nondecreasing");
+                %TODO: ANY DIMENSION ORDER SUPPORT
+                warning("regmov:unfinishFunction", "Only partial functions " + ...
+                    "are supported.");
+                switch dim_
+                    case "XY"
+                        mov = CropXY(this.Movie, r_');
+                        mopt_.width = mopt_.width - (diff(r_(1,:))+1);
+                        mopt_.height = mopt_.height - (diff(r_(2,:))+1);
+                    case "Z"
+                        mov = CropZ(this.Movie, r_);
+                        mopt_.slices = mopt_.slices - (diff(r_)+1);
+                    case "T"
+                        mov = CropT(this.Movie, r_);
+                        mopt_.frames = mopt_.slices - (diff(r_)+1);
+                        t_ = t_(r_(1):r_(2));
+                        tf_ = tf_(r_(1):r_(2));
+                    otherwise
+                        throw(MException("regmov:invalidOperation", ...
+                            "Unsupported operation."));
+                end
+                mopt_.images = mopt_.slices*mopt_.channels*mopt_.frames;
+
+                movobj = regmov(mov, mopt_, t_, this.bkg);
+                movobj.Transformation = tf_;
+            end
+        end
+    end
+
     methods(Static, Hidden)
         function mustBeMovieOptions(A)
             MOVIE_OPTIONS_FIELD = ["width", "height", "slices", "channels", "frames", ...
@@ -255,18 +333,31 @@ classdef regmov
                     );
             end
 
-            validateattributes(A.width, "double", {'scalar','integer','positive'});
-            validateattributes(A.height, "double", {'scalar','integer','positive'});
-            validateattributes(A.slices, "double", {'scalar','integer','positive'});
-            validateattributes(A.channels, "double", {'scalar','integer','positive'});
-            validateattributes(A.frames, "double", {'scalar','integer','positive'});
-            validateattributes(A.images, "double", {'scalar','integer','positive'});
-            validateattributes(A.xRes, "double", {'scalar','positive'});
-            validateattributes(A.yRes, "double", {'scalar','positive'});
-            validateattributes(A.zRes, "double", {'scalar','positive'});
+            validateattributes(A.width, "double", {'scalar','integer','nonnegative'});
+            validateattributes(A.height, "double", {'scalar','integer','nonnegative'});
+            validateattributes(A.slices, "double", {'scalar','integer','nonnegative'});
+            validateattributes(A.channels, "double", {'scalar','integer','nonnegative'});
+            validateattributes(A.frames, "double", {'scalar','integer','nonnegative'});
+            validateattributes(A.images, "double", {'scalar','integer','nonnegative'});
+            validateattributes(A.xRes, "double", {'scalar','nonnegative'});
+            validateattributes(A.yRes, "double", {'scalar','nonnegative'});
+            validateattributes(A.zRes, "double", {'scalar','nonnegative'});
             validateattributes(A.dataType, "string", {'scalar'});
             validateattributes(A.dimOrder, "string", {'vector'});
             validateattributes(A.cOrder, "string", {'vector'});
+        end
+
+        function mov = empty()
+            mopt_ = table('Size',[1,12], 'VariableTypes',{'double','double',...
+                'double','double','double','double','double','double','double',...
+                'string','string','string'},'VariableNames',{'width','height',...
+                'slices','channels','frames','images','xRes','yRes','zRes',...
+                'dataType','dimOrder','cOrder'});
+            mopt_.dataType = "uint16";
+            mopt_.dimOrder = string.empty(1,0);
+            mopt_.cOrder = string.empty(1,0);
+
+            mov = regmov(uint16.empty(), mopt_, [], []);
         end
     end
 end

@@ -8,7 +8,7 @@ classdef mpimg < matlab.mixin.Copyable
         BYTES_UINT16 = 2
         BYTES_UINT32 = 4
         BYTES_UINT64 = 8
-        INNER_DIMENSION_ORDER = ["Y","X","C","Z","T"]
+        INNER_DIMENSION_ORDER = ["X","Y","C","Z","T"]
     end
 
     properties(Access = protected, Hidden)
@@ -45,7 +45,7 @@ classdef mpimg < matlab.mixin.Copyable
                 folder_
                 file_
                 data_
-                dimorder_  (1,:)    string = ["Y","X","C","Z","T"]
+                dimorder_  (1,:)    string = ["X","Y","C","Z","T"]
                 autoclear_ (1,1)    logical = true
                 const_     (1,1)    logical = false
                 display_   (1,1)    logical = false     % for debugging
@@ -106,7 +106,7 @@ classdef mpimg < matlab.mixin.Copyable
         function set.DimOrder(this, r)
             arguments
                 this
-                r   (1,:) string = ["Y","X","C","Z","T"]
+                r   (1,:) string = ["X","Y","C","Z","T"]
             end
 
             if numel(r) ~= numel(this.dimorder)
@@ -177,7 +177,7 @@ classdef mpimg < matlab.mixin.Copyable
                 this
                 file_
                 format_    (1,:)    cell = cell(1,3)
-                dimorder_  (1,:)    string = ["Y","X","C","Z","T"]
+                dimorder_  (1,:)    string = ["X","Y","C","Z","T"]
             end
 
             if (numel(format_) ~= 3) || ~ismember(format_{1}, ...
@@ -418,8 +418,11 @@ classdef mpimg < matlab.mixin.Copyable
             import javax.swing.filechooser.FileSystemView;
             import java.lang.System;
 
+            warning('off', 'MATLAB:MKDIR:DirectoryExists');
+
             if ispc()
                 files_ = File.listRoots();
+                user_name = string(System.getProperty("user.name"));
                 disk_table = table('Size',[numel(files_), 5], ...
                     'VariableTypes',{'string','double','logical','logical','logical'}, ...
                     'VariableNames',{'letter','free_size','readable','writable','is_local'});
@@ -442,8 +445,12 @@ classdef mpimg < matlab.mixin.Copyable
                         "mpimgs object instead."));
                 end
 
-                folder_ = [disk_table.letter(idx).char(), filesep, '~regtemp'];
+                folder_ = [disk_table.letter(idx).char(), 'Reg3DCache'];
+               
                 try
+                    mkdir(folder_);
+                    fileattrib(folder_, '+h', '', 's');
+                    folder_ = [folder_, filesep, user_name.char()];
                     mkdir(folder_);
                 catch ME
                     switch ME.identifier
@@ -455,6 +462,8 @@ classdef mpimg < matlab.mixin.Copyable
             elseif isunix()
                 % TODO: 
             end
+
+            warning('on', 'MATLAB:MKDIR:DirectoryExists');
 
             function sz_ = calc_volsize(volopt_, numhistory_)
                 switch volopt_.dataType

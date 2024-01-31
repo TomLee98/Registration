@@ -24,7 +24,7 @@ function [opts,rt,mptr,filename] = loadfile(filename, omitif, order_out, memmap,
 arguments
     filename        string
     omitif      (1,1) logical = false
-    order_out   (1,5) string = ["Y","X","C","Z","T"]
+    order_out   (1,5) string = ["X","Y","C","Z","T"]
     memmap      (1,1) logical = true
     num_history (1,1) double {mustBeNonnegative, mustBeInteger} = 0
 end
