@@ -50,7 +50,7 @@
     <REGISTRATION_EVALUATION>Evaluación de registro</REGISTRATION_EVALUATION>
     <REGISTRATION_HISTORY>Historial de registro</REGISTRATION_HISTORY>
     <RUN_MODAL>Ejecutar modal</RUN_MODAL>
-    <SHARED>Compartido</SHARED>
+    <DISTRIBUTED>Repartido</DISTRIBUTED>
     <EXCLUSIVE>Exclusivo</EXCLUSIVE>
     <HELP>Ayuda</HELP>
     <ABOUT>Acerca de</ABOUT>
@@ -379,5 +379,7 @@
     <TOO_MUCH_ROI>Hay demasiados ROI, vuelva a dibujarlos e intente agregarlos.</TOO_MUCH_ROI>
     <EXPORT_MASK_SUCCESS>Los atributos de máscara y área se exportaron correctamente.</EXPORT_MASK_SUCCESS>
     <MULTI_CONNECTION>Se encuentran regiones multiconectadas y se ha seleccionado el subconjunto más grande conectado individualmente</MULTI_CONNECTION>
+    <EXCLUSIVE_WARNING>Actualmente está ejecutando en modo servidor. El modo exclusivo puede provocar que MATLAB se bloquee. ¿Continuar?</EXCLUSIVE_WARNING>
+    <LOW_MEMPRY_WARNING>La memoria disponible es demasiado pequeña y no se puede habilitar el modo exclusivo.</LOW_MEMPRY_WARNING>
     <DEVELOPING>Desarrollando…</DEVELOPING>
 </struct>

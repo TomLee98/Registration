@@ -50,7 +50,7 @@
     <REGISTRATION_EVALUATION>Регистрация Оценка</REGISTRATION_EVALUATION>
     <REGISTRATION_HISTORY>История регистрации</REGISTRATION_HISTORY>
     <RUN_MODAL>Запустить модальное окно</RUN_MODAL>
-    <SHARED>Общий</SHARED>
+    <DISTRIBUTED>Распределенный</DISTRIBUTED>
     <EXCLUSIVE>Эксклюзивный</EXCLUSIVE>
     <HELP>Помощь</HELP>
     <ABOUT>О</ABOUT>
@@ -379,5 +379,7 @@
     <TOO_MUCH_ROI>Слишком много ROI, перерисуйте и попробуйте добавить их.</TOO_MUCH_ROI>
     <EXPORT_MASK_SUCCESS>Атрибуты маски и области успешно экспортированы.</EXPORT_MASK_SUCCESS>
     <MULTI_CONNECTION>Обнаружены многосвязные регионы и выбрано наибольшее односвязное подмножество.</MULTI_CONNECTION>
+    <EXCLUSIVE_WARNING>В настоящее время вы работаете в режиме сервера. Эксклюзивный режим может привести к сбою MATLAB. Продолжить?</EXCLUSIVE_WARNING>
+    <LOW_MEMPRY_WARNING>Доступная память слишком мала, и эксклюзивный режим невозможно включить.</LOW_MEMPRY_WARNING>
     <DEVELOPING>Разработка…</DEVELOPING>
 </struct>

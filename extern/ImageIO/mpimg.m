@@ -11,7 +11,7 @@ classdef mpimg < matlab.mixin.Copyable
         INNER_DIMENSION_ORDER = ["X","Y","C","Z","T"]
     end
 
-    properties(Access = protected, Hidden)
+    properties(Access = private, Hidden)
         fmt             % 1-by-3 cell array, with {datatype, size, field}
         dimorder        % 1-by-d string array, dimension order of data
         isdisplay       % 1-by-1 logical, display flag
@@ -19,7 +19,7 @@ classdef mpimg < matlab.mixin.Copyable
         isconst         % 1-by-1 logical, mark the file is constant or variable
     end
 
-    properties(Access = protected, NonCopyable)
+    properties(Access = private, Hidden, NonCopyable)
         memptr          % 1-by-1 memmapfile object
     end
 

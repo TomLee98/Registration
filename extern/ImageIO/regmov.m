@@ -1,4 +1,4 @@
-classdef regmov
+classdef regmov < matlab.mixin.Copyable
     %REGMOV This class is regmov defination, which construct the key data
     %struct for Register
 
@@ -10,12 +10,15 @@ classdef regmov
     end
 
     properties(Access=private, Hidden)
-        mptr            % 1-by-1 mpimg/mpimgs object or numeric array
         mopt            % 1-by-12 table, with movie options
         t               % t-by-1 double, camera time
         zprojalg        % 1-by-1 string, method of z-projection
         tform           % t-by-3 cell, with {global, local, manual} transformation unit
         bkg             % c-by-1 double, c for color channel number
+    end
+
+    properties(Access=private, Hidden, NonCopyable)
+        mptr            % 1-by-1 mpimg/mpimgs object or numeric array
     end
 
     properties(Access=public, Dependent)
@@ -77,7 +80,7 @@ classdef regmov
             end
         end
 
-        function this = set.Movie(this, r_)
+        function set.Movie(this, r_)
             arguments
                 this
                 r_  
@@ -112,7 +115,7 @@ classdef regmov
             r = this.mopt;
         end
 
-        function this = set.MetaData(this, r_)
+        function set.MetaData(this, r_)
             arguments
                 this
                 r_  (1,12)  table   {regmov.mustBeMovieOptions}
@@ -130,7 +133,7 @@ classdef regmov
             r = this.t;
         end
 
-        function this = set.Time(this, r_)
+        function set.Time(this, r_)
             arguments
                 this
                 r_  (:,1)   double {mustBeNonnegative}
@@ -171,7 +174,7 @@ classdef regmov
             r = this.zprojalg;
         end
 
-        function this = set.ZProjMethod(this, r_)
+        function set.ZProjMethod(this, r_)
             arguments
                 this
                 r_  (1,1)   string {mustBeMember(r_, ["max","min", ...
@@ -185,12 +188,12 @@ classdef regmov
             r = this.tform;
         end
 
-        function this = set.Transformation(this, r_)
+        function set.Transformation(this, r_)
             arguments
                 this
                 r_  (:, 3) cell
             end
-            if numel(r_) ~= this.mopt.frames
+            if size(r_, 1) ~= this.mopt.frames
                 throw(MException("regmov:badTime", ...
                     "Number of Timesteps not match."));
             end
@@ -229,7 +232,7 @@ classdef regmov
             r = this.bkg;
         end
 
-        function this = set.Background(this, r_)
+        function set.Background(this, r_)
             arguments
                 this
                 r_  (1,:)   double {mustBeNonnegative}
@@ -242,6 +245,21 @@ classdef regmov
             this.Background = r_;
         end
 
+    end
+
+    methods(Access = protected)
+        % Override copyElement method:
+        function cpt = copyElement(this)
+            % Make a shallow copy of all properties except memptr
+            cpt = copyElement@matlab.mixin.Copyable(this);
+
+            if isnumeric(this.mptr)
+                cpt.mptr = this.mptr;
+            elseif ismember(class(this.mptr), ["mpimg", "mpimgs"])
+                % Make a deep copy of the mpimg/mpimgs object
+                cpt.mptr = this.mptr.copy();
+            end
+        end
     end
 
     methods(Access=public, Hidden)
@@ -316,6 +334,29 @@ classdef regmov
 
                 movobj = regmov(mov, mopt_, t_, this.bkg);
                 movobj.Transformation = tf_;
+            end
+        end
+
+        function gather(this)
+            % this function gathers data from disk file to memory
+            if isnumeric(this.mptr)
+                % already in memory
+                return;
+            else
+                D = this.mptr.Data;
+                delete(this.mptr);  % release resource
+                this.mptr = D;
+            end
+        end
+
+        function spread(this)
+            % this function spreads data from memory to disk file
+            if ismember(class(this.mptr), ["mpimg", "mpimgs"])
+                % already in memory
+                return;
+            else
+                tmpfolder = mpimg.findtmpfolder(this.mopt); % mpimgs ?
+                this.mptr = mpimg(tmpfolder, [], this.mptr, this.mopt.dimOrder);
             end
         end
     end

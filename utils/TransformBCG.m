@@ -7,7 +7,7 @@ function C = TransformBCG(A, param)
 %   - param: the tramsform parameters, struct with {b,c,ga},
 %            image intensity model: y = c*x^ga+b
 % output:
-%   - C: the transformed image
+%   - C: the transformed image, uint8 for fast viewing
 
 % Version 1.0.0
 % Copyright (c) 2022-2023, Weihan Li
@@ -18,13 +18,10 @@ arguments
 end
 
 % rescale the pixel intensity
-if ismember(class(A),["uint8","uint16","uint32","uint64"])
-    A = rescale(A,0,intmax(class(A)));
-else
-    A = rescale(uint16(A),0,65535); % scale as uint16
-end
+A = rescale(A,0,intmax("uint16"));
 
 % linear model
 C = imlincomb(param.c, uint16(single(A).^param.ga), param.b);
+C = uint8(rescale(C, 0, intmax("uint8")));
 end
 

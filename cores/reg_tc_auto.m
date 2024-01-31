@@ -1,7 +1,7 @@
 function [signal,tform,marker] = reg_tc_auto(varargin)
 %REGISTER - This function help to align 3D volume series
 %   This function can automatically align two channels volumetric images
-%
+%   NOTE: will be removed
 %   signal = register3D()
 %   [signal,tform,marker] = register3D()
 %   [signal,tform,marker] = register3D(filename)
@@ -9,8 +9,8 @@ function [signal,tform,marker] = reg_tc_auto(varargin)
 %   [signal,tform,marker] = register3D(___,Name,Value)
 %
 %   input:
-%   - (optional) movinfo:  the structure of movie data(4/5-D) and
-%                          information structure with field {'mov','opts'}
+%   - (optional) regmov_obj: a regmov object, which contains registration
+%                           movie information, see details: regmov
 %   - (optional) filename: the name of file need to be aligned, only *.ims,
 %                          *.nd2 and *.tiff is valid, image dimension: x*y*(c)*z*t
 %   - varargin:
@@ -157,7 +157,7 @@ VALID_COMP_ACC = [512, 1024, 2048, 4096];
 
 p = inputParser;
 valid_file = @(x) isempty(x)||((isstring(x) || ischar(x)) && exist(x,"file"));
-valid_movinfo = @(x) isstruct(x) && all(ismember(["mptr","opts"],string(fieldnames(x))));
+valid_regmov_obj = @(x) validateattributes(x, {'regmov'},{'scalar'});
 valid_refvol = @(x)isstruct(x) && all(ismember(string(fieldnames(x)),["G","L"]));
 valid_regframes = @(x) validateattributes(x,{'numeric'},{'row','positive','integer','increasing'});
 valid_regmode = @(x)(ismember(x,VALID_REGMODE_METHOD));
@@ -185,7 +185,7 @@ valid_bigfile = @(x)(ismember(x,["on","off"]));
 
 %======================== DEFAULT PARAMETER SETTING =======================
 default_filename = [];               % the default filename
-default_movinfo = struct('mov',[],'opts',[]); % the default movinfo
+default_regmov_obj = regmov.empty(); % the default movinfo
 default_refvol = struct("G",   ["mean", "1"],...
     "L",    ["mean", "1"]);          % default refvol
 default_regframes = intmax("uint16");% the default registration frames
@@ -209,7 +209,7 @@ default_lrtds = 1;                   % the downsampling coefficient
 default_bigfile = "off";             % the big file flag
 %==========================================================================
 
-addOptional(p,'movinfo',default_movinfo,valid_movinfo);
+addOptional(p,'regmov_obj',default_regmov_obj,valid_regmov_obj);
 addOptional(p,'filename',default_filename,valid_file);
 addParameter(p,'RefVol',default_refvol,valid_refvol);
 addParameter(p,'RegFrames',default_regframes,valid_regframes);
@@ -289,18 +289,14 @@ else
 end
 
 % load the file
-if isempty(parser_results.movinfo.mptr)
-    [opts,mptr,~,~] = loadfile(parser_results.filename);
-else
-    mptr = parser_results.movinfo.mptr;
-    opts = parser_results.movinfo.opts;
-end
+mov = parser_results.regmov_obj.Movie;
+opts = parser_results.regmov_obj.MetaData;
 
 channel_order = opts.cOrder;
 
 % generate global value: fixed volume and data scale
-[MA_MIN, MA_MAX] = getMinMaxIn(mptr, parser_results.Chla, channel_order);
-fv = GenFixVolProfile(mptr, parser_results, channel_order, parser_results.DS);
+[MA_MIN, MA_MAX] = getMinMaxIn(mov, parser_results.Chla, channel_order);
+fv = GenFixVolProfile(mov, parser_results, channel_order, parser_results.DS);
 
 % pre-processing data that was RegFrames mentioned
 if isequal(parser_results.RegFrames,intmax("uint16"))
@@ -308,7 +304,7 @@ if isequal(parser_results.RegFrames,intmax("uint16"))
 else
     reg_frames = intersect(parser_results.RegFrames, 1:opts.frames);
 end
-mptr(:,:,:,:,setdiff(1:opts.frames,reg_frames)) = []; % remove the kept data
+mov(:,:,:,:,setdiff(1:opts.frames,reg_frames)) = []; % remove the kept data
 opts.frames = numel(reg_frames); % adjust the frames
 opts.images = opts.frames*opts.slices*opts.channels; % adjust the total images
 
@@ -338,19 +334,19 @@ reg_param = struct( 'regmode',      parser_results.RegMode,...
     'bigfile',      parser_results.BigFile);
 
 % clear vars for debug easy
-clearvars -except opts mptr reg_param CONTRAST_CONSTANT MA_MIN MA_MAX;
+clearvars -except opts mov reg_param CONTRAST_CONSTANT MA_MIN MA_MAX;
 
-if ~isempty(mptr)
+if ~isempty(mov)
     switch reg_param.bigfile
         case "on"
             chl = [find(reg_param.chlA==reg_param.chlMode), ...
                    find(reg_param.chlS==reg_param.chlMode)];
-            [ma_ptr, ms_ptr] = GenFilePointer(mptr, chl);
+            [ma_ptr, ms_ptr] = GenFilePointer(mov, chl);
         case "off"
             % use the memory variable directly
-            ma_ptr = squeeze(uint16(mptr.Data(:,:,...
+            ma_ptr = squeeze(uint16(mov(:,:,...
                 reg_param.chlA==reg_param.chlMode,:,:)));
-            ms_ptr = squeeze(uint16(mptr.Data(:,:,...
+            ms_ptr = squeeze(uint16(mov(:,:,...
                 reg_param.chlS==reg_param.chlMode,:,:)));
         otherwise
     end
@@ -590,8 +586,6 @@ end
 
             parobj = OpenParpool(nw);
 
-            mpiprofile on
-
             if reg_param.bigfile == "on"
                 % using for loop load block data
                 mv_size = size(ma,'mov_aligned');
@@ -716,8 +710,6 @@ end
                 ms_new = ms;
                 ma_new = ma;
             end
-
-            mpiprofile viewer
 
             CloseParpool(parobj);
 
@@ -956,17 +948,17 @@ end
     end
 
     function [MA_MIN, MA_MAX] = getMinMaxIn(mptr, ch_slt, ch_ord)
-        MA_MIN = min(mptr.Data(:,:,ch_slt==ch_ord,:,:),[],"all");
-        MA_MAX = max(mptr.Data(:,:,ch_slt==ch_ord,:,:),[],"all");
+        MA_MIN = min(mptr(:,:,ch_slt==ch_ord,:,:),[],"all");
+        MA_MAX = max(mptr(:,:,ch_slt==ch_ord,:,:),[],"all");
     end
 
     function fv = GenFixVolProfile(mptr, ps, cd, ds)
-        tmp_ma = squeeze(mptr.Data(:,:,ps.Chla==cd,:,:));
+        tmp_ma = squeeze(mptr(:,:,ps.Chla==cd,:,:));
         fixvol_global_a = GetFixedVol(tmp_ma, ps.RefVol.G);
         fixvol_local_a = GetFixedVol(tmp_ma, ps.RefVol.L);
         clearvars tmp_ma;
 
-        tmp_ms = squeeze(mptr.Data(:,:,ps.Chls==cd,:,:));
+        tmp_ms = squeeze(mptr(:,:,ps.Chls==cd,:,:));
         fixvol_global_s = GetFixedVol(tmp_ms, ps.RefVol.G);
         clearvars tmp_ms;
         

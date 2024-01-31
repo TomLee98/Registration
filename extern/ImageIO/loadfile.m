@@ -1,11 +1,11 @@
-function [opts,rt,mptr,filename] = loadfile(filename, omitif, order_out, memmap, num_history)
+function [opts,rt,mptr,filename] = loadfile(filename, omitif, memmap, num_history, order_out)
 %LOADFILE: This function for loading data (.ims,.tif,.nd2)
 % input:
 %   - filename:char array or string, the movie file name (with full path), can be empty
 %   - omitif: the flag for omit tiff file information lost, false as default
-%   - order_out: the output stacks order, ["X","Y","C","Z","T"] as default
 %   - memmap: the flag for memory mapping enabled
 %   - num_history: the number of movies history kept
+%   - order_out: the output stacks order, ["X","Y","C","Z","T"] as default
 % output:
 %   - opts: some useful movie information, 1 X 12 table, with variables:
 %           width   height  channels slices  frames images  xRes    yRes
@@ -24,9 +24,9 @@ function [opts,rt,mptr,filename] = loadfile(filename, omitif, order_out, memmap,
 arguments
     filename        string
     omitif      (1,1) logical = false
-    order_out   (1,5) string = ["X","Y","C","Z","T"]
     memmap      (1,1) logical = true
     num_history (1,1) double {mustBeNonnegative, mustBeInteger} = 0
+    order_out   (1,5) string = ["X","Y","C","Z","T"]
 end
 
 nargoutchk(1, 4);

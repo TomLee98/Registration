@@ -51,13 +51,13 @@ classdef TaskManager < handle
     end
 
     methods(Access = public)
-        function this = TaskManager(volopt_, regopt_, regfn_, hostname_)
+        function this = TaskManager(volopt_, regopt_, regfn_, srvhost_)
             %TASKMANAGER A constructor
             arguments
-                volopt_  (1,:)  table     % the movie information table
-                regopt_  (1,1)  struct    % the registration options struct
-                regfn_   (1,1)  double {mustBePositive, mustBeInteger}
-                hostname_(1,1)  string = "silab"
+                volopt_     (1,:)  table            % the movie information table
+                regopt_     (1,1)  struct           % the registration options struct
+                regfn_      (1,1)  double {mustBePositive, mustBeInteger}
+                srvhost_    (1,1)  string = "silab" % server host name
             end
 
             this.volopt = volopt_;
@@ -67,7 +67,7 @@ classdef TaskManager < handle
 
             [~, host] = system("hostname");
             host = string(host).extractBefore(newline);
-            if (this.nmax > 8) && (host == hostname_)
+            if (this.nmax > 8) && (host == srvhost_)
                 if isunix()
                     sfpath = '/data/.rcfs';
                     status = 0;             % avoid users permission

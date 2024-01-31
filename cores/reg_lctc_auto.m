@@ -4,6 +4,7 @@ function [signal, tform, marker] = reg_lctc_auto(varargin)
 % the registration mode uses rigid、affine and non-rigid algorithms on the whole image
 %   Note that: consider the long-term experiment, we always need RTIO
 %   (Real time input output) method but waste some time
+%   NOTE: will be removed
 %
 %   signal = register3D()
 %   [signal,tform,marker] = register3D()
