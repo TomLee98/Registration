@@ -154,6 +154,7 @@ V1.6        Sika deer           梅花鹿
   |     |- [Update] (PC only) fast nd2 read by nd2readsdk ~4X faster than bio-formats
   |     |- [Update] auto deploy the parallel environment on all platform
   |     |- [Update] new help documents for Version 1.6.5
+  |     |- [Update] this is the final version supports one cpu core registration
   |     |- [Fix Bugs] fix one volume can't do registration(avoid loading)
   |     |- [Fix Bugs] fix the timer bug after multi-loading
   |     |- [Fix Bugs] disable the bug-report menu on linux platform
@@ -167,7 +168,7 @@ V2.0        Sun Wukong          孙悟空
   |     |- [Update] clean up project for clearly calling
   |     |- [Update] TODO: more powerful task manager introduced
   |     |- [Update] TODO: long-term registration review at points cloud registration
-  |     |- [Update] 
+  |     |- [Update] TODO: remove 'mix' mode when do normal registration
   |     |- [Fix Bugs] fix the registration frames number lost synchronize bug
   |     |- [Fix Bugs] fix one channel registration(manual) output
   |     |- [Fix Bugs] fix mode 'affine' can not run

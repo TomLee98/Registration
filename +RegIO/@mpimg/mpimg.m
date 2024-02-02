@@ -1,7 +1,8 @@
 classdef mpimg < matlab.mixin.Copyable
     %MEMMAPPER This is memmepfile interface defination
-    % which is considered as value class, as same as matfile class but more
+    % which is considered as handle class, as same as matfile class but more
     % fast when mapped file is not big enough(<20GB)
+    % TODO: increasement IO for low memory using 
 
     properties(Constant, Hidden)
         BYTES_UINT8 = 1

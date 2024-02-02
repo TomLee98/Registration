@@ -37,7 +37,7 @@ classdef regmov < matlab.mixin.Copyable
             %REGMOV A constructor
             arguments
                 mptr_   
-                mopt_   (1,12)  table  {regmov.mustBeMovieOptions}
+                mopt_   (1,12)  table  {mustBeMovieOptions}
                 t_      (:,1)   double {mustBeNonnegative}
                 bkg_    (1,:)   double {mustBeNonnegative}
             end
@@ -362,32 +362,6 @@ classdef regmov < matlab.mixin.Copyable
     end
 
     methods(Static, Hidden)
-        function mustBeMovieOptions(A)
-            MOVIE_OPTIONS_FIELD = ["width", "height", "slices", "channels", "frames", ...
-                "images", "xRes", "yRes", "zRes", "dataType","dimOrder", "cOrder"];
-            varnames = A.Properties.VariableNames;
-            if ~isempty(setxor(varnames, MOVIE_OPTIONS_FIELD))
-                throwAsCaller(...
-                    createValidatorExceptionWithValue(createPrintableList(MOVIE_OPTIONS_FIELD), ...
-                    'regmov:validators:mustBeEqualGenericText',...
-                    'regmov:validators:mustBeMember')...
-                    );
-            end
-
-            validateattributes(A.width, "double", {'scalar','integer','nonnegative'});
-            validateattributes(A.height, "double", {'scalar','integer','nonnegative'});
-            validateattributes(A.slices, "double", {'scalar','integer','nonnegative'});
-            validateattributes(A.channels, "double", {'scalar','integer','nonnegative'});
-            validateattributes(A.frames, "double", {'scalar','integer','nonnegative'});
-            validateattributes(A.images, "double", {'scalar','integer','nonnegative'});
-            validateattributes(A.xRes, "double", {'scalar','nonnegative'});
-            validateattributes(A.yRes, "double", {'scalar','nonnegative'});
-            validateattributes(A.zRes, "double", {'scalar','nonnegative'});
-            validateattributes(A.dataType, "string", {'scalar'});
-            validateattributes(A.dimOrder, "string", {'vector'});
-            validateattributes(A.cOrder, "string", {'vector'});
-        end
-
         function mov = empty()
             mopt_ = table('Size',[1,12], 'VariableTypes',{'double','double',...
                 'double','double','double','double','double','double','double',...
@@ -403,3 +377,30 @@ classdef regmov < matlab.mixin.Copyable
     end
 end
 
+
+% ====================== local utility function ===================
+function mustBeMovieOptions(A)
+MOVIE_OPTIONS_FIELD = ["width", "height", "slices", "channels", "frames", ...
+    "images", "xRes", "yRes", "zRes", "dataType","dimOrder", "cOrder"];
+varnames = A.Properties.VariableNames;
+if ~isempty(setxor(varnames, MOVIE_OPTIONS_FIELD))
+    throwAsCaller(...
+        createValidatorExceptionWithValue(createPrintableList(MOVIE_OPTIONS_FIELD), ...
+        'regmov:validators:mustBeEqualGenericText',...
+        'regmov:validators:mustBeMember')...
+        );
+end
+
+validateattributes(A.width, "double", {'scalar','integer','nonnegative'});
+validateattributes(A.height, "double", {'scalar','integer','nonnegative'});
+validateattributes(A.slices, "double", {'scalar','integer','nonnegative'});
+validateattributes(A.channels, "double", {'scalar','integer','nonnegative'});
+validateattributes(A.frames, "double", {'scalar','integer','nonnegative'});
+validateattributes(A.images, "double", {'scalar','integer','nonnegative'});
+validateattributes(A.xRes, "double", {'scalar','nonnegative'});
+validateattributes(A.yRes, "double", {'scalar','nonnegative'});
+validateattributes(A.zRes, "double", {'scalar','nonnegative'});
+validateattributes(A.dataType, "string", {'scalar'});
+validateattributes(A.dimOrder, "string", {'vector'});
+validateattributes(A.cOrder, "string", {'vector'});
+end

@@ -13,7 +13,7 @@ function fixvol = GetFixedVol(movie, fixed, bigflag)
 %   - fixvol: the final fixed volume (dimension: xyz)
 
 % Version 1.0.0
-% Copyright (c) 2022-2023, Weihan Li
+% Copyright (c) 2022-2024, Weihan Li
 
 arguments
     movie;
