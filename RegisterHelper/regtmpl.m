@@ -38,48 +38,13 @@ classdef regtmpl
             this.refvol = struct("Global", [], ...
                                  "Local", []);
 
+            % Note that: dimension order standarded as XYZ
             this.refvol.Global = grv(this.regdata, ...
                                      this.fixvdef.Global, ...
                                      this.fixvdef.Channel);
             this.refvol.Local = grv(this.regdata, ...
                                     this.fixvdef.Local, ...
                                     this.fixvdef.Channel);
-
-            function v = grv(mov_, mode_, color_)
-                mf = str2func(mode_(1));
-                t_range = "[" + string(mode_(2))+ "]";
-                c_range = string(find(mov_.MetaData.cOrder == color_));
-                t_loc = (mov_.MetaData.dimOrder=="T");
-                c_loc = (mov_.MetaData.dimOrder=="C");
-
-                mov_ndim = numel(mov_.MetaData.dimOrder);
-                expr = "";
-                for dp = 1:mov_ndim
-                    if dp == c_loc
-                        expr = expr + t_range;
-                    elseif dp == t_loc
-                        expr = expr + c_range;
-                    else
-                        expr = expr + ":";
-                    end
-                    if dp ~= mov_ndim, expr = expr + ","; end
-                end
-                expr = "mov_.Movie(" + expr + ");";
-                D = eval(expr);     % create croped temporary data: D
-                switch mode_(1)
-                    case {'min','max'}
-                        v = mf(D, [], t_loc);
-                    case {'mean','median'}
-                        v = mf(D, t_loc);
-                    otherwise
-                end
-                v = unique(v);
-
-                if ndims(v) ~= 3
-                    throw(MException("regtmpl:grv:innerError", ...
-                        "Invalid reference volume generated."));
-                end
-            end
         end
     end
 end

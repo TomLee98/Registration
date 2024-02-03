@@ -21,7 +21,30 @@ classdef RegisterWorker < handle
         
         function status = correct(this, task_)
             %This function parse task_ and do registration
-            
+            arguments
+                this
+                task_   (1,1)   Task
+            end
+
+            regfrs_ = task_.RegFrames;
+            regopt_ =  task_.RegOptions.Options;
+            regopt_.Mode = task_.RegOptions.Mode;   % combine registration mode
+            movtmpl_ = task_.RegTemplate.RefVol;
+
+            switch regopt_.Algorithm
+                case "OCREG"
+
+                case "TCREG"
+                    status = tcreg(this.mov_raw, this.mov_aligned, movtmpl_, ...
+                                    regfrs_, regopt_);
+                case "LTREG"
+
+                case "MANREG"
+
+                otherwise
+                    throw(MException("RegisterWorker:unregisteredFunction", ...
+                        "Unsupported registration algorithm."));
+            end
         end
     end
 end

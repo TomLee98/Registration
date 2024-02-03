@@ -722,12 +722,12 @@ end
 
         switch ds
             case "auto"
-                [fv.fixvol_global_s_ds, fv.ds_scale] = DownSampling(fixvol_global_s);
-                [fv.fixvol_local_s_ds, ~] = DownSampling(fixvol_local_s, fv.ds_scale);
+                [fv.fixvol_global_s_ds, fv.ds_scale] = ReSample(fixvol_global_s);
+                [fv.fixvol_local_s_ds, ~] = ReSample(fixvol_local_s, fv.ds_scale);
             otherwise
-                [fv.fixvol_global_s_ds, fv.ds_scale] = DownSampling(...
+                [fv.fixvol_global_s_ds, fv.ds_scale] = ReSample(...
                     fixvol_global_s, 1/str2double(ds.extract(1)));
-                [fv.fixvol_local_s_ds, ~] = DownSampling(...
+                [fv.fixvol_local_s_ds, ~] = ReSample(...
                     fixvol_local_s, fv.ds_scale);
         end
 

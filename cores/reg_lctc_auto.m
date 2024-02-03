@@ -355,9 +355,9 @@ end
 
                 % 1. rigid registration based on point cloud
                 fixvol = key_mov(:,:,:,pos);
-                fixvol_ds = DownSampling(fixvol, vx_ds);
+                fixvol_ds = ReSample(fixvol, vx_ds);
                 movol_ma = ma(:,:,:,n);
-                movol_ma_ds = DownSampling(movol_ma, vx_ds);
+                movol_ma_ds = ReSample(movol_ma, vx_ds);
                 RA_ds = imref3d(size(movol_ma_ds), rs(1)/vx_ds, rs(2)/vx_ds, rs(3));
                 pts_fix = Vol2Pts(fixvol, rs);
                 pts_mov = Vol2Pts(movol_ma, rs);
@@ -703,7 +703,7 @@ end
         % setup temporary vars
         res_arr = [opts.xRes, opts.yRes, opts.zRes];
         RA = imref3d(vol_size, res_arr(1), res_arr(2), res_arr(3));
-        fix_init_ds = DownSampling(fix_init, reg_param.dsVX);
+        fix_init_ds = ReSample(fix_init, reg_param.dsVX);
         RA_ds = imref3d(size(fix_init_ds), res_arr(1)/reg_param.dsVX, ...
             res_arr(2)/reg_param.dsVX, res_arr(3));
         [optimizer, metric] = imregconfig("monomodal");
@@ -729,7 +729,7 @@ end
                 break;
             end
 
-            movol_ds = DownSampling(movol, reg_param.dsVX);
+            movol_ds = ReSample(movol, reg_param.dsVX);
             MOV_BKG = prctile(movol, 10, "all");
 
             % using cloud registration cpd -> affine registration
@@ -785,7 +785,7 @@ end
                 break;
             end
 
-            movol_ds = DownSampling(movol, reg_param.dsVX);
+            movol_ds = ReSample(movol, reg_param.dsVX);
             MOV_BKG = prctile(movol, 10, "all");
 
             % using cloud registration cpd -> affine registration
@@ -862,7 +862,7 @@ fv.fixvol_local_a = fixvol_local_a;
 fv.borderval_global_a = borderval_global_a;
 fv.borderval_global_s = borderval_global_s;
 
-[fv.fixvol_global_a_ds, fv.ds_scale] = DownSampling(fixvol_global_a, ds);
+[fv.fixvol_global_a_ds, fv.ds_scale] = ReSample(fixvol_global_a, ds);
 end
 
 function [MA_MIN, MA_MAX] = getMinMaxIn(mov, ch_slt, ch_ord)

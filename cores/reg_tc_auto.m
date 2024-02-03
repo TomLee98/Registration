@@ -423,7 +423,7 @@ end
                     optimizer.MaximumIterations = reg_param.maxIterNumRigid;
 
                     % genearte the downsampling data
-                    ma_ptr_ds = DownSampling(ma_ptr, ds_scale);
+                    ma_ptr_ds = ReSample(ma_ptr, ds_scale);
 
                     % align each volume with the fixed volume
                     for k = 1:opts.frames
@@ -605,7 +605,7 @@ end
                     bs = min(NWorker,mv_size(end)-(ii-1)*NWorker);
                     ma_block = ma.mov_aligned(:,:,:,...
                         (ii-1)*NWorker+1:(ii-1)*NWorker+bs);
-                    ma_block_ds = DownSampling(ma_block, ds_scale);
+                    ma_block_ds = ReSample(ma_block, ds_scale);
                     ms_block = ms.mov_signal(:,:,:,...
                         (ii-1)*NWorker+1:(ii-1)*NWorker+bs);
                     t_block = cell(bs,1);
@@ -676,7 +676,7 @@ end
                     optimizer_par.MaximumIterations = reg_param.maxIterNumRigid;
 
                     % genearte the down sampling aligned channel data
-                    ma_m_ds = DownSampling(ma(:,:,:,m), ds_scale);
+                    ma_m_ds = ReSample(ma(:,:,:,m), ds_scale);
 
                     if reg_param.tform == "translation"
                         % TMPDATA MUST BE CLAIM EXPLICITLY IN PARFOR!!!
@@ -976,9 +976,9 @@ end
 
         switch ds
             case "auto"
-                [fv.fixvol_global_a_ds, fv.ds_scale] = DownSampling(fixvol_global_a);
+                [fv.fixvol_global_a_ds, fv.ds_scale] = ReSample(fixvol_global_a);
             otherwise
-                [fv.fixvol_global_a_ds, fv.ds_scale] = DownSampling(...
+                [fv.fixvol_global_a_ds, fv.ds_scale] = ReSample(...
                     fixvol_global_a, 1/str2double(ds.extract(1)));
         end
     end
