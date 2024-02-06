@@ -1,4 +1,4 @@
-function n = GetCpuWorkersMaxN(volopt_, regopt_)
+function n = GetCPUWorkersMaxN(volopt_, regopt_)
 %GETCPUWORKERSMAXN This function calculate the CPU workers max number
 %depends on memory space using
 % Input
@@ -16,7 +16,7 @@ FOLD_RATIO = 5;
 
 n_cpu = feature('numCores');
 
-if  n_cpu <= 2
+if n_cpu <= 2
     % single or double core(s) cpu, no running supported
     n = 0;
     return;
@@ -43,7 +43,7 @@ if isempty(volopt_) && isempty(regopt_)
 elseif istable(volopt_) && all(size(volopt_)==[1,12]) ...
         && isa(regopt_, "regopt")
     if volopt_.channels == 1
-
+        n = 8;  % debug
     else
         % THE MAXSIZE OF MEMORY CONTAINS MODEL CAN BE
         % CALCULATE BY LINEAR SIMILARITY

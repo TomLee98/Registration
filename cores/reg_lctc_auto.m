@@ -292,7 +292,7 @@ end
             = uint16(0);
 
         %  read data as more as possible for speed up
-        block_n = GetCpuWorkersMaxN(opts, true, true);
+        block_n = GetCPUWorkersMaxN(opts, true, true);
         load_loop_n = ceil(opts.frames/block_n);
 
         % rigid/affine with cpu first

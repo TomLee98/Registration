@@ -128,6 +128,10 @@ classdef TaskManager < handle
             % task_cur (back to queue end)
             % if possible, dequeue front task of queue, if status is
             % "Await", update task_cur, else set task_cur to empty
+            arguments
+                this
+                status_ (1,1)   double {mustBeInteger}
+            end
 
             if status_ == 0
                 % change the task running flag
@@ -166,13 +170,14 @@ classdef TaskManager < handle
     methods(Access = private)
 
         function add_rcfpool(this)
+            
             % setup rcf files folder
             if this.distrib == true
                 if isunix()
                     sfpath = '/data/.rcfs';
                     success_flag = true;             % avoid users permission
                 elseif ispc()
-                    sfpath = 'C:\User\Public\rcfs';
+                    sfpath = 'C:\ProgramData\Reg3D\rcfs';
                     success_flag = mkdir(sfpath);    % generate folder except existed
                 end
                 if ~success_flag
@@ -187,6 +192,7 @@ classdef TaskManager < handle
             else
                 this.sfolder = [];  % no matter the sfolder, memory running
             end
+            
         end
 
         function talk_to_rcfpool(this)
@@ -210,6 +216,8 @@ classdef TaskManager < handle
                     % require from rcf pool
                     this.rcfobj.update_resource("REQUIRE");
                     this.rcfobj.Status = "Run";
+                    this.nworker_cur = ...
+                            this.rcfobj.NWorkers - this.nw_protected;
 
                     % write to rcf pool
                     this.rcfobj.write();
@@ -267,17 +275,21 @@ classdef TaskManager < handle
                 % reset the task queue to match the workers
                 % get all tasks which status are "Await", resort the frame
                 % indices
-                regframes = [];
-                while ~isempty(this.taskqueue)
-                    task_ = this.taskqueue.dequeue();
-                    if task_.Status == "Done"
-                        break;
-                    elseif task_.Status == "Await"
-                        regframes = [regframes, task_.RegFrames]; %#ok<AGROW>
-                    else
-                        throw(MException("update_task:innerError", ...
-                            "Invalid task status in task queue."));
+                if ~isempty(this.taskqueue)
+                    regframes = [];
+                    while ~isempty(this.taskqueue)
+                        task_ = this.taskqueue.dequeue();
+                        if task_.Status == "Done"
+                            break;
+                        elseif task_.Status == "Await"
+                            regframes = [regframes, task_.RegFrames]; %#ok<AGROW>
+                        else
+                            throw(MException("update_task:innerError", ...
+                                "Invalid task status in task queue."));
+                        end
                     end
+                else
+                    regframes = this.regfrs;
                 end
 
                 % use taskParser
@@ -329,11 +341,18 @@ classdef TaskManager < handle
 end
 
 function r = GetWorkersMaxN(regopt_)
-switch regopt_.Options.Hardware
-    case "cpu"
-        r = GetCpuWorkersMaxN([], []);
-    case "cpu|gpu"
-        r = GetGpuWorkersMaxN();
+switch regopt_.Mode
+    case "global"
+        r = GetCPUWorkersMaxN([], []);
+    case "local"
+        switch regopt_.Options.Hardware
+            case "cpu"
+                r = GetCPUWorkersMaxN([], []);
+            case "cpu|gpu"
+                r = GetGPUWorkersMaxN();
+            otherwise
+        end
     otherwise
 end
+
 end

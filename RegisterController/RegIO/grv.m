@@ -62,5 +62,7 @@ if standard_ == true
     v = permute(v, vp);
 end
 
+% change the value type to uint16
+v = uint16(v);
 end
 

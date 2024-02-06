@@ -38,7 +38,7 @@ n = round(n_gpu*minmem_tot*MEM_SECURATY_RATIO/...
     (MEM_VOL_CONST+MEM_WORKER_CONST));
 
 % gpu number can't be bigger than cpu number
-n = round(min(n, GetCpuWorkersMaxN([],[]))*GPU_SECURATY_RATIO);
+n = round(min(n, GetCPUWorkersMaxN([],[]))*GPU_SECURATY_RATIO);
 
 if n > n_gpu
     n = n - mod(n, n_gpu);

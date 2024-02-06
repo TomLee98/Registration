@@ -4,7 +4,7 @@ function status = tcreg(movsrc_, movdst_, movtmpl_, regfrs_, regopt_)
 % Input:
 %   - movsrc_: 1-by-1 regmov object, source registration movie
 %   - movdst_: 1-by-1 regmov object, destination registration movie
-%   - mobtmpl_: m-by-n-by-p uint16 array, the registration template volume
+%   - movtmpl_: m-by-n-by-p uint16 array, the registration template volume
 %   - regfrs_: 1-by-n positive integer numeric array, indicating the frames
 %              need to be aligned
 %   - regopt_: 1-by-1 regopt object, with registration options
@@ -17,7 +17,7 @@ function status = tcreg(movsrc_, movdst_, movtmpl_, regfrs_, regopt_)
 arguments
     movsrc_ (1,1)   regmov
     movdst_ (1,1)   regmov
-    movtmpl_(:,:,:) uint16 
+    movtmpl_(:,:,:) uint16
     regfrs_ (1,:)   double {mustBePositive, mustBeInteger}
     regopt_ (1,1)   struct {mustBeRegistrationOption}
 end
@@ -46,7 +46,7 @@ end
 
 end
 
-function status = tcreg_global_cpu(movsrc, movdst, movtmpl, regfrs, regopt)
+function status = tcreg_global_cpu(movsrc, movdst, refvol, regfrs, regopt)
 % This function use fast robust coarse registration pipeline
 % for global motion estimation
 % [Image Processing Pipeline]
@@ -62,10 +62,14 @@ function status = tcreg_global_cpu(movsrc, movdst, movtmpl, regfrs, regopt)
 UPSAMPLE_FACTOR = 2;
 TF = cell(numel(regfrs), 1);
 fmode = ["none", string(regfrs).join(",")];
+if regopt.DS == "auto"
+    regds = inf;
+else
+    regds = 1/str2double(regopt.DS.extractBefore("X"));
+end
 
 % 1. extract the reference volume
-refvol = movtmpl.Global;    % raw size
-[refvol_ds, ds_scale] = ReSample(refvol, regopt.DS);
+[refvol_ds, ds_scale] = ReSample(refvol, regds);
 [refvol_us, ~] = ReSample(refvol, UPSAMPLE_FACTOR);
 
 % 2. extract functional and structured channel data
@@ -96,6 +100,7 @@ itpalg = regopt.Interp;
 parfor m = 1:numel(regfrs)
     % downsampling  on selected volume
     avol_sc_m = avol_sc(:,:,:,m);
+    avol_fc_m = avol_fc(:,:,:,m);
     avol_sc_m_ds = ReSample(avol_sc_m, ds_scale);
     avol_sc_m_ds = doPreProcessOn(avol_sc_m_ds, refvol_ds);
    
@@ -162,11 +167,11 @@ movdst.Transformation(regfrs, 1) = TF;
 status = 0;
 end
 
-function tcreg_local_cpu(movsrc, movdst, movtmpl, regfrs, regopt)
+function tcreg_local_cpu(movsrc, movdst, refvol, regfrs, regopt)
 
 end
 
-function tcreg_local_gpu(movsrc, movdst, movtmpl, regfrs, regopt)
+function tcreg_local_gpu(movsrc, movdst, refvol, regfrs, regopt)
 
 end
 
@@ -236,7 +241,7 @@ end
 end
 
 function mustBeRegistrationOption(A)
-VALID_FIELD = ["RegModal", "TformType", "MaxStep", "MinStep", "MaxIterN", ...
+VALID_FIELD = ["Mode", "RegModal", "TformType", "MaxStep", "MinStep", "MaxIterN", ...
     "IterCoeff", "VPL", "Interp", "CoRegC", "DS", "SC", "FC", "Hardware"];
 
 if ~all(ismember(fieldnames(A), VALID_FIELD))

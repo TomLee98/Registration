@@ -73,9 +73,12 @@ classdef RegisterController < handle
             % initialize register worker
             this.regworker = RegisterWorker(movraw_, movaligned_);
 
+            % turn on engine
+            this.state = this.WORKER_STATE(2);
+
             task = this.taskmgr.Task;
             while ~isempty(task)
-                if this.state == this.WORKER_STATE(2)
+                if this.state == this.WORKER_STATE(1)
                     break;
                 end
                 status = this.regworker.correct(task);
@@ -87,7 +90,7 @@ classdef RegisterController < handle
             delete(this.taskmgr);
             delete(this.regworker);
 
-            if this.state == this.WORKER_STATE(2)
+            if this.state == this.WORKER_STATE(1)
                 status = this.STATUS_EXTSTOP;
             else
                 status = this.STATUS_SUCCESS;

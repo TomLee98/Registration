@@ -29,8 +29,7 @@ classdef regrcf < handle
                                         "status",           "Await", ...    % "Await", "Run", "Ready"
                                         "resource",         "", ...         % could be "cpu", "cpu|gpu"
                                         "progress",         0)              % progress for current process
-        nmax   (1,1)  double  {mustBeNonnegative, mustBeInteger} ...
-                                = TaskManager.GetWorkersMaxN()
+        nmax   (1,1)  double  {mustBeNonnegative, mustBeInteger} = 512
         fname
     end
 
@@ -73,7 +72,7 @@ classdef regrcf < handle
             end
             
             this.data.user_id = uid;
-            this.nmax = GetTaskWorkersMaxN(volopt_, regopt_);
+            [this.data.resource, this.nmax] = GetTaskWorkersMaxN(volopt_, regopt_);
             this.tueobj = TUE(volopt_, regopt_, regfrs_);
         end
 
@@ -105,7 +104,7 @@ classdef regrcf < handle
         function set.NWorkersMax(this, r_)
             arguments
                 this
-                r_      (1,2)   double {mustBeNonnegative, mustBeInteger}
+                r_      (1,1)   double {mustBeNonnegative, mustBeInteger}
             end
 
             this.nmax = r_;
@@ -465,12 +464,21 @@ classdef regrcf < handle
     end
 end
 
-function r = GetTaskWorkersMaxN(volopt_, regopt_)
-switch regopt_.Options.Hardware
-    case "cpu"
-        r = GetCpuWorkersMaxN(volopt_, regopt_);
-    case "cpu|gpu"
-        r = GetGpuWorkersMaxN();
+function [r, n] = GetTaskWorkersMaxN(volopt_, regopt_)
+switch regopt_.Mode
+    case "global"
+        r = "cpu";
+        n = GetCPUWorkersMaxN(volopt_, regopt_);
+    case "local"
+        r = regopt_.Options.Hardware;
+        switch r
+            case "cpu"
+                n = GetCPUWorkersMaxN(volopt_, regopt_);
+            case "cpu|gpu"
+                n = GetGPUWorkersMaxN();
+            otherwise
+        end
     otherwise
 end
+
 end

@@ -27,11 +27,12 @@ classdef RegisterWorker < handle
             end
 
             regfrs_ = task_.RegFrames;
+            Algorithm = task_.RegOptions.Algorithm;
             regopt_ =  task_.RegOptions.Options;
-            regopt_.Mode = task_.RegOptions.Mode;   % combine registration mode
+            regopt_.Mode = task_.RegOptions.Mode;   % dynamic combine registration mode
             movtmpl_ = task_.RegTemplate.RefVol;
 
-            switch regopt_.Algorithm
+            switch Algorithm
                 case "OCREG"
 
                 case "TCREG"

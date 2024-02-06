@@ -1,11 +1,21 @@
 function [series_rs, scale] = ReSample(series, scale)
 %DOWNSAMPLING The function downsampling volume series for registration 
-% speed up, using 'linear' as downsampling method
+% speed up, using 'linear' as downsampling method, series must with
+% dimension order: X,Y(,C,Z,T)
 % Input:
 %   - series: ndarray, dimension from 2 to 5
-%   - scale: 0-1 for volume downsampling, 1-inf for upsampling
+%   - scale: 0-1 for volume downsampling, > 1for upsampling, inf for auto
+%            sampling
+% Output:
+%   - series_rs: resampling movie series
+%   - scale: resampling scale
 
-if ~exist("scale","var")
+arguments
+    series  (:,:,:,:,:)   uint16
+    scale   (1,1)   double {mustBeNonnegative} = inf
+end
+
+if isinf(scale)
     scale = 256./max(size(series, [1, 2]));
 end
 ndim = ndims(series);
