@@ -4,7 +4,7 @@ classdef regrcf < handle
     
     properties(Constant, Hidden)
         VALID_RCF_FIELDNAMES = ["user_id", "submit_time", "nworkers", "memory", ...
-                                "disk", "nworkers_req", "nworkers_rcl", "counts_rec", ...
+                                "disk", "nworkers_req", "nworkers_rel", "counts_rec", ...
                                 "status", "resource", "progress"];
     end
 
@@ -168,7 +168,7 @@ classdef regrcf < handle
         function s = read(this)
             if ~isempty(this.fname) && isfile(this.fname)
                 s = readstruct(this.fname, "FileType","xml");
-                if ~isempty(setxor(fieldnames(s), this.VALID_RCF_FIELDNAMES))
+                if ~all(ismember(fieldnames(s), this.VALID_RCF_FIELDNAMES))
                     throw(MException("TaskManager:read:invalidRCFFile", ...
                         "Some source files(*.xml) may be damaged."));
                 end
@@ -183,21 +183,19 @@ classdef regrcf < handle
             [~,~,ext] = fileparts(xml_files.name);
             ext = string(ext);
             xml_files = xml_files.name(ext.contains(".xml"));
-            if numel(xml_files) > 0
-                rcfpool = repmat(this.data, numel(xml_files), 1);
-            else
-                rcfpool = [];
-                return;
-            end
+
+            rcfpool = [];
+            
+            if numel(xml_files) == 0, return; end
 
             for n = 1:numel(xml_files)
                 s = readstruct([this.sfolder.char(), filesep, xml_files{n}], ...
                     "FileType","xml");
-                if ~isempty(setxor(fieldnames(s), this.VALID_RCF_FIELDNAMES))
+                if ~all(ismember(fieldnames(s), this.VALID_RCF_FIELDNAMES))
                     throw(MException("TaskManager:read:invalidRCFFile", ...
                         "Some source files(*.xml) may be damaged."));
                 end
-                rcfpool(n) = s;
+                rcfpool = [rcfpool; s]; %#ok<AGROW>
             end
         end
 
@@ -215,9 +213,17 @@ classdef regrcf < handle
             tf = false;
             if isempty(rcfpool), return; end
 
-            for k = 1:numel(rcfpool)
-                if (rcfpool(k).Status == "Await") ...
-                        && (rcfpool(k).UserId ~= this.data.user_id)
+            if numel(rcfpool) > 1
+                for k = 1:numel(rcfpool)
+                    if (rcfpool(k).status == "Await") ...
+                            && (rcfpool(k).UserId ~= this.data.user_id)
+                        tf = true;
+                        return;
+                    end
+                end
+            else
+                if (rcfpool.status == "Await") ...
+                        && (rcfpool.UserId ~= this.data.user_id)
                     tf = true;
                     return;
                 end
@@ -427,13 +433,17 @@ classdef regrcf < handle
 
             switch this.data.status
                 case "Run"
-                    nproc_tot = 0;
-
-                    for k = 1:numel(rcfpool)
-                        rcf_k = rcfpool(k);
-                        if (rcf_k.status == "Run") && ...
-                                (rcf_k.resource == this.data.resource)
-                            nproc_tot = nproc_tot + rcf_k.nworkers;
+                    if numel(rcfpool) == 1
+                        % must be current user
+                        nproc_tot = this.data.nworkers;
+                    else
+                        nproc_tot = 0;
+                        for k = 1:numel(rcfpool)
+                            rcf_k = rcfpool(k);
+                            if (rcf_k.status == "Run") && ...
+                                    (rcf_k.resource == this.data.resource)
+                                nproc_tot = nproc_tot + rcf_k.nworkers;
+                            end
                         end
                     end
 

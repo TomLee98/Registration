@@ -22,7 +22,7 @@ arguments
     regopt_ (1,1)   struct {mustBeRegistrationOption}
 end
 
-
+status = 0;
 end
 
 function mustBeRegistrationOption(A)

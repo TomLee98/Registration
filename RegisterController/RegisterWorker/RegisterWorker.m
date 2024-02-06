@@ -34,12 +34,14 @@ classdef RegisterWorker < handle
 
             switch Algorithm
                 case "OCREG"
-
+                    status = ocreg(this.mov_raw, this.mov_aligned, movtmpl_, ...
+                                    regfrs_, regopt_);
                 case "TCREG"
                     status = tcreg(this.mov_raw, this.mov_aligned, movtmpl_, ...
                                     regfrs_, regopt_);
                 case "LTREG"
-
+                    status = ocreg(this.mov_raw, this.mov_aligned, movtmpl_, ...
+                                    regfrs_, regopt_);
                 case "MANREG"
 
                 otherwise

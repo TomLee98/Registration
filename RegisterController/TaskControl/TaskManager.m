@@ -11,6 +11,7 @@ classdef TaskManager < handle
         regopts         % 1-by-1 regopt object, the registration options
         volopts         % 1-by-12 table, the volume series options
         regfrs          % 1-by-t positive integer, registration frame indices
+        regedfn         % 1-by-1 positive integer, registered frames number
         movtmpl         % 1-by-1 regtmpl obejct, the registration template
         distrib         % 1-by-1 logical, distribution mode flag
         rcfobj          % 1-by-1 regrcf object, the content of resource communication file
@@ -56,6 +57,7 @@ classdef TaskManager < handle
             this.PSMWN = GetWorkersMaxN(this.regopts);
             this.nworker_old = 0;
             this.nworker_cur = 0;
+            this.regedfn = 0;
         end
 
         function r = get.Task(this)
@@ -137,8 +139,14 @@ classdef TaskManager < handle
             if status_ == 0
                 % change the task running flag
                 this.task_cur.Status = "Done";
+
                 % push the task to the tail of taskqueue
                 this.taskqueue.enqueue(this.task_cur);
+
+                % update registration progress
+                this.regedfn = this.regedfn + numel(this.task_cur.RegFrames);
+                this.rcfobj.Progress = this.regedfn / numel(this.regfrs);
+                fprintf("complete ratio: %.2f\n", this.rcfobj.Progress);
 
                 if this.distrib == true
                     % communicate with rcfs pool

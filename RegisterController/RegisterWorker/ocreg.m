@@ -21,11 +21,13 @@ arguments
     regfrs_ (1,:)   double {mustBePositive, mustBeInteger}
     regopt_ (1,1)   struct {mustBeRegistrationOption}
 end
+
+status = 0;
 end
 
 function mustBeRegistrationOption(A)
 VALID_FIELD = ["Mode", "RegModal", "TformType", "MaxStep", "MinStep", "MaxIterN", ...
-    "IterCoeff", "VPL", "Interp", "CoRegC", "DS", "SC", "FC", "Hardware"];
+    "IterCoeff", "VPL", "Interp", "RL", "Gamma", "ThFG", "ThScale", "Hardware"];
 
 if ~all(ismember(fieldnames(A), VALID_FIELD))
     throw(MException("mustBeRegistrationOption:invalidOption", ...
