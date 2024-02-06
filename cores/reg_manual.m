@@ -1,6 +1,8 @@
 function [registered, tform] = reg_manual(template,moving,varargin)
 %REGISTER2D_MAMUAL This function for manual register by using control point
 % algorithm
+%   NOTE: will be removed
+%
 %   Input:
 %   - template: the fixed volume, 3D/4D matrix
 %   - moving: the moving volume, 3D/4D matrix

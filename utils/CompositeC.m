@@ -2,8 +2,8 @@ function C = CompositeC(A, B, method, order, pseudoColor)
 % COMPOSITEC This function composites the color channel and genetates the RGB
 % representaton
 % Input:
-%   - A: 2D uint16 matrix for channel A
-%   - B: 2D uint16 matrix for channel B
+%   - A: 2D uint8 matrix for channel A
+%   - B: 2D uint8 matrix for channel B
 %   - method: the combination method, which could be "none", "red-cyan" or
 %   "green-magenta", where the format follows channel "A-B"
 %   - order: if no combiantion, order deteremine which channel is selected,
@@ -12,7 +12,7 @@ function C = CompositeC(A, B, method, order, pseudoColor)
 %   "g","mix", where "r" for "red"(~694nm light wave), and "g" for
 %   "green"(~521nm light wave), "mix" for dual color viewing
 % Output:
-%   - C: 3D uint16 true color matrix
+%   - C: 3D uint8 true color matrix
 
 % Version 1.1.0
 % Copyright (c) 2022-2023, Weihan Li
@@ -40,12 +40,12 @@ switch method
                 C = cat(3,C,zeros([size(C),2],'like',C));
             case "g"
                 % generate the mixing green for 521nm light wave
-                C = cat(3,uint16(0.4*double(C)),C,zeros(size(C),'like',C));
+                C = cat(3,uint8(0.4*double(C)),C,zeros(size(C),'like',C));
             case "mix"
                 % generate the red and green mixing view
                 % B for red channel and A for green, where using mixer with
                 % (0.8, 0.2) for color tuning
-                C = cat(3,uint16(0.8*double(B)+0.08*double(A)),A,zeros(size(C),'like',C));
+                C = cat(3,uint8(0.8*double(B)+0.08*double(A)),A,zeros(size(C),'like',C));
             otherwise
                 % gray scale(RGB representation)
                 % comments: we will not going here
