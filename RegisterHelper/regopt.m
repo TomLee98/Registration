@@ -340,7 +340,7 @@ classdef regopt
                     this.ltvox_ds = r_.VoxDS;
                     this.ltpct_tol = r_.TolPCT;
                     this.lt_olr = r_.Outlier;
-                    this.lt_iter_coeff = r_IterCoeff;
+                    this.lt_iter_coeff = r_.IterCoeff;
                     this.max_ltpct_itn = r_.MaxPCTIterN;
                     this.max_ltvox_itn = r_.MaxVoxIterN;
                     this.max_lt_step = r_.MaxStep;

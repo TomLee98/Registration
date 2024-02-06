@@ -198,15 +198,34 @@ arguments
     res_    (1,3)   double      % [x,y,z] coordinate resolution, unit as um/pix
 end
 
+zlim = size(refvol_, 3)*[-1, 1];
+
 % do maximum z projection  for imregcorr
 mov_img = max(movol_, [], 3);
 ref_img = max(refvol_, [], 3);
-rref = imref2d(size(ref_img), res_(1), res_(2));
-rref3d = imref3d(size(refvol_), res_(1), res_(2), res_(3));
-zlim = size(refvol_, 3)*[-1, 1];
 
 % get imwarp filled value
 fi_val = mean([mov_img(1,:)'; mov_img(end,:)'; mov_img(:,1); mov_img(:,end)]);
+
+% add border for a square image
+[height, width] = size(ref_img);
+if height == width
+    % already square image
+    dw = [0, 0];
+    dh = [0, 0];
+else
+    np = nextpow2(max(height, width));
+    dw = [fix((2^np - width)/2), ceil((2^np - width)/2)];
+    dh = [fix((2^np - height)/2), ceil((2^np - height)/2)];
+end
+ref_img = padarray(ref_img, [dh(1), dw(1)], "replicate","pre");
+mov_img = padarray(mov_img, [dh(1), dw(1)], "replicate","pre");
+ref_img = padarray(ref_img, [dh(2), dw(2)], "replicate","post");
+mov_img = padarray(mov_img, [dh(2), dw(2)], "replicate","post");
+
+% create reference coordinate
+rref = imref2d(size(ref_img), res_(1), res_(2));
+rref3d = imref3d(size(refvol_), res_(1), res_(2), res_(3));
 
 % 2-D rigid transformation estimation
 tf2d_ = imregcorr(mov_img, rref, ref_img, rref, "rigid");  % rigid2d object

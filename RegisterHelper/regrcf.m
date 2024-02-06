@@ -298,7 +298,7 @@ classdef regrcf < handle
                                             req_user = [req_user; tasks_.user(k)]; %#ok<AGROW>
                                         else
                                             % protect gpu user
-                                            nprocgs = nprocgs + task_.nproc(k);
+                                            nprocgs = nprocgs + tasks_.nproc(k);
                                         end
                                     case "cpu|gpu"
                                         % gpu user has higher extension
@@ -315,8 +315,8 @@ classdef regrcf < handle
                         % spread to users
                         for k = 1:numel(rcfpool)
                             if tasks_.run(k) == true
-                                this.data.nworkers_req.(task_.user(k)) ...
-                                    = [round((1-task_.t(k)/(t+t_other))*nproc_atot), 0];
+                                this.data.nworkers_req.(tasks_.user(k)) ...
+                                    = [round((1-tasks_.t(k)/(t+t_other))*nproc_atot), 0];
                             end
                         end
 

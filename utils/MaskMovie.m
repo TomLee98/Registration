@@ -23,7 +23,7 @@ end
 if isempty(A), return; end
 
 D = ndims(A);
-assert(D>=3 && D<=5, "MaskMovie:invalidMovieFormat","矩阵维度不合法.");
+assert(D>=3 && D<=5, "MaskMovie:invalidMovieFormat","Invalid dimension of movie.");
 if D == 3
     % A dimension order as (x,y,z)
     vol_size_A = size(A);
@@ -36,14 +36,14 @@ elseif D == 5
 end
 size_mask = size(mask);
 assert(all(size_mask==vol_size_A),"MaskMovie:sizeNotMatch",...
-    "蒙版尺寸不匹配");
+    "Mask is not match.");
 
 if inverse, mask = ~ mask; end %#ok<NASGU> 
 
 if class(A) ~= "mpimg"
     mask = eval([class(A),'(mask)']);
 else
-    mask = eval([get_datatype(A), '(mask)']);
+    mask = eval([A.DataType, '(mask)']);
 end
 
 switch D

@@ -122,7 +122,7 @@ classdef TaskManager < handle
             this.get_new_task();
         end
 
-        function update(this, status_)
+        function update(this, status_, debug_)
             % This function will update task queue:
             % if status is 0, set the task_cur status to "Done", enqueue 
             % task_cur (back to queue end)
@@ -131,6 +131,7 @@ classdef TaskManager < handle
             arguments
                 this
                 status_ (1,1)   double {mustBeInteger}
+                debug_      (1,1)   logical = false
             end
 
             if status_ == 0

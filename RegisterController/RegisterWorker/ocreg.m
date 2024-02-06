@@ -23,3 +23,15 @@ arguments
 end
 end
 
+function mustBeRegistrationOption(A)
+VALID_FIELD = ["Mode", "RegModal", "TformType", "MaxStep", "MinStep", "MaxIterN", ...
+    "IterCoeff", "VPL", "Interp", "CoRegC", "DS", "SC", "FC", "Hardware"];
+
+if ~all(ismember(fieldnames(A), VALID_FIELD))
+    throw(MException("mustBeRegistrationOption:invalidOption", ...
+        "Unsupported arguments input."));
+end
+
+% Escape value checking for tcreg calling faster
+
+end
