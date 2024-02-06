@@ -15,18 +15,9 @@ end
 ng = gpuDeviceCount('available');
 
 if ng > 0
-    if ng == 1
-        rm = 'gpu';
-    else
-        rm = 'multi-gpu';
-    end
+    rm = "cpu|gpu";
 else
-    if cpu_cores_n > 1
-        rm = 'multi-cpu';
-    else
-        % single core for debugging
-        rm = 'cpu';
-    end
+    rm = "cpu";
 end
 
 if disp_flag == true
@@ -34,8 +25,5 @@ if disp_flag == true
         cpu_cores_n, ng);
     fprintf('-> maximum stable workers number: %d\n',nc);
 end
-
-% Comment line for debugging
-% rm = 'cpu';
 end
 

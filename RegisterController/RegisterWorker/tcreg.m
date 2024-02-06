@@ -106,7 +106,8 @@ parfor m = 1:numel(regfrs)
     if isMATLABReleaseOlderThan("R2022b")
         % older than R2022b, call function estimate...
         % ptf: pre-transformation as affine3d object
-        [ptf, fival_sc, ~] = estimateInitTform(avol_sc_m_ds, refvol_ds, res_ds);
+        [ptf, ~] = imregopzr(avol_sc_m_ds, refvol_ds, res_ds);
+        fival_sc = mean(avol_sc_m(:,[1,end],:),"all");
     else
         % call imregmoment for estimation
         % ptf: pre-transformation as affinetform3d object
@@ -183,7 +184,7 @@ vs_ = medfilt3(vs_, mfsize_, "replicate");
 vs = imhistmatchn(vs_, refv_, hn_);
 end
 
-function [tf_est, fi_val, movol_est] = estimateInitTform(movol_, refvol_, res_)
+function [tf_est, movol_est] = imregopzr(movol_, refvol_, res_)
 % This function use imregcorr and z optimization for transformation
 % estimation on platform version < R2022b
 arguments

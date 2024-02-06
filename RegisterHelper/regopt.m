@@ -62,13 +62,9 @@ classdef regopt
 
     properties(SetAccess=immutable, GetAccess=private, Hidden)
         reg_alg     (1,1) string {mustBeMember(reg_alg, ["OCREG","TCREG","MANREG","LTREG"])} = "TCREG"
-        reg_mode    (1,1) string {mustBeMember(reg_mode, ["global","local","none"])} = "global"
+        reg_mode    (1,1) string {mustBeMember(reg_mode, ["global","local"])} = "global"
         hardware    (1,1) string {mustBeMember(hardware, ["cpu", "cpu|gpu"])} = "cpu"
     end
-
-    % properties(GetAccess={?RegisterWorker,?Register}, SetAccess = private, Dependent)
-    %     Options
-    % end
 
     properties(GetAccess=public, Dependent)
         Options
@@ -83,7 +79,7 @@ classdef regopt
                 regalg_   (1,1)   string {mustBeMember(regalg_, ...
                     ["OCREG","TCREG","MANREG","LTREG"])} = "TCREG"
                 regmode_  (1,1)   string {mustBeMember(regmode_, ...
-                    ["global","local","none"])} = "global"
+                    ["global","local"])} = "global"
             end
 
             this.reg_alg = regalg_;
@@ -146,6 +142,7 @@ classdef regopt
                             addParameter(p, 'MaxIterN',     this.max_lo_itn);
                             addParameter(p, 'AFS',          this.afs);
                             addParameter(p, 'Interp',       this.lo_interp);
+                        otherwise
                     end
                 case "TCREG"
                     switch this.reg_mode
@@ -162,19 +159,25 @@ classdef regopt
                             addParameter(p, 'Interp',       this.lo_interp);
                             addParameter(p, 'AutoContrast', this.autoctrst);
                             addParameter(p, 'ComAcc',       this.comacc);
+                        otherwise
                     end
                 case "MANREG"
                     addParameter(p, 'TformType',    this.man_tform_type);
                     addParameter(p, 'Interp',       this.man_interp);
                 case "LTREG"
-                    addParameter(p, 'ThFG',         this.ltstdobj_th);
-                    addParameter(p, 'ThScale',      this.ltscale_th);
-                    addParameter(p, 'MaxStep',      this.max_lt_step);
-                    addParameter(p, 'MinStep',      this.min_lt_step);
-                    addParameter(p, 'IterCoeff',    this.lt_iter_coeff);
-                    addParameter(p, 'AFS',          this.lt_afs);
-                    addParameter(p, 'AutoContrast', this.lt_autoctrst);
-                    addParameter(p, 'ComAcc',       this.lt_comacc);
+                    switch this.reg_mode
+                        case "global"
+                            addParameter(p, 'ThFG',         this.ltstdobj_th);
+                            addParameter(p, 'ThScale',      this.ltscale_th);
+                            addParameter(p, 'MaxStep',      this.max_lt_step);
+                            addParameter(p, 'MinStep',      this.min_lt_step);
+                            addParameter(p, 'IterCoeff',    this.lt_iter_coeff);
+                        case "local"
+                            addParameter(p, 'AFS',          this.lt_afs);
+                            addParameter(p, 'AutoContrast', this.lt_autoctrst);
+                            addParameter(p, 'ComAcc',       this.lt_comacc);
+                        otherwise
+                    end
                 otherwise
             end
 

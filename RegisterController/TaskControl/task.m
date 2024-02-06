@@ -1,4 +1,4 @@
-classdef Task
+classdef task
     %TASK This class is a value class, which contains registration task
     % information that can be read by RegisterWorker object
     
@@ -17,7 +17,7 @@ classdef Task
     end
     
     methods
-        function this = Task(regfrs_, tmplfr_, regopt_)
+        function this = task(regfrs_, tmplfr_, regopt_)
             %TASK A Constructor
             arguments
                 regfrs_ (1,:) double {mustBePositive, mustBeInteger}

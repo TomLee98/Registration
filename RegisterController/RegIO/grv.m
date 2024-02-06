@@ -23,8 +23,8 @@ end
 mf = str2func(mode_(1));
 t_range = "[" + string(mode_(2))+ "]";
 c_range = string(find(mov_.MetaData.cOrder == color_));
-t_loc = (mov_.MetaData.dimOrder=="T");
-c_loc = (mov_.MetaData.dimOrder=="C");
+t_loc = find(mov_.MetaData.dimOrder=="T");
+c_loc = find(mov_.MetaData.dimOrder=="C");
 
 mov_ndim = numel(mov_.MetaData.dimOrder);
 expr = "";
@@ -48,7 +48,7 @@ switch mode_(1)
     otherwise
         v = D;
 end
-v = unique(v);
+v = squeeze(v);
 
 if ismatrix(v) || ndims(v)> 4
     throw(MException("regtmpl:grv:innerError", ...

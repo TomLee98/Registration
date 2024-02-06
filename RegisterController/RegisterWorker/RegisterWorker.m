@@ -23,7 +23,7 @@ classdef RegisterWorker < handle
             %This function parse task_ and do registration
             arguments
                 this
-                task_   (1,1)   Task
+                task_   (1,1)   task
             end
 
             regfrs_ = task_.RegFrames;
@@ -45,6 +45,10 @@ classdef RegisterWorker < handle
                     throw(MException("RegisterWorker:unregisteredFunction", ...
                         "Unsupported registration algorithm."));
             end
+        end
+
+        function delete(this)
+            
         end
     end
 end

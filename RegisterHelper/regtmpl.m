@@ -10,7 +10,7 @@ classdef regtmpl
         refvol
     end
 
-    properties(GetAccess=?RegisterWorker, Dependent)
+    properties(GetAccess=public, Dependent)
         RefVol
     end
     
