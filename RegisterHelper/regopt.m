@@ -26,7 +26,6 @@ classdef regopt < handle
         % ================ two channels unique properties ================
         autoctrst       (1,1) logical = false
         comacc          (1,1) double {mustBeMember(comacc, [512, 1024, 2048, 4096])} = 1024
-        coregc          (1,1) double {mustBeInRange(coregc, 0, 100)} = 29
         gl_ds           (1,1) string {mustBeMember(gl_ds, ["auto","1X1","2X2","3X3"])} = "auto"
         strc_chl        (1,1) string {mustBeMember(strc_chl, ["r","g","b"])} = "r"
         func_chl        (1,1) string {mustBeMember(func_chl, ["r","g","b"])} = "g"
@@ -109,7 +108,6 @@ classdef regopt < handle
             addParameter(p, 'RL',           this.region_lbl);
             addParameter(p, 'Gamma',        this.gamma);
             addParameter(p, 'GridUnit',     this.grid_unit);
-            addParameter(p, 'CoRegC',       this.coregc);
             addParameter(p, 'DS',           this.gl_ds);
             addParameter(p, 'SC',           this.strc_chl);
             addParameter(p, 'FC',           this.func_chl);
@@ -229,7 +227,6 @@ classdef regopt < handle
                                        "IterCoeff",     this.iter_coeff, ...
                                        "VPL",           this.vpl, ...
                                        "Interp",        this.gl_interp, ...
-                                       "CoRegC",        this.coregc, ...
                                        "DS",            this.gl_ds, ...
                                        "SC",            this.strc_chl, ...
                                        "FC",            this.func_chl, ...
@@ -313,7 +310,6 @@ classdef regopt < handle
                             this.iter_coeff = r_.IterCoeff;
                             this.vpl = r_.VPL;
                             this.gl_interp = r_.Interp;
-                            this.coregc = r_.CoRegC;
                             this.gl_ds = r_.DS;
                             this.strc_chl = r_.SC;
                             this.func_chl = r_.FC;
