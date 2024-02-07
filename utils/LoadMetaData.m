@@ -28,7 +28,7 @@ if path ~= 0
     file = fullfile(path, file);
     data = readtable(file);
     % remove the possible none rows
-    data = modifySSD(data);
+    data = modifysdf(data);
 
     odors = string(table2array(data(3:end,1)));
     odor_seq = reshape(table2array(data(1:2,3:end)),[],1);
