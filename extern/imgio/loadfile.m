@@ -65,7 +65,7 @@ else
         mov = reorder(mov, opts.dimOrder, order_out);
 
         if memmap == true
-            wbar = loadbar("memmory mapping");
+            wbar = loadbar("memory mapping");
 
             % tmpfolder = "E:\";  % debug
             % generate a new mapping file

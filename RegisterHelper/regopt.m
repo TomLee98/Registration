@@ -1,9 +1,10 @@
-classdef regopt < handle
+classdef regopt
     %REGOPT This class is registration option defination, which is packaged
     %value class
     
     properties(Access=private, Hidden)
         % ============= one/two channel(s) common properties ==============
+        reg_mode        (1,1) string {mustBeMember(reg_mode, ["global","local"])} = "global"
         reg_modal       (1,1) string {mustBeMember(reg_modal, ["multimodal", "monomodal"])} = "monomodal"
         tform_type      (1,1) string {mustBeMember(tform_type, ["translation","rigid","similarity","affine"])} = "translation"
         max_step        (1,1) double {mustBePositive} = 1e-1
@@ -15,6 +16,11 @@ classdef regopt < handle
         vpl             (1,1) double {mustBePositive, mustBeInteger} = 3
         gl_interp       (1,1) string {mustBeMember(gl_interp, ["linear","cubic"])} = "linear"
         lo_interp       (1,1) string {mustBeMember(lo_interp, ["linear","cubic"])} = "cubic"
+        medfilter_sz    (1,3) double {mustBeNonnegative, mustBeInteger} = [3,3,3]
+        open_operator   (1,3) double {mustBeNonnegative, mustBeInteger} = [5,5,2]
+        gsfilter_sz     (1,3) double {mustBeNonnegative, mustBeInteger} = [3,3,3]
+        z_optimal_itn   (1,1) double {mustBePositive, mustBeInteger} = 100
+        z_optimal_tol   (1,1) double {mustBeInRange(z_optimal_tol, 0, 1)} = 1e-3
 
         % ================== one channel unique properties ================
         region_lbl      (1,1) string {mustBeMember(region_lbl, ["ORN","PN","LN","KC","MBON"])} = "ORN"
@@ -61,7 +67,6 @@ classdef regopt < handle
 
     properties(SetAccess=immutable, GetAccess=private, Hidden)
         reg_alg     (1,1) string {mustBeMember(reg_alg, ["OCREG","TCREG","MANREG","LTREG"])} = "TCREG"
-        reg_mode    (1,1) string {mustBeMember(reg_mode, ["global","local"])} = "global"
         hardware    (1,1) string {mustBeMember(hardware, ["cpu", "cpu|gpu"])} = "cpu"
     end
 
@@ -97,31 +102,46 @@ classdef regopt < handle
         function r = get.Mode(this)
             r = this.reg_mode;
         end
+
+        function this = set.Mode(this, r_)
+            arguments
+                this
+                r_  (1,1)   string {mustBeMember(r_, ["global","local"])} ...
+                    = "global"
+            end
+
+            this.reg_mode = r_;
+        end
     end
 
     methods(Access=public, Hidden)
-        function set(this, varargin)
+        function this = set(this, varargin)
             p = inputParser;
             % =========== not overloading parameters =============
-            addParameter(p, 'RegModal',     this.reg_modal);
-            addParameter(p, 'VPL',          this.vpl);
-            addParameter(p, 'RL',           this.region_lbl);
-            addParameter(p, 'Gamma',        this.gamma);
-            addParameter(p, 'GridUnit',     this.grid_unit);
-            addParameter(p, 'DS',           this.gl_ds);
-            addParameter(p, 'SC',           this.strc_chl);
-            addParameter(p, 'FC',           this.func_chl);
-            addParameter(p, 'KeyFrames',    this.key_frames);
-            addParameter(p, 'PCTDS',        this.ltpct_ds);
-            addParameter(p, 'PCTDSArg',     this.ltpct_ds_arg);
-            addParameter(p, 'VoxDS',        this.ltvox_ds);
-            addParameter(p, 'TolPCT',       this.ltpct_tol);
-            addParameter(p, 'Outlier',      this.lt_olr);
-            addParameter(p, 'MaxPCTIterN',  this.max_ltpct_itn);
-            addParameter(p, 'MaxVoxIterN',  this.max_ltvox_itn);
-            addParameter(p, 'Degree',       this.degree);
-            addParameter(p, 'Nlwm',         this.nlwm);
-            addParameter(p, 'EdgeSmooth',   this.edge_smooth);
+            addParameter(p, 'RegModal',         this.reg_modal);
+            addParameter(p, 'MedianFilter',     this.medfilter_sz);
+            addParameter(p, 'OpenOperator',     this.open_operator);
+            addParameter(p, 'GaussianFilter',   this.gsfilter_sz);
+            addParameter(p, 'MaxZOptIterN',     this.z_optimal_itn);
+            addParameter(p, 'TolZOpt',          this.z_optimal_tol);
+            addParameter(p, 'VPL',              this.vpl);
+            addParameter(p, 'RL',               this.region_lbl);
+            addParameter(p, 'Gamma',            this.gamma);
+            addParameter(p, 'GridUnit',         this.grid_unit);
+            addParameter(p, 'DS',               this.gl_ds);
+            addParameter(p, 'SC',               this.strc_chl);
+            addParameter(p, 'FC',               this.func_chl);
+            addParameter(p, 'KeyFrames',        this.key_frames);
+            addParameter(p, 'PCTDS',            this.ltpct_ds);
+            addParameter(p, 'PCTDSArg',         this.ltpct_ds_arg);
+            addParameter(p, 'VoxDS',            this.ltvox_ds);
+            addParameter(p, 'TolPCT',           this.ltpct_tol);
+            addParameter(p, 'Outlier',          this.lt_olr);
+            addParameter(p, 'MaxPCTIterN',      this.max_ltpct_itn);
+            addParameter(p, 'MaxVoxIterN',      this.max_ltvox_itn);
+            addParameter(p, 'Degree',           this.degree);
+            addParameter(p, 'Nlwm',             this.nlwm);
+            addParameter(p, 'EdgeSmooth',       this.edge_smooth);
 
             % =============== overloading parameters =============
             switch this.reg_alg
@@ -181,7 +201,7 @@ classdef regopt < handle
 
             parse(p, varargin{:});
 
-            this.set_option_(p.Results);
+            this = this.set_option_(p.Results);
         end
     end
 
@@ -221,6 +241,11 @@ classdef regopt < handle
                         case "global"
                             r = struct("RegModal",      this.reg_modal, ...
                                        "TformType",     this.tform_type, ...
+                                       "MedianFilter",  this.medfilter_sz, ...
+                                       "OpenOperator",  this.open_operator, ...
+                                       "GaussianFilter",this.gsfilter_sz, ...
+                                       "MaxZOptIterN",  this.z_optimal_itn, ...
+                                       "TolZOpt",       this.z_optimal_tol, ...
                                        "MaxStep",       this.max_step, ...
                                        "MinStep",       this.min_step, ...
                                        "MaxIterN",      this.max_gl_itn, ...
@@ -271,7 +296,7 @@ classdef regopt < handle
             end
         end
 
-        function set_option_(this, r_)
+        function this = set_option_(this, r_)
             % r_ is parser results struct, inverse the mapping
             switch this.reg_alg
                 case "OCREG"
@@ -304,6 +329,11 @@ classdef regopt < handle
                         case "global"
                             this.reg_modal = r_.RegModal;
                             this.tform_type = r_.TformType;
+                            this.medfilter_sz = r_.MedianFilter;
+                            this.open_operator = r_.OpenOperator;
+                            this.gsfilter_sz = r_.GaussianFilter;
+                            this.z_optimal_itn = r_.MaxZOptIterN;
+                            this.z_optimal_tol = r_.TolZOpt;
                             this.max_step = r_.MaxStep;
                             this.min_step = r_.MinStep;
                             this.max_gl_itn = r_.MaxIterN;

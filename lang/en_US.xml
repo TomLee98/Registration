@@ -52,6 +52,7 @@
     <RUN_MODAL>Run Modal</RUN_MODAL>
     <DISTRIBUTED>Distributed</DISTRIBUTED>
     <EXCLUSIVE>Exclusive</EXCLUSIVE>
+    <TASK_VIEWER>Task Viewer</TASK_VIEWER>
     <HELP>Help</HELP>
     <ABOUT>About</ABOUT>
     <DOCUMENT>Document</DOCUMENT>
