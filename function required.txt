@@ -167,7 +167,8 @@ V2.0        Sun Wukong          孙悟空
   |     |- [Update] add mouse roller z slice controlling
   |     |- [Update] remove nearest interpolation in registration
   |     |- [Update] clean up project for clearly calling
-  |     |- [Update] more powerful task manager introduced
+  |     |- [Update] powerful task manager introduced
+  |     |- [Update] powerfun distributed file system
   |     |- [Update] new two channels movie registration method introduced
   |     |- [Update] TODO: long-term registration review at points cloud registration
   |     |- [Update] TODO: remove 'mix' mode when do normal registration
