@@ -39,7 +39,6 @@ if isempty(volopt_) && isempty(regopt_)
         n = fix(GetAvailableMemory()*MEM_SECURATY_RATIO...
             /(mem_per_volume*FOLD_RATIO+mem_per_worker));
     end
-    n = min(n, round(n_cpu*MEM_SECURATY_RATIO));
 elseif istable(volopt_) && all(size(volopt_)==[1,12]) ...
         && isa(regopt_, "regopt")
     if volopt_.channels == 1
@@ -66,11 +65,11 @@ elseif istable(volopt_) && all(size(volopt_)==[1,12]) ...
                 "No available enough memory.");
         end
     end
-
-    n = min(n, round(n_cpu*CPU_SECURATY_RATIO));
 else
     throw(MException("GetCPUWorkersMaxN:invalidInputArgs", ...
         "Invalid input arguments."));
 end
+
+n = min(n, round(n_cpu*CPU_SECURATY_RATIO));
 
 end

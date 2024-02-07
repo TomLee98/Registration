@@ -49,17 +49,7 @@ end
 function status = tcreg_global_cpu(movsrc, movdst, refvol, regfrs, regopt)
 % This function use fast robust coarse registration pipeline
 % for global motion estimation
-% [Image Processing Pipeline]
-%   (a)  downsampling
-%   (b)  median filter (remove abnormal hardware noise) 
-%        -> imhistmatchn (correct the global light change)
-%   (c)  ->gaussian low pass filter(smooth for more robust)
-%   (d)  imregmoment for initial estimation (>=2022b)
-%   (d') imregcorr + z-direction optimization (<2022b)
-%   (e)  upsampling
-%   (f)  imregtform fine tuning
 
-UPSAMPLE_FACTOR = 2;
 TF = cell(numel(regfrs), 1);
 fmode = ["none", string(regfrs).join(",")];
 if regopt.DS == "auto"
@@ -70,7 +60,7 @@ end
 
 % 1. extract the reference volume
 [refvol_ds, ds_scale] = ReSample(refvol, regds);
-[refvol_us, ~] = ReSample(refvol, UPSAMPLE_FACTOR);
+refvol_ds = doPreProcessOn(refvol_ds);
 
 % 2. extract functional and structured channel data
 avol_sc = grv(movsrc, fmode, regopt.SC);
@@ -80,12 +70,8 @@ avol_fc = grv(movsrc, fmode, regopt.FC);
 res_ds = [movsrc.MetaData.xRes/ds_scale, ...
           movsrc.MetaData.yRes/ds_scale, ...
           movsrc.MetaData.zRes/1];
-res_us = [movsrc.MetaData.xRes/UPSAMPLE_FACTOR, ...
-          movsrc.MetaData.yRes/UPSAMPLE_FACTOR, ...
-          movsrc.MetaData.zRes/1];
 rref = imref3d(size(refvol), movsrc.MetaData.xRes, movsrc.MetaData.yRes, movsrc.MetaData.zRes);
 rref_ds  = imref3d(size(refvol_ds), res_ds(1), res_ds(2), res_ds(3));
-rref_us = imref3d(size(refvol_us), res_us(1), res_us(2), res_us(3));
 
 % extract local variables instead of struct spread
 reg_modal = regopt.RegModal;
@@ -102,16 +88,13 @@ parfor m = 1:numel(regfrs)
     avol_sc_m = avol_sc(:,:,:,m);
     avol_fc_m = avol_fc(:,:,:,m);
     avol_sc_m_ds = ReSample(avol_sc_m, ds_scale);
-    avol_sc_m_ds = doPreProcessOn(avol_sc_m_ds, refvol_ds);
-   
-    % gaussian filter for robust motion correction
-    avol_sc_m_ds = imgaussfilt3(avol_sc_m_ds, "FilterSize", [3,3,1], ...
-        "Padding", "replicate");
+    avol_sc_m_ds = doPreProcessOn(avol_sc_m_ds);
 
-    if isMATLABReleaseOlderThan("R2022b")
+    if (isMATLABReleaseOlderThan("R2022b")) ...
+            || tf_type ~= "affine"
         % older than R2022b, call function estimate...
         % ptf: pre-transformation as affine3d object
-        [ptf, ~] = imregopzr(avol_sc_m_ds, refvol_ds, res_ds);
+        [ptf, ~] = imregopzr(avol_sc_m_ds, refvol_ds, res_ds, tf_type);
         fival_sc = mean(avol_sc_m(:,[1,end],:),"all");
     else
         % call imregmoment for estimation
@@ -121,10 +104,6 @@ parfor m = 1:numel(regfrs)
         fival_sc = mean(avol_sc_m(:,[1,end],:),"all");
     end
     fival_fc =  mean(avol_fc_m(:,[1,end],:),"all");
-
-    % 2 fold upsampling on selected volume
-    avol_sc_m = doPreProcessOn(avol_sc_m, refvol);
-    avol_sc_m_us = ReSample(avol_sc_m, 2);
 
     % set up the registration optimizer options
     [optimizer, metric] = imregconfig(reg_modal);
@@ -142,10 +121,8 @@ parfor m = 1:numel(regfrs)
     optimizer.MaximumIterations = max_iter_n;
 
     % do fine registration: imregtform
-    tf = imregtform(avol_sc_m_us, rref_us, refvol_us, rref_us, ...
-        tf_type, optimizer, metric,...
-        "PyramidLevels",vpl,...
-        "InitialTransformation",ptf);
+    tf = imregtform(avol_sc_m_ds, rref_ds, refvol_ds, rref_ds, tf_type, ...
+        optimizer, metric, "PyramidLevels",vpl, "InitialTransformation",ptf);
 
     % imwarp the transformation
     % replace avol_sc_m
@@ -177,32 +154,47 @@ end
 
 
 % ====================== Utility Functions =======================
-function vs = doPreProcessOn(vs_, refv_, mfsize_, hn_)
+function vs = doPreProcessOn(vs_, mfsize_, ofsize_, gfsize_)
 arguments
     vs_ 
-    refv_   (:,:,:) double
     mfsize_ (1,3)   double {mustBeInteger, mustBePositive} = [3,3,3]
-    hn_     (1,1)   double {mustBeMember(hn_, [256,512,1024,2048])} = 1024
+    ofsize_ (1,3)   double {mustBeInteger, mustBePositive} = [5,5,2]
+    gfsize_ (1,3)   double {mustBeInteger, mustBePositive} = [3,3,1]
 end
 
+% remove possible salt and pepper noise
 vs_ = medfilt3(vs_, mfsize_, "replicate");
-vs = imhistmatchn(vs_, refv_, hn_);
+
+% open operation to remove strong bright noise
+vs_ = imopen(vs_, offsetstrel("ball", ofsize_(1), ofsize_(2), ofsize_(3)));
+
+% comment this, too memory allocated
+% imhistmatch for photobleaching recovery
+% vs = imhistmatchn(vs_, refv_, hn_);   
+
+% gaussian low pass filter for volume smooth, more robust
+vs = imgaussfilt3(vs_, "FilterSize", gfsize_, "Padding", "replicate");
 end
 
-function [tf_est, movol_est] = imregopzr(movol_, refvol_, res_)
+function [tf_est, movol_est] = imregopzr(moving, fixed, rsFixed, tformType)
 % This function use imregcorr and z optimization for transformation
 % estimation on platform version < R2022b
 arguments
-    movol_  (:,:,:) double
-    refvol_ (:,:,:) double
-    res_    (1,3)   double      % [x,y,z] coordinate resolution, unit as um/pix
+    moving      (:,:,:) double
+    fixed       (:,:,:) double
+    rsFixed     (1,3)   double      % [x,y,z] coordinate resolution, unit as um/pix
+    tformType   (1,1)   string  {mustBeMember(tformType, ...
+                                ["translation", "rigid", "affine"])} = "translation"
 end
 
-zlim = size(refvol_, 3)*[-1, 1];
+% cancel affine transformation support
+if tformType == "affine", tformType = "rigid"; end
+
+zlim = size(fixed, 3)*[-1, 1];
 
 % do maximum z projection  for imregcorr
-mov_img = max(movol_, [], 3);
-ref_img = max(refvol_, [], 3);
+mov_img = max(moving, [], 3);
+ref_img = max(fixed, [], 3);
 
 % get imwarp filled value
 fi_val = mean([mov_img(1,:)'; mov_img(end,:)'; mov_img(:,1); mov_img(:,end)]);
@@ -224,39 +216,59 @@ ref_img = padarray(ref_img, [dh(2), dw(2)], "replicate","post");
 mov_img = padarray(mov_img, [dh(2), dw(2)], "replicate","post");
 
 % create reference coordinate
-rref = imref2d(size(ref_img), res_(1), res_(2));
-rref3d = imref3d(size(refvol_), res_(1), res_(2), res_(3));
+rref = imref2d(size(ref_img), rsFixed(1), rsFixed(2));
+rref3d = imref3d(size(fixed), rsFixed(1), rsFixed(2), rsFixed(3));
+
+fminbnd_opts = optimset('MaxFunEvals',500, 'MaxIter',100, 'TolX', 1e-3);
 
 % 2-D rigid transformation estimation
-tf2d_ = imregcorr(mov_img, rref, ref_img, rref, "rigid");  % rigid2d object
+tf2d_ = imregcorr(mov_img, rref, ref_img, rref, tformType);  % rigid2d, affine2d, transltform2d or rigidtform2d
 
 % optimize the z shift by immse as loss function
-optf = @(x)opfun(x, movol_, refvol_, rref3d, tf2d_, fi_val);
-fminbnd_opts = optimset('MaxFunEvals',500, 'MaxIter',100, 'TolX', 1e-3);
+optf = @(x)opfun(x, moving, fixed, rref3d, tf2d_, fi_val);
 [z_, fval] = fminbnd(optf, zlim(1), zlim(2), fminbnd_opts);
+
+% omit the micro shift, which may be correction artifact
+if abs(z_) < 1e-2, z_ = 0; end
 
 % transform rigid2d object to affine3d object as imregtform initialized
 % transformation estimation
-TMat = [[[tf2d_.T(1:2,1:2),[0;0]];[0,0,1]];[tf2d_.T(3,1:2),z_]];
-TMat = [TMat,[0;0;0;1]];
-tf_est = affine3d(TMat);
+tf_est = tformto3d(tf2d_, z_);
 
-if nargout == 3
+if nargout == 2
     % 1 memory copy from <imwarp>
-    movol_est = imwarp(movol_, rref3d, tf_est, "linear",...
+    movol_est = imwarp(moving, rref3d, tf_est, "linear",...
         "OutputView",rref3d, 'FillValues',fi_val);
 end
 
     function f = opfun(z_, mov_, ref_, ra_, tf_, fival_)
-        rot = [[tf_.Rotation;[0,0]], [0,0,1]];  % no z correlated rotation
-        trans = [tf_.Translation, z_];          % add shifts on z dimension 
-        T = rigid3d(rot, trans);
+        T = tformto3d(tf_, z_);
         % imrotate3 and imtranslate?
         mov_ = imwarp(mov_, ra_, T, "linear", ...
             "FillValues",fival_, "OutputView",ra_);
         f = immse(mov_, ref_);
     end
 
+    function T = tformto3d(tf_, z_)
+        if isa(tf_, "rigid2d")
+            rot = [[tf_.Rotation;[0,0]], [0;0;1]];  % no z correlated rotation
+            trans = [tf_.Translation, z_];          % add shifts on z dimension
+            T = rigid3d(rot, trans);
+        elseif isa(tf_, "affine2d")
+            T = [[[tf_.T(1:2,1:2),[0;0]];[0,0,1]];[tf_.T(3,1:2),z_]];
+            T = [T, [0;0;0;1]];
+            T = affine3d(T);
+        elseif isa(tf_, "transltform2d")
+            T = [eye(3), [tf_.Translation';z_]];
+            T = [T; [0,0,0,1]];
+            T = transltform3d(T);
+        elseif isa(tf_, "rigidtform2d")
+            rot = [[tf_.Rotation;[0,0]], [0;0;1]];  % no z correlated rotation
+            trans = [tf_.Translation, z_];          % add shifts on z dimension
+            T = [[rot, trans']; [0,0,0,1]];
+            T = rigidtform3d(T);
+        end
+    end
 end
 
 function mustBeRegistrationOption(A)

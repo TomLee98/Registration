@@ -15,9 +15,12 @@ arguments
     scale   (1,1)   double {mustBeNonnegative} = inf
 end
 
+EC50 = 256;
 if isinf(scale)
-    scale = 256./max(size(series, [1, 2]));
+    sz_max = max(size(series, [1, 2]));
+    scale = EC50/(EC50 + sz_max);
 end
+
 ndim = ndims(series);
 
 switch ndim

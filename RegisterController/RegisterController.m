@@ -68,7 +68,7 @@ classdef RegisterController < handle
             % initialize task manager
             this.taskmgr = TaskManager(movraw_.MetaData, this.regopts, movtmpl_, regfr_);
             % end false for release mode, true for debug mode
-            this.taskmgr.setup(this.nw_protected, this.distrib, this.caller, false);
+            this.taskmgr.setup(this.nw_protected, this.distrib, this.caller, true);
 
             % initialize register worker
             this.regworker = RegisterWorker(movraw_, movaligned_);

@@ -31,8 +31,13 @@ end
 mf = str2func(mode_(1));
 t_range = "[" + string(mode_(2))+ "]";
 c_range = string(find(mov_.MetaData.cOrder == color_));
-t_loc = (mov_.MetaData.dimOrder=="T");
-c_loc = (mov_.MetaData.dimOrder=="C");
+t_loc = find(mov_.MetaData.dimOrder=="T");
+c_loc = find(mov_.MetaData.dimOrder=="C");
+
+if isempty(c_range) || isempty(t_loc) || isempty(c_loc)
+    throw(MException("grv:invalidMovie", ...
+        "Bad calling: invalid movie dimension."));
+end
 
 mov_ndim = numel(mov_.MetaData.dimOrder);
 expr = "";

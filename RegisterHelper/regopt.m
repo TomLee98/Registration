@@ -1,4 +1,4 @@
-classdef regopt
+classdef regopt < handle
     %REGOPT This class is registration option defination, which is packaged
     %value class
     
@@ -101,7 +101,7 @@ classdef regopt
     end
 
     methods(Access=public, Hidden)
-        function this = set(this, varargin)
+        function set(this, varargin)
             p = inputParser;
             % =========== not overloading parameters =============
             addParameter(p, 'RegModal',     this.reg_modal);
@@ -183,7 +183,7 @@ classdef regopt
 
             parse(p, varargin{:});
 
-            this = set_option_(this, p.Results);
+            this.set_option_(p.Results);
         end
     end
 
@@ -274,7 +274,7 @@ classdef regopt
             end
         end
 
-        function this = set_option_(this, r_)
+        function set_option_(this, r_)
             % r_ is parser results struct, inverse the mapping
             switch this.reg_alg
                 case "OCREG"
@@ -316,7 +316,7 @@ classdef regopt
                             this.coregc = r_.CoRegC;
                             this.gl_ds = r_.DS;
                             this.strc_chl = r_.SC;
-                            this.func_chl = r_.FS;
+                            this.func_chl = r_.FC;
                         case "local"
                             this.max_lo_itn = r_.MaxIterN;
                             this.afs = r_.AFS;
