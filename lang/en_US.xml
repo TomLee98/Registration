@@ -108,7 +108,6 @@
     <ROTATION>Rotation</ROTATION>
     <TRANSLATION_TOOLTIP>translation</TRANSLATION_TOOLTIP>
     <RIGID_TOOLTIP>translation and rotation</RIGID_TOOLTIP>
-    <SIMILARITY_TOOLTIP>translation, rotation, and isotropic scaling</SIMILARITY_TOOLTIP>
     <AFFINE_TOOLTIP>translation, rotation, anisotropic scaling, reflection, and shearing</AFFINE_TOOLTIP>
     <GLOBAL_REGISTRATION>Global Registration</GLOBAL_REGISTRATION>
     <LOCAL_REGISTRATION>Local Registration</LOCAL_REGISTRATION>
@@ -150,11 +149,17 @@
     <APPEND>Append</APPEND>
     <REMOVE>Remove</REMOVE>
     <INVERSE>Inverse</INVERSE>
-    <GLOBAL_REGISTRATION_AUTO>Global Registration(Auto)</GLOBAL_REGISTRATION_AUTO>
+    <GLOBAL>Global</GLOBAL>
+    <LOCAL>Local</LOCAL>
+    <MGLOBAL>Global(Manually)</MGLOBAL>
+    <LTGLOBAL>Global(Long-Term)</LTGLOBAL>
+    <LTLOCAL>Local(Long-Term)</LTLOCAL>
+    <COMMON>Common</COMMON>
+    <ADVANCED>Advanced</ADVANCED>
+    <PREPROCESSING>Preprocessing</PREPROCESSING>
     <REGISTRATION_TEMPLATE>Registration Template</REGISTRATION_TEMPLATE>
     <SAMPLING>Sampling</SAMPLING>
     <RIGID>Rigid</RIGID>
-    <SIMILARITY>Similarity</SIMILARITY>
     <AFFINE>Affine</AFFINE>
     <MODAL>Modal</MODAL>
     <MONOMODAL>Monomodal</MONOMODAL>
@@ -164,20 +169,23 @@
     <MIN>Min</MIN>
     <MAX>Max</MAX>
     <MIN_ITERATION_STEP>Minimum Iteration Step</MIN_ITERATION_STEP>
-    <INITIAL_ITERATION_STEP>Initial Iteration Step</INITIAL_ITERATION_STEP>
+    <MAX_ITERATION_STEP>Maximum Iteration Step</MAX_ITERATION_STEP>
     <MAX_ITERATION_N>Max Iteration Number</MAX_ITERATION_N>
     <ITERATION_COEFFICIENT>Iteration Coefficient</ITERATION_COEFFICIENT>
+    <MEDIAN_FILTER>Median Filter</MEDIAN_FILTER>
+    <OPEN_OPERATOR>Open Operator</OPEN_OPERATOR>
+    <GAUSSIAN_FILTER>Gaussian Filter</GAUSSIAN_FILTER>
+    <Z_OPTIMAL_TOL>Z Optimal Tolerance</Z_OPTIMAL_TOL>
     <CUBIC_HIGH_QUALITY>Cubic(High Quality)</CUBIC_HIGH_QUALITY>
     <LINEAR_FAST>Linear(Fast)</LINEAR_FAST>
     <PYRAMID_COEFFICIENT>Pyramid Coefficient</PYRAMID_COEFFICIENT>
-    <ENABLE>Enable</ENABLE>
+    <LOCK>Lock</LOCK>
     <LOCAL_REGISTRATION_AUTO>Local Registration(Auto)</LOCAL_REGISTRATION_AUTO>
     <GRID_UNIT_SIZE>Grid Unit Size</GRID_UNIT_SIZE>
     <AUTO>Auto</AUTO>
     <FIXED>Fixed</FIXED>
     <ACCUMULATIVE_FIELD_SMOOTHING>Accumulative Field Smoothing</ACCUMULATIVE_FIELD_SMOOTHING>
     <GEOMETRIC_TRANSFORMATION>Geometric Transformation</GEOMETRIC_TRANSFORMATION>
-    <LONGTERM_REGISTRATION_AUTO>Long-Term Registration(Auto)</LONGTERM_REGISTRATION_AUTO>
     <KEY_FRAME>Key Frame</KEY_FRAME>
     <INTENSITY_THRESHOLD>Intensity Threshold</INTENSITY_THRESHOLD>
     <SCALE_THRESHOLD>Scale Threshold(um)</SCALE_THRESHOLD>
@@ -195,7 +203,6 @@
     <VOXEL>Voxel</VOXEL>
     <POINT_CLOUD_PREVIEW>Point Cloud(Preview)</POINT_CLOUD_PREVIEW>
     <REGION_LABEL>Region Label</REGION_LABEL>
-    <GLOBAL_REGISTRATION_MANUAL>Global Registration(Manual)</GLOBAL_REGISTRATION_MANUAL>
     <PIECEWISE_LINEAR>Piecewise linear</PIECEWISE_LINEAR>
     <POLYNOMIAL>Polynomial</POLYNOMIAL>
     <LOCAL_WEIGHTED_MEAN>Local Weighted Mean</LOCAL_WEIGHTED_MEAN>
@@ -210,7 +217,7 @@
     <SIGNAL>Signal</SIGNAL>
     <ROBUSTNESS_COEFFICIENT>Robustness coefficient</ROBUSTNESS_COEFFICIENT>
     <DOWNSAMPLING>Downsampling</DOWNSAMPLING>
-    <COMPENSATION_PHOTOBLEACHING>Photobleaching Compensation</COMPENSATION_PHOTOBLEACHING>
+    <REPLENISH_PHOTOBLEACHING>Replenish Photobleaching</REPLENISH_PHOTOBLEACHING>
     <PRECISION>Precision</PRECISION>
     <RATIO>Ratio</RATIO>
     <SCALE>Scale</SCALE>
@@ -322,9 +329,11 @@
     <DISPLACEMENT_NOT_EXIST>(non-rigid) displacement field data does not exist</DISPLACEMENT_NOT_EXIST>
     <RENDERING_DISPLACEMENT_FIELD>Rendering displacement field...</RENDERING_DISPLACEMENT_FIELD>
     <CALCULATING_GOODNESS>Calculating goodness of registration...</CALCULATING_GOODNESS>
-    <REGMODE_CURRENT_MANUAL>Current Registration Mode: Manual</REGMODE_CURRENT_MANUAL>
-    <REGMODE_CURRENT_AUTO>Current Registration Mode: Automatic</REGMODE_CURRENT_AUTO>
-    <REGMODE_CURRENT_LONGTERM>Current Registration Mode: Long-Term</REGMODE_CURRENT_LONGTERM>
+    <REGMODE_CURRENT_GLOBAL>Current Registration Mode: Global</REGMODE_CURRENT_GLOBAL>
+    <REGMODE_CURRENT_LOCAL>Current Registration Mode: Local</REGMODE_CURRENT_LOCAL>
+    <REGMODE_CURRENT_MGLOBAL>Current Registration Mode: Global(Manually)</REGMODE_CURRENT_MGLOBAL>
+    <REGMODE_CURRENT_LTGLOBAL>Current Registration Mode: Global(Long-Term)</REGMODE_CURRENT_LTGLOBAL>
+    <REGMODE_CURRENT_LTLOCAL>Current Registration Mode: Local(Long-Term)</REGMODE_CURRENT_LTLOCAL>
     <IMAGE_INTENSITY>image intensity</IMAGE_INTENSITY>
     <OPACITY>Opacity</OPACITY>
     <UNSUPPORTED_FILE_FORMAT>unsupported file format</UNSUPPORTED_FILE_FORMAT>
@@ -340,8 +349,6 @@
     <SELECTION_SOURCE>Select browser data source</SELECTION_SOURCE>
     <RUNNING_REGISTRATION>Run the registration program</RUNNING_REGISTRATION>
     <LONG_TERM_ONCE_ONLY>Long-term mode only supports single registration</LONG_TERM_ONCE_ONLY>
-    <LONG_TERM_NORMAL_CONFLICT>The long-term mode and the normal mode are enabled at the same time, the normal mode will be turned off. Continue?</LONG_TERM_NORMAL_CONFLICT>
-    <NORMAL_LONG_TERM_CONFLICT>The normal mode and the long-term mode are enabled at the same time, the normal mode will be turned off. Continue?</NORMAL_LONG_TERM_CONFLICT>
     <LOCAL_WEIGHTED_CONTROL>Local weighted average recommended control value: 12</LOCAL_WEIGHTED_CONTROL>
     <MAIN_APP>Main Application</MAIN_APP>
     <SUB_APP>Sub Application</SUB_APP>
