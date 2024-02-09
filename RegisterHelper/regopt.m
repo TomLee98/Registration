@@ -376,11 +376,13 @@ classdef regopt
                             this.lo_itn_max = r_.MaxIterN;
                             this.afs = r_.AFS;
                             this.grid_regulation = r_.GR;
-                            this.grid_spacing = r.GS;
+                            this.grid_spacing = r_.GS;
                             this.vpl = r_.VPL;
                             this.lo_interp = r_.Interp;
                             this.autoctrst = r_.AutoContrast;
                             this.repacc = r_.RepAcc;
+                            this.strc_chl = r_.SC;
+                            this.func_chl = r_.FC;
                     end
                 case "MANREG"
                     this.m_tform_type = r_.TformType;
