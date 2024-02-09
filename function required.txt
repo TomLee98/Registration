@@ -162,15 +162,19 @@ V1.6        Sika deer           梅花鹿
 
 ====================Important Architecture Update =========================
 V2.0        Sun Wukong          孙悟空
-  |-V2.0.0      2024/02/08   12:00
-  |     |- [Update] new framework: Wukong kernel for a modern app
-  |     |- [Update] add mouse roller z slice controlling
+  |-V2.0.0      2024/02/
+  |     |- [Update] new framework: Wukong kernel for the modern app
+  |     |- [Update] new powerful task manager introduced
+  |     |- [Update] TODO:new powerful distributed file system
+  |     |- [Update] new registration setting subpanel
+  |     |- [Update] new two channels global registration method introduced
+  |     |- [Update] TODO:new two channels local registration method introduced
+  |     |- [Update] TODO:new two channels manually global registration method introduced
   |     |- [Update] remove nearest interpolation in registration
-  |     |- [Update] clean up project for clearly calling
-  |     |- [Update] powerful task manager introduced
-  |     |- [Update] powerfun distributed file system
-  |     |- [Update] new two channels movie registration method introduced
-  |     |- [Update] TODO: long-term registration review at points cloud registration
+  |     |- [Update] remove "similarity" two changels registration mode
+  |     |- [Update] optimize app user update operation
+  |     |- [Update] add mouse roller z slice controlling
+  |     |- [Update] new progress bar on main panel
   |     |- [Update] TODO: remove 'mix' mode when do normal registration
   |     |- [Fix Bugs] fix the registration frames number lost synchronize bug
   |     |- [Fix Bugs] fix one channel registration(manual) output
@@ -179,5 +183,6 @@ V2.0        Sun Wukong          孙悟空
   |     |- [Fix Bugs] TODO: cropped nd2 files with bad properties
   |- V2.0.1     2024/03/
   |     |- [Update] TODO: registration history manager
-  |     |- [Update] TODO: memory mapping low level optimal
+  |     |- [Update] TODO: long-term registration setting panel redesign
+  |     |- [Update] TODO: memory mapping low level optimal(mpimgs class design)
   |     |- 
