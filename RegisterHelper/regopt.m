@@ -22,7 +22,7 @@ classdef regopt
         mfilter         (1,3) double {mustBeNonnegative, mustBeInteger} = [3,3,3]
         open_operator   (1,3) double {mustBeNonnegative, mustBeInteger} = [5,5,2]
         gfilter         (1,3) double {mustBeNonnegative, mustBeInteger} = [3,3,3]
-        zopt_itn_max    (1,1) double {mustBePositive, mustBeInteger} = 100
+        zopt_itn_max    (1,1) double {mustBeNonnegative, mustBeInteger} = 100
         zopt_tol        (1,1) double {mustBeInRange(zopt_tol, 0, 1)} = 1e-3
 
         % ================== one channel unique properties ================
@@ -63,11 +63,12 @@ classdef regopt
         m_tform_type     (1,1) string {mustBeMember(m_tform_type, ...
                                     ["translation","rigid","poly","pwl"])} ...
                                     = "translation"
-        m_degree        (1,1) double {mustBePositive, mustBeInteger} = 3
+        m_degree        (1,1) double {mustBeMember(m_degree, [2,3,4])} = 2
         m_dview         (1,1) string {mustBeMember(m_dview, ["XY","ZX","YZ"])} = "XY"
         m_proj          (1,1) string {mustBeMember(m_proj, ["max","min","median","mean"])} = "max"
         m_interp        (1,1) string {mustBeMember(m_interp, ["linear","cubic"])} = "linear"
         m_rs            (1,3) double {mustBePositive} = [1,1,1]
+        m_isometric     (1,1) logical = false
     end
 
     properties(SetAccess=immutable, GetAccess=private, Hidden)
@@ -201,6 +202,7 @@ classdef regopt
                             addParameter(p, 'DView',        this.m_dview);
                             addParameter(p, 'Projection',   this.m_proj);
                             addParameter(p, 'Resampling',   this.m_rs);
+                            addParameter(p, 'Isometric',    this.m_isometric);
                         otherwise
                     end
                 case "LTREG"
@@ -298,6 +300,7 @@ classdef regopt
                                "DView",         this.m_dview, ...
                                "Projection",    this.m_proj, ...
                                "Resampling",    this.m_rs, ...
+                               "Isometric",     this.m_isometric, ...
                                "Hardware",      this.hardware);
                 case "LTREG"
                     r = struct("KeyFrames",     this.lt_keyframes, ...
@@ -384,7 +387,9 @@ classdef regopt
                     this.m_degree = r_.Degree;
                     this.m_interp = r_.Interp;
                     this.m_dview = r_.DView;
-                    this.mfilter
+                    this.m_proj = r_.Projection;
+                    this.m_rs = r_.Resampling;
+                    this.m_isometric = r_.Isometric;
                 case "LTREG"
                     this.lt_keyframes = r_.KeyFrames;
                     this.lt_stdobj_th = r_.ThFG;

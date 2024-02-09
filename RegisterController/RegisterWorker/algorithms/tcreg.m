@@ -76,10 +76,12 @@ rref_ds  = imref3d(size(refvol_ds), res_ds(1), res_ds(2), res_ds(3));
 % extract local variables instead of struct spread
 reg_modal = regopt.RegModal;
 tf_type = regopt.TformType;
-max_step = regopt.MaxStep;
-min_step = regopt.MinStep;
+max_setp = regopt.MaxStep;
+min_setp = regopt.MinStep;
 iter_coeff = regopt.IterCoeff;
-max_iter_n = regopt.MaxIterN;
+max_itern = regopt.MaxIterN;
+max_itern_z = regopt.MaxZOptIterN;
+zopt_tol = regopt.TolZOpt;
 vpl = regopt.VPL;
 itpalg = regopt.Interp;
 
@@ -94,7 +96,8 @@ parfor m = 1:numel(regfrs)
             || tf_type ~= "affine"
         % older than R2022b, call function estimate...
         % ptf: pre-transformation as affine3d object
-        [ptf, ~] = imregopzr(avol_sc_m_ds, refvol_ds, res_ds, tf_type);
+        [ptf, ~] = imregopzr(avol_sc_m_ds, refvol_ds, res_ds, tf_type, ...
+            max_itern_z, zopt_tol);
         fival_sc = mean(avol_sc_m(:,[1,end],:),"all");
     else
         % call imregmoment for estimation
@@ -109,16 +112,16 @@ parfor m = 1:numel(regfrs)
     [optimizer, metric] = imregconfig(reg_modal);
     switch reg_modal
         case "multimodal"
-            optimizer.InitialRadius = max_step;
-            optimizer.Epsilon = min_step;
+            optimizer.InitialRadius = max_setp;
+            optimizer.Epsilon = min_setp;
             optimizer.GrowthFactor = iter_coeff;
         case "monomodal"
-            optimizer.MaximumStepLength = max_step;
-            optimizer.MinimumStepLength = min_step;
+            optimizer.MaximumStepLength = max_setp;
+            optimizer.MinimumStepLength = min_setp;
             optimizer.RelaxationFactor = iter_coeff;
         otherwise
     end
-    optimizer.MaximumIterations = max_iter_n;
+    optimizer.MaximumIterations = max_itern;
 
     % do fine registration: imregtform
     tf = imregtform(avol_sc_m_ds, rref_ds, refvol_ds, rref_ds, tf_type, ...
@@ -154,29 +157,29 @@ end
 
 
 % ====================== Utility Functions =======================
-function vs = doPreProcessOn(vs_, mfsize_, ofsize_, gfsize_)
+function vs = doPreProcessOn(vs, mfsize, ofsize, gfsize)
 arguments
-    vs_ 
-    mfsize_ (1,3)   double {mustBeInteger, mustBePositive} = [3,3,3]
-    ofsize_ (1,3)   double {mustBeInteger, mustBePositive} = [5,5,2]
-    gfsize_ (1,3)   double {mustBeInteger, mustBePositive} = [3,3,1]
+    vs 
+    mfsize (1,3)   double {mustBeInteger, mustBePositive} = [3,3,3]
+    ofsize (1,3)   double {mustBeInteger, mustBePositive} = [5,5,2]
+    gfsize (1,3)   double {mustBeInteger, mustBePositive} = [3,3,1]
 end
 
 % remove possible salt and pepper noise
-vs_ = medfilt3(vs_, mfsize_, "replicate");
+vs = medfilt3(vs, mfsize, "replicate");
 
 % open operation to remove strong bright noise
-vs_ = imopen(vs_, offsetstrel("ball", ofsize_(1), ofsize_(2), ofsize_(3)));
+vs = imopen(vs, offsetstrel("ball", ofsize(1), ofsize(2), ofsize(3)));
 
 % comment this, too memory allocated
 % imhistmatch for photobleaching recovery
 % vs = imhistmatchn(vs_, refv_, hn_);   
 
 % gaussian low pass filter for volume smooth, more robust
-vs = imgaussfilt3(vs_, "FilterSize", gfsize_, "Padding", "replicate");
+vs = imgaussfilt3(vs, "FilterSize", gfsize, "Padding", "replicate");
 end
 
-function [tf_est, movol_est] = imregopzr(moving, fixed, rsFixed, tformType)
+function [tf_est, movol_est] = imregopzr(moving, fixed, rsFixed, tformType, nmax, tol)
 % This function use imregcorr and z optimization for transformation
 % estimation on platform version < R2022b
 arguments
@@ -185,6 +188,8 @@ arguments
     rsFixed     (1,3)   double      % [x,y,z] coordinate resolution, unit as um/pix
     tformType   (1,1)   string  {mustBeMember(tformType, ...
                                 ["translation", "rigid", "affine"])} = "translation"
+    nmax        (1,1)   double {mustBeNonnegative, mustBeInteger} = 100
+    tol         (1,1)   double {mustBeInRange(tol, 0, 1)} = 1e-3
 end
 
 % cancel affine transformation support
@@ -219,7 +224,7 @@ mov_img = padarray(mov_img, [dh(2), dw(2)], "replicate","post");
 rref = imref2d(size(ref_img), rsFixed(1), rsFixed(2));
 rref3d = imref3d(size(fixed), rsFixed(1), rsFixed(2), rsFixed(3));
 
-fminbnd_opts = optimset('MaxFunEvals',500, 'MaxIter',100, 'TolX', 1e-3);
+fminbnd_opts = optimset('MaxIter',nmax, 'TolX', tol);
 
 % 2-D rigid transformation estimation
 tf2d_ = imregcorr(mov_img, rref, ref_img, rref, tformType);  % rigid2d, affine2d, transltform2d or rigidtform2d
