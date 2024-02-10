@@ -146,7 +146,7 @@ classdef TaskManager < handle
                 % update registration progress
                 this.regedfn = this.regedfn + numel(this.task_cur.RegFrames);
                 this.rcfobj.Progress = this.regedfn / numel(this.regfrs);
-                fprintf("complete ratio: %.2f\n", this.rcfobj.Progress);
+                this.caller.SetProgressBar(this.rcfobj.Progress);
 
                 if this.distrib == true
                     % communicate with rcfs pool
@@ -199,7 +199,7 @@ classdef TaskManager < handle
                     fileattrib(this.sfolder, "+h");
                 end
             else
-                this.sfolder = [];  % no matter the sfolder, memory running
+                this.sfolder = "";  % no matter the sfolder, memory running
             end
             
         end
@@ -276,6 +276,9 @@ classdef TaskManager < handle
                 % exclusive mode
                 % sfolder must be [], do nothing except update nworkers_cur
                 this.nworker_cur = this.PSMWN - this.nw_protected;
+
+                % update local rcf
+                this.rcfobj = regrcf(this.sfolder, this.volopts, this.regopts, this.regfrs);
             end
         end
 

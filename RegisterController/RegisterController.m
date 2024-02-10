@@ -20,15 +20,20 @@ classdef RegisterController < handle
     end
 
     properties(Access = private, Hidden)
-        caller      % caller, must be Register object
-        taskmgr     % TaskManager object
-        regworker   % RegisterWorker object
-        state       % 1-by-1 OnOffSwitchState enum, can be "on" or "off" 
+        caller              % caller, must be Register object
+        taskmgr             % TaskManager object
+        regworker           % RegisterWorker object
+        state               % 1-by-1 OnOffSwitchState enum, can be "on" or "off" 
+    end
+
+    properties(SetAccess=public, GetAccess=private, Dependent)
+        RegisterOptions     % variable, set,    running protected
+        NWorkersProtected   % variable, set,    running protected
+        Distributed         % variable, set,    running protected
     end
 
     properties(GetAccess=public, Dependent)
-        RegisterOptions
-        State
+        State               % variable, get
     end
 
     methods
@@ -45,10 +50,50 @@ classdef RegisterController < handle
             this.regopts = regopt_;
             this.nw_protected = nwproctect_;
             this.distrib = distrib_;
+
+            this.state = this.WORKER_STATE(1);
         end
 
-        function r = get.RegisterOptions(this)
-            r = this.regopts;
+        function set.RegisterOptions(this, r_)
+            arguments
+                this
+                r_  (1,1)   regopt
+            end
+
+            if this.state == this.WORKER_STATE(1)
+                this.regopts = r_;
+            else
+                warning("RegisterController:invalidOperation", ...
+                    "Can not set registration options when kernel is running.");
+            end
+        end
+
+        function set.NWorkersProtected(this, r_)
+            arguments
+                this
+                r_  (1,1)   double  {mustBeNonnegative, mustBeInteger}
+            end
+
+            if this.state == this.WORKER_STATE(1)
+                this.nw_protected = r_;
+            else
+                warning("RegisterController:invalidOperation", ...
+                    "Can not set workers number when kernel is running.");
+            end
+        end
+
+        function set.Distributed(this, r_)
+            arguments
+                this
+                r_  (1,1)   logical
+            end
+
+            if this.state == this.WORKER_STATE(1)
+                this.distrib = r_;
+            else
+                warning("RegisterController:invalidOperation", ...
+                    "Can not set distributed state when kernel is running.");
+            end
         end
 
         function r = get.State(this)
@@ -84,6 +129,7 @@ classdef RegisterController < handle
                 status = this.regworker.correct(task);
                 this.taskmgr.update(status);    % can hang out for resource
                 task = this.taskmgr.Task;
+                drawnow
             end
 
             % clear objects
@@ -91,9 +137,12 @@ classdef RegisterController < handle
             delete(this.regworker);
 
             if this.state == this.WORKER_STATE(1)
+                % already off state
                 status = this.STATUS_EXTSTOP;
             else
                 status = this.STATUS_SUCCESS;
+                % change to off state
+                this.state = this.WORKER_STATE(1);
             end
         end
 

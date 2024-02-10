@@ -51,12 +51,16 @@ classdef regrcf < handle
         function this = regrcf(sfolder_, volopt_, regopt_, regfrs_)
             %REGRCF A Constructor
             arguments
-                sfolder_    (1,1)   string {mustBeFolder}
+                sfolder_    (1,1)   string
                 volopt_     (1,12)  table
                 regopt_     (1,1)   regopt
                 regfrs_     (1,:)   double {mustBePositive, mustBeInteger}
             end
             
+            if sfolder_ ~= "" && ~isfolder(sfolder_)
+                throw(MException("regecf:invalidFolder", ...
+                    "Invalid input folder."));
+            end
             this.sfolder = sfolder_;
             this.volopt = volopt_;
             this.regopt = regopt_;
@@ -150,62 +154,75 @@ classdef regrcf < handle
         end
 
         function write(this)
-            if isempty(this.fname) || ~isfile(this.fname)
-                % first write
-                fname_ = [randi(26,1,6)+64, randi(26,1,6)+96, randi(10,1,6)+47];
-                fname_ = [char(fname_(randperm(18))), '.xml'];
-                this.fname = string([this.sfolder.char(), filesep, fname_]);
-                this.data.submit_time = string(datetime("now"));
-            end
+            this.data.submit_time = string(datetime("now"));
 
-            try
-                writestruct(this.data, this.fname, "FileType","xml");
-            catch ME
-                throwAsCaller(ME);
+            if isfolder(this.sfolder)
+                if isempty(this.fname) || ~isfile(this.fname)
+                    % first write
+                    fname_ = [randi(26,1,6)+64, randi(26,1,6)+96, randi(10,1,6)+47];
+                    fname_ = [char(fname_(randperm(18))), '.xml'];
+                    this.fname = string([this.sfolder.char(), filesep, fname_]);
+
+                    try
+                        writestruct(this.data, this.fname, "FileType","xml");
+                    catch ME
+                        throwAsCaller(ME);
+                    end
+                end
             end
         end
 
         function s = read(this)
-            if ~isempty(this.fname) && isfile(this.fname)
-                s = readstruct(this.fname, "FileType","xml");
-                if ~all(ismember(fieldnames(s), this.VALID_RCF_FIELDNAMES))
-                    throw(MException("TaskManager:read:invalidRCFFile", ...
-                        "Some source files(*.xml) may be damaged."));
-                end
+            if isfolder(this.sfolder)
+                if ~isempty(this.fname) && isfile(this.fname)
+                    s = readstruct(this.fname, "FileType","xml");
+                    if ~all(ismember(fieldnames(s), this.VALID_RCF_FIELDNAMES))
+                        throw(MException("TaskManager:read:invalidRCFFile", ...
+                            "Some source files(*.xml) may be damaged."));
+                    end
 
-                this.data = s;
+                    this.data = s;
+                end
             end
         end
 
         function rcfpool = readall(this)
-            % read all *.xml files in sfolder
-            xml_files = struct2table(dir(this.sfolder));
-            [~,~,ext] = fileparts(xml_files.name);
-            ext = string(ext);
-            xml_files = xml_files.name(ext.contains(".xml"));
+            if isfolder(this.sfolder)
+                % read all *.xml files in sfolder
+                xml_files = struct2table(dir(this.sfolder));
+                [~,~,ext] = fileparts(xml_files.name);
+                ext = string(ext);
+                xml_files = xml_files.name(ext.contains(".xml"));
 
-            rcfpool = [];
-            
-            if numel(xml_files) == 0, return; end
+                rcfpool = [];
 
-            for n = 1:numel(xml_files)
-                s = readstruct([this.sfolder.char(), filesep, xml_files{n}], ...
-                    "FileType","xml");
-                if ~all(ismember(fieldnames(s), this.VALID_RCF_FIELDNAMES))
-                    throw(MException("TaskManager:read:invalidRCFFile", ...
-                        "Some source files(*.xml) may be damaged."));
+                if numel(xml_files) == 0, return; end
+
+                for n = 1:numel(xml_files)
+                    s = readstruct([this.sfolder.char(), filesep, xml_files{n}], ...
+                        "FileType","xml");
+                    if ~all(ismember(fieldnames(s), this.VALID_RCF_FIELDNAMES))
+                        throw(MException("TaskManager:read:invalidRCFFile", ...
+                            "Some source files(*.xml) may be damaged."));
+                    end
+                    rcfpool = [rcfpool; s]; %#ok<AGROW>
                 end
-                rcfpool = [rcfpool; s]; %#ok<AGROW>
+            else
+                rcfpool = [];
             end
         end
 
         function tf = is_pool_empty(this)
-            % read all *.xml files in sfolder
-            xml_files = struct2table(dir(this.sfolder));
-            [~,~,ext] = fileparts(xml_files.name);
-            ext = string(ext);
-            xml_files = xml_files.name(ext.contains(".xml"));
-            tf = (numel(xml_files) == 0);
+            if isfolder(this.sfolder)
+                % read all *.xml files in sfolder
+                xml_files = struct2table(dir(this.sfolder));
+                [~,~,ext] = fileparts(xml_files.name);
+                ext = string(ext);
+                xml_files = xml_files.name(ext.contains(".xml"));
+                tf = (numel(xml_files) == 0);
+            else
+                tf = true;
+            end
         end
 
         function tf = any_other_await(this)
@@ -249,9 +266,11 @@ classdef regrcf < handle
         end
 
         function delete(this)
-            % remove the rcf file
-            delete(this.fname);
+            if ~isempty(this.fname) && isfile(this.fname)
+                % remove the rcf file
+                delete(this.fname);
 
+            end
             % ...
         end
     end

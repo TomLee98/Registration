@@ -70,6 +70,8 @@
     <SOURCE>Source</SOURCE>
     <WELCOME_TO_Reg3D_App>Welcome to Reg3D App</WELCOME_TO_Reg3D_App>
     <RUN>Run</RUN>
+    <IN_PROGRESS>In progress</IN_PROGRESS>
+    <BREAK>Break</BREAK>
     <HORIZONTAL_FLIP>Horizontal Flip</HORIZONTAL_FLIP>
     <VERTICAL_FLIP>Vertical Flip</VERTICAL_FLIP>
     <ROI_SETTING>ROI Setting</ROI_SETTING>
@@ -270,7 +272,6 @@
     <CONFIGURATION_EXPORTED>The configuration is exported</CONFIGURATION_EXPORTED>
     <CONFGURATION_LOADED>The configuration is loaded</CONFGURATION_LOADED>
     <CONFIGURATION_CORRUPTED>The configuration file is corrupted</CONFIGURATION_CORRUPTED>
-    <IN_PROGRESS>In progress</IN_PROGRESS>
     <REGISTRATION_WORKFLOW_ERROR>No registration workflow set up</REGISTRATION_WORKFLOW_ERROR>
     <PERFORM_AUTO_REGISTRATION>Perform automatic registration</PERFORM_AUTO_REGISTRATION>
     <PERFORM_LONGTERM_REGISTRATION>Perform long-term registration</PERFORM_LONGTERM_REGISTRATION>

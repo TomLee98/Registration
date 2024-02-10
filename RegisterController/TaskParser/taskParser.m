@@ -36,7 +36,7 @@ classdef taskParser < handle
         
         function parse(this, distrib_)
             %PARSE This function parse the task and generate task queue
-            rf = importdata("RegisterController\TaskControl\TaskParser\configuration.ini");
+            rf = importdata("RegisterController\TaskParser\configuration.ini");
             rf = string(rf).split(":");
             if ~ismember(this.regopt.Algorithm, rf(:,1))
                 throw(MException("taskParser:parse:invalidRegistrationAlgorithm", ...
@@ -61,5 +61,5 @@ classdef taskParser < handle
 end
 
 function r = calc_exclusive_coeff()
-r = 1;
+r = 5;
 end
