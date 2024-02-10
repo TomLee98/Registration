@@ -152,9 +152,4 @@ classdef RegisterController < handle
             status = this.STATUS_SUCCESS;
         end
     end
-
-    methods(Access = private)
-
-    end
 end
-

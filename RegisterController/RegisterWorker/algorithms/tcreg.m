@@ -147,12 +147,12 @@ movdst.Transformation(regfrs, 1) = TF;
 status = 0;
 end
 
-function tcreg_local_cpu(movsrc, movdst, refvol, regfrs, regopt)
-
+function status = tcreg_local_cpu(movsrc, movdst, refvol, regfrs, regopt)
+status = 0;
 end
 
-function tcreg_local_gpu(movsrc, movdst, refvol, regfrs, regopt)
-
+function status = tcreg_local_gpu(movsrc, movdst, refvol, regfrs, regopt)
+status = 0;
 end
 
 
@@ -277,10 +277,22 @@ end
 end
 
 function mustBeRegistrationOption(A)
-VALID_FIELD = ["Mode", "RegModal", "MedianFilter", "OpenOperator", ...
-    "GaussianFilter", "MaxZOptIterN", "TolZOpt", "TformType", ...
-    "MaxStep", "MinStep", "MaxIterN", "IterCoeff", "VPL", "Interp", ...
-    "DS", "SC", "FC", "Hardware"];
+if ~ismember("Mode", fieldnames(A))
+    throw(MException("mustBeRegistrationOption:invalidOption", ...
+        "Unsupported arguments input."));
+end
+
+switch A.Mode
+    case "global"
+        VALID_FIELD = ["Mode", "RegModal", "MedianFilter", "OpenOperator", ...
+            "GaussianFilter", "MaxZOptIterN", "TolZOpt", "TformType", ...
+            "MaxStep", "MinStep", "MaxIterN", "IterCoeff", "VPL", "Interp", ...
+            "DS", "SC", "FC", "Hardware"];
+    case "local"
+        VALID_FIELD = ["Mode", "MaxIterN", "AFS",  "GR", "GS", "VPL", "Interp", ...
+            "AutoContrast", "RepAcc", "SC", "FC", "Hardware"];
+    otherwise
+end
 
 if ~all(ismember(fieldnames(A), VALID_FIELD))
     throw(MException("mustBeRegistrationOption:invalidOption", ...

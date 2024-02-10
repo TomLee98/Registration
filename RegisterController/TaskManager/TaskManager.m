@@ -5,6 +5,7 @@ classdef TaskManager < handle
         % ASK FOR REQUIRE DELAY
         REQUIRE_DELAY = 3;
 
+        BUSY_RATIO = 2;
     end
 
     properties(Access=private, Hidden)
@@ -122,6 +123,9 @@ classdef TaskManager < handle
 
             % get new task from taskqueue
             this.get_new_task();
+
+            % set the main panel progress bar at 0
+            this.caller.SetProgressBar(0);
         end
 
         function update(this, status_, debug_)
@@ -186,8 +190,10 @@ classdef TaskManager < handle
                     sfpath = '/data/.rcfs';
                     success_flag = true;             % avoid users permission
                 elseif ispc()
+                    warning('off', 'MATLAB:MKDIR:DirectoryExists');
                     sfpath = 'C:\ProgramData\Reg3D\rcfs';
                     success_flag = mkdir(sfpath);    % generate folder except existed
+                    warning('on', 'MATLAB:MKDIR:DirectoryExists');
                 end
                 if ~success_flag
                     throw(MException("TaskManager:mkdirFailed", ...
@@ -306,8 +312,8 @@ classdef TaskManager < handle
 
                 % use taskParser
                 p = taskParser(this.movtmpl, regframes, this.volopts, ...
-                    this.regopts, this.nworker_cur);
-                p.parse(this.distrib);
+                    this.regopts, this.nworker_cur, this.distrib);
+                p.parse(this.BUSY_RATIO);
                 this.taskqueue = p.Results;
             end
         end

@@ -118,7 +118,7 @@ classdef regmov < matlab.mixin.Copyable
         function set.MetaData(this, r_)
             arguments
                 this
-                r_  (1,12)  table   {regmov.mustBeMovieOptions}
+                r_  (1,12)  table   {mustBeMovieOptions}
             end
 
             this.mopt = r_;

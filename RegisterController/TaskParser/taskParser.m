@@ -14,10 +14,11 @@ classdef taskParser < handle
         volopt
         regopt
         nworker
+        distrib
     end
     
     methods
-        function this = taskParser(movtmpl_, regfrs_, volopt_, regopt_, blocksz_)
+        function this = taskParser(movtmpl_, regfrs_, volopt_, regopt_, blocksz_, distrib_)
             %TASKPARSER A Constructor
             arguments
                 movtmpl_    (1,1)   regtmpl 
@@ -25,6 +26,7 @@ classdef taskParser < handle
                 volopt_     (1,12)  table
                 regopt_     (1,1)   regopt
                 blocksz_    (1,1)   double  {mustBePositive, mustBeInteger}
+                distrib_    (1,1)   logical = false
             end
 
             this.movtmpl = movtmpl_;
@@ -32,9 +34,10 @@ classdef taskParser < handle
             this.volopt = volopt_;
             this.regopt = regopt_;
             this.nworker = blocksz_;
+            this.distrib = distrib_;
         end
         
-        function parse(this, distrib_)
+        function parse(this, br)
             %PARSE This function parse the task and generate task queue
             rf = importdata("RegisterController\TaskParser\configuration.ini");
             rf = string(rf).split(":");
@@ -45,12 +48,16 @@ classdef taskParser < handle
 
             pfunc = str2func(rf(this.regopt.Algorithm==rf(:,1), 2));
 
-            if distrib_ == false
-                exc = calc_exclusive_coeff();
+            if this.distrib == false
+                % in exclusive mode, user can adjust the busy index
+                batch_sz = this.nworker*br;
             else
-                exc = 1;
+                % distribution mode must keep busy index as 2~3 for better
+                % runnning efficiency and response sensitivity
+                batch_sz = this.nworker*2;
             end
-            batch_sz = this.nworker*exc;
+            
+
             this.Results = pfunc(this.movtmpl, ...
                                  this.regfrs, ...
                                  this.volopt, ...
