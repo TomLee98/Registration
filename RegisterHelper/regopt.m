@@ -6,6 +6,7 @@ classdef regopt
         % ================ all options common properties =================
         reg_alg         (1,1) string {mustBeMember(reg_alg, ["OCREG","TCREG","MANREG","LTREG"])} = "TCREG"
         reg_mode        (1,1) string {mustBeMember(reg_mode, ["global","local"])} = "global"
+        sub_reg_alg     (1,1) string {mustBeMember(sub_reg_alg, ["usual","advanced"])} = "usual"
 
         % ============= one/two channel(s) common properties ==============
         reg_modal       (1,1) string {mustBeMember(reg_modal, ["multimodal", "monomodal"])} = "monomodal"
@@ -134,6 +135,7 @@ classdef regopt
             p = inputParser;
             % =========== not overloading parameters =============
             addParameter(p, 'RegModal',         this.reg_modal);
+            addParameter(p, 'SubAlgorithm',     this.sub_reg_alg);
             addParameter(p, 'MedianFilter',     this.mfilter);
             addParameter(p, 'OpenOperator',     this.open_operator);
             addParameter(p, 'GaussianFilter',   this.gfilter);
@@ -280,7 +282,8 @@ classdef regopt
                                        "FC",            this.func_chl, ...
                                        "Hardware",      this.hardware);
                         case "local"
-                            r = struct("MaxIterN",      this.lo_itn_max, ...
+                            r = struct("SubAlgorithm",  this.sub_reg_alg, ...
+                                       "MaxIterN",      this.lo_itn_max, ...
                                        "AFS",           this.afs, ...
                                        "GR",            this.grid_regulation, ...
                                        "GS",            this.grid_spacing, ...
@@ -373,6 +376,7 @@ classdef regopt
                             this.strc_chl = r_.SC;
                             this.func_chl = r_.FC;
                         case "local"
+                            this.sub_reg_alg = r_.SubAlgorithm;
                             this.lo_itn_max = r_.MaxIterN;
                             this.afs = r_.AFS;
                             this.grid_regulation = r_.GR;

@@ -180,9 +180,11 @@ V2.0        Wukong              孙悟空
   |     |- [Fix Bugs] fix the registration frames number lost synchronize bug
   |     |- [Fix Bugs] fix one channel registration(manual) output
   |     |- [Fix Bugs] fix mode 'affine' can not run
-  |- V2.0.1     2024/03/
+  |- V2.0.1     2024/
   |     |- [Update] TODO: registration history manager
   |     |- [Update] TODO: long-term registration setting panel redesign
+  |     |- [Fix Bugs]
+  |- V2.0.2     2024/
   |     |- [Update] TODO: memory mapping low level optimal(mpimgs class design)
   |     |- [Fix Bugs] TODO: fix long-term registration out of memory when key frames is too much
   |     |- [Fix Bugs] TODO: cropped nd2 files with bad properties
