@@ -396,6 +396,6 @@
     <EXPORT_MASK_SUCCESS>蒙版及区域属性导出成功</EXPORT_MASK_SUCCESS>
     <MULTI_CONNECTION>发现多连通区域，已选取最大单连通子集</MULTI_CONNECTION>
     <EXCLUSIVE_WARNING>您当前运行于服务器模式，独占模式可能造成MATLAB崩溃，继续？</EXCLUSIVE_WARNING>
-    <LOW_MEMPRY_WARNING>可用内存过小，独占模式启用失败</LOW_MEMPRY_WARNING>
+    <LOW_MEMORY_WARNING>可用内存过小，独占模式启用失败</LOW_MEMORY_WARNING>
     <DEVELOPING>正在开发…</DEVELOPING>
 </struct>

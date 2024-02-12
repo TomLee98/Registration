@@ -1,0 +1,248 @@
+function [info, data] = loadtiff(file, tspan)
+%LOADTIFF This function load tiff files with tspan
+% Input:
+%   - file: 1-by-1 string, the data full file path
+%   - tspan: 1-by-2 positive integer array, [start, end] of frame indices
+% Output:
+%   - info: struct with {opts, rt}, where opts is 1-by-12 metadata table,
+%     rt is n-by-1 nonnegtive double time array
+%
+% if date is not needed but info, use
+%       info = loadtiff(file)
+% or you want the data, use
+%       [info, data] = loadtiff(file, tspan)
+% where you can pass the time span as tspan for continous time cut
+
+arguments
+    file    (1,1)   string
+    tspan   (1,:)   double = []
+end
+
+nargoutchk(1, 2);
+
+file = char(file);
+
+% we need to use the bfmatlab package
+status = bfCheckJavaPath(1);
+assert(status, ['Missing Bio-Formats library. Either add bioformats_package.jar '...
+    'to the static Java path or add it to the Matlab path.']);
+bfInitLogging();
+r = bfGetReader(file, 0);
+info_bf = r.getMetadataStore();
+
+% extract the information
+width = info_bf.getPixelsSizeX(0).getValue();
+height = info_bf.getPixelsSizeY(0).getValue();
+channels = info_bf.getPixelsSizeC(0).getValue();
+slices = info_bf.getPixelsSizeZ(0).getValue();
+frames = info_bf.getPixelsSizeT(0).getValue();
+images = channels*slices*frames;
+dimOrder = string(split(info_bf.getPixelsDimensionOrder(0).getValue(),""));
+dimOrder = dimOrder(strlength(dimOrder)>0)';
+cOrder = getChannelOrder(info_bf);
+dataType = string(info_bf.getPixelsType(0).getValue());
+if dataType == "float"
+    dataType = "single";
+end
+
+if nargout == 1
+    % ask for resolution information
+    % Ask the user to input necessary imformation
+    prompt = {'Enter the z scan thickness(\mum):',...
+        'Enter the binning size:',...
+        'Enter total optical magnification:',...
+        'Enter the camera pixel size(\mum):'};
+    dlgtitle = 'Microscope parameters setting';
+    dims = [1 40];
+    definput = {'1.5';'2';'60';'6.5'};
+    dlgopts.Interpreter = 'tex';
+    dlgout = inputdlg(prompt,dlgtitle,dims,definput,dlgopts);
+    if isempty(dlgout), dlgout = definput; end
+
+    % extract and calculate the X,Y resolution
+    zRes = str2double(dlgout{1});
+    binsz = str2double(dlgout{2});
+    tcom = str2double(dlgout{3});
+    cps = str2double(dlgout{4});
+
+    % since the camera physical pixel is square,
+    % and the binning size is also square
+    xRes = cps/tcom*binsz;
+    yRes = xRes;
+elseif nargout == 2
+    % omit the resolution
+    xRes = 1.0;
+    yRes = 1.0;
+    zRes = 1.0;
+end
+
+
+% generate opts
+opts = table(width,...          % #pixel
+            height,...          % #pixel
+            channels,...        % #channels
+            slices,...          % #slices
+            frames,...          % #volumes
+            images,...          % #images
+            xRes,...            % μm/pixel
+            yRes,...            % μm/pixel
+            zRes,...            % μm/layer z
+            dataType,...        % uint8, uint16, single
+            dimOrder,...        % dimention order array
+            cOrder);            % color channel order
+
+rt = getRelativeTime(r, frames);
+
+r.close();
+
+info.opts = opts;
+info.rt = rt;
+
+if isempty(tspan), tspan = [1, opts.frames]; end
+
+if nargout == 2
+    % check the environment
+    pyflag = isPyReady();
+
+    if pyflag == true
+        data = pyOpen3DVolume_reg(file, tspan);
+    else
+        % transform tspan to sspan
+        if opts.dimOrder(end) == "T"
+            sspan = [(tspan(1)-1)*opts.slices*opts.channels+1, ...
+                      tspan(2)*opts.slices*opts.channels];
+            data = bfopen_reg(file, sspan);
+        end
+    end
+
+    % reconstruct the image stack
+    tmpopts = opts;
+    tmpopts.frames = diff(tspan)+1;
+    data = imreshape(data, tmpopts);
+end
+
+end
+
+function mov = pyOpen3DVolume_reg(file, tspan)
+% check the python environment path
+if count(py.sys.path,'/extern/ImageIO/TIFFRW/load_tiff.py') == 0
+    insert(py.sys.path,int32(0), ...
+        '/extern/ImageIO/TIFFRW/load_tiff.py');
+end
+fname = py.str(file);
+
+try
+    % imagej stack: 'TZCYXS'
+    mov = pyrunfile("load_tiff.py", "vol", file=fname, ts=tspan);
+catch ME
+    throwAsCaller(ME);
+end
+% convert img from ndarray to matlab value
+mov = cast(mov.astype('single'), dataType);
+if ndims(mov) == 3
+    mov = permute(mov, [2,3,1]);   % to (Y,X,Z)
+elseif ndims(mov) == 4
+    mov = permute(mov, [3,4,2,1]); % to (Y,X,Z,T)
+elseif ndims(mov) == 5
+    mov = permute(mov, [4,5,3,2,1]); % to (Y,X,C,Z,T)
+else
+    throw(MException("imload:invalidImagesStackDimension", ...
+        "Image stack dimension > 5 is not supported."));
+end
+end
+
+function cOrder = getChannelOrder(info)
+cc = info.getChannelCount(0);
+C = zeros(cc,4,'uint8');
+for k = 0:cc-1
+    cinfo = info.getChannelColor(0,k);
+    % some format there is no color channel information such as
+    % tiff file exported from fiji
+    if isempty(cinfo)
+        disp("The channel order not found. Manual inputs are required.");
+        cn = info.getPixelsSizeC(0).getValue(); % color channels number
+        cdlgtitle = 'Camera color channel setting';
+        cdims = [1 40];
+        switch cn
+            case 1
+                cprompt = {'Enter the channel color(r/g/b):'};
+                cdefinput = {'g'};
+            case 2
+                cprompt = {'Enter the channel-1 color(r/g/b):',...
+                    'Enter the channel-2 color(r/g/b):'};
+                cdefinput = {'r','g'};
+            otherwise
+                error("Unsupported Color Channel.");
+        end
+        cdlgout = inputdlg(cprompt,cdlgtitle,cdims,cdefinput);
+        if isempty(cdlgout) || numel(cdlgout) ~= cn
+            cdlgout = cdefinput;
+        end
+        cOrder = reshape(string(cdlgout),1,[]);
+
+        return;
+    end
+    C(k+1,:) = [cinfo.getRed(),cinfo.getGreen(),cinfo.getBlue(),...
+        cinfo.getAlpha()];
+end
+C_na = C(:,1:3);  % cut the color map without alpha channel
+% select the maximum value to represent the channel
+[~,order] = max(C_na,[],2);
+cOrder = ["r","g","b"];
+cOrder = cOrder(order);
+end
+
+function rt = getRelativeTime(bf_reader, frames)
+% get packaged meta data
+global_meta_data = bf_reader.getGlobalMetadata();
+
+% get delta time relative to world time
+if ~isempty(global_meta_data.get("AcquisitionStart")) ...
+        && ~isempty(global_meta_data.get("RecordingDate"))
+    dt = seconds(diff([datetime(global_meta_data.get("AcquisitionStart")),...
+        datetime(global_meta_data.get("RecordingDate"))]));
+else
+    warning("The acquire time not found. Frame Indices replaced.");
+    rt = [];
+    return;
+end
+
+if isa(global_meta_data,'java.util.Hashtable')
+    keys = global_meta_data.keys();
+    n = 1;
+    t = [];
+    while keys.hasMoreElements()
+        tp_name = ['TimePoint',num2str(n)];
+        if global_meta_data.containsKey(tp_name)
+            t = [t,datetime(global_meta_data.get(tp_name))]; %#ok<AGROW>
+            n = n + 1;
+        end
+        keys.nextElement();    % inner iterator increase
+    end
+else
+    error('invalid input format');
+end
+
+% datetime array t, change it to seconds
+rt = [0,cumsum(seconds(diff(t)))]';
+rt(frames+1:end) = [];
+if frames > 1
+    rt(1) = (rt(end)-rt(2))/(frames - 2 + eps);   % average estimation
+    rt = rt + dt;
+end
+
+% control the precision: ms
+rt = round(rt, 3);
+end
+
+function mov = imreshape(mov, opts)
+bindingArray = ["Y",    "X",    "C",    "Z",    "T";...
+    "width","height","channels","slices","frames"];
+[~,Loc] = ismember(opts.dimOrder,bindingArray(1,:));
+mov = reshape(mov,...
+    opts.(bindingArray(2,Loc(1))),...
+    opts.(bindingArray(2,Loc(2))),...
+    opts.(bindingArray(2,Loc(3))),...
+    opts.(bindingArray(2,Loc(4))),...
+    opts.(bindingArray(2,Loc(5))));
+end

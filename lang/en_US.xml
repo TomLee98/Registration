@@ -396,6 +396,6 @@
     <EXPORT_MASK_SUCCESS>Mask and area attributes exported successfully.</EXPORT_MASK_SUCCESS>
     <MULTI_CONNECTION>Multi-connected regions are found, and the largest singly connected subset has been selected</MULTI_CONNECTION>
     <EXCLUSIVE_WARNING>You are currently running in server mode. Exclusive mode may cause MATLAB to crash. Continue?</EXCLUSIVE_WARNING>
-    <LOW_MEMPRY_WARNING>The available memory is too small and the exclusive mode cannot be enabled.</LOW_MEMPRY_WARNING>
+    <LOW_MEMORY_WARNING>The available memory is too small and the exclusive mode cannot be enabled.</LOW_MEMORY_WARNING>
     <DEVELOPING>Developing…</DEVELOPING>
 </struct>

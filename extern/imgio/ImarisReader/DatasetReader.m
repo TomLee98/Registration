@@ -187,7 +187,7 @@ classdef DatasetReader < matlab.mixin.SetGet & dynamicprops
             H5G.close(obj.GID)
         end % delete
         
-        function data = GetData(obj, waitbar_flag)
+        function data = GetData(obj, tspan)
             % GetData Returns the entire dataset as a 5D array
             %
             %   data = obj.GetData returns a 5D array containing all the
@@ -195,112 +195,73 @@ classdef DatasetReader < matlab.mixin.SetGet & dynamicprops
             %   to the xyzct dimensions of the dataset.
 
             arguments
-                obj (1,1) DatasetReader;
-                waitbar_flag (1,1) logical = true;
+                obj     (1,1) DatasetReader
+                tspan   (1,:) double = []
             end
 
             %% Allocate the volume.
+            if isempty(tspan)
+                tspan = [1, obj.SizeT];
+            else
+                if numel(tspan) ~= 2 || tspan(2)<=tspan(1) || ...
+                        any(~isPositiveIntegerValuedNumeric(tspan))
+                    throw(MException("DatasetReader:GetData:invalidTimeSpan", ...
+                        "Time Span must be empty or 1-by-2 increasing positive integer array."));
+                end
+            end
+            size_t = diff(tspan)+1;
             switch obj.DataType
                 
                 case {'eTypeUInt8', 'uint8'}
                     data = zeros(...
-                        obj.SizeY, obj.SizeX, obj.SizeZ, obj.SizeC, obj.SizeT, 'uint8');
+                        obj.SizeY, obj.SizeX, obj.SizeZ, obj.SizeC, size_t, 'uint8');
                     
                 case {'eTypeUInt16', 'uint16'}
                     data = zeros(...
-                        obj.SizeY, obj.SizeX, obj.SizeZ, obj.SizeC, obj.SizeT, 'uint16');
+                        obj.SizeY, obj.SizeX, obj.SizeZ, obj.SizeC, size_t, 'uint16');
                     
                 otherwise
                     data = zeros(...
-                        obj.SizeY, obj.SizeX, obj.SizeZ, obj.SizeC, obj.SizeT, 'single');
+                        obj.SizeY, obj.SizeX, obj.SizeZ, obj.SizeC, size_t, 'single');
                     
             end % switch
             
             %% Read the data in all the channel groups inside all the time point groups.
             tmp_vol = zeros([obj.SizeX, obj.SizeY, obj.SizeZ],"like",data);
 
-            if waitbar_flag == true
-                num_vols = obj.SizeC * obj.SizeT;
-                bar = waitbar(0,"Start reading data...");
+            for c = 1:obj.SizeC
+                for t = 1:size_t
+                    %% Construct the path to the dataset location.
+                    groupLocation = ['ResolutionLevel 0/TimePoint ' num2str(t - 1 + tspan(1))  ...
+                        '/Channel ' num2str(c - 1)];
+                    groupID = H5G.open(obj.GID, groupLocation);
+                    DID = H5D.open(groupID, 'Data');
 
-                for c = 1:obj.SizeC
-                    for t = 1:obj.SizeT
-                        %% Construct the path to the dataset location.
-                        groupLocation = ['ResolutionLevel 0/TimePoint ' num2str(t - 1)  ...
-                            '/Channel ' num2str(c - 1)];
-                        groupID = H5G.open(obj.GID, groupLocation);
-                        DID = H5D.open(groupID, 'Data');
+                    %% Construct the hyper slab to read.
+                    slab = [obj.SizeY, obj.SizeX];
+                    offset = [0, 0, 0];
+                    block = [1, obj.SizeY, obj.SizeX];
+                    MSID = H5S.create_simple(2, slab, []);
+                    FSID = H5D.get_space(DID);
+                    H5S.select_hyperslab(FSID,'H5S_SELECT_SET', offset, [], [], block);
 
-                        %% Construct the hyper slab to read.
-                        slab = [obj.SizeY, obj.SizeX];
-                        offset = [0, 0, 0];
-                        block = [1, obj.SizeY, obj.SizeX];
-                        MSID = H5S.create_simple(2, slab, []);
-                        FSID = H5D.get_space(DID);
-                        H5S.select_hyperslab(FSID,'H5S_SELECT_SET', offset, [], [], block);
+                    %% Read the data slices into the array.
+                    for z = 1:obj.SizeZ
+                        tmp_vol(:,:,z) = H5D.read(DID,'H5ML_DEFAULT', MSID, FSID, 'H5P_DEFAULT');
+                        H5S.select_hyperslab(FSID,'H5S_SELECT_SET', [z 0 0], [], [], block);
+                        % H5S.offset_simple(fileSpaceID, [1 0 0])
+                    end % for z
 
-                        %% Read the data slices into the array.
-                        for z = 1:obj.SizeZ
-                            tmp_vol(:,:,z) = H5D.read(DID,'H5ML_DEFAULT', MSID, FSID, 'H5P_DEFAULT');
-                            H5S.select_hyperslab(FSID,'H5S_SELECT_SET', [z 0 0], [], [], block);
-                            % H5S.offset_simple(fileSpaceID, [1 0 0])
-                        end % for z
+                    % rotate image as capture format
+                    data(:,:,:,c,t) = rot90(tmp_vol);
 
-                        % rotate image as capture format
-                        data(:,:,:,c,t) = rot90(tmp_vol);
-
-                        vol_k = t + (c-1)*obj.SizeT;
-                        switch mod(vol_k, 5)
-                            case 1
-                                procs = vol_k/num_vols;
-                                waitbar(procs,bar,['loading process: ',num2str(100*procs,'%.1f'),' %']);
-                            otherwise
-                        end
-
-                        %% Close the HDF5 objects.
-                        H5S.close(MSID)
-                        H5S.close(FSID)
-                        H5D.close(DID)
-                        H5G.close(groupID)
-                    end % for t
-                end % for c
-
-                close(bar);
-            else
-                for c = 1:obj.SizeC
-                    for t = 1:obj.SizeT
-                        %% Construct the path to the dataset location.
-                        groupLocation = ['ResolutionLevel 0/TimePoint ' num2str(t - 1)  ...
-                            '/Channel ' num2str(c - 1)];
-                        groupID = H5G.open(obj.GID, groupLocation);
-                        DID = H5D.open(groupID, 'Data');
-
-                        %% Construct the hyper slab to read.
-                        slab = [obj.SizeY, obj.SizeX];
-                        offset = [0, 0, 0];
-                        block = [1, obj.SizeY, obj.SizeX];
-                        MSID = H5S.create_simple(2, slab, []);
-                        FSID = H5D.get_space(DID);
-                        H5S.select_hyperslab(FSID,'H5S_SELECT_SET', offset, [], [], block);
-
-                        %% Read the data slices into the array.
-                        for z = 1:obj.SizeZ
-                            tmp_vol(:,:,z) = H5D.read(DID,'H5ML_DEFAULT', MSID, FSID, 'H5P_DEFAULT');
-                            H5S.select_hyperslab(FSID,'H5S_SELECT_SET', [z 0 0], [], [], block);
-                            % H5S.offset_simple(fileSpaceID, [1 0 0])
-                        end % for z
-
-                        % rotate image as capture format
-                        data(:,:,:,c,t) = rot90(tmp_vol);
-
-                        %% Close the HDF5 objects.
-                        H5S.close(MSID)
-                        H5S.close(FSID)
-                        H5D.close(DID)
-                        H5G.close(groupID)
-                    end % for t
-                end % for c
-            end
+                    %% Close the HDF5 objects.
+                    H5S.close(MSID)
+                    H5S.close(FSID)
+                    H5D.close(DID)
+                    H5G.close(groupID)
+                end % for t
+            end % for c
         end % GetData
 
         function slice = GetDataSlice(obj, zIdx, cIdx, tIdx)

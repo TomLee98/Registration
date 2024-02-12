@@ -1,4 +1,4 @@
-function volume = bfopen_reg(filename, wbar_flag)
+function volume = bfopen_reg(filename, sspan)
 %BFOPEN_REG This function read the image file and load the first series to
 %memory
 % Input:
@@ -63,37 +63,23 @@ info = r.getMetadataStore();
 
 width = info.getPixelsSizeX(0).getValue();
 height = info.getPixelsSizeY(0).getValue();
+
 pixelType = r.getPixelType();
 bpp = javaMethod('getBytesPerPixel', 'loci.formats.FormatTools', ...
     pixelType);
-numImages = r.getImageCount();
+
+if isempty(sspan)
+    numImages = r.getImageCount();
+else
+    numImages = diff(sspan) + 1;
+end
 
 volume = zeros(height, width, numImages, "uint"+string(8*bpp));
 
-fprintf('Reading series #%d\n', 1);
+r.setSeries(0);
 
-if wbar_flag == true
-    bar = waitbar(0,"Start reading data...");
-  
-    r.setSeries(0);
-
-    for slice_k = 1:numImages
-        volume(:,:,slice_k) = bfGetPlane(r, slice_k);
-        switch mod(slice_k, 100)
-            case 1
-                procs = slice_k/numImages;
-                waitbar(procs,bar,['loading process: ',num2str(100*procs,'%.1f'),' %']);
-            otherwise
-        end
-    end
-
-    close(bar);
-else
-    r.setSeries(0);
-
-    for slice_k = 1:numImages
-        volume(:,:,slice_k) = bfGetPlane(r, slice_k);
-    end
+for slice_k = 1:numImages
+    volume(:,:,slice_k) = bfGetPlane(r, slice_k - 1 + sspan(1));
 end
 
 r.close();
