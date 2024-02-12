@@ -83,7 +83,7 @@ classdef ImageLoader < handle
 
             [~, ~, ext] = fileparts(this.srcfile);
             % import the data loader setting
-            rf = importdata("ImageLoader\configuration.ini");
+            rf = importdata("ImageIO\ImageLoader\configuration.ini");
             rf = string(rf).split(":");
             if ~ismember(upper(ext), rf(:,1))
                 throw(MException("ImageLoader:invalidImageLoadingFunc", ...
