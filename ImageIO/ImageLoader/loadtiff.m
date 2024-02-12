@@ -125,9 +125,9 @@ end
 
 function mov = pyOpen3DVolume_reg(file, tspan)
 % check the python environment path
-if count(py.sys.path,'/extern/ImageIO/TIFFRW/load_tiff.py') == 0
+if count(py.sys.path,'/ImageIO/ImageLoader/load_tiff.py') == 0
     insert(py.sys.path,int32(0), ...
-        '/extern/ImageIO/TIFFRW/load_tiff.py');
+        '/ImageIO/ImageLoader/load_tiff.py');
 end
 fname = py.str(file);
 
