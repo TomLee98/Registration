@@ -100,7 +100,15 @@ classdef ImageReader < handle
 
             this.folder = mpimg.findtmpfolder(this.metadata, 0);
 
-            this.caller.SetProgressBar(0);
+            switch upper(ext)
+                case ".TIF"
+                    if(isPyReady())
+                        block = 1;
+                        this.caller.SetProgressBar(0, true);
+                    end
+                otherwise
+                    this.caller.SetProgressBar(0);
+            end
 
             % get data piecewiselly
             n_piece = ceil(this.metadata.frames/block);

@@ -165,13 +165,14 @@ V2.0        Wukong              孙悟空
   |-V2.0.0      2024/02/
   |     |- [Update] new framework: Wukong kernel for the modern app
   |     |- [Update] new powerful task manager introduced
-  |     |- [Update] TODO:new powerful distributed file system
+  |     |- [Update] new powerful distributed file systeM
   |     |- [Update] new registration setting subpanel
   |     |- [Update] new two channels global registration method introduced
   |     |- [Update] TODO:new two channels local registration method introduced
   |     |- [Update] TODO:new two channels manually global registration method introduced
   |     |- [Update] remove nearest interpolation in registration
   |     |- [Update] remove "similarity" two changels registration mode
+  |     |- [Update] remove tifffile(python) support for compatibility
   |     |- [Update] optimize app user update operation
   |     |- [Update] add mouse roller z slice controlling
   |     |- [Update] new progress bar on main panel

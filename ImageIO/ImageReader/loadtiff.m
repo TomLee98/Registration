@@ -105,7 +105,7 @@ if nargout == 2
     pyflag = isPyReady();
 
     if pyflag == true
-        data = pyopen_reg(file, tspan);
+        data = pyopen_reg(file);
     else
         % transform tspan to sspan
         if opts.dimOrder(end) == "T"
@@ -123,17 +123,17 @@ end
 
 end
 
-function mov = pyopen_reg(file, tspan)
+function mov = pyopen_reg(file)
 % check the python environment path
-if count(py.sys.path,'/ImageIO/ImageLoader/load_tiff.py') == 0
+if count(py.sys.path,'/ImageIO/ImageReader/load_tiff.py') == 0
     insert(py.sys.path,int32(0), ...
-        '/ImageIO/ImageLoader/load_tiff.py');
+        '/ImageIO/ImageReader/load_tiff.py');
 end
 fname = py.str(file);
 
 try
     % imagej stack: 'TZCYXS'
-    mov = pyrunfile("load_tiff.py", "vol", file=fname, ts=tspan);
+    mov = pyrunfile("load_tiff.py", "vol", file=fname);
 catch ME
     throwAsCaller(ME);
 end
