@@ -181,6 +181,7 @@ V2.0        Wukong              孙悟空
   |     |- [Fix Bugs] fix the registration frames number lost synchronize bug
   |     |- [Fix Bugs] fix one channel registration(manual) output
   |     |- [Fix Bugs] fix mode 'affine' can not run
+  |     |- [Fix Bugs] fix mouse cursor out of boundary at some situation
   |- V2.0.1     2024/
   |     |- [Update] TODO: registration history manager
   |     |- [Update] TODO: long-term registration setting panel redesign

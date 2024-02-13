@@ -20,8 +20,8 @@ arguments
 end
 
 % convert coordinate to pixel size
-W_pix = ceil(R(2,1)/rdx)-fix(R(1,1)/rdx);
-H_pix = ceil(R(2,2)/rdy)-fix(R(1,2)/rdy);
+W_pix = max(ceil(R(2,1)/rdx)-fix(R(1,1)/rdx),1);
+H_pix = max(ceil(R(2,2)/rdy)-fix(R(1,2)/rdy),1);
 R_pix = [fix(R(1,1)/rdx)+1,fix(R(1,2)/rdy)+1;...
     ceil(R(2,1)/rdx),ceil(R(2,2)/rdy)];
 end

@@ -46,9 +46,10 @@ end
 
 end
 
-function status = tcreg_global_cpu(movsrc, movdst, refvol, regfrs, regopt)
+% ======================== GLOBAL ALGORITHM ===========================
 % This function use fast robust coarse registration pipeline
 % for global motion estimation
+function status = tcreg_global_cpu(movsrc, movdst, refvol, regfrs, regopt)
 
 TF = cell(numel(regfrs), 1);
 fmode = ["none", string(regfrs).join(",")];
@@ -98,14 +99,13 @@ parfor m = 1:numel(regfrs)
         % ptf: pre-transformation as affine3d object
         [ptf, ~] = imregopzr(avol_sc_m_ds, refvol_ds, res_ds, tf_type, ...
             max_itern_z, zopt_tol);
-        fival_sc = mean(avol_sc_m(:,[1,end],:),"all");
     else
         % call imregmoment for estimation
         % ptf: pre-transformation as affinetform3d object
         [ptf, ~] = imregmoment(avol_sc_m_ds, rref_ds, refvol_ds, rref_ds, ...
             "MedianThresholdBitmap",true);  % medianthreshold for more robust
-        fival_sc = mean(avol_sc_m(:,[1,end],:),"all");
     end
+    fival_sc = mean(avol_sc_m(:,[1,end],:),"all");
     fival_fc =  mean(avol_fc_m(:,[1,end],:),"all");
 
     % set up the registration optimizer options
@@ -146,12 +146,149 @@ movdst.Transformation(regfrs, 1) = TF;
 
 status = 0;
 end
+%======================================================================
 
+%======================= LOCAL ALGORITHM (CPU)=========================
+% This function use fast robust coarse registration pipeline
+% for local motion estimation by using cpu
 function status = tcreg_local_cpu(movsrc, movdst, refvol, regfrs, regopt)
-status = 0;
+
+TF = cell(numel(regfrs), 1);
+fmode = ["none", string(regfrs).join(",")];
+
+% 1. extract the reference volume
+[refvol_ds, ~] = ReSample(refvol, 1/4);
+
+% 2. extract functional and structured channel data
+avol_sc = grv(movsrc, fmode, regopt.SC);
+avol_fc = grv(movsrc, fmode, regopt.FC);
+
+% extract local variables instead of struct spread
+subalg = regopt.SubAlgorithm;
+max_itern = regopt.MaxIterN;
+afs = regopt.AFS;
+gr = regopt.GR;
+gs = regopt.GS;
+vpl = regopt.VPL;
+pr = [movsrc.MetaData.xRes, movsrc.MetaData.yRes, movsrc.MetaData.zRes]*1e-3;
+itpalg = regopt.Interp;
+img_rehist = regopt.ImageRehist;
+repacc = regopt.RepAcc;
+
+parfor m = 1:numel(regfrs)
+    % downsampling  on selected volume
+    avol_sc_m = avol_sc(:,:,:,m);
+    avol_fc_m = avol_fc(:,:,:,m);
+
+    if img_rehist == true
+        avol_sc_m = imhistmatchn(avol_sc_m, refvol_ds, repacc);
+    end
+
+    if subalg == "usual"
+        % parameters: GR, GL, VPL are useful
+        [df, ~] = imregdeform(avol_sc_m, refvol, "GridSpacing",gs, ...
+            "GridRegularization",gr,"NumPyramidLevels",vpl, ...
+            "PixelResolution",pr,"DisplayProgress",false);
+    elseif subalg == "advanced"
+        [df, ~] = imregdemons(avol_fc_m, refvol,...
+        max_itern, "AccumulatedFieldSmoothing", afs,...
+        "PyramidLevels", vpl, "DisplayWaitbar",false);
+    else
+        %
+    end
+    fival_sc = mean(avol_sc_m(:,[1,end],:),"all");
+    fival_fc =  mean(avol_fc_m(:,[1,end],:),"all");
+
+    % imwarp the displacement field
+    % replace avol_sc_m
+    avol_sc_m = imwarp(avol_sc(:,:,:,m), df, itpalg, "FillValues",fival_sc);
+    avol_fc_m = imwarp(avol_fc(:,:,:,m), df, itpalg, "FillValues",fival_fc);
+
+    avol_sc(:,:,:,m) = avol_sc_m;
+    avol_fc(:,:,:,m) = avol_fc_m;
+    TF{m} = tf;
 end
 
+% set the movdst
+srv(movdst, avol_sc, fmode, regopt.SC);
+srv(movdst, avol_fc, fmode, regopt.FC);
+movdst.Transformation(regfrs, 2) = TF;
+
+status = 0;
+end
+%=======================================================================
+
+%======================= LOCAL ALGORITHM (GPU)=========================
+% This function use fast robust coarse registration pipeline
+% for global motion estimation by using gpu
 function status = tcreg_local_gpu(movsrc, movdst, refvol, regfrs, regopt)
+TF = cell(numel(regfrs), 1);
+fmode = ["none", string(regfrs).join(",")];
+
+% 1. extract the reference volume
+[refvol_ds, ~] = ReSample(refvol, 1/4);
+
+% 2. extract functional and structured channel data
+avol_sc = grv(movsrc, fmode, regopt.SC);
+avol_fc = grv(movsrc, fmode, regopt.FC);
+
+% extract local variables instead of struct spread
+subalg = regopt.SubAlgorithm;
+max_itern = regopt.MaxIterN;
+afs = regopt.AFS;
+gr = regopt.GR;
+gs = regopt.GS;
+vpl = regopt.VPL;
+pr = [movsrc.MetaData.xRes, movsrc.MetaData.yRes, movsrc.MetaData.zRes]*1e-3;
+itpalg = regopt.Interp;
+img_rehist = regopt.ImageRehist;
+repacc = regopt.RepAcc;
+
+parfor m = 1:numel(regfrs)
+    % downsampling  on selected volume
+    avol_sc_m = avol_sc(:,:,:,m);
+    avol_fc_m = avol_fc(:,:,:,m);
+
+    if img_rehist == true
+        avol_sc_m = imhistmatchn(avol_sc_m, refvol_ds, repacc);
+    end
+
+    if subalg == "usual"
+        % imregdeform only supports cpu calculation
+        % parameters: GR, GL, VPL are useful
+        [df, ~] = imregdeform(avol_sc_m, refvol, "GridSpacing",gs, ...
+            "GridRegularization",gr,"NumPyramidLevels",vpl, ...
+            "PixelResolution",pr,"DisplayProgress",false);
+    elseif subalg == "advanced"
+        % spread memory variable to GPU memory
+        refvol_ga = gpuArray(refvol);
+        avol_sc_m_ga = gpuArray(avol_sc_m);
+
+        [df_ga, ~] = imregdemons(avol_sc_m_ga, refvol_ga,...
+        max_itern, "AccumulatedFieldSmoothing", afs,...
+        "PyramidLevels", vpl, "DisplayWaitbar",false);
+        df = gather(df_ga);
+    else
+        %
+    end
+    fival_sc = mean(avol_sc_m(:,[1,end],:),"all");
+    fival_fc =  mean(avol_fc_m(:,[1,end],:),"all");
+
+    % imwarp the displacement field
+    % replace avol_sc_m, cpu running
+    avol_sc_m = imwarp(avol_sc(:,:,:,m), df, itpalg, "FillValues",fival_sc);
+    avol_fc_m = imwarp(avol_fc(:,:,:,m), df, itpalg, "FillValues",fival_fc);
+
+    avol_sc(:,:,:,m) = avol_sc_m;
+    avol_fc(:,:,:,m) = avol_fc_m;
+    TF{m} = tf;
+end
+
+% set the movdst
+srv(movdst, avol_sc, fmode, regopt.SC);
+srv(movdst, avol_fc, fmode, regopt.FC);
+movdst.Transformation(regfrs, 2) = TF;
+
 status = 0;
 end
 
@@ -290,7 +427,7 @@ switch A.Mode
             "DS", "SC", "FC", "Hardware"];
     case "local"
         VALID_FIELD = ["Mode", "SubAlgorithm", "MaxIterN", "AFS",  "GR", "GS", "VPL", "Interp", ...
-            "AutoContrast", "RepAcc", "SC", "FC", "Hardware"];
+            "ImageRehist", "RepAcc", "SC", "FC", "Hardware"];
     otherwise
 end
 

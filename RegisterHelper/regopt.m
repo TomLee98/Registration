@@ -34,7 +34,7 @@ classdef regopt
         grid_unit       (1,1) string {mustBeMember(grid_unit, ["auto","1 1 1","2 2 1","3 3 1","4 4 1"])} = "auto"
 
         % ================ two channels unique properties ================
-        autoctrst       (1,1) logical = false
+        img_rehist      (1,1) logical = false
         repacc          (1,1) double {mustBeMember(repacc, [2048, 4096, 8192])} = 2048
         grid_regulation (1,1) double {mustBeInRange(grid_regulation, 0, 5)} = 0.11
         grid_spacing    (1,3) double {mustBePositive} = [4,4,4]
@@ -189,7 +189,7 @@ classdef regopt
                             addParameter(p, 'MaxIterN',     this.lo_itn_max);
                             addParameter(p, 'AFS',          this.afs);
                             addParameter(p, 'Interp',       this.lo_interp);
-                            addParameter(p, 'AutoContrast', this.autoctrst);
+                            addParameter(p, 'ImageRehist',  this.img_rehist);
                             addParameter(p, 'RepAcc',       this.repacc);
                             addParameter(p, 'GR',           this.grid_regulation);
                             addParameter(p, 'GS',           this.grid_spacing);
@@ -289,7 +289,7 @@ classdef regopt
                                        "GS",            this.grid_spacing, ...
                                        "VPL",           this.vpl, ...
                                        "Interp",        this.lo_interp, ...
-                                       "AutoContrast",  this.autoctrst, ...
+                                       "ImageRehist",   this.img_rehist, ...
                                        "RepAcc",        this.repacc, ...
                                        "SC",            this.strc_chl, ...
                                        "FC",            this.func_chl, ...
@@ -383,7 +383,7 @@ classdef regopt
                             this.grid_spacing = r_.GS;
                             this.vpl = r_.VPL;
                             this.lo_interp = r_.Interp;
-                            this.autoctrst = r_.AutoContrast;
+                            this.img_rehist = r_.ImageRehist;
                             this.repacc = r_.RepAcc;
                             this.strc_chl = r_.SC;
                             this.func_chl = r_.FC;

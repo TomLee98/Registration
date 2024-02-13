@@ -225,7 +225,7 @@ classdef TaskManager < handle
                         && (this.rcfobj.Status == "Await")
                     % if pool is empty and Status is "Await", 
                     % generate the first rcf, exclusive
-                    this.rcfobj.NWorkersMax = this.PSMWN - this.nw_protected;
+                    this.rcfobj.NWorkersMax = max(this.PSMWN - this.nw_protected, 0);
                     this.rcfobj.NWorkers = this.rcfobj.NWorkersMax;
 
                     % require from rcf pool
