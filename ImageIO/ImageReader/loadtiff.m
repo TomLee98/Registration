@@ -105,7 +105,7 @@ if nargout == 2
     pyflag = isPyReady();
 
     if pyflag == true
-        data = pyOpen3DVolume_reg(file, tspan);
+        data = pyopen_reg(file, tspan);
     else
         % transform tspan to sspan
         if opts.dimOrder(end) == "T"
@@ -123,7 +123,7 @@ end
 
 end
 
-function mov = pyOpen3DVolume_reg(file, tspan)
+function mov = pyopen_reg(file, tspan)
 % check the python environment path
 if count(py.sys.path,'/ImageIO/ImageLoader/load_tiff.py') == 0
     insert(py.sys.path,int32(0), ...

@@ -186,5 +186,6 @@ V2.0        Wukong              孙悟空
   |     |- [Fix Bugs]
   |- V2.0.2     2024/
   |     |- [Update] TODO: memory mapping low level optimal(mpimgs class design)
+  |     |- [Update] TODO: new movie exporter object for better movie export operation
   |     |- [Fix Bugs] TODO: fix long-term registration out of memory when key frames is too much
   |     |- [Fix Bugs] TODO: cropped nd2 files with bad properties

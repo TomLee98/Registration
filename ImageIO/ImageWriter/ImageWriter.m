@@ -1,6 +1,6 @@
-classdef ImageWriter
-    %IMAGEWRITER 此处显示有关此类的摘要
-    %   此处显示详细说明
+classdef ImageWriter < handle
+    %IMAGEWRITER This class is an image writer defination, which  support
+    %mutiple image format writting
     
     properties
         Property1

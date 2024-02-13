@@ -1,4 +1,4 @@
-classdef ImageLoader < handle
+classdef ImageReader < handle
     %IMAGELOADER This class for easy data loading, which hides the low
     %level readers working, as an adapter between files reader and regmov
     %class
@@ -27,7 +27,7 @@ classdef ImageLoader < handle
     end
                                                     
     methods
-        function this = ImageLoader(caller_, mapflag_)
+        function this = ImageReader(caller_, mapflag_)
             %IMAGELOADER A Constructor
             arguments
                 caller_     (1,1)   Register
@@ -83,7 +83,7 @@ classdef ImageLoader < handle
 
             [~, ~, ext] = fileparts(this.srcfile);
             % import the data loader setting
-            rf = importdata("ImageIO\ImageLoader\configuration.ini");
+            rf = importdata("ImageIO\ImageReader\configuration.ini");
             rf = string(rf).split(":");
             if ~ismember(upper(ext), rf(:,1))
                 throw(MException("ImageLoader:invalidImageLoadingFunc", ...

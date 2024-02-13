@@ -242,7 +242,7 @@ classdef regmov < matlab.mixin.Copyable
                     "Number of color channels not match."));
             end
 
-            this.Background = r_;
+            this.bkg = r_;
         end
 
     end
