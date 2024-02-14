@@ -23,7 +23,8 @@ classdef RegisterController < handle
         caller              % caller, must be Register object
         taskmgr             % TaskManager object
         regworker           % RegisterWorker object
-        state               % 1-by-1 OnOffSwitchState enum, can be "on" or "off" 
+        state               % 1-by-1 OnOffSwitchState enum, can be "on" or "off"
+        runtime             % 1-by-1 double, correction time used, seconds
     end
 
     properties(SetAccess=public, GetAccess=private, Dependent)
@@ -34,6 +35,7 @@ classdef RegisterController < handle
 
     properties(GetAccess=public, Dependent)
         State               % variable, get
+        RunTime             % variable, get
     end
 
     methods
@@ -100,6 +102,10 @@ classdef RegisterController < handle
             r = this.state;
         end
 
+        function r = get.RunTime(this)
+            r = round(this.runtime, 1);
+        end
+
         function status = run(this, movraw_, movaligned_, movtmpl_, regfr_)
             % This function is the controller of registration
             arguments
@@ -120,6 +126,7 @@ classdef RegisterController < handle
 
             % turn on engine
             this.state = this.WORKER_STATE(2);
+            tic;
 
             task = this.taskmgr.Task;
             while ~isempty(task)
@@ -131,6 +138,8 @@ classdef RegisterController < handle
                 task = this.taskmgr.Task;
                 drawnow
             end
+
+            this.runtime = toc;
 
             % clear objects
             delete(this.taskmgr);
@@ -144,6 +153,17 @@ classdef RegisterController < handle
                 % change to off state
                 this.state = this.WORKER_STATE(1);
             end
+
+            % send the complete message
+            switch this.regopts.Algorithm
+                case "MANREG"
+                    this.caller.SendMessage(["REGISTRATION_FRAMES", ...
+                        sprintf(" %.1f", movraw_.Time(regfr_))]);
+                otherwise
+                    this.caller.SendMessage(["REGISTRATION_COMPLETE",""]);
+                    this.caller.SendMessage(["TIME_COST", sprintf(" %.1f", this.RunTime)]);
+            end
+            
         end
 
         function status = stop(this)

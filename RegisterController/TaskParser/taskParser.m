@@ -15,6 +15,7 @@ classdef taskParser < handle
         regopt
         nworker
         distrib
+        pfunc
     end
     
     methods
@@ -35,9 +36,7 @@ classdef taskParser < handle
             this.regopt = regopt_;
             this.nworker = blocksz_;
             this.distrib = distrib_;
-        end
-        
-        function parse(this, br)
+
             %PARSE This function parse the task and generate task queue
             rf = importdata("RegisterController\TaskParser\configuration.ini");
             rf = string(rf).split(":");
@@ -46,8 +45,10 @@ classdef taskParser < handle
                         "Can not parse not registered algorithm."));
             end
 
-            pfunc = str2func(rf(this.regopt.Algorithm==rf(:,1), 2));
-
+            this.pfunc = str2func(rf(this.regopt.Algorithm==rf(:,1), 2));
+        end
+        
+        function parse(this, br)
             if this.distrib == false
                 % in exclusive mode, user can adjust the busy index
                 batch_sz = this.nworker*br;
@@ -58,15 +59,11 @@ classdef taskParser < handle
             end
             
 
-            this.Results = pfunc(this.movtmpl, ...
-                                 this.regfrs, ...
-                                 this.volopt, ...
-                                 this.regopt, ...
-                                 batch_sz);
+            this.Results = this.pfunc(this.movtmpl, ...
+                                      this.regfrs, ...
+                                      this.volopt, ...
+                                      this.regopt, ...
+                                      batch_sz);
         end
     end
-end
-
-function r = calc_exclusive_coeff()
-r = 5;
 end

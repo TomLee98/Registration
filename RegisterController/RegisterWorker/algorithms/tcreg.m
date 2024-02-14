@@ -153,7 +153,7 @@ end
 % for local motion estimation by using cpu
 function status = tcreg_local_cpu(movsrc, movdst, refvol, regfrs, regopt)
 
-TF = cell(numel(regfrs), 1);
+DF = cell(numel(regfrs), 1);
 fmode = ["none", string(regfrs).join(",")];
 
 % 1. extract the reference volume
@@ -164,13 +164,13 @@ avol_sc = grv(movsrc, fmode, regopt.SC);
 avol_fc = grv(movsrc, fmode, regopt.FC);
 
 % extract local variables instead of struct spread
+pr = [movsrc.MetaData.xRes, movsrc.MetaData.yRes, movsrc.MetaData.zRes];
 subalg = regopt.SubAlgorithm;
 max_itern = regopt.MaxIterN;
 afs = regopt.AFS;
 gr = regopt.GR;
 gs = regopt.GS;
 vpl = regopt.VPL;
-pr = [movsrc.MetaData.xRes, movsrc.MetaData.yRes, movsrc.MetaData.zRes]*1e-3;
 itpalg = regopt.Interp;
 img_rehist = regopt.ImageRehist;
 repacc = regopt.RepAcc;
@@ -206,13 +206,13 @@ parfor m = 1:numel(regfrs)
 
     avol_sc(:,:,:,m) = avol_sc_m;
     avol_fc(:,:,:,m) = avol_fc_m;
-    TF{m} = tf;
+    DF{m} = df;
 end
 
 % set the movdst
 srv(movdst, avol_sc, fmode, regopt.SC);
 srv(movdst, avol_fc, fmode, regopt.FC);
-movdst.Transformation(regfrs, 2) = TF;
+movdst.Transformation(regfrs, 2) = DF;
 
 status = 0;
 end
@@ -222,7 +222,7 @@ end
 % This function use fast robust coarse registration pipeline
 % for global motion estimation by using gpu
 function status = tcreg_local_gpu(movsrc, movdst, refvol, regfrs, regopt)
-TF = cell(numel(regfrs), 1);
+DF = cell(numel(regfrs), 1);
 fmode = ["none", string(regfrs).join(",")];
 
 % 1. extract the reference volume
@@ -233,18 +233,18 @@ avol_sc = grv(movsrc, fmode, regopt.SC);
 avol_fc = grv(movsrc, fmode, regopt.FC);
 
 % extract local variables instead of struct spread
+pr = [movsrc.MetaData.xRes, movsrc.MetaData.yRes, movsrc.MetaData.zRes];
 subalg = regopt.SubAlgorithm;
 max_itern = regopt.MaxIterN;
 afs = regopt.AFS;
 gr = regopt.GR;
 gs = regopt.GS;
 vpl = regopt.VPL;
-pr = [movsrc.MetaData.xRes, movsrc.MetaData.yRes, movsrc.MetaData.zRes]*1e-3;
 itpalg = regopt.Interp;
 img_rehist = regopt.ImageRehist;
 repacc = regopt.RepAcc;
 
-parfor m = 1:numel(regfrs)
+for m = 1:numel(regfrs)
     % downsampling  on selected volume
     avol_sc_m = avol_sc(:,:,:,m);
     avol_fc_m = avol_fc(:,:,:,m);
@@ -281,13 +281,13 @@ parfor m = 1:numel(regfrs)
 
     avol_sc(:,:,:,m) = avol_sc_m;
     avol_fc(:,:,:,m) = avol_fc_m;
-    TF{m} = tf;
+    DF{m} = df;
 end
 
 % set the movdst
 srv(movdst, avol_sc, fmode, regopt.SC);
 srv(movdst, avol_fc, fmode, regopt.FC);
-movdst.Transformation(regfrs, 2) = TF;
+movdst.Transformation(regfrs, 2) = DF;
 
 status = 0;
 end

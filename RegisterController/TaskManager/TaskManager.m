@@ -225,14 +225,14 @@ classdef TaskManager < handle
                         && (this.rcfobj.Status == "Await")
                     % if pool is empty and Status is "Await", 
                     % generate the first rcf, exclusive
-                    this.rcfobj.NWorkersMax = max(this.PSMWN - this.nw_protected, 0);
+                    % at least one worker
+                    this.rcfobj.NWorkersMax = max(this.PSMWN - this.nw_protected, 1);
                     this.rcfobj.NWorkers = this.rcfobj.NWorkersMax;
 
                     % require from rcf pool
                     this.rcfobj.update_resource("REQUIRE");
                     this.rcfobj.Status = "Run";
-                    this.nworker_cur = ...
-                            this.rcfobj.NWorkers - this.nw_protected;
+                    this.nworker_cur = this.rcfobj.NWorkers;
 
                     % write to rcf pool
                     this.rcfobj.write();
@@ -269,7 +269,7 @@ classdef TaskManager < handle
                             % try to recycle some resources
                             this.rcfobj.update_resource("RECYCLE");
                             this.nworker_cur = ...
-                                this.rcfobj.NWorkers - this.nw_protected;
+                                max(this.rcfobj.NWorkers-this.nw_protected, 1);
 
                             this.rcfobj.write();
                         end
@@ -281,7 +281,7 @@ classdef TaskManager < handle
             else
                 % exclusive mode
                 % sfolder must be [], do nothing except update nworkers_cur
-                this.nworker_cur = this.PSMWN - this.nw_protected;
+                this.nworker_cur = max(this.PSMWN-this.nw_protected, 1);
 
                 % update local rcf
                 this.rcfobj = regrcf(this.sfolder, this.volopts, this.regopts, this.regfrs);
@@ -347,9 +347,12 @@ classdef TaskManager < handle
                 % make sure your cpu supports 'hyper-threads' technology
                 % pcl.NumThreads = 2;
 
-                % debug_ need spmdEnabled is true for mpiprofile and
-                % mpiviewer working
-                this.parobj = parpool(pcl, [1, this.nworker_cur], 'SpmdEnabled',debug_);
+                if this.nworker_cur > 1
+                    % debug_ need spmdEnabled is true for mpiprofile and
+                    % mpiviewer working
+                    this.parobj = parpool(pcl, [1, this.nworker_cur], ...
+                        'SpmdEnabled',debug_);
+                end
 
                 % update workers number
                 this.nworker_old = this.nworker_cur;
@@ -359,18 +362,21 @@ classdef TaskManager < handle
 end
 
 function r = GetWorkersMaxN(regopt_)
-switch regopt_.Mode
-    case "global"
-        r = GetCPUWorkersMaxN([], []);
-    case "local"
-        switch regopt_.Options.Hardware
-            case "cpu"
-                r = GetCPUWorkersMaxN([], []);
-            case "cpu|gpu"
-                r = GetGPUWorkersMaxN();
-            otherwise
-        end
-    otherwise
+if regopt_.Algorithm == "MANREG"
+    r = 1;
+else
+    switch regopt_.Mode
+        case "global"
+            r = GetCPUWorkersMaxN([], []);
+        case "local"
+            switch regopt_.Options.Hardware
+                case "cpu"
+                    r = GetCPUWorkersMaxN([], []);
+                case "cpu|gpu"
+                    r = GetGPUWorkersMaxN();
+                otherwise
+            end
+        otherwise
+    end
 end
-
 end

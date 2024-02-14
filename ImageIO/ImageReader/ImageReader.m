@@ -107,6 +107,7 @@ classdef ImageReader < handle
                         this.caller.SetProgressBar(0, true);
                     end
                 otherwise
+                    block = min(ceil(this.metadata.frames/20), block);
                     this.caller.SetProgressBar(0);
             end
 

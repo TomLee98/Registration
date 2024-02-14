@@ -168,8 +168,8 @@ V2.0        Wukong              孙悟空
   |     |- [Update] new powerful distributed file systeM
   |     |- [Update] new registration setting subpanel
   |     |- [Update] new two channels global registration method introduced
-  |     |- [Update] TODO:new two channels local registration method introduced
-  |     |- [Update] TODO:new two channels manually global registration method introduced
+  |     |- [Update] new two channels local registration method introduced
+  |     |- [Update] new two channels manually global registration method introduced
   |     |- [Update] remove nearest interpolation in registration
   |     |- [Update] remove "similarity" two changels registration mode
   |     |- [Update] remove tifffile(python) support for compatibility
@@ -178,6 +178,8 @@ V2.0        Wukong              孙悟空
   |     |- [Update] new progress bar on main panel
   |     |- [Update] remove 'mix' mode when do normal registration
   |     |- [Update] registration is real time aborted/ real time stored
+  |     |- [Update] TODO: change merge channel to fixed-aligned (old: raw-aligned)
+  |     |- [Update] TODO: template defination auto update (after <CropT> operation)
   |     |- [Fix Bugs] fix the registration frames number lost synchronize bug
   |     |- [Fix Bugs] fix one channel registration(manual) output
   |     |- [Fix Bugs] fix mode 'affine' can not run

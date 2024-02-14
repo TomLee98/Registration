@@ -160,6 +160,7 @@
     <ADVANCED>Advanced</ADVANCED>
     <PREPROCESSING>Preprocessing</PREPROCESSING>
     <REGISTRATION_TEMPLATE>Registration Template</REGISTRATION_TEMPLATE>
+    <TEMPLATE_AUTO_UPDATE>Auto Update</TEMPLATE_AUTO_UPDATE>
     <SAMPLING>Sampling</SAMPLING>
     <RIGID>Rigid</RIGID>
     <AFFINE>Affine</AFFINE>
@@ -395,7 +396,7 @@
     <TOO_MUCH_ROI>There are too many ROIs, please redraw and try to add them.</TOO_MUCH_ROI>
     <EXPORT_MASK_SUCCESS>Mask and area attributes exported successfully.</EXPORT_MASK_SUCCESS>
     <MULTI_CONNECTION>Multi-connected regions are found, and the largest singly connected subset has been selected</MULTI_CONNECTION>
-    <EXCLUSIVE_WARNING>You are currently running in server mode. Exclusive mode may cause MATLAB to crash. Continue?</EXCLUSIVE_WARNING>
+    <EXCLUSIVE_WARNING>You are currently running in distributed mode. Exclusive mode may cause MATLAB to crash. Continue?</EXCLUSIVE_WARNING>
     <LOW_MEMORY_WARNING>The available memory is too small and the exclusive mode cannot be enabled.</LOW_MEMORY_WARNING>
     <DEVELOPING>Developing…</DEVELOPING>
 </struct>

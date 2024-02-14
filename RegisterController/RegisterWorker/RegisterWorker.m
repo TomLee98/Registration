@@ -43,7 +43,8 @@ classdef RegisterWorker < handle
                     status = ocreg(this.mov_raw, this.mov_aligned, movtmpl_, ...
                                     regfrs_, regopt_);
                 case "MANREG"
-
+                    status = manreg(this.mov_raw, this.mov_aligned, movtmpl_, ...
+                                    regfrs_, regopt_);
                 otherwise
                     throw(MException("RegisterWorker:unregisteredFunction", ...
                         "Unsupported registration algorithm."));
@@ -51,7 +52,7 @@ classdef RegisterWorker < handle
         end
 
         function delete(this)
-            
+            %
         end
     end
 end
