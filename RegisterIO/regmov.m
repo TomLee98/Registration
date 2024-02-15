@@ -125,11 +125,6 @@ classdef regmov < matlab.mixin.Copyable
         end
 
         function r = get.Time(this)
-            if numel(this.t) ~= this.mopt.frames
-                throw(MException("regmov:badTime", ...
-                    "Number of Timesteps not match."));
-            end
-
             r = this.t;
         end
 
