@@ -1,402 +1,402 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <struct>
-    <FILE>Files</FILE>
-    <LOAD_FILE>Load Files</LOAD_FILE>
-    <LOAD_WORKSPACE_VARIABLE>Load Workspace Variables</LOAD_WORKSPACE_VARIABLE>
-    <EXPORT_IMAGES>Export Images Stack</EXPORT_IMAGES>
-    <EXPORT_GEOMETRIC_TRANSFORM>Export Geometric Transformation</EXPORT_GEOMETRIC_TRANSFORM>
-    <EXPORT_TIME>Export Time</EXPORT_TIME>
-    <EXPORT_MOVIE>Export Movie</EXPORT_MOVIE>
-    <EXIT>Exit</EXIT>
-    <IMAGE>Images</IMAGE>
-    <LIGHT_CONTRAST>Light/Contrast</LIGHT_CONTRAST>
-    <CHANNEL_ALIGNMENT>Channel Alignment</CHANNEL_ALIGNMENT>
-    <REMOVE_BACKGROUND>Remove Background</REMOVE_BACKGROUND>
-    <FUNCTIONAL_BACKGROUND>Please enter the background on the signal channel:</FUNCTIONAL_BACKGROUND>
-    <STRUCTURED_BACKGROUND>Please enter the background on the location channel:</STRUCTURED_BACKGROUND>
-    <INVALID_BACKGROUND>Invalid background value</INVALID_BACKGROUND>
-    <IRRECOVERABLE_BACKGROUND>Irrecoverable  background value</IRRECOVERABLE_BACKGROUND>
-    <REMOVING_BACKGROUND>Removing background…</REMOVING_BACKGROUND>
-    <REMOVED_BACKGROUND>Background removed.</REMOVED_BACKGROUND>
-    <RECOVERED_BACKGROUND>Background recovered.</RECOVERED_BACKGROUND>
-    <Z_PROJECTION>Z Projection</Z_PROJECTION>
-    <MAX_Z_PROJECTION>Maximum Z Projection</MAX_Z_PROJECTION>
-    <MIN_Z_PROJECTION>Minimum Z Projection</MIN_Z_PROJECTION>
-    <MEDIAN_Z_PROJECTION>Median Z Projection</MEDIAN_Z_PROJECTION>
-    <MEAN_Z_PROJECTION>Mean Z Projection</MEAN_Z_PROJECTION>
-    <MASK>Mask</MASK>
-    <GENERATE_MASK>Generate Mask</GENERATE_MASK>
-    <EXPORT_MASK>Export mask</EXPORT_MASK>
-    <GENERATION>Export mask</GENERATION>
-    <IMPORT_MASK>Import mask</IMPORT_MASK>
+    <ABOUT>About</ABOUT>
+    <ACCUMULATIVE_FIELD_SMOOTHING>Accumulative Field Smoothing</ACCUMULATIVE_FIELD_SMOOTHING>
+    <ADVANCED>Advanced</ADVANCED>
+    <AFFINE>Affine</AFFINE>
+    <AFFINE_TOOLTIP>translation, rotation, anisotropic scaling, reflection, and shearing</AFFINE_TOOLTIP>
+    <ALIGNED>Aligned</ALIGNED>
+    <ANGULAR_DISPLACEMENT_RADIAN>Angular displacement (Radian)</ANGULAR_DISPLACEMENT_RADIAN>
+    <ANIMATION>Animation</ANIMATION>
+    <APPEND>Append</APPEND>
     <APPEND_COMMENTS>Append Comments</APPEND_COMMENTS>
-    <TIME_STAMP>Time Stamp</TIME_STAMP>
-    <SCALE_RATIO>Ratio/Scale</SCALE_RATIO>
-    <METADATA>Metadata</METADATA>
+    <AREA>Area</AREA>
+    <ASK_FOR_UPDATE>There is an updated version, is it updated?</ASK_FOR_UPDATE>
+    <ATTACH_FILE_HERE>Additional files to reproduce the issue are included here</ATTACH_FILE_HERE>
+    <ATTACH_FOLDER>Attach Folder</ATTACH_FOLDER>
+    <AUTO>Auto</AUTO>
+    <BEGIN>begin</BEGIN>
+    <BICUBIC>Bicubic</BICUBIC>
+    <BILINEAR>Bilinear</BILINEAR>
+    <BLACK>Black</BLACK>
+    <BLUE>Blue</BLUE>
+    <BREAK>Break</BREAK>
+    <BUG_TYPE>Bug Type</BUG_TYPE>
+    <CALCULATING_GOODNESS>Calculating goodness of registration...</CALCULATING_GOODNESS>
+    <CAMERA_TIME>Camera Time</CAMERA_TIME>
+    <CANCEL>Cancel</CANCEL>
+    <CENTROID>Centroid</CENTROID>
+    <CHANNEL_ALIGNMENT>Channel Alignment</CHANNEL_ALIGNMENT>
+    <CHANNEL_ALIGNING>Aligning channels...</CHANNEL_ALIGNING>
+    <CHECK_COMPONENT_BUG>Please check the components with bugs</CHECK_COMPONENT_BUG>
+    <CHECK_UPDATE>Check Update</CHECK_UPDATE>
+    <CIRCLE>Circle</CIRCLE>
+    <CIRCLE_HAT>Circle Hat</CIRCLE_HAT>
+    <CLEAR>Clear</CLEAR>
+    <CLOSE>Close</CLOSE>
+    <COLOR>Color</COLOR>
+    <COLOR_CHANNEL>Color Channel</COLOR_CHANNEL>
+    <COLOR_MAPPING>Color Mapping</COLOR_MAPPING>
+    <COMMA_SEPARATED>Comma Separated</COMMA_SEPARATED>
+    <COMMON>Common</COMMON>
+    <COMMON_PROBLEM>Common Problem</COMMON_PROBLEM>
+    <COMPONENT_DESCRIPTION>Problem Description</COMPONENT_DESCRIPTION>
+    <COMPONENT_PROBLEM>Components with Problems</COMPONENT_PROBLEM>
+    <CONFIGURATION_CORRUPTED>The configuration file is corrupted</CONFIGURATION_CORRUPTED>
+    <CONFIGURATION_EXPORTED>The configuration is exported</CONFIGURATION_EXPORTED>
+    <CONFGURATION_LOADED>The configuration is loaded</CONFGURATION_LOADED>
+    <CONFIRM_COVERAGE>Confirm coverage registration</CONFIRM_COVERAGE>
+    <CONFIRM_CROP>Confirm cropping</CONFIRM_CROP>
+    <CONFIRM_ROI_RANGE>Please confirm the ROI range</CONFIRM_ROI_RANGE>
+    <CONTINUE>Continue</CONTINUE>
+    <CONTRAST>Contrast</CONTRAST>
+    <CONTROL_PANEL>Control Panel</CONTROL_PANEL>
+    <CONTROL_REGISTRATION_RUNNING>Controlling registration procedure execution</CONTROL_REGISTRATION_RUNNING>
+    <COVERAGE_OPERATION>Based on the current registration, the operation is irreversible, continue?</COVERAGE_OPERATION>
+    <CROP_FRAME>Crop Frame</CROP_FRAME>
     <CROP_VOLUME>Crop Volume</CROP_VOLUME>
     <CROP_XY>Crop XY</CROP_XY>
     <CROP_Z>Thickness Cropping</CROP_Z>
-    <CROP_FRAME>Frames cropping</CROP_FRAME>
-    <OPTION>Options</OPTION>
-    <EXPORT_CONFIGURATION>Export Configuration</EXPORT_CONFIGURATION>
-    <LOAD_CONFIGURATION>Load Configuration</LOAD_CONFIGURATION>
-    <ANIMATION>Animation</ANIMATION>
-    <PLAY_MODE>Play Mode</PLAY_MODE>
-    <DIRECT>Direct</DIRECT>
-    <RECYCLE>Recycle</RECYCLE>
-    <REGISTRATOR>Register</REGISTRATOR>
-    <REGISTRATION_SETTING>Registration Setting</REGISTRATION_SETTING>
-    <REGISTRATION_RANGE>Registration Range</REGISTRATION_RANGE>
-    <REGISTRATION_EVALUATION>Registration Evaluation</REGISTRATION_EVALUATION>
-    <HISTORY_MANAGER>History Manager</HISTORY_MANAGER>
-    <RUN_MODAL>Run Modal</RUN_MODAL>
-    <DISTRIBUTED>Distributed</DISTRIBUTED>
-    <EXCLUSIVE>Exclusive</EXCLUSIVE>
-    <TASK_VIEWER>Task Viewer</TASK_VIEWER>
-    <HELP>Help</HELP>
-    <ABOUT>About</ABOUT>
-    <DOCUMENT>Document</DOCUMENT>
-    <LANGUAGE>Language</LANGUAGE>
-    <CHECK_UPDATE>Check Update</CHECK_UPDATE>
-    <SUBMIT_BUG>Report Bugs</SUBMIT_BUG>
-    <SLICE_VIEWER>Slice Viewer</SLICE_VIEWER>
-    <SLICE>Slice</SLICE>
-    <DISPLAY_AREA>Display Area</DISPLAY_AREA>
-    <TIME_FRAME>Time(Frame)</TIME_FRAME>
-    <CONTROL_PANEL>Control Panel</CONTROL_PANEL>
-    <LOG>Log</LOG>
-    <ON>On</ON>
-    <OFF>Off</OFF>
-    <SOURCE>Source</SOURCE>
-    <WELCOME_TO_Reg3D_App>Welcome to Reg3D App</WELCOME_TO_Reg3D_App>
-    <RUN>Run</RUN>
-    <IN_PROGRESS>In progress</IN_PROGRESS>
-    <BREAK>Break</BREAK>
-    <HORIZONTAL_FLIP>Horizontal Flip</HORIZONTAL_FLIP>
-    <VERTICAL_FLIP>Vertical Flip</VERTICAL_FLIP>
-    <ROI_SETTING>ROI Setting</ROI_SETTING>
-    <RECTANGLE>Rectangle</RECTANGLE>
-    <CIRCLE>Circle</CIRCLE>
-    <POLYGON>Polygon</POLYGON>
-    <REGION_FREE>Region Free</REGION_FREE>
-    <COLOR_CHANNEL>Color Channel</COLOR_CHANNEL>
-    <MERGE_SOURCE>Merge Sources(R-A)</MERGE_SOURCE>
-    <NONE>None</NONE>
-    <RED_CYAN>Red-Cyan</RED_CYAN>
-    <GREEN_MAGENTA>Green-Magenta</GREEN_MAGENTA>
-    <RED>Red</RED>
-    <GREEN>Green</GREEN>
-    <EXPORT>Export</EXPORT>
-    <CLEAR>Clear</CLEAR>
-    <RAW>Raw</RAW>
-    <ALIGNED>Aligned</ALIGNED>
-    <DATA_SELECTER>Data Selecter</DATA_SELECTER>
-    <VIDEO_DATA>Video Data</VIDEO_DATA>
-    <DATA_TYPE>Data Type</DATA_TYPE>
-    <SINGLE_CHANNEL>Single Channel</SINGLE_CHANNEL>
-    <DUAL_CHANNEL>Dual Channel</DUAL_CHANNEL>
-    <RED_CHANNEL>Red Channel</RED_CHANNEL>
-    <GREEN_CHANNEL>Green Channel</GREEN_CHANNEL>
-    <MIX_CHANNEL>Mix Channel</MIX_CHANNEL>
-    <IMAGE_PARAMETER>Image Parameters</IMAGE_PARAMETER>
-    <CAMERA_TIME>Camera Time</CAMERA_TIME>
-    <CLOSE>Close</CLOSE>
-    <CONTINUE>Continue</CONTINUE>
-    <PIXEL_HISTOGRAM>Pixel Histogram</PIXEL_HISTOGRAM>
-    <LIGHT>Light</LIGHT>
-    <CONTRAST>Contrast</CONTRAST>
-    <GAMMA>Gamma</GAMMA>
-    <TRANSLATION>Translation</TRANSLATION>
-    <ROTATION>Rotation</ROTATION>
-    <TRANSLATION_TOOLTIP>translation</TRANSLATION_TOOLTIP>
-    <RIGID_TOOLTIP>translation and rotation</RIGID_TOOLTIP>
-    <AFFINE_TOOLTIP>translation, rotation, anisotropic scaling, reflection, and shearing</AFFINE_TOOLTIP>
-    <GLOBAL_REGISTRATION>Global Registration</GLOBAL_REGISTRATION>
-    <LOCAL_REGISTRATION>Local Registration</LOCAL_REGISTRATION>
-    <REGISTRATION_GOODNESS>Registration Goodness</REGISTRATION_GOODNESS>
-    <REFRESH_REGISTRATION_GOODNESS>Refresh Registration Goodness</REFRESH_REGISTRATION_GOODNESS>
-    <DISPLACEMENT_FIELD_ESTIMATION>Displacement Field Estimation</DISPLACEMENT_FIELD_ESTIMATION>
-    <RENDERER_PARAMETERS>Renderer Parameters</RENDERER_PARAMETERS>
-    <RENDER_PRECISION>Render Precision</RENDER_PRECISION>
-    <PROJECTION>Projection</PROJECTION>
-    <COLOR_MAPPING>Color Mapping</COLOR_MAPPING>
-    <TRANSPARENT_MAPPING>Transparent Mapping</TRANSPARENT_MAPPING>
-    <LINEARITY>Linear</LINEARITY>
-    <SOFT_TISSUE>Soft Tissue</SOFT_TISSUE>
-    <REGISTRATION_IMAGE>Registered Image</REGISTRATION_IMAGE>
-    <DISPLACEMENT_FIELD>Displacement Field</DISPLACEMENT_FIELD>
-    <DISPLACEMENT_VOXEL>Displacement(Voxel)</DISPLACEMENT_VOXEL>
-    <ANGULAR_DISPLACEMENT_RADIAN>Angular displacement (Radian)</ANGULAR_DISPLACEMENT_RADIAN>
-    <SETTING_PANEL>Setting Panel</SETTING_PANEL>
-    <MOVIE_FORMAT>Movie Format</MOVIE_FORMAT>
-    <WIDTH>Width</WIDTH>
-    <HEIGHT>Height</HEIGHT>
-    <RECOVERY>Recover</RECOVERY>
-    <FRAME_RATE>Frame Rate</FRAME_RATE>
-    <RENDER_QUALITY>Render Quality</RENDER_QUALITY>
-    <LOSSLESS>Lossless</LOSSLESS>
-    <TARGET_BITRATE>Target Bitrate</TARGET_BITRATE>
-    <INTERPOLATION>Interpolation</INTERPOLATION>
-    <BILINEAR>Bilinear</BILINEAR>
-    <BICUBIC>Bicubic</BICUBIC>
-    <CANCEL>Cancel</CANCEL>
-    <REGION_PROPERTY_SLICE>Region Property(Slice)</REGION_PROPERTY_SLICE>
-    <AREA>Area</AREA>
-    <PERIMETER>Perimeter</PERIMETER>
-    <CENTROID>Centroid</CENTROID>
-    <REGION_PROPERTY_VOLUME>Region Property(Volume)</REGION_PROPERTY_VOLUME>
-    <VOLUME>Volume</VOLUME>
-    <SURFACE_AREA>Surface Area</SURFACE_AREA>
-    <SPHERICITY>Sphericity</SPHERICITY>
-    <APPEND>Append</APPEND>
-    <REMOVE>Remove</REMOVE>
-    <INVERSE>Inverse</INVERSE>
-    <GLOBAL>Global</GLOBAL>
-    <LOCAL>Local</LOCAL>
-    <MGLOBAL>Global(Manually)</MGLOBAL>
-    <LTGLOBAL>Global(Long-Term)</LTGLOBAL>
-    <LTLOCAL>Local(Long-Term)</LTLOCAL>
-    <COMMON>Common</COMMON>
-    <ADVANCED>Advanced</ADVANCED>
-    <PREPROCESSING>Preprocessing</PREPROCESSING>
-    <REGISTRATION_TEMPLATE>Registration Template</REGISTRATION_TEMPLATE>
-    <TEMPLATE_AUTO_UPDATE>Auto Update</TEMPLATE_AUTO_UPDATE>
-    <SAMPLING>Sampling</SAMPLING>
-    <RIGID>Rigid</RIGID>
-    <AFFINE>Affine</AFFINE>
-    <MODAL>Modal</MODAL>
-    <MONOMODAL>Monomodal</MONOMODAL>
-    <MULTIMODAL>Multimodal</MULTIMODAL>
-    <MEAN>Mean</MEAN>
-    <MEDIAN>Median</MEDIAN>
-    <MIN>Min</MIN>
-    <MAX>Max</MAX>
-    <MIN_ITERATION_STEP>Minimum Iteration Step</MIN_ITERATION_STEP>
-    <MAX_ITERATION_STEP>Maximum Iteration Step</MAX_ITERATION_STEP>
-    <MAX_ITERATION_N>Max Iteration Number</MAX_ITERATION_N>
-    <ITERATION_COEFFICIENT>Iteration Coefficient</ITERATION_COEFFICIENT>
-    <MEDIAN_FILTER>Median Filter</MEDIAN_FILTER>
-    <OPEN_OPERATOR>Open Operator</OPEN_OPERATOR>
-    <GAUSSIAN_FILTER>Gaussian Filter</GAUSSIAN_FILTER>
-    <Z_OPTIMAL_TOL>Z Optimal Tolerance</Z_OPTIMAL_TOL>
     <CUBIC_HIGH_QUALITY>Cubic(High Quality)</CUBIC_HIGH_QUALITY>
-    <LINEAR_FAST>Linear(Fast)</LINEAR_FAST>
-    <PYRAMID_COEFFICIENT>Pyramid Coefficient</PYRAMID_COEFFICIENT>
-    <LOCK>Lock</LOCK>
-    <LOCAL_REGISTRATION_AUTO>Local Registration(Auto)</LOCAL_REGISTRATION_AUTO>
-    <GRID_UNIT_SIZE>Grid Unit Size</GRID_UNIT_SIZE>
-    <AUTO>Auto</AUTO>
-    <FIXED>Fixed</FIXED>
+    <CYAN>Cyan</CYAN>
+    <DATA_SELECTER>Data Selecter</DATA_SELECTER>
+    <DATA_TYPE>Data Type</DATA_TYPE>
+    <DEVELOPING>Developing…</DEVELOPING>
+    <DIAMOND_HAT>Diamond Hat</DIAMOND_HAT>
+    <DIRECT>Direct</DIRECT>
+    <DISCARD_RATIO>Discard Ratio</DISCARD_RATIO>
+    <DISPLACEMENT_FIELD_ESTIMATION>Displacement Field Estimation</DISPLACEMENT_FIELD_ESTIMATION>
+    <DISPLACEMENT_FIELD>Displacement Field</DISPLACEMENT_FIELD>
+    <DISPLACEMENT_NOT_EXIST>(non-rigid) displacement field data does not exist</DISPLACEMENT_NOT_EXIST>
     <DISPLACEMENT_REGULATION>Displacement Regulation</DISPLACEMENT_REGULATION>
-    <GRID_SPACING>Grid Spacing</GRID_SPACING>
-    <ACCUMULATIVE_FIELD_SMOOTHING>Accumulative Field Smoothing</ACCUMULATIVE_FIELD_SMOOTHING>
-    <GEOMETRIC_TRANSFORMATION>Geometric Transformation</GEOMETRIC_TRANSFORMATION>
-    <KEY_FRAME>Key Frame</KEY_FRAME>
-    <INTENSITY_THRESHOLD>Intensity Threshold</INTENSITY_THRESHOLD>
-    <SCALE_THRESHOLD>Scale Threshold(um)</SCALE_THRESHOLD>
-    <GRID_AVERAGE>Grid Average</GRID_AVERAGE>
-    <RANDOM_UNIFORM>Random(uniform)</RANDOM_UNIFORM>
-    <NONUNIFORM>Nonuniform</NONUNIFORM>
-    <GRID_STEP>Grid Step</GRID_STEP>
-    <PERCENTILE>Percentile</PERCENTILE>
-    <NUM_MAX>Maximum</NUM_MAX>
-    <PARAMETER>Parameter</PARAMETER>
-    <OUTLIER_RATIO>Outlier Ratio</OUTLIER_RATIO>
-    <GLOBAL_ERROR_LIMIT>Global Error Limit</GLOBAL_ERROR_LIMIT>
-    <PREVIEW>Preview</PREVIEW>
-    <POINT_CLOUD>Point Cloud</POINT_CLOUD>
-    <VOXEL>Voxel</VOXEL>
-    <POINT_CLOUD_PREVIEW>Point Cloud(Preview)</POINT_CLOUD_PREVIEW>
-    <REGION_LABEL>Region Label</REGION_LABEL>
-    <PIECEWISE_LINEAR>Piecewise linear</PIECEWISE_LINEAR>
-    <POLYNOMIAL>Polynomial</POLYNOMIAL>
-    <LOCAL_WEIGHTED_MEAN>Local Weighted Mean</LOCAL_WEIGHTED_MEAN>
-    <MIN_CONTROL_VAL>Minimum Control Amount</MIN_CONTROL_VAL>
-    <POLYNOMIAL_ORDER>Polynomial Order</POLYNOMIAL_ORDER>
-    <YES>Yes</YES>
-    <NO>No</NO>
-    <LOCATION>Location</LOCATION>
-    <SIGNAL>Signal</SIGNAL>
+    <DISPLACEMENT_VOXEL>Displacement(Voxel)</DISPLACEMENT_VOXEL>
+    <DISPLAY_AREA>Display Area</DISPLAY_AREA>
+    <DISTRIBUTED>Distributed</DISTRIBUTED>
+    <DOCUMENT>Document</DOCUMENT>
+    <DOWNLOADING>Downloading…</DOWNLOADING>
+    <DOWNSAMPLING>Downsampling</DOWNSAMPLING>
+    <DUAL_CHANNEL>Dual Channel</DUAL_CHANNEL>
     <DVIEW>Viewing Angle (Normal)</DVIEW>
     <DVIEW_XY>XY Plane(Z)</DVIEW_XY>
-    <DVIEW_ZX>ZX Plane(Y)</DVIEW_ZX>
     <DVIEW_YZ>YZ Plane(X)</DVIEW_YZ>
-    <RESAMPLING_RATIO>Resampling Ratio</RESAMPLING_RATIO>
-    <ISOMETRIC>Isometric</ISOMETRIC>
-    <DOWNSAMPLING>Downsampling</DOWNSAMPLING>
-    <REPLENISH_PHOTOBLEACHING>Replenish Photobleaching</REPLENISH_PHOTOBLEACHING>
-    <PRECISION>Precision</PRECISION>
-    <LOW>Low</LOW>
-    <MEDIUM>Medium</MEDIUM>
-    <HIGH>High</HIGH>
-    <RATIO>Ratio</RATIO>
-    <SCALE>Scale</SCALE>
-    <X_DIRECTION_RESOLUTION>X Resolution</X_DIRECTION_RESOLUTION>
-    <Y_DIRECTION_RESOLUTION>Y Resolution</Y_DIRECTION_RESOLUTION>
-    <SCALE_UNIT>Scale Unit</SCALE_UNIT>
-    <X_DIRECTION_LENGTH>X Scale</X_DIRECTION_LENGTH>
-    <Y_DIRECTION_LENGTH>Y Scale</Y_DIRECTION_LENGTH>
-    <HORIZONTAL>Horizontal</HORIZONTAL>
-    <VERTICAL>Vertical</VERTICAL>
-    <LINE_WIDTH>Line Width</LINE_WIDTH>
-    <COLOR>Color</COLOR>
-    <BLUE>Blue</BLUE>
-    <CYAN>Cyan</CYAN>
-    <MAGENTA>Magenta</MAGENTA>
-    <YELLOW>Yellow</YELLOW>
-    <BLACK>Black</BLACK>
-    <WHITE>White</WHITE>
-    <SELF_DEFINITION>Self Definition</SELF_DEFINITION>
-    <FONT>Font</FONT>
-    <LINE_HAT>Line Hat</LINE_HAT>
-    <FLAT_HAT>Flat Hat</FLAT_HAT>
-    <CIRCLE_HAT>Circle Hat</CIRCLE_HAT>
-    <SQUARE_HAT>Square Hat</SQUARE_HAT>
-    <DIAMOND_HAT>Diamond Hat</DIAMOND_HAT>
-    <SPACE>Space</SPACE>
-    <HAT_SIZE>Hat Size</HAT_SIZE>
-    <SOLID>Solid</SOLID>
-    <UNSUPPORTED_CHANNEL_NUMBER>Unsupported number of channels</UNSUPPORTED_CHANNEL_NUMBER>
-    <UNSUPPORTED_FEW_LAYERS>Registration with too few layers (&lt;5) is not supported</UNSUPPORTED_FEW_LAYERS>
-    <UNSUPPORTED_FEW_FRAMES>Registration with too few frame (&lt;2) is not supported</UNSUPPORTED_FEW_FRAMES>
+    <DVIEW_ZX>ZX Plane(Y)</DVIEW_ZX>
+    <EMAIL_FAILED>Email sending failed</EMAIL_FAILED>
+    <EMAIL_SUCCESS>Mail sent successfully!</EMAIL_SUCCESS>
+    <END>End</END>
     <ERROR>Error</ERROR>
-    <WARNING>Warning</WARNING>
+    <EXCLUSIVE>Exclusive</EXCLUSIVE>
+    <EXCLUSIVE_WARNING>You are currently running in distributed mode. Exclusive mode may cause MATLAB to crash. Continue?</EXCLUSIVE_WARNING>
+    <EXIT>Exit</EXIT>
+    <EXPORT>Export</EXPORT>
+    <EXPORT_AS>Export as</EXPORT_AS>
+    <EXPORT_CONFIGURATION>Export Configuration</EXPORT_CONFIGURATION>
+    <EXPORT_GEOMETRIC_TRANSFORM>Export Geometric Transformation</EXPORT_GEOMETRIC_TRANSFORM>
+    <EXPORT_IMAGES>Export Images Stack</EXPORT_IMAGES>
+    <EXPORTING>Exporting...</EXPORTING>
+    <EXPORT_MASK>Export mask</EXPORT_MASK>
+    <EXPORT_MASK_SUCCESS>Mask and area attributes exported successfully.</EXPORT_MASK_SUCCESS>
+    <EXPORT_MOVIE>Export Movie</EXPORT_MOVIE>
+    <EXPORT_TIME>Export Time</EXPORT_TIME>
+    <FEEDBACK_SUCCESS>Problem feedback successfully!</FEEDBACK_SUCCESS>
+    <FILE>Files</FILE>
+    <FILE_LOADING_COMPLETE>File loading completed:</FILE_LOADING_COMPLETE>
+    <FINISH_UPDATE>The download is complete, please close the program to complete the update</FINISH_UPDATE>
+    <FIXED>Fixed</FIXED>
+    <FLAT_HAT>Flat Hat</FLAT_HAT>
+    <FONT>Font</FONT>
+    <FRAME_FEW>Please select at least two frames</FRAME_FEW>
+    <FRAME_OVERFLOW>Frames count overflow</FRAME_OVERFLOW>
+    <FRAME_RATE>Frame Rate</FRAME_RATE>
+    <FUNCTIONAL_BACKGROUND>Please enter the background on the signal channel:</FUNCTIONAL_BACKGROUND>
+    <GAMMA>Gamma</GAMMA>
+    <GAUSSIAN_FILTER>Gaussian Filter</GAUSSIAN_FILTER>
+    <GENERATE_MASK>Generate Mask</GENERATE_MASK>
+    <GENERATION>Export mask</GENERATION>
+    <GEOMETRIC_TRANSFORMATION>Geometric Transformation</GEOMETRIC_TRANSFORMATION>
+    <GEOMETRIC_TRANSFORMATION_EXPORT_SUCCESS>Geometric transformation exported successfully</GEOMETRIC_TRANSFORMATION_EXPORT_SUCCESS>
+    <GIVEUP_CROP>Give up cropping</GIVEUP_CROP>
+    <GLOBAL>Global</GLOBAL>
+    <GLOBAL_ERROR_LIMIT>Global Error Limit</GLOBAL_ERROR_LIMIT>
+    <GLOBAL_REGISTRATION>Global Registration</GLOBAL_REGISTRATION>
+    <GREEN>Green</GREEN>
+    <GREEN_CHANNEL>Green Channel</GREEN_CHANNEL>
+    <GREEN_MAGENTA>Green-Magenta</GREEN_MAGENTA>
+    <GRID_AVERAGE>Grid Average</GRID_AVERAGE>
+    <GRID_SPACING>Grid Spacing</GRID_SPACING>
+    <GRID_STEP>Grid Step</GRID_STEP>
+    <GRID_UNIT_SIZE>Grid Unit Size</GRID_UNIT_SIZE>
+    <HAT_SIZE>Hat Size</HAT_SIZE>
+    <HEIGHT>Height</HEIGHT>
+    <HELP>Help</HELP>
+    <HELP_UPDATE>Help and Updates</HELP_UPDATE>
+    <HIGH>High</HIGH>
+    <HISTORY_MANAGER>History Manager</HISTORY_MANAGER>
+    <HORIZONTAL>Horizontal</HORIZONTAL>
+    <HORIZONTAL_FLIP>Horizontal Flip</HORIZONTAL_FLIP>
+    <IMAGE>Images</IMAGE>
+    <IMAGE_ANNOTATION>Image and Annotation</IMAGE_ANNOTATION>
+    <IMAGE_EXPORT_SUCCESS>Images exported successfully</IMAGE_EXPORT_SUCCESS>
+    <IMAGE_INTENSITY>image intensity</IMAGE_INTENSITY>
+    <IMAGE_PARAMETER>Image Parameters</IMAGE_PARAMETER>
+    <IMPORT_EXPORT>Import and Export</IMPORT_EXPORT>
+    <IMPORT_MASK>Import mask</IMPORT_MASK>
     <INFORMATION>Information</INFORMATION>
-    <DISCARD_RATIO>Discard Ratio</DISCARD_RATIO>
-    <WAITING>waiting</WAITING>
+    <IN_PROGRESS>In progress</IN_PROGRESS>
     <INPUT>input</INPUT>
-    <END>end</END>
-    <BEGIN>begin</BEGIN>
-    <OK>OK</OK>
+    <INTENSITY_THRESHOLD>Intensity Threshold</INTENSITY_THRESHOLD>
+    <INTERFACE_CONTROL>Interface Control</INTERFACE_CONTROL>
+    <INTERPOLATION>Interpolation</INTERPOLATION>
+    <INVALID_BACKGROUND>Invalid background value</INVALID_BACKGROUND>
     <INVALID_FRAME_ORDER>Invalid frames order</INVALID_FRAME_ORDER>
+    <INVALID_PATH>Invalid path</INVALID_PATH>
     <INVALID_RULER>Invalid ruler: try resizing the ruler</INVALID_RULER>
-    <CONFIGURATION_EXPORTED>The configuration is exported</CONFIGURATION_EXPORTED>
-    <CONFGURATION_LOADED>The configuration is loaded</CONFGURATION_LOADED>
-    <CONFIGURATION_CORRUPTED>The configuration file is corrupted</CONFIGURATION_CORRUPTED>
-    <REGISTRATION_RESOLUTION_ERROR>No registration resolution set up</REGISTRATION_RESOLUTION_ERROR>
+    <INVALID_UPDATE_REPOSITORY>Checking for updates: Illegal repository path. Please check update_setting.ini</INVALID_UPDATE_REPOSITORY>
+    <INVERSE>Inverse</INVERSE>
+    <IRRECOVERABLE_BACKGROUND>Irrecoverable  background value</IRRECOVERABLE_BACKGROUND>
+    <IRREVERSIBLE_CA>Channels alignment operation is irreversible, continue?</IRREVERSIBLE_CA>
+    <IRREVERSIBLE_CROP>Cropping operation is irreversible, continue?</IRREVERSIBLE_CROP>
+    <ISOMETRIC>Isometric</ISOMETRIC>
+    <ITERATION_COEFFICIENT>Iteration Coefficient</ITERATION_COEFFICIENT>
+    <KEY_FRAME>Key Frame</KEY_FRAME>
+    <LANGUAGE>Language</LANGUAGE>
+    <LATEST_VERSION>The current program is the latest version</LATEST_VERSION>
+    <LIGHT>Light</LIGHT>
+    <LIGHT_CONTRAST>Light/Contrast</LIGHT_CONTRAST>
+    <LINEAR_FAST>Linear(Fast)</LINEAR_FAST>
+    <LINEARITY>Linear</LINEARITY>
+    <LINE_HAT>Line Hat</LINE_HAT>
+    <LINE_WIDTH>Line Width</LINE_WIDTH>
+    <LOAD_CONFIGURATION>Load Configuration</LOAD_CONFIGURATION>
+    <LOAD_FILE>Load Files</LOAD_FILE>
+    <LOAD_WORKSPACE_VARIABLE>Load Workspace Variables</LOAD_WORKSPACE_VARIABLE>
+    <LOCAL>Local</LOCAL>
+    <LOCAL_REGISTRATION>Local Registration</LOCAL_REGISTRATION>
+    <LOCAL_REGISTRATION_AUTO>Local Registration(Auto)</LOCAL_REGISTRATION_AUTO>
+    <LOCAL_WEIGHTED_MEAN>Local Weighted Mean</LOCAL_WEIGHTED_MEAN>
+    <LOCATION>Location</LOCATION>
+    <LOCK>Lock</LOCK>
+    <LOG>Log</LOG>
+    <LOGFILE_EXPORT_TO>Export log files to</LOGFILE_EXPORT_TO>
+    <LOGIN>Login</LOGIN>
+    <LOGIN_LABNAS>Login - LabNas</LOGIN_LABNAS>
+    <LOG_SWITCH>Log switch, stop output when off</LOG_SWITCH>
+    <LONG_TERM_ONCE_ONLY>Long-term mode only supports single registration</LONG_TERM_ONCE_ONLY>
+    <LOSSLESS>Lossless</LOSSLESS>
+    <LOW>Low</LOW>
+    <LOW_MEMORY_WARNING>The available memory is too small and the exclusive mode cannot be enabled.</LOW_MEMORY_WARNING>
+    <LTGLOBAL>Global(Long-Term)</LTGLOBAL>
+    <LTLOCAL>Local(Long-Term)</LTLOCAL>
+    <MAGENTA>Magenta</MAGENTA>
+    <MAIN_APP>Main Application</MAIN_APP>
+    <MASK>Mask</MASK>
+    <MASK_LOADED>Mask loaded</MASK_LOADED>
+    <MASK_MISMATCH>Mask size mismatch</MASK_MISMATCH>
+    <MASK_REMOVED>Mask removed</MASK_REMOVED>
+    <MAX>Max</MAX>
+    <MAX_ITERATION_N>Max Iteration Number</MAX_ITERATION_N>
+    <MAX_ITERATION_STEP>Maximum Iteration Step</MAX_ITERATION_STEP>
+    <MAX_Z_PROJECTION>Maximum Z Projection</MAX_Z_PROJECTION>
+    <MEAN>Mean</MEAN>
+    <MEAN_Z_PROJECTION>Mean Z Projection</MEAN_Z_PROJECTION>
+    <MEDIAN>Median</MEDIAN>
+    <MEDIAN_FILTER>Median Filter</MEDIAN_FILTER>
+    <MEDIAN_Z_PROJECTION>Median Z Projection</MEDIAN_Z_PROJECTION>
+    <MEDIUM>Medium</MEDIUM>
+    <MERGE_SOURCE>Merge Sources(R-A)</MERGE_SOURCE>
+    <METADATA>Metadata</METADATA>
+    <MGLOBAL>Global(Manually)</MGLOBAL>
+    <MIN>Min</MIN>
+    <MIN_CONTROL_VAL>Minimum Control Amount</MIN_CONTROL_VAL>
+    <MIN_ITERATION_STEP>Minimum Iteration Step</MIN_ITERATION_STEP>
+    <MIN_Z_PROJECTION>Minimum Z Projection</MIN_Z_PROJECTION>
+    <MISSING_HELP>help.html file is missing</MISSING_HELP>
+    <MIX_CHANNEL>Mix Channel</MIX_CHANNEL>
+    <MODAL>Modal</MODAL>
+    <MONOMODAL>Monomodal</MONOMODAL>
+    <MOVIE_EXPORTED_SUCCESS>Video exported successfully</MOVIE_EXPORTED_SUCCESS>
+    <MOVIE_EXPORT_INTERRUPTED>Movie export interrupted</MOVIE_EXPORT_INTERRUPTED>
+    <MOVIE_FORMAT>Movie Format</MOVIE_FORMAT>
+    <MULTI_CONNECTION>Multi-connected regions are found, and the largest singly connected subset has been selected</MULTI_CONNECTION>
+    <MULTIMODAL>Multimodal</MULTIMODAL>
+    <NO>No</NO>
+    <NONE>None</NONE>
+    <NONUNIFORM>Nonuniform</NONUNIFORM>
+    <NUM_MAX>Maximum</NUM_MAX>
+    <OFF>Off</OFF>
+    <OFFLINE>Offline</OFFLINE>
+    <OK>OK</OK>
+    <ON>On</ON>
+    <ONLINE>Online</ONLINE>
+    <OPEN_OPERATOR>Open Operator</OPEN_OPERATOR>
+    <OPACITY>Opacity</OPACITY>
+    <OPTION>Options</OPTION>
+    <ORDINARY>Ordinary</ORDINARY>
+    <ORDINARY_TIPS>Program exceptions that may hinder processing such as registration</ORDINARY_TIPS>
+    <OTHER>Other</OTHER>
+    <OUTLIER_RATIO>Outlier Ratio</OUTLIER_RATIO>
+    <PARAMETER>Parameter</PARAMETER>
+    <PASSWORD>Password</PASSWORD>
+    <PERCENTILE>Percentile</PERCENTILE>
     <PERFORM_AUTO_REGISTRATION>Perform automatic registration</PERFORM_AUTO_REGISTRATION>
     <PERFORM_LONGTERM_REGISTRATION>Perform long-term registration</PERFORM_LONGTERM_REGISTRATION>
-    <REGISTRATION_FRAMES>Registration frames(Seconds):</REGISTRATION_FRAMES>
-    <COVERAGE_OPERATION>Based on the current registration, the operation is irreversible, continue?</COVERAGE_OPERATION>
-    <CONFIRM_COVERAGE>Confirm coverage registration</CONFIRM_COVERAGE>
+    <PERIMETER>Perimeter</PERIMETER>
+    <PIECEWISE_LINEAR>Piecewise linear</PIECEWISE_LINEAR>
+    <PIXEL_HISTOGRAM>Pixel Histogram</PIXEL_HISTOGRAM>
+    <PLAY_MODE>Play Mode</PLAY_MODE>
+    <POINT_CLOUD>Point Cloud</POINT_CLOUD>
+    <POINT_CLOUD_PREVIEW>Point Cloud(Preview)</POINT_CLOUD_PREVIEW>
+    <POLYGON>Polygon</POLYGON>
+    <POLYNOMIAL>Polynomial</POLYNOMIAL>
+    <POLYNOMIAL_ORDER>Polynomial Order</POLYNOMIAL_ORDER>
+    <PRECISION>Precision</PRECISION>
+    <PREPROCESSING>Preprocessing</PREPROCESSING>
+    <PREVIEW>Preview</PREVIEW>
+    <PRIVACY>privacy</PRIVACY>
+    <PROGRESS_BAR>Progress bar</PROGRESS_BAR>
+    <PROJECTION>Projection</PROJECTION>
+    <PRP>Problem reporting procedure:</PRP>
+    <PRP_PRIVACY_FRIENDLY>The problem reporting process does not collect your</PRP_PRIVACY_FRIENDLY>
+    <PYRAMID_COEFFICIENT>Pyramid Coefficient</PYRAMID_COEFFICIENT>
+    <RANDOM_UNIFORM>Random(uniform)</RANDOM_UNIFORM>
+    <RATIO>Ratio</RATIO>
+    <RAW>Raw</RAW>
+    <READ_CONFIGURATION_FILE>Read configuration file</READ_CONFIGURATION_FILE>
+    <RECOVERED_BACKGROUND>Background recovered.</RECOVERED_BACKGROUND>
+    <RECOVERY>Recover</RECOVERY>
+    <RECTANGLE>Rectangle</RECTANGLE>
+    <RECYCLE>Recycle</RECYCLE>
+    <RED>Red</RED>
+    <RED_CHANNEL>Red Channel</RED_CHANNEL>
+    <RED_CYAN>Red-Cyan</RED_CYAN>
+    <REFRESH_REGISTRATION_GOODNESS>Refresh Registration Goodness</REFRESH_REGISTRATION_GOODNESS>
+    <REG3D_CONFIGURATION>Reg3D configuration file</REG3D_CONFIGURATION>
+    <REGION_FREE>Region Free</REGION_FREE>
+    <REGION_LABEL>Region Label</REGION_LABEL>
+    <REGION_PROPERTY_SLICE>Region Property(Slice)</REGION_PROPERTY_SLICE>
+    <REGION_PROPERTY_VOLUME>Region Property(Volume)</REGION_PROPERTY_VOLUME>
     <REGISTRATION_COMPLETE>Registration complete</REGISTRATION_COMPLETE>
-    <TIME_COST>Time cost(Seconds):</TIME_COST>
+    <REGISTRATION_EVALUATION>Registration Evaluation</REGISTRATION_EVALUATION>
+    <REGISTRATION_FRAMES>Registration frames(Seconds):</REGISTRATION_FRAMES>
+    <REGISTRATION_GOODNESS>Registration Goodness</REGISTRATION_GOODNESS>
+    <REGISTRATION_IMAGE>Registered Image</REGISTRATION_IMAGE>
+    <REGISTRATION_RANGE>Registration Range</REGISTRATION_RANGE>
+    <REGISTRATION_SETTING>Registration Setting</REGISTRATION_SETTING>
+    <REGISTRATION_SOLUTION_ERROR>No registration solution set up</REGISTRATION_SOLUTION_ERROR>
+    <REGISTRATION_TEMPLATE>Registration Template</REGISTRATION_TEMPLATE>
+    <REGISTRATOR>Register</REGISTRATOR>
+    <REGMODE_CURRENT_GLOBAL>Current Registration Mode: Global</REGMODE_CURRENT_GLOBAL>
+    <REGMODE_CURRENT_LOCAL>Current Registration Mode: Local</REGMODE_CURRENT_LOCAL>
+    <REGMODE_CURRENT_LTGLOBAL>Current Registration Mode: Global(Long-Term)</REGMODE_CURRENT_LTGLOBAL>
+    <REGMODE_CURRENT_LTLOCAL>Current Registration Mode: Local(Long-Term)</REGMODE_CURRENT_LTLOCAL>
+    <REGMODE_CURRENT_MGLOBAL>Current Registration Mode: Global(Manually)</REGMODE_CURRENT_MGLOBAL>
+    <REMOVE>Remove</REMOVE>
+    <REMOVE_BACKGROUND>Remove Background</REMOVE_BACKGROUND>
+    <REMOVED_BACKGROUND>Background removed.</REMOVED_BACKGROUND>
+    <REMOVING_BACKGROUND>Removing background…</REMOVING_BACKGROUND>
+    <RENDERER_PARAMETERS>Renderer Parameters</RENDERER_PARAMETERS>
+    <RENDERING>Rendering...</RENDERING>
+    <RENDERING_DISPLACEMENT_FIELD>Rendering displacement field...</RENDERING_DISPLACEMENT_FIELD>
+    <RENDER_PRECISION>Render Precision</RENDER_PRECISION>
+    <RENDER_QUALITY>Render Quality</RENDER_QUALITY>
+    <REPLENISH_PHOTOBLEACHING>Replenish Photobleaching</REPLENISH_PHOTOBLEACHING>
+    <REPORT_BUG_DETAIL>Please describe the problem in the program in detail (&gt;10 characters)</REPORT_BUG_DETAIL>
+    <RESAMPLING_RATIO>Resampling Ratio</RESAMPLING_RATIO>
+    <RESET_REGISTRATION_FRAMES>Reset registration frame</RESET_REGISTRATION_FRAMES>
+    <RIGID>Rigid</RIGID>
+    <RIGID_TOOLTIP>translation and rotation</RIGID_TOOLTIP>
+    <ROI_SETTING>ROI Setting</ROI_SETTING>
+    <ROTATION>Rotation</ROTATION>
+    <RUN>Run</RUN>
+    <RUN_MODAL>Run Modal</RUN_MODAL>
+    <RUNNING_REGISTRATION>Run the registration program</RUNNING_REGISTRATION>
+    <SAMPLING>Sampling</SAMPLING>
+    <SAVE_CONFIGURATION_FILE>Save configuration file</SAVE_CONFIGURATION_FILE>
+    <SCALE>Scale</SCALE>
+    <SCALE_RATIO>Ratio/Scale</SCALE_RATIO>
+    <SCALE_THRESHOLD>Scale Threshold(um)</SCALE_THRESHOLD>
+    <SCALE_UNIT>Scale Unit</SCALE_UNIT>
+    <SELECTION_SOURCE>Select browser data source</SELECTION_SOURCE>
+    <SELF_DEFINITION>Self Definition</SELF_DEFINITION>
+    <SETTING_PANEL>Setting Panel</SETTING_PANEL>
+    <SETTING_PREFERENCE>Settings and Preferences</SETTING_PREFERENCE>
+    <SIGNAL>Signal</SIGNAL>
+    <SINGLE_CHANNEL>Single Channel</SINGLE_CHANNEL>
+    <SLICE>Slice</SLICE>
+    <SLICE_FEW>Please select at least two slices</SLICE_FEW>
+    <SLICE_FINE_TUNING>Slice fine-tuning</SLICE_FINE_TUNING>
+    <SLICES_FEW_FOR_NEXT_STEP>The number of layers is small, and registration will not be possible after cropping</SLICES_FEW_FOR_NEXT_STEP>
+    <SLICES_OVERFLOW>Slices number overflow</SLICES_OVERFLOW>
+    <SLICE_VIEWER>Slice Viewer</SLICE_VIEWER>
+    <SOFT_TISSUE>Soft Tissue</SOFT_TISSUE>
+    <SOLID>Solid</SOLID>
+    <SOURCE>Source</SOURCE>
+    <SPACE>Space</SPACE>
+    <SPHERICITY>Sphericity</SPHERICITY>
+    <SQUARE_HAT>Square Hat</SQUARE_HAT>
+    <STRUCTURED_BACKGROUND>Please enter the background on the location channel:</STRUCTURED_BACKGROUND>
+    <SUB_APP>Sub Application</SUB_APP>
+    <SUBMIT>Submit</SUBMIT>
+    <SUBMIT_BUG>Report Bugs</SUBMIT_BUG>
+    <SUGGESTION>Suggestion</SUGGESTION>
+    <SUGGESTION_TIPS>Suggestions that may improve the utility, ease of use, or security of the program</SUGGESTION_TIPS>
+    <SURFACE_AREA>Surface Area</SURFACE_AREA>
+    <SYS_INITIALIZE_SUCCESS>System initialized completely</SYS_INITIALIZE_SUCCESS>
+    <TASK_VIEWER>Task Viewer</TASK_VIEWER>
+    <TARGET_BITRATE>Target Bitrate</TARGET_BITRATE>
+    <T_CROPPED>T cropped</T_CROPPED>
+    <TEMPLATE_AUTO_UPDATE>Auto Update</TEMPLATE_AUTO_UPDATE>
     <TERMINATE_REGISTRATION>Forced termination of registration</TERMINATE_REGISTRATION>
-    <ASK_FOR_UPDATE>There is an updated version, is it updated?</ASK_FOR_UPDATE>
-    <DOWNLOADING>Downloading…</DOWNLOADING>
-    <UNSUPPORTED_OS>Unsupported OS type</UNSUPPORTED_OS>
-    <FINISH_UPDATE>The download is complete, please close the program to complete the update</FINISH_UPDATE>
-    <UPDATE_SCRIPT_FAILED>Update script generation failed, please check the write permissions</UPDATE_SCRIPT_FAILED>
-    <LATEST_VERSION>The current program is the latest version</LATEST_VERSION>
+    <TEXT_FILE>Text file</TEXT_FILE>
+    <THICKNESS_RANGE>Please enter the thickness range (layer):</THICKNESS_RANGE>
+    <TIME_COST>Time cost(Seconds):</TIME_COST>
+    <TIME_EXPORT_SUCCESS>Time export successful</TIME_EXPORT_SUCCESS>
+    <TIME_FINE_TUNING>Time fine-tuning</TIME_FINE_TUNING>
+    <TIME_FRAME>Time(Frame)</TIME_FRAME>
+    <TIME_MISSING>Missing time series data</TIME_MISSING>
+    <TIME_RANGE>Please enter a time range (frames):</TIME_RANGE>
+    <TIME_SERIES_FILE>Time series file</TIME_SERIES_FILE>
+    <TIME_STAMP>Time Stamp</TIME_STAMP>
+    <TOO_MUCH_ROI>There are too many ROIs, please redraw and try to add them.</TOO_MUCH_ROI>
+    <TRANSLATION>Translation</TRANSLATION>
+    <TRANSPARENT_MAPPING>Transparent Mapping</TRANSPARENT_MAPPING>
+    <TRANSLATION_TOOLTIP>translation</TRANSLATION_TOOLTIP>
+    <UI_INITIALIZE_SUCCESS>Interface initialized completely</UI_INITIALIZE_SUCCESS>
     <UNABLE_ACCESS_SERVER>Unable to access the remote server, please check the permissions</UNABLE_ACCESS_SERVER>
     <UNABLE_ACCESS_UPDATE_SETTING>Unable to open update_setting.ini. Insufficient permissions</UNABLE_ACCESS_UPDATE_SETTING>
     <UNRECOGNIZED_UPDATE_IDENTIFIER>Checking for updates: Unrecognized identifier. Please check update_setting.ini</UNRECOGNIZED_UPDATE_IDENTIFIER>
-    <INVALID_UPDATE_REPOSITORY>Checking for updates: Illegal repository path. Please check update_setting.ini</INVALID_UPDATE_REPOSITORY>
-    <UI_INITIALIZE_SUCCESS>Interface initialization completed</UI_INITIALIZE_SUCCESS>
-    <SYS_INITIALIZE_SUCCESS>System initialization complete</SYS_INITIALIZE_SUCCESS>
-    <FILE_LOADING_COMPLETE>File loading completed:</FILE_LOADING_COMPLETE>
-    <EXPORT_AS>Export as</EXPORT_AS>
-    <EXPORTING>Exporting...</EXPORTING>
-    <IMAGE_EXPORT_SUCCESS>Images exported successfully</IMAGE_EXPORT_SUCCESS>
-    <IRREVERSIBLE_CROP>Cropping operation is irreversible, continue?</IRREVERSIBLE_CROP>
-    <IRREVERSIBLE_CA>Channels alignment operation is irreversible, continue?</IRREVERSIBLE_CA>
-    <CONFIRM_CROP>Confirm cropping</CONFIRM_CROP>
-    <FRAME_FEW>Please select at least two frames</FRAME_FEW>
-    <SLICE_FEW>Please select at least two slices</SLICE_FEW>
-    <FRAME_OVERFLOW>Frames count overflow</FRAME_OVERFLOW>
-    <GIVEUP_CROP>Give up cropping</GIVEUP_CROP>
-    <RESET_REGISTRATION_FRAMES>Reset registration frame</RESET_REGISTRATION_FRAMES>
-    <T_CROPPED>T cropped</T_CROPPED>
-    <MISSING_HELP>help.html file is missing</MISSING_HELP>
-    <REG3D_CONFIGURATION>Reg3D configuration file</REG3D_CONFIGURATION>
-    <SAVE_CONFIGURATION_FILE>Save configuration file</SAVE_CONFIGURATION_FILE>
-    <READ_CONFIGURATION_FILE>Read configuration file</READ_CONFIGURATION_FILE>
-    <XY_CROPPED>XY cropping complete</XY_CROPPED>
-    <CONFIRM_ROI_RANGE>Please confirm the ROI range</CONFIRM_ROI_RANGE>
-    <THICKNESS_RANGE>Please enter the thickness range (layer):</THICKNESS_RANGE>
-    <SLICES_FEW_FOR_NEXT_STEP>The number of layers is small, and registration will not be possible after cropping</SLICES_FEW_FOR_NEXT_STEP>
-    <SLICES_OVERFLOW>Slices number overflow</SLICES_OVERFLOW>
-    <Z_CROPPED>Z cropping complete</Z_CROPPED>
-    <VARIABLE_LOADED>Variable loaded</VARIABLE_LOADED>
-    <TIME_SERIES_FILE>Time series file</TIME_SERIES_FILE>
-    <TEXT_FILE>Text file</TEXT_FILE>
-    <COMMA_SEPARATED>Comma Separated</COMMA_SEPARATED>
-    <WORKSHEET>Worksheet</WORKSHEET>
-    <TIME_EXPORT_SUCCESS>Time export successful</TIME_EXPORT_SUCCESS>
-    <TIME_MISSING>Missing time series data</TIME_MISSING>
-    <GEOMETRIC_TRANSFORMATION_EXPORT_SUCCESS>Geometric transformation exported successfully</GEOMETRIC_TRANSFORMATION_EXPORT_SUCCESS>
-    <LOGFILE_EXPORT_TO>Export log files to</LOGFILE_EXPORT_TO>
-    <MASK_REMOVED>Mask removed</MASK_REMOVED>
-    <MASK_MISMATCH>Mask size mismatch</MASK_MISMATCH>
-    <MASK_LOADED>Mask loaded</MASK_LOADED>
-    <RENDERING>Rendering...</RENDERING>
-    <CHANNEL_ALIGNING>Aligning channels...</CHANNEL_ALIGNING>
-    <MOVIE_EXPORTED_SUCCESS>Video exported successfully</MOVIE_EXPORTED_SUCCESS>
-    <MOVIE_EXPORT_INTERRUPTED>Movie export interrupted</MOVIE_EXPORT_INTERRUPTED>
-    <TIME_RANGE>Please enter a time range (frames):</TIME_RANGE>
     <UNREGISTRATERED_FRAMES>Frames to be registered</UNREGISTRATERED_FRAMES>
-    <DISPLACEMENT_NOT_EXIST>(non-rigid) displacement field data does not exist</DISPLACEMENT_NOT_EXIST>
-    <RENDERING_DISPLACEMENT_FIELD>Rendering displacement field...</RENDERING_DISPLACEMENT_FIELD>
-    <CALCULATING_GOODNESS>Calculating goodness of registration...</CALCULATING_GOODNESS>
-    <REGMODE_CURRENT_GLOBAL>Current Registration Mode: Global</REGMODE_CURRENT_GLOBAL>
-    <REGMODE_CURRENT_LOCAL>Current Registration Mode: Local</REGMODE_CURRENT_LOCAL>
-    <REGMODE_CURRENT_MGLOBAL>Current Registration Mode: Global(Manually)</REGMODE_CURRENT_MGLOBAL>
-    <REGMODE_CURRENT_LTGLOBAL>Current Registration Mode: Global(Long-Term)</REGMODE_CURRENT_LTGLOBAL>
-    <REGMODE_CURRENT_LTLOCAL>Current Registration Mode: Local(Long-Term)</REGMODE_CURRENT_LTLOCAL>
-    <IMAGE_INTENSITY>image intensity</IMAGE_INTENSITY>
-    <OPACITY>Opacity</OPACITY>
+    <UNSUPPORTED_CHANNEL_NUMBER>Unsupported number of channels</UNSUPPORTED_CHANNEL_NUMBER>
+    <UNSUPPORTED_FEW_FRAMES>Registration with too few frame (&lt;2) is not supported</UNSUPPORTED_FEW_FRAMES>
+    <UNSUPPORTED_FEW_LAYERS>Registration with too few layers (&lt;5) is not supported</UNSUPPORTED_FEW_LAYERS>
     <UNSUPPORTED_FILE_FORMAT>unsupported file format</UNSUPPORTED_FILE_FORMAT>
-    <IMPORT_EXPORT>Import and Export</IMPORT_EXPORT>
-    <IMAGE_ANNOTATION>Image and Annotation</IMAGE_ANNOTATION>
-    <SETTING_PREFERENCE>Settings and Preferences</SETTING_PREFERENCE>
-    <HELP_UPDATE>Help and Updates</HELP_UPDATE>
-    <SLICE_FINE_TUNING>Slice fine-tuning</SLICE_FINE_TUNING>
-    <PROGRESS_BAR>Progress bar</PROGRESS_BAR>
-    <TIME_FINE_TUNING>Time fine-tuning</TIME_FINE_TUNING>
-    <CONTROL_REGISTRATION_RUNNING>Controlling registration procedure execution</CONTROL_REGISTRATION_RUNNING>
-    <LOG_SWITCH>Log switch, stop output when off</LOG_SWITCH>
-    <SELECTION_SOURCE>Select browser data source</SELECTION_SOURCE>
-    <RUNNING_REGISTRATION>Run the registration program</RUNNING_REGISTRATION>
-    <LONG_TERM_ONCE_ONLY>Long-term mode only supports single registration</LONG_TERM_ONCE_ONLY>
-    <LOCAL_WEIGHTED_CONTROL>Local weighted average recommended control value: 12</LOCAL_WEIGHTED_CONTROL>
-    <MAIN_APP>Main Application</MAIN_APP>
-    <SUB_APP>Sub Application</SUB_APP>
-    <INTERFACE_CONTROL>Interface Control</INTERFACE_CONTROL>
-    <COMPONENT_PROBLEM>Components with Problems</COMPONENT_PROBLEM>
-    <COMPONENT_DESCRIPTION>Problem Description</COMPONENT_DESCRIPTION>
-    <BUG_TYPE>Bug Type</BUG_TYPE>
+    <UNSUPPORTED_OS>Unsupported OS type</UNSUPPORTED_OS>
+    <UPDATE_SCRIPT_FAILED>Update script generation failed, please check the write permissions</UPDATE_SCRIPT_FAILED>
     <URGENT>Urgent</URGENT>
-    <ORDINARY>Ordinary</ORDINARY>
-    <SUGGESTION>Suggestion</SUGGESTION>
-    <COMMON_PROBLEM>Common Problem</COMMON_PROBLEM>
-    <SUBMIT>Submit</SUBMIT>
-    <OFFLINE>Offline</OFFLINE>
-    <ONLINE>Online</ONLINE>
-    <PRP>Problem reporting procedure:</PRP>
-    <PRP_PRIVACY_FRIENDLY>The problem reporting process does not collect your</PRP_PRIVACY_FRIENDLY>
-    <PRIVACY>privacy</PRIVACY>
-    <ATTACH_FILE_HERE>Additional files to reproduce the issue are included here</ATTACH_FILE_HERE>
-    <CHECK_COMPONENT_BUG>Please check the components with bugs</CHECK_COMPONENT_BUG>
-    <REPORT_BUG_DETAIL>Please describe the problem in the program in detail (&gt;10 characters)</REPORT_BUG_DETAIL>
-    <URGENT_TIPS>Serious anomalies that may induce qualitative misjudgments of data</URGENT_TIPS>
-    <ORDINARY_TIPS>Program exceptions that may hinder processing such as registration</ORDINARY_TIPS>
-    <SUGGESTION_TIPS>Suggestions that may improve the utility, ease of use, or security of the program</SUGGESTION_TIPS>
     <URGENT_EMAIL>Urgent questions will be sent to the maintainer's email. Continue?</URGENT_EMAIL>
     <URGENT_SUBJECT>Urgent exception: Reg3D App@SiLab, IBP, China</URGENT_SUBJECT>
-    <FEEDBACK_SUCCESS>Problem feedback successfully!</FEEDBACK_SUCCESS>
-    <EMAIL_SUCCESS>Mail sent successfully!</EMAIL_SUCCESS>
-    <EMAIL_FAILED>Email sending failed</EMAIL_FAILED>
-    <ATTACH_FOLDER>Attach Folder</ATTACH_FOLDER>
-    <LOGIN_LABNAS>Login - LabNas</LOGIN_LABNAS>
+    <URGENT_TIPS>Serious anomalies that may induce qualitative misjudgments of data</URGENT_TIPS>
     <USERNAME>User Name</USERNAME>
-    <PASSWORD>Password</PASSWORD>
-    <LOGIN>Login</LOGIN>
-    <OTHER>Other</OTHER>
-    <INVALID_PATH>Invalid path</INVALID_PATH>
-    <TOO_MUCH_ROI>There are too many ROIs, please redraw and try to add them.</TOO_MUCH_ROI>
-    <EXPORT_MASK_SUCCESS>Mask and area attributes exported successfully.</EXPORT_MASK_SUCCESS>
-    <MULTI_CONNECTION>Multi-connected regions are found, and the largest singly connected subset has been selected</MULTI_CONNECTION>
-    <EXCLUSIVE_WARNING>You are currently running in distributed mode. Exclusive mode may cause MATLAB to crash. Continue?</EXCLUSIVE_WARNING>
-    <LOW_MEMORY_WARNING>The available memory is too small and the exclusive mode cannot be enabled.</LOW_MEMORY_WARNING>
-    <DEVELOPING>Developing…</DEVELOPING>
+    <USUAL>Usual</USUAL>
+    <VARIABLE_LOADED>Variable loaded</VARIABLE_LOADED>
+    <VERTICAL>Vertical</VERTICAL>
+    <VERTICAL_FLIP>Vertical Flip</VERTICAL_FLIP>
+    <VIDEO_DATA>Video Data</VIDEO_DATA>
+    <VOLUME>Volume</VOLUME>
+    <VOXEL>Voxel</VOXEL>
+    <WAITING>waiting</WAITING>
+    <WARNING>Warning</WARNING>
+    <WELCOME_TO_Reg3D_App>Welcome to Reg3D App</WELCOME_TO_Reg3D_App>
+    <WHITE>White</WHITE>
+    <WIDTH>Width</WIDTH>
+    <WORKSHEET>Worksheet</WORKSHEET>
+    <X_DIRECTION_LENGTH>X Scale</X_DIRECTION_LENGTH>
+    <X_DIRECTION_RESOLUTION>X Resolution</X_DIRECTION_RESOLUTION>
+    <XY_CROPPED>XY cropping complete</XY_CROPPED>
+    <Y_DIRECTION_LENGTH>Y Scale</Y_DIRECTION_LENGTH>
+    <Y_DIRECTION_RESOLUTION>Y Resolution</Y_DIRECTION_RESOLUTION>
+    <YELLOW>Yellow</YELLOW>
+    <YES>Yes</YES>
+    <Z_CROPPED>Z cropping complete</Z_CROPPED>
+    <Z_OPTIMAL_TOL>Z Optimal Tolerance</Z_OPTIMAL_TOL>
+    <Z_PROJECTION>Z Projection</Z_PROJECTION>
 </struct>

@@ -162,35 +162,35 @@ V1.6        Sika deer           梅花鹿
 
 ====================Important Architecture Update =========================
 V2.0        Wukong              孙悟空
-  |- V2.0.0     2024/02/18   12:00
+  |- V2.0.0     2024/02/18   18:00
   |     |- [Update] new framework: Wukong kernel for the modern app
-  |     |- [Update] new powerful task manager introduced
+  |     |- [Update] TODO: new powerful task manager introduced
   |     |- [Update] new powerful distributed file systeM
   |     |- [Update] new registration setting subpanel
   |     |- [Update] new two channels global registration method introduced
   |     |- [Update] new two channels local registration method introduced
   |     |- [Update] new two channels manually global registration method introduced
+  |     |- [Update] TODO: improve long-term global registration
+  |     |- [Update] TODO: improve long-term local registration
   |     |- [Update] remove nearest interpolation in registration
   |     |- [Update] remove "similarity" two changels registration mode
   |     |- [Update] remove tifffile(python) support for compatibility
+  |     |- [Update] remove three languages support
+  |     |- [Update] remove 'mix' mode when do normal registration
   |     |- [Update] optimize app user update operation
   |     |- [Update] add mouse roller z slice controlling
   |     |- [Update] new progress bar on main panel
-  |     |- [Update] remove 'mix' mode when do normal registration
   |     |- [Update] registration is real time aborted/ real time stored
   |     |- [Update] change merge channel to fixed-aligned (old: raw-aligned)
   |     |- [Update] template defination auto update (after <CropT> operation)
-  |     |- [Update] TODO: package the scalebar as object
   |     |- [Fix Bugs] fix the registration frames number lost synchronize bug
   |     |- [Fix Bugs] fix one channel registration(manual) output
   |     |- [Fix Bugs] fix mode 'affine' can not run
   |     |- [Fix Bugs] fix mouse cursor out of boundary at some situation
-  |     |- [Fix Bugs] TODO: fix crop operation memory allocated bug
   |- V2.0.1     2024/
   |     |- [Update] TODO: registration history manager
-  |     |- [Update] TODO: long-term registration setting panel redesign
   |     |- [Fix Bugs] TODO: fix long-term registration out of memory when key frames is too much
-  |     |- [Fix Bugs]
+  |     |- [Fix Bugs] TODO: fix crop operation memory over allocated bug
   |- V2.0.2     2024/
   |     |- [Update] TODO: memory mapping low level optimal(mpimgs class design)
   |     |- [Update] TODO: new movie exporter object for better movie export operation
