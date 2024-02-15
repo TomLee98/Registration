@@ -161,7 +161,7 @@ V1.6        Sika deer           梅花鹿
   #     #
 
 ====================Important Architecture Update =========================
-V2.0        Wukong              孙悟空
+V2.0        Wukong              悟空
   |- V2.0.0     2024/02/18   18:00
   |     |- [Update] new framework: Wukong kernel for the modern app
   |     |- [Update] TODO: new powerful task manager introduced
@@ -183,6 +183,7 @@ V2.0        Wukong              孙悟空
   |     |- [Update] registration is real time aborted/ real time stored
   |     |- [Update] change merge channel to fixed-aligned (old: raw-aligned)
   |     |- [Update] template defination auto update (after <CropT> operation)
+  |     |- [Update] new help document for version 2.0.0
   |     |- [Fix Bugs] fix the registration frames number lost synchronize bug
   |     |- [Fix Bugs] fix one channel registration(manual) output
   |     |- [Fix Bugs] fix mode 'affine' can not run
