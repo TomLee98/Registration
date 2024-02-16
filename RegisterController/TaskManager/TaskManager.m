@@ -26,9 +26,7 @@ classdef TaskManager < handle
         sfolder         % 1-by-1 string, rcf pool folder
         nw_protected    % 1-by-1 double, the number of workers protected
         caller          % 1-by-1 Register obejct
-    end
 
-    properties(SetAccess=immutable, GetAccess=private, Hidden)
         PSMWN           % platform supported maximum workers number
                         % each user will get the same number
     end
@@ -37,25 +35,18 @@ classdef TaskManager < handle
         Task        % variable, get, auto update
     end
 
-    properties(GetAccess=?Register, Dependent)
+    properties(GetAccess=?RegisterController, Dependent)
         SysInfo     % variable, get, manual update(intermittently require)
     end
 
     methods
-        function this = TaskManager(volopt_, regopt_, movtmpl_, regfrs_)
+        function this = TaskManager(regopt_)
             %TASKMANAGER A constructor
             arguments
-                volopt_     (1,:)  table            % the movie information table
                 regopt_     (1,1)  regopt           % the registration options struct
-                movtmpl_    (1,1)  regtmpl          
-                regfrs_     (1,:)  double {mustBePositive, mustBeInteger}
             end
 
-            this.volopts = volopt_;
             this.regopts = regopt_;
-            this.regfrs = regfrs_;
-            this.movtmpl = movtmpl_;
-            this.PSMWN = GetWorkersMaxN(this.regopts);
             this.nworker_old = 0;
             this.nworker_cur = 0;
             this.regedfn = 0;
@@ -66,44 +57,87 @@ classdef TaskManager < handle
         end
 
         function r = get.SysInfo(this)
+            % before setup:
+            if isempty(this.rcfobj) || ~isvalid(this.rcfobj)
+                % return empty table
+                r = CreateTaskTable();
+                return;
+            end
+
+            % after setup:
             if this.distrib == true
                 rcfpool = this.rcfobj.readall();
 
-                r = table('Size', [numel(rcfpool), 6], ...
-                    'VariableTypes', repmat({'string'},1,6), ...
-                    'VariableNames',{'user','status','progress','time_used','n_cpu','n_gpu'});
+                r = CreateTaskTable(numel(rcfpool));
+
                 if numel(rcfpool) == 0
                     return;
                 end
 
                 % arrange by progress, sort as descend
                 progress_ = nan(numel(rcfpool), 1);
-                for n = 1:numel(rcfpool)
-                    progress_(n) = str2double(rcfpool(n).progress(1));
-                end
+
+                for n = 1:numel(rcfpool), progress_(n) = rcfpool(n).progress; end
+
                 [~, idx] = sort(progress_, "descend");
+
                 for n = 1:numel(rcfpool)
                     m = idx(n);
-                    time_used = string(datetime()-datetime(rcfpool(m).submit_time(1)));
-                    r(n,:) = {rcfpool(m).user_id(1), rcfpool(m).status(1), rcfpool(m).progress(1), ...
-                        time_used, rcfpool(m).nworkers(1), rcfpool(m).nworkers_max(1)};
+                    time_used = string(datetime()-datetime(rcfpool(m).submit_time));
+                    if rcfpool(m).resource == "cpu"
+                        r(n,:) = {rcfpool(m).user_id, rcfpool(m).status, ...
+                            rcfpool(m).progress, time_used, rcfpool(m).nworkers, 0};
+                    elseif rcfpool(m).resource == "cpu|gpu"
+                        r(n,:) = {rcfpool(m).user_id, rcfpool(m).status, ...
+                            rcfpool(m).progress, time_used, 0, rcfpool(m).nworkers};
+                    end
                 end
             else
-
+                r = CreateTaskTable(1);
+                r.user = this.rcfobj.UserId;
+                r.status = this.rcfobj.Status;
+                r.progress = this.rcfobj.Progress;
+                r.time_used = string(datetime()-datetime(this.rcfobj.SubmitTime));
+                % 'cpu' and 'cpu|gpu' can't be enabled at the same time 
+                if this.rcfobj.Resource == "cpu"
+                    r.n_cpu = this.rcfobj.NWorkers;
+                    r.n_gpu = 0;
+                elseif this.rcfobj.Resource == "cpu|gpu"
+                    r.n_cpu = 0;
+                    r.n_gpu = this.rcfobj.NWorkers;
+                end
             end
         end
+    end
 
-        function setup(this, nwprotect_, distrib_, caller_, debug_)
+    methods(Access=public)
+        function setup(this, regopt_, volopt_, movtmpl_, regfrs_, nwprotect_, distrib_, caller_, debug_)
             arguments
                 this
-                nwprotect_  (1,1)   double {mustBeNonnegative, mustBeInteger}
+                regopt_     (1,1)   regopt           % the registration options struct
+                volopt_     (1,:)   table            % the movie information table
+                movtmpl_    (1,1)   regtmpl          
+                regfrs_     (1,:)   double {mustBePositive, mustBeInteger}
+                nwprotect_  (1,2)   double {mustBeNonnegative, mustBeInteger}
                 distrib_    (1,1)   logical
                 caller_     (1,1)   Register
                 debug_      (1,1)   logical = false
             end
-            this.nw_protected = nwprotect_;
+
+            this.regopts = regopt_;
+            [this.PSMWN, hardsrc] = ParseWorkersNumber(this.regopts);
+            this.volopts = volopt_;
+            this.regfrs = regfrs_;
+            this.movtmpl = movtmpl_;
             this.distrib = distrib_;
             this.caller = caller_;
+            % this.nworker_old = 0;
+            % this.nworker_cur = 0;
+            % this.regedfn = 0;
+            this.nw_protected = ...
+                ParseProtectedWorkersNumber(this.regopts.Algorithm, ...
+                                            hardsrc, ...
+                                            nwprotect_);
 
             % link to rcf pool folder
             this.add_rcfpool();
@@ -112,7 +146,7 @@ classdef TaskManager < handle
             % here may hang out when no resource left
             % talk to will update workers number
             this.talk_to_rcfpool();
-            
+
             % NOTE: update_taskqueue must running before update_parpool
             % update the task queue(depend on workers number)
             this.update_taskqueue();
@@ -130,13 +164,13 @@ classdef TaskManager < handle
 
         function update(this, status_, debug_)
             % This function will update task queue:
-            % if status is 0, set the task_cur status to "Done", enqueue 
+            % if status is 0, set the task_cur status to "Done", enqueue
             % task_cur (back to queue end)
             % if possible, dequeue front task of queue, if status is
             % "Await", update task_cur, else set task_cur to empty
             arguments
                 this
-                status_ (1,1)   double {mustBeInteger}
+                status_     (1,1)   double {mustBeInteger}
                 debug_      (1,1)   logical = false
             end
 
@@ -171,12 +205,26 @@ classdef TaskManager < handle
             end
         end
 
-        function delete(this)
+        function clear(this)
             % free parpool resource
             delete(this.parobj);
 
             % remove rcf
-            delete(this.rcfobj);
+            this.rcfobj = [];
+
+            % clear task queue
+            this.taskqueue = [];
+
+            % reset the counter
+            this.nworker_old = 0;
+            this.nworker_cur = 0;
+            this.regedfn = 0;
+        end
+
+        function delete(this)
+            this.clear();
+            
+            % ~
         end
     end
 
@@ -253,7 +301,7 @@ classdef TaskManager < handle
                         % new allocating branch
                         this.rcfobj.Status = "Run";
                         this.nworker_cur = ...
-                            this.rcfobj.NWorkers - this.nw_protected;
+                            min(this.rcfobj.NWorkers, this.PSMWN - this.nw_protected);
                         this.rcfobj.write();
                     elseif this.rcfobj.Status == "Run"
                         % continue running branch
@@ -262,14 +310,14 @@ classdef TaskManager < handle
                             % release some resource
                             this.rcfobj.update_resource("RELEASE");
                             this.nworker_cur = ...
-                                this.rcfobj.NWorkers - this.nw_protected;
+                                min(this.rcfobj.NWorkers, this.PSMWN - this.nw_protected);
 
                             this.rcfobj.write();
                         else
                             % try to recycle some resources
                             this.rcfobj.update_resource("RECYCLE");
                             this.nworker_cur = ...
-                                max(this.rcfobj.NWorkers-this.nw_protected, 1);
+                                min(this.rcfobj.NWorkers, this.PSMWN - this.nw_protected);
 
                             this.rcfobj.write();
                         end
@@ -281,7 +329,7 @@ classdef TaskManager < handle
             else
                 % exclusive mode
                 % sfolder must be [], do nothing except update nworkers_cur
-                this.nworker_cur = max(this.PSMWN-this.nw_protected, 1);
+                this.nworker_cur = max(this.PSMWN - this.nw_protected, 1);
 
                 % update local rcf
                 this.rcfobj = regrcf(this.sfolder, this.volopts, this.regopts, this.regfrs);
@@ -359,24 +407,4 @@ classdef TaskManager < handle
             end
         end
     end
-end
-
-function r = GetWorkersMaxN(regopt_)
-if regopt_.Algorithm == "MANREG"
-    r = 1;
-else
-    switch regopt_.Mode
-        case "global"
-            r = GetCPUWorkersMaxN([], []);
-        case "local"
-            switch regopt_.Options.Hardware
-                case "cpu"
-                    r = GetCPUWorkersMaxN([], []);
-                case "cpu|gpu"
-                    r = GetGPUWorkersMaxN();
-                otherwise
-            end
-        otherwise
-    end
-end
 end

@@ -53,6 +53,7 @@
     <CONTROL_PANEL>Control Panel</CONTROL_PANEL>
     <CONTROL_REGISTRATION_RUNNING>Controlling registration procedure execution</CONTROL_REGISTRATION_RUNNING>
     <COVERAGE_OPERATION>Based on the current registration, the operation is irreversible, continue?</COVERAGE_OPERATION>
+    <CPU_TIME>CPU Time</CPU_TIME>
     <CROP_FRAME>Crop Frame</CROP_FRAME>
     <CROP_VOLUME>Crop Volume</CROP_VOLUME>
     <CROP_XY>Crop XY</CROP_XY>
@@ -118,6 +119,7 @@
     <GLOBAL>Global</GLOBAL>
     <GLOBAL_ERROR_LIMIT>Global Error Limit</GLOBAL_ERROR_LIMIT>
     <GLOBAL_REGISTRATION>Global Registration</GLOBAL_REGISTRATION>
+    <GPU_TIME>GPU Time</GPU_TIME>
     <GREEN>Green</GREEN>
     <GREEN_CHANNEL>Green Channel</GREEN_CHANNEL>
     <GREEN_MAGENTA>Green-Magenta</GREEN_MAGENTA>
@@ -131,6 +133,7 @@
     <HELP_UPDATE>Help and Updates</HELP_UPDATE>
     <HIGH>High</HIGH>
     <HISTORY_MANAGER>History Manager</HISTORY_MANAGER>
+    <HISTORY_RECORD>History Record</HISTORY_RECORD>
     <HORIZONTAL>Horizontal</HORIZONTAL>
     <HORIZONTAL_FLIP>Horizontal Flip</HORIZONTAL_FLIP>
     <IMAGE>Images</IMAGE>
@@ -202,6 +205,8 @@
     <MEDIAN_FILTER>Median Filter</MEDIAN_FILTER>
     <MEDIAN_Z_PROJECTION>Median Z Projection</MEDIAN_Z_PROJECTION>
     <MEDIUM>Medium</MEDIUM>
+    <MEMORY>Memory</MEMORY>
+    <MEMORY_TIME>Memory Time</MEMORY_TIME>
     <MERGE_SOURCE>Merge Sources(R-A)</MERGE_SOURCE>
     <METADATA>Metadata</METADATA>
     <MGLOBAL>Global(Manually)</MGLOBAL>
@@ -221,6 +226,8 @@
     <NO>No</NO>
     <NONE>None</NONE>
     <NONUNIFORM>Nonuniform</NONUNIFORM>
+    <NPC_CPU>Protected #cores(CPU)</NPC_CPU>
+    <NPC_GPU>Protected #cores(GPU)</NPC_GPU>
     <NUM_MAX>Maximum</NUM_MAX>
     <OFF>Off</OFF>
     <OFFLINE>Offline</OFFLINE>
@@ -237,6 +244,7 @@
     <PARAMETER>Parameter</PARAMETER>
     <PASSWORD>Password</PASSWORD>
     <PERCENTILE>Percentile</PERCENTILE>
+    <PERFORMANCE>Performance</PERFORMANCE>
     <PERFORM_AUTO_REGISTRATION>Perform automatic registration</PERFORM_AUTO_REGISTRATION>
     <PERFORM_LONGTERM_REGISTRATION>Perform long-term registration</PERFORM_LONGTERM_REGISTRATION>
     <PERIMETER>Perimeter</PERIMETER>
@@ -252,6 +260,7 @@
     <PREPROCESSING>Preprocessing</PREPROCESSING>
     <PREVIEW>Preview</PREVIEW>
     <PRIVACY>privacy</PRIVACY>
+    <PROGRESS>Progress</PROGRESS>
     <PROGRESS_BAR>Progress bar</PROGRESS_BAR>
     <PROJECTION>Projection</PROJECTION>
     <PRP>Problem reporting procedure:</PRP>
@@ -261,6 +270,7 @@
     <RATIO>Ratio</RATIO>
     <RAW>Raw</RAW>
     <READ_CONFIGURATION_FILE>Read configuration file</READ_CONFIGURATION_FILE>
+    <REAL_TIME_OVERVIEW>Real Time Overview</REAL_TIME_OVERVIEW>
     <RECOVERED_BACKGROUND>Background recovered.</RECOVERED_BACKGROUND>
     <RECOVERY>Recover</RECOVERY>
     <RECTANGLE>Rectangle</RECTANGLE>
@@ -333,6 +343,7 @@
     <SPACE>Space</SPACE>
     <SPHERICITY>Sphericity</SPHERICITY>
     <SQUARE_HAT>Square Hat</SQUARE_HAT>
+    <STATUS>Status</STATUS>
     <STRUCTURED_BACKGROUND>Please enter the background on the location channel:</STRUCTURED_BACKGROUND>
     <SUB_APP>Sub Application</SUB_APP>
     <SUBMIT>Submit</SUBMIT>
@@ -348,7 +359,8 @@
     <TERMINATE_REGISTRATION>Forced termination of registration</TERMINATE_REGISTRATION>
     <TEXT_FILE>Text file</TEXT_FILE>
     <THICKNESS_RANGE>Please enter the thickness range (layer):</THICKNESS_RANGE>
-    <TIME_COST>Time cost(Seconds):</TIME_COST>
+    <TIME_COST>Time Cost</TIME_COST>
+    <TIME_COST_SEC>Time cost(Seconds):</TIME_COST_SEC>
     <TIME_EXPORT_SUCCESS>Time export successful</TIME_EXPORT_SUCCESS>
     <TIME_FINE_TUNING>Time fine-tuning</TIME_FINE_TUNING>
     <TIME_FRAME>Time(Frame)</TIME_FRAME>
@@ -375,6 +387,7 @@
     <URGENT_EMAIL>Urgent questions will be sent to the maintainer's email. Continue?</URGENT_EMAIL>
     <URGENT_SUBJECT>Urgent exception: Reg3D App@SiLab, IBP, China</URGENT_SUBJECT>
     <URGENT_TIPS>Serious anomalies that may induce qualitative misjudgments of data</URGENT_TIPS>
+    <USER>User</USER>
     <USERNAME>User Name</USERNAME>
     <USUAL>Usual</USUAL>
     <VARIABLE_LOADED>Variable loaded</VARIABLE_LOADED>
