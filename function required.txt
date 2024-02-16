@@ -162,7 +162,7 @@ V1.6        Sika deer           梅花鹿
 
 ====================Important Architecture Update =========================
 V2.0        Wukong              悟空
-  |- V2.0.0     2024/02/18   18:00
+  |- V2.0.0     2024/02/18   22:00
   |     |- [Update] new framework: Wukong kernel for the modern app
   |     |- [Update] new powerful task manager introduced
   |     |- [Update] new powerful distributed file system
@@ -190,11 +190,13 @@ V2.0        Wukong              悟空
   |- V2.0.1     2024/
   |     |- [Update] TODO: improve long-term global registration to large deformation
   |     |- [Update] TODO: improve long-term local registration to large deformation
+  |     |- [Update] TODO: new task manager function introduced
   |     |- [Fix Bugs] TODO: fix long-term registration out of memory when key frames is too much
   |     |- [Fix Bugs] TODO: fix crop operation memory over allocated bug
   |     |- [Fix Bugs] TODO: fix evaluation memory over allocated bug
   |- V2.0.2     2024/
   |     |- [Update] TODO: registration history manager
+  |     |- [Update] TODO: new task manager function introduced
   |     |- [Update] TODO: memory mapping low level optimal(mpimgs class design)
   |     |- [Update] TODO:new one channel global registration method introduced
   |     |- [Update] TODO:new one channel local registration method introduced
