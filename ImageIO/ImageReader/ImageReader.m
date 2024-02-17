@@ -25,7 +25,7 @@ classdef ImageReader < handle
         srcfile     (1,1)   string = ""
         state       (1,1)   string  {mustBeMember(state, ["on", "off"])} = "off"
     end
-                                                    
+
     methods
         function this = ImageReader(caller_, mapflag_)
             %IMAGELOADER A Constructor
@@ -79,6 +79,8 @@ classdef ImageReader < handle
                 else
                     this.srcfile = string(fullfile(path, dstfile));
                 end
+            else
+                this.srcfile = fname;
             end
 
             [~, ~, ext] = fileparts(this.srcfile);

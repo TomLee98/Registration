@@ -2,21 +2,31 @@ classdef ImageWriter < handle
     %IMAGEWRITER This class is an image writer defination, which  support
     %mutiple image format writting
     
-    properties
-        Property1
+    properties(Access=private, Hidden)
+        caller
+        file
     end
     
     methods
-        function obj = ImageWriter(inputArg1,inputArg2)
-            %IMAGEWRITER 构造此类的实例
-            %   此处显示详细说明
-            obj.Property1 = inputArg1 + inputArg2;
+        function this = ImageWriter(caller_, file_)
+            arguments
+                caller_ (1,1)   Register
+                file_   (1,1)   string
+            end
+
+            this.caller = caller_;
+            this.file = file_;
         end
         
-        function outputArg = method1(obj,inputArg)
-            %METHOD1 此处显示有关此方法的摘要
-            %   此处显示详细说明
-            outputArg = obj.Property1 + inputArg;
+        function outputArg = save(this, mov, metadata, block)
+            arguments
+                this
+                mov         (1,1)   regmov
+                metadata    (1,1)   struct
+                block       (1,1)   double {mustBePositive, mustBeInteger} = 50
+            end
+            
+            
         end
     end
 end

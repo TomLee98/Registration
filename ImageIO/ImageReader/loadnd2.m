@@ -79,9 +79,9 @@ if nargout == 2
     if ispc()
         try
             % only PC support fast loading
-            data = nd2Open3DVolume_reg(file, tspan);
+            data = nd2open_reg(file, tspan);
         catch
-            % no matter exception, call bfOpen3CVolume instead
+            % no matter exception, call bfopen_reg instead
             if opts.dimOrder(end) == "T"
                 sspan = [(tspan(1)-1)*opts.slices*opts.channels+1, ...
                     tspan(2)*opts.slices*opts.channels];
@@ -89,7 +89,11 @@ if nargout == 2
             end
         end
     elseif isunix()
-        data = bfOpen3DVolume_reg(file, tspan);
+        if opts.dimOrder(end) == "T"
+            sspan = [(tspan(1)-1)*opts.slices*opts.channels+1, ...
+                tspan(2)*opts.slices*opts.channels];
+            data = bfopen_reg(file, sspan);
+        end
     end
 
     % reconstruct the image stack
@@ -100,7 +104,7 @@ end
 
 end
 
-function mov = nd2Open3DVolume_reg(file, tspan)
+function mov = nd2open_reg(file, tspan)
 % use nd2 library load total volumes
 [FilePointer, ImagePointer, ImageReadOut] = ND2Open(file);
 % mov is a c-by-1 cell, c for channels number

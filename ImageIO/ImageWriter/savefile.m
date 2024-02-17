@@ -1,5 +1,5 @@
 function [status, path] = savefile(I,filepath,varargin)
-%SAVETIFF This function save 4-D or 5-D matrix as selected file format,
+%SAVEFILE This function save 4-D or 5-D matrix as selected file format,
 % support tiff, mat(ndmatrix)
 % input:
 %   - I: the 4-D matrix, default order is X,Y,Z,T, single/uint16

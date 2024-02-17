@@ -93,7 +93,8 @@
     <EXPORT_CONFIGURATION>Export Configuration</EXPORT_CONFIGURATION>
     <EXPORT_GEOMETRIC_TRANSFORM>Export Geometric Transformation</EXPORT_GEOMETRIC_TRANSFORM>
     <EXPORT_IMAGES>Export Images Stack</EXPORT_IMAGES>
-    <EXPORTING>Exporting...</EXPORTING>
+    <EXPORTING_IMAGE>Exporting images...</EXPORTING_IMAGE>
+    <EXPORTING_MOVIE>Exporting movie…</EXPORTING_MOVIE>
     <EXPORT_MASK>Export mask</EXPORT_MASK>
     <EXPORT_MASK_SUCCESS>Mask and area attributes exported successfully.</EXPORT_MASK_SUCCESS>
     <EXPORT_MOVIE>Export Movie</EXPORT_MOVIE>

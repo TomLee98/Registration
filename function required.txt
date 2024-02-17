@@ -187,6 +187,8 @@ V2.0        Wukong              悟空
   |     |- [Fix Bugs] fix one channel registration(manual) output
   |     |- [Fix Bugs] fix mode 'affine' can not run
   |     |- [Fix Bugs] fix mouse cursor out of boundary at some situation
+  |     |- [Note] long-term(large deformation) mode is offline
+  |     |- [Note] one channel registration is offline
   |- V2.0.1     2024/
   |     |- [Update] TODO: improve long-term global registration to large deformation
   |     |- [Update] TODO: improve long-term local registration to large deformation
@@ -203,5 +205,6 @@ V2.0        Wukong              悟空
   |     |- [Update] TODO:new one channel manually global registration method introduced
   |     |- [Fix Bugs] TODO: cropped nd2 files with bad properties
   |- V2.0.3     2024/
-  |     |- [Update] TODO: new movie exporter object for better movie export operation
+  |     |- [Update] TODO: new movie exporter object for better movie export operation(parpool)
+  |     |- [Update] TODO: inregdemons run in thread parpool
   |     |- [Update] TODO: registration by using deep learning algorithm
