@@ -1,10 +1,7 @@
-function [result] = bfopen(id, srange, trange, mode, varargin)
+function [result] = bfopen(id, varargin)
 % Open microscopy images using Bio-Formats.
 %
 % SYNOPSIS r = bfopen(id)
-%          r = bfopen(id,srange)
-%          r = bfopen(id,srange,trange)
-%          r = bfopen(id,srange,trange,mode)
 %          r = bfopen(id, x, y, w, h)
 %
 % Input
@@ -21,15 +18,6 @@ function [result] = bfopen(id, srange, trange, mode, varargin)
 %
 %    h - (Optional) A scalar giving the height of the tile.
 %    Set to the height of the plane by default.
-%
-%    srange - (Optional) A positive integer array with series
-%    need to be loaded
-%
-%    trange - (Optional) A positive integer array with time points series
-%    need to be loaded
-
-%    mode - (Optional) A string for given the loading mode, can be "normal"
-%    or "mini"(without loading colormap)
 %
 % Output
 %
@@ -62,24 +50,32 @@ function [result] = bfopen(id, srange, trange, mode, varargin)
 
 % OME Bio-Formats package for reading and converting biological file formats.
 %
-% Copyright (C) 2007 - 2017 Open Microscopy Environment:
+% Copyright (C) 2007 - 2021 Open Microscopy Environment:
 %   - Board of Regents of the University of Wisconsin-Madison
 %   - Glencoe Software, Inc.
 %   - University of Dundee
 %
-% This program is free software: you can redistribute it and/or modify
-% it under the terms of the GNU General Public License as
-% published by the Free Software Foundation, either version 2 of the
-% License, or (at your option) any later version.
+% Redistribution and use in source and binary forms, with or without
+% modification, are permitted provided that the following conditions are met:
 %
-% This program is distributed in the hope that it will be useful,
-% but WITHOUT ANY WARRANTY; without even the implied warranty of
-% MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-% GNU General Public License for more details.
+% 1. Redistributions of source code must retain the above copyright
+%    notice, this list of conditions and the following disclaimer.
 %
-% You should have received a copy of the GNU General Public License along
-% with this program; if not, write to the Free Software Foundation, Inc.,
-% 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+% 2. Redistributions in binary form must reproduce the above copyright
+%    notice, this list of conditions and the following disclaimer in
+%    the documentation and/or other materials provided with the distribution.
+%
+% THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+% AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+% IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+% ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+% LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+% CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+% SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+% INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+% CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+% ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+% POSSIBILITY OF SUCH DAMAGE.
 
 % -- Configuration - customize this section to your liking --
 
@@ -102,9 +98,6 @@ autoloadBioFormats = 1;
 % named files into a single dataset based on file numbering.
 stitchFiles = 0;
 
-% To work with compressed Evotec Flex, fill in your LuraWave license code.
-%lurawaveLicense = 'xxxxxx-xxxxxxx';
-
 % -- Main function - no need to edit anything past this point --
 
 % load the Bio-Formats library into the MATLAB environment
@@ -126,37 +119,25 @@ bfInitLogging();
 r = bfGetReader(id, stitchFiles);
 
 % Test plane size
-if nargin >=5
+if nargin >=4
     planeSize = javaMethod('getPlaneSize', 'loci.formats.FormatTools', ...
                            r, varargin{3}, varargin{4});
 else
     planeSize = javaMethod('getPlaneSize', 'loci.formats.FormatTools', r);
 end
 
-if planeSize/(1024)^3 >= 2
+if planeSize/(1024)^3 >= 2,
     error(['Image plane too large. Only 2GB of data can be extracted '...
         'at one time. You can workaround the problem by opening '...
         'the plane in tiles.']);
 end
 
 numSeries = r.getSeriesCount();
-if exist("srange","var") && ~isempty(srange)
-    c = ismember(srange,1:numSeries);
-    if ~all(c)
-        warning('Invalid series, intersect will be loaded.');
-    end
-else
-    srange = 1:numSeries;
-end
-
 result = cell(numSeries, 2);
 
 globalMetadata = r.getGlobalMetadata();
 
-bar = waitbar(0,"Start reading data...");
-slices_loaded = 0;
-
-for s = srange
+for s = 1:numSeries
     fprintf('Reading series #%d', s);
     r.setSeries(s - 1);
     pixelType = r.getPixelType();
@@ -164,49 +145,37 @@ for s = srange
                      pixelType);
     bppMax = power(2, bpp * 8);
     numImages = r.getImageCount();
-
-    if ~exist("trange","var") || isempty(trange) ...
-            || ~isPositiveIntegerValuedNumeric(trange)
-        trange = 1:numImages;
-    else
-        trange = intersect(trange,1:numImages);
-    end
-
     imageList = cell(numImages, 2);
-    colorMaps = cell(numel(srange), numImages);
-
-    % select the mode for normal or mini loading
-    switch mode
-        case "normal"
-            warning_state = warning ('off');
-            for i = trange
-                % retrieve color map data
-                if bpp == 1
-                    colorMaps{s, i} = r.get8BitLookupTable()';
-                else
-                    colorMaps{s, i} = r.get16BitLookupTable()';
-                end
-                if ~isempty(colorMaps{s, i})
-                    newMap = single(colorMaps{s, i});
-                    newMap(newMap < 0) = newMap(newMap < 0) + bppMax;
-                    colorMaps{s, i} = newMap / (bppMax - 1);
-                end
-            end
-            warning (warning_state);
-        case "mini"
-            % skip the colormap loading
-        otherwise
-            warning("Please check the loading mode.(mini as default)");
-    end
-    
-    for i = trange
+    colorMaps = cell(numImages);
+    for i = 1:numImages
+        if mod(i, 72) == 1
+            fprintf('\n    ');
+        end
+        fprintf('.');
         arr = bfGetPlane(r, i, varargin{:});
+
+        % retrieve color map data
+        if bpp == 1
+            colorMaps{s, i} = r.get8BitLookupTable()';
+        else
+            colorMaps{s, i} = r.get16BitLookupTable()';
+        end
+
+        warning_state = warning ('off');
+        if ~isempty(colorMaps{s, i})
+            newMap = single(colorMaps{s, i});
+            newMap(newMap < 0) = newMap(newMap < 0) + bppMax;
+            colorMaps{s, i} = newMap / (bppMax - 1);
+        end
+        warning (warning_state);
+
+
         % build an informative title for our figure
         label = id;
         if numSeries > 1
             seriesName = char(r.getMetadataStore().getImageName(s - 1));
             if ~isempty(seriesName)
-                label = [label, '; ', seriesName]; %#ok<*AGROW> 
+                label = [label, '; ', seriesName];
             else
                 qs = int2str(s);
                 label = [label, '; series ', qs, '/', int2str(numSeries)];
@@ -245,13 +214,6 @@ for s = srange
         % save image plane and label into the list
         imageList{i, 1} = arr;
         imageList{i, 2} = label;
-
-        slices_loaded = slices_loaded + 1;
-
-        if mod(slices_loaded,100) == 1
-            procs = slices_loaded/(length(srange)*length(trange));
-            waitbar(procs,bar,['loading process: ',num2str(100*procs,'%.1f'),' %']);
-        end
     end
 
     % save images and metadata into our master series list
@@ -266,6 +228,4 @@ for s = srange
     result{s, 4} = r.getMetadataStore();
     fprintf('\n');
 end
-close(bar);
 r.close();
-end

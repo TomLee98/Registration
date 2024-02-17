@@ -72,9 +72,9 @@ ip = inputParser;
 ip.addRequired('I', @isnumeric);
 ip.addRequired('outputPath', @ischar);
 ip.addOptional('dimensionOrder', 'XYZCT', @(x) ismember(x, getDimensionOrders()));
-ip.addParameter('metadata', [], @(x) isa(x, 'loci.formats.ome.OMEXMLMetadata'));
-ip.addParameter('Compression', '',  @ischar);
-ip.addParameter('BigTiff', false , @islogical);
+ip.addParamValue('metadata', [], @(x) isa(x, 'loci.formats.ome.OMEXMLMetadata'));
+ip.addParamValue('Compression', '',  @ischar);
+ip.addParamValue('BigTiff', false , @islogical);
 ip.parse(varargin{:});
 
 % Create Writer object from output path
