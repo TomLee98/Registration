@@ -83,6 +83,8 @@ classdef ImageReader < handle
                 this.srcfile = fname;
             end
 
+            profile on
+
             [~, ~, ext] = fileparts(this.srcfile);
             % import the data loader setting
             rf = importdata("ImageIO\ImageReader\configuration.ini");
@@ -95,17 +97,22 @@ classdef ImageReader < handle
             % pfunc: [meta, data] = pfunc(file, tspan)
             pfunc = str2func(rf(upper(ext)==rf(:,1), 2));
 
+            % if turbo loading enabled
+            ft = ImageReader.fast_loading(ext);
+
             % load the metadata
-            info = pfunc(this.srcfile);
+            info = loadmeta_bf(this.srcfile);
             this.metadata = info.opts;
             this.t = info.rt;
 
             this.folder = mpimg.findtmpfolder(this.metadata, 0);
 
-            switch upper(ext)
-                case ".TIF"
-                    if(isPyReady())
+            switch lower(ext)
+                case ".tif"
+                    if ft == true
+                        % reset the block size
                         block = 1;
+                        % indeterminate progress bar
                         this.caller.SetProgressBar(0, true);
                     end
                 otherwise
@@ -129,7 +136,7 @@ classdef ImageReader < handle
                     end
                     tspan = [(k-1)*block+1, min(k*block, this.metadata.frames)];
                     % load piecewise data
-                    [~, img] = pfunc(this.srcfile, tspan);
+                    img = pfunc(this.srcfile, this.metadata, tspan, ft);
 
                     % write to disk file
                     fwrite(fid, img, "uint16");
@@ -164,7 +171,7 @@ classdef ImageReader < handle
                     end
                     tspan = [(k-1)*block+1, min(k*block, this.metadata.frames)];
                     % load piecewise data
-                    [~, img] = pfunc(this.srcfile, tspan);
+                    img = pfunc(this.srcfile, this.metadata, tspan, ft);
                     this.data(:,:,:,:,tspan(1):tspan(2)) = img;
                     this.caller.SetProgressBar(k/n_piece);
                 end
@@ -176,11 +183,36 @@ classdef ImageReader < handle
                     this.caller.SetProgressBar(0);
                 end
             end
+
+            profile viewer
         end
 
         function abort(this)
             % This function abort data loading
             this.state = "off";
+        end
+    end
+
+    methods(Static)
+        function tf = fast_loading(ext)
+            switch lower(ext)
+                case ".nd2"
+                    if ispc()
+                        try
+                            [~, ~] = loadlibrary('Nd2ReadSdk', 'Nd2ReadSdk.h');
+                            tf = true;
+                        catch
+                            tf = false;
+                        end
+                    else
+                        tf = false;
+                    end
+                case ".ims"
+                    tf = true;
+                case ".tif"
+                    tf = isPyReady();
+                otherwise
+            end
         end
     end
 end

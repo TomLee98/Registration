@@ -76,7 +76,7 @@ end
 
 volume = zeros(height, width, numImages, "uint"+string(8*bpp));
 
-r.setSeries(0);
+profile on
 
 for slice_k = 1:numImages
     volume(:,:,slice_k) = bfGetPlane(r, slice_k - 1 + sspan(1));
