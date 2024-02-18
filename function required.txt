@@ -162,7 +162,7 @@ V1.6        Sika deer           梅花鹿
 
 ====================Important Architecture Update =========================
 V2.0        Wukong              悟空
-  |- V2.0.0     2024/02/18   22:00
+  |- V2.0.0     2024/02/19   12:00
   |     |- [Update] new framework: Wukong kernel for the modern app
   |     |- [Update] new powerful task manager introduced
   |     |- [Update] new powerful distributed file system
@@ -177,11 +177,11 @@ V2.0        Wukong              悟空
   |     |- [Update] remove 'mix' mode when do normal registration
   |     |- [Update] optimize app user update operation
   |     |- [Update] add mouse roller z slice controlling
-  |     |- [Update] TODO: new progress bar on main panel for reading, writting and registration
+  |     |- [Update] new progress bar on main panel for reading, writting and registration
   |     |- [Update] registration is real time aborted/ real time stored
   |     |- [Update] change merge channel to fixed-aligned (old: raw-aligned)
   |     |- [Update] template defination auto update (after <CropT> operation)
-  |     |- [Update] TODO: append task viewer to bug reporter
+  |     |- [Update] append task viewer to bug reporter
   |     |- [Update] TODO: new help document for version 2.0.0
   |     |- [Fix Bugs] fix the registration frames number lost synchronize bug
   |     |- [Fix Bugs] fix one channel registration(manual) output

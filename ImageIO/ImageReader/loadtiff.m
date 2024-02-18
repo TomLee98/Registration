@@ -14,7 +14,7 @@ function data = loadtiff(file, opts, tspan, turbo)
 arguments
     file    (1,1)   string
     opts    (1,12)  table
-    tspan   (1,:)   double = []
+    tspan   (1,2)   double  {mustBePositive, mustBeInteger}
     turbo   (1,1)   logical = false
 end
 
@@ -28,13 +28,11 @@ else
         sspan = [(tspan(1)-1)*opts.slices*opts.channels+1, ...
             tspan(2)*opts.slices*opts.channels];
         data = bfopen_reg(file, sspan);
+    else
+        throw(MException("loadtiff:invalidDimension", ...
+            "Dimension <T> is not the last."));
     end
 end
-
-% reconstruct the image stack
-tmpopts = opts;
-tmpopts.frames = diff(tspan)+1;
-data = imreshape(data, tmpopts);
 
 end
 
@@ -53,7 +51,7 @@ catch ME
     throwAsCaller(ME);
 end
 % convert img from ndarray to matlab value
-mov = cast(mov.astype('single'), dataType);
+mov = cast(mov.astype('single'), "uint16");
 if ndims(mov) == 3
     mov = permute(mov, [2,3,1]);   % to (Y,X,Z)
 elseif ndims(mov) == 4
@@ -64,16 +62,4 @@ else
     throw(MException("imload:invalidImagesStackDimension", ...
         "Image stack dimension > 5 is not supported."));
 end
-end
-
-function mov = imreshape(mov, opts)
-bindingArray = ["Y",    "X",    "C",    "Z",    "T";...
-    "width","height","channels","slices","frames"];
-[~,Loc] = ismember(opts.dimOrder,bindingArray(1,:));
-mov = reshape(mov,...
-    opts.(bindingArray(2,Loc(1))),...
-    opts.(bindingArray(2,Loc(2))),...
-    opts.(bindingArray(2,Loc(3))),...
-    opts.(bindingArray(2,Loc(4))),...
-    opts.(bindingArray(2,Loc(5))));
 end

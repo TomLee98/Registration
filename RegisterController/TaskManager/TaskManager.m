@@ -86,17 +86,19 @@ classdef TaskManager < handle
                     time_used = string(datetime()-datetime(rcfpool(m).submit_time));
                     if rcfpool(m).resource == "cpu"
                         r(n,:) = {rcfpool(m).user_id, rcfpool(m).status, ...
-                            rcfpool(m).progress, time_used, rcfpool(m).nworkers, 0};
+                            sprintf("%.2f %%", rcfpool(m).progress*100), ...
+                            time_used, rcfpool(m).nworkers, 0};
                     elseif rcfpool(m).resource == "cpu|gpu"
                         r(n,:) = {rcfpool(m).user_id, rcfpool(m).status, ...
-                            rcfpool(m).progress, time_used, 0, rcfpool(m).nworkers};
+                            sprintf("%.2f %%", rcfpool(m).progress*100), ...
+                            time_used, 0, rcfpool(m).nworkers};
                     end
                 end
             else
                 r = CreateTaskTable(1);
                 r.user = this.rcfobj.UserId;
                 r.status = this.rcfobj.Status;
-                r.progress = this.rcfobj.Progress;
+                r.progress = sprintf("%.2f %%", this.rcfobj.Progress*100);
                 r.time_used = string(datetime()-datetime(this.rcfobj.SubmitTime));
                 % 'cpu' and 'cpu|gpu' can't be enabled at the same time 
                 if this.rcfobj.Resource == "cpu"
@@ -131,9 +133,6 @@ classdef TaskManager < handle
             this.movtmpl = movtmpl_;
             this.distrib = distrib_;
             this.caller = caller_;
-            % this.nworker_old = 0;
-            % this.nworker_cur = 0;
-            % this.regedfn = 0;
             this.nw_protected = ...
                 ParseProtectedWorkersNumber(this.regopts.Algorithm, ...
                                             hardsrc, ...
@@ -142,7 +141,7 @@ classdef TaskManager < handle
             % link to rcf pool folder
             this.add_rcfpool();
 
-            % communicate with rcf pool
+            % communicate with rcf pool, no matter exclusive or distributed
             % here may hang out when no resource left
             % talk to will update workers number
             this.talk_to_rcfpool();
@@ -195,6 +194,10 @@ classdef TaskManager < handle
 
                     % update parpool
                     this.update_parpool(debug_);
+                else
+                    % exclusive mode
+                    % update rcfobj locally
+                    % ~
                 end
 
                 % get new task from taskqueue
@@ -282,7 +285,7 @@ classdef TaskManager < handle
                     this.rcfobj.Status = "Run";
                     this.nworker_cur = this.rcfobj.NWorkers;
 
-                    % write to rcf pool
+                    % write to rcf pool at start
                     this.rcfobj.write();
                 else
                     % if current user is await, wait for resource release
@@ -329,10 +332,12 @@ classdef TaskManager < handle
             else
                 % exclusive mode
                 % sfolder must be [], do nothing except update nworkers_cur
-                this.nworker_cur = max(this.PSMWN - this.nw_protected, 1);
-
-                % update local rcf
                 this.rcfobj = regrcf(this.sfolder, this.volopts, this.regopts, this.regfrs);
+
+                this.rcfobj.NWorkersMax = max(this.PSMWN - this.nw_protected, 1);
+                this.rcfobj.NWorkers = this.rcfobj.NWorkersMax;
+                this.nworker_cur = this.rcfobj.NWorkers;
+                this.rcfobj.Status = "Run";
             end
         end
 

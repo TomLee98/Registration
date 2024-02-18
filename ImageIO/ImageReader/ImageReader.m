@@ -83,8 +83,6 @@ classdef ImageReader < handle
                 this.srcfile = fname;
             end
 
-            profile on
-
             [~, ~, ext] = fileparts(this.srcfile);
             % import the data loader setting
             rf = importdata("ImageIO\ImageReader\configuration.ini");
@@ -111,7 +109,7 @@ classdef ImageReader < handle
                 case ".tif"
                     if ft == true
                         % reset the block size
-                        block = 1;
+                        block = this.metadata.frames;
                         % indeterminate progress bar
                         this.caller.SetProgressBar(0, true);
                     end
@@ -138,6 +136,9 @@ classdef ImageReader < handle
                     % load piecewise data
                     img = pfunc(this.srcfile, this.metadata, tspan, ft);
 
+                    % reshape img to X,Y,C,Z,T order
+                    img = ImageReader.imreshape(img, info.opts);
+
                     % write to disk file
                     fwrite(fid, img, "uint16");
 
@@ -162,6 +163,7 @@ classdef ImageReader < handle
                     delete(tmpfile);
                 end
             else
+                % shape as X,Y,C,Z,T
                 this.data = zeros([this.metadata.height, this.metadata.width, ...
                         this.metadata.channels, this.metadata.slices, ...
                         this.metadata.frames], "uint16");
@@ -172,6 +174,10 @@ classdef ImageReader < handle
                     tspan = [(k-1)*block+1, min(k*block, this.metadata.frames)];
                     % load piecewise data
                     img = pfunc(this.srcfile, this.metadata, tspan, ft);
+
+                    % reshape img to X,Y,C,Z,T order
+                    img = ImageReader.imreshape(img, info.opts);
+
                     this.data(:,:,:,:,tspan(1):tspan(2)) = img;
                     this.caller.SetProgressBar(k/n_piece);
                 end
@@ -184,7 +190,11 @@ classdef ImageReader < handle
                 end
             end
 
-            profile viewer
+            % normalized dimention order
+            this.metadata.dimOrder = ["X","Y","C","Z","T"];
+
+            % turn off loader
+            this.state = "off";
         end
 
         function abort(this)
@@ -199,7 +209,9 @@ classdef ImageReader < handle
                 case ".nd2"
                     if ispc()
                         try
-                            [~, ~] = loadlibrary('Nd2ReadSdk', 'Nd2ReadSdk.h');
+                            if ~libisloaded('Nd2ReadSdk')
+                                [~, ~] = loadlibrary('Nd2ReadSdk', 'Nd2ReadSdk.h');
+                            end
                             tf = true;
                         catch
                             tf = false;
@@ -213,6 +225,14 @@ classdef ImageReader < handle
                     tf = isPyReady();
                 otherwise
             end
+        end
+
+        function img = imreshape(img, opts)
+            % reshape to X,Y,C,Z,T
+            frames = numel(img) ...
+                /(opts.height*opts.width*opts.channels*opts.slices);
+            img = reshape(img, opts.height, opts.width, opts.channels, ...
+                opts.slices, frames);
         end
     end
 end

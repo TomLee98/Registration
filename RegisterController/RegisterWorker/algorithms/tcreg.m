@@ -194,7 +194,9 @@ parfor m = 1:numel(regfrs)
         max_itern, "AccumulatedFieldSmoothing", afs,...
         "PyramidLevels", vpl, "DisplayWaitbar",false);
     else
-        %
+        df = []; %#ok<NASGU>
+        throw(MException("tcreg:local:invalidSubAlgorithm", ...
+            "Unregistered sub algorithm."));
     end
     fival_sc = mean(avol_sc_m(:,[1,end],:),"all");
     fival_fc =  mean(avol_fc_m(:,[1,end],:),"all");
@@ -269,7 +271,9 @@ for m = 1:numel(regfrs)
         "PyramidLevels", vpl, "DisplayWaitbar",false);
         df = gather(df_ga);
     else
-        %
+        df = []; %#ok<NASGU>
+        throw(MException("tcreg:localgpu:invalidSubAlgorithm", ...
+            "Unregistered sub algorithm."));
     end
     fival_sc = mean(avol_sc_m(:,[1,end],:),"all");
     fival_fc =  mean(avol_fc_m(:,[1,end],:),"all");

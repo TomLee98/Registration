@@ -76,6 +76,7 @@ classdef regrcf < handle
             end
             
             this.data.user_id = uid;
+            this.data.submit_time = string(datetime("now"));
             [this.data.resource, this.nmax] = GetTaskWorkersMaxN(volopt_, regopt_);
             this.tueobj = TUE(volopt_, regopt_, regfrs_);
         end
@@ -154,20 +155,19 @@ classdef regrcf < handle
         end
 
         function write(this)
-            this.data.submit_time = string(datetime("now"));
-
             if isfolder(this.sfolder)
+                % generate file name
                 if isempty(this.fname) || ~isfile(this.fname)
                     % first write
                     fname_ = [randi(26,1,6)+64, randi(26,1,6)+96, randi(10,1,6)+47];
                     fname_ = [char(fname_(randperm(18))), '.xml'];
                     this.fname = string([this.sfolder.char(), filesep, fname_]);
+                end
 
-                    try
-                        writestruct(this.data, this.fname, "FileType","xml");
-                    catch ME
-                        throwAsCaller(ME);
-                    end
+                try
+                    writestruct(this.data, this.fname, "FileType","xml");
+                catch ME
+                    throwAsCaller(ME);
                 end
             end
         end

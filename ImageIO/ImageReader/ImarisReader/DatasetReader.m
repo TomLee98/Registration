@@ -196,7 +196,7 @@ classdef DatasetReader < matlab.mixin.SetGet & dynamicprops
 
             arguments
                 obj     (1,1) DatasetReader
-                tspan   (1,:) double = []
+                tspan   (1,2) double
             end
 
             %% Allocate the volume.
@@ -232,7 +232,7 @@ classdef DatasetReader < matlab.mixin.SetGet & dynamicprops
             for c = 1:obj.SizeC
                 for t = 1:size_t
                     %% Construct the path to the dataset location.
-                    groupLocation = ['ResolutionLevel 0/TimePoint ' num2str(t - 1 + tspan(1))  ...
+                    groupLocation = ['ResolutionLevel 0/TimePoint ' num2str((t - 1) + tspan(1)-1)  ...
                         '/Channel ' num2str(c - 1)];
                     groupID = H5G.open(obj.GID, groupLocation);
                     DID = H5D.open(groupID, 'Data');

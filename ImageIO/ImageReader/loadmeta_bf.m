@@ -59,7 +59,16 @@ switch lower(ext)
         % and the binning size is also square
         xRes = cps/tcom*binsz;
         yRes = xRes;
-    otherwise
+    case ".ims"
+        xRes = double(info_bf.getPixelsPhysicalSizeX(0).value);
+        yRes = double(info_bf.getPixelsPhysicalSizeY(0).value);
+        if slices ~= 1
+            zRes = double(info_bf.getPixelsPhysicalSizeZ(0).value) ...
+                *(slices/(slices-1));
+        else
+            zRes = 0;   % only one plane, no resolution at z direction
+        end
+    case ".nd2"
         xRes = double(info_bf.getPixelsPhysicalSizeX(0).value);
         yRes = double(info_bf.getPixelsPhysicalSizeY(0).value);
         if slices ~= 1
@@ -67,6 +76,8 @@ switch lower(ext)
         else
             zRes = 0;   % only one plane, no resolution at z direction
         end
+    otherwise
+
 end
 
 opts = table(width,...          % #pixel
@@ -212,18 +223,18 @@ switch lower(ext)
         t = fillmissing(t, "linear");
         t = round(t, 3);
     case ".ims"
-        % TODO: ???
         % get packaged meta data
+        gmd = r.getGlobalMetadata();
         smd = r.getMetadataStore();
-        channels = smd.getPixelsSizeC(0).getValue();
-        slices = smd.getPixelsSizeZ(0).getValue();
         frames = smd.getPixelsSizeT(0).getValue();
 
+        t0 = datetime(gmd.get("TimePoint1"));
         t = nan(frames, 1);
-        for k = 1:frames-1
-            t(k+1) = smd.getPlaneDeltaT(0,slices*channels*k-1).value();
+        for k = 1:frames
+            t(k) = seconds(datetime(gmd.get(sprintf("TimePoint%d", k))) ...
+                - t0);
         end
-        t = fillmissing(t, "linear");
+        
         t = round(t, 3);
     otherwise
 end
