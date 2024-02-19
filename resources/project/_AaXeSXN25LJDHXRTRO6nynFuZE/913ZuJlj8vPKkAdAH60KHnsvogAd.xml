@@ -1,2 +1,2 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<Info File7="alignedGreen" File6="java_get" File5="/proc/cpuinfo" File4="mput" File9="py.numpy.array" File8="utils/registration/lang/words_dict.xlsx" File3="createMask" File2="lurawaveLicense" File1="loci.formats.FormatTools.VERSION" File0="img"/>
+<Info File7="/proc/cpuinfo" File12="Cipher.ENCRYPT_MODE" File6="alignedGreen" File11="lurawaveLicense" File5="java_get" File4="img" File9="utils/registration/lang/words_dict.xlsx" File10="createMask" File8="py.numpy.array" File3="setdatatype" File2="Cipher.DECRYPT_MODE" File1="loci.formats.FormatTools.VERSION" File0="mput"/>
