@@ -187,6 +187,7 @@ V2.0        Wukong              悟空
   |     |- [Fix Bugs] fix one channel registration(manual) output
   |     |- [Fix Bugs] fix mode 'affine' can not run
   |     |- [Fix Bugs] fix mouse cursor out of boundary at some situation
+  |     |- [Fix Bugs] fix some bugs because different path formats in PC and UNIX
   |     |- [Note] long-term(large deformation) mode is offline
   |     |- [Note] one channel registration is offline
   |- V2.0.1     2024/
