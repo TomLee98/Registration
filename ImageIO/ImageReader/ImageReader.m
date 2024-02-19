@@ -85,7 +85,8 @@ classdef ImageReader < handle
 
             [~, ~, ext] = fileparts(this.srcfile);
             % import the data loader setting
-            rf = importdata(['ImageIO',filesep,'ImageReader',filesep,'configuration.ini']);
+            pathToReader = fileparts(mfilename('fullpath'));
+            rf = importdata([pathToReader, filesep,'configuration.ini']);
             rf = string(rf).split(":");
             if ~ismember(upper(ext), rf(:,1))
                 throw(MException("ImageLoader:invalidImageLoadingFunc", ...

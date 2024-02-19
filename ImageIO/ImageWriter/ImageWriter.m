@@ -69,7 +69,8 @@ classdef ImageWriter < handle
             [~, ~, ext] = fileparts(this.file);
 
             % import the data writter setting
-            rf = importdata(['ImageIO',filesep,'ImageWriter',filesep,'configuration.ini']);
+            pathToWriter = fileparts(mfilename('fullpath'));
+            rf = importdata([pathToWriter, filesep, 'configuration.ini']);
             rf = string(rf).split(":");
             if ~ismember(upper(ext), rf(:,1))
                 throw(MException("ImageLoader:invalidImageWrittingFunc", ...

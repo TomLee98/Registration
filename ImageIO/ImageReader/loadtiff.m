@@ -38,9 +38,10 @@ end
 
 function mov = pyopen_reg(file)
 % check the python environment path
-if count(py.sys.path,'/ImageIO/ImageReader/load_tiff.py') == 0
-    insert(py.sys.path,int32(0), ...
-        '/ImageIO/ImageReader/load_tiff.py');
+pathToReader = fileparts(mfilename('fullpath'));
+pathToLTPY = [pathToReader, filesep, 'load_tiff.py'];
+if count(py.sys.path, pathToLTPY) == 0
+    insert(py.sys.path,int32(0), pathToLTPY);
 end
 fname = py.str(file);
 

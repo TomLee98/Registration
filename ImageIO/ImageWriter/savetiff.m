@@ -37,9 +37,10 @@ chs = mov.MetaData.cOrder;
 img = mov.Movie(:,:,ch==chs,:,:);   % 5D array
 
 if turbo == true
-    if count(py.sys.path,'/ImageIO/ImageWriter/save_tiff.py') == 0
-        insert(py.sys.path,int32(0), ...
-            '/ImageIO/ImageWriter/save_tiff.py');
+    pathToWriter = fileparts(mfilename('fullpath'));
+    pathToSTPY = [pathToWriter, filesep, 'save_tiff.py'];
+    if count(py.sys.path, pathToSTPY) == 0
+        insert(py.sys.path,int32(0), pathToSTPY);
     end
     % append axes information in metadata
     metadata.axes = 'TZCYX';

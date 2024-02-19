@@ -461,7 +461,19 @@ classdef mpimg < matlab.mixin.Copyable
                 end
 
             elseif isunix()
-                % TODO: 
+                if isfolder('/data/.Reg3DCache')
+                    % create user folder on /data/Reg3DCache
+                    user_name = string(System.getProperty("user.name"));
+                    folder_ = ['/data/.Reg3DCache/', char(user_name)];
+                    try
+                        mkdir(folder_);
+                    catch ME
+                        throwAsCaller(ME);
+                    end
+                else
+                    throw(MException("Cache folder lost. " + ...
+                        "Please connect to the administrator."));
+                end
             end
 
             warning('on', 'MATLAB:MKDIR:DirectoryExists');
