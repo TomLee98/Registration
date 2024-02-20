@@ -1,0 +1,19 @@
+﻿<html>
+<head>
+<title></title>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+</head>
+<body>
+<p align="left"><font size="4" face="宋体"><strong>5.2 配准控制</strong></font></p>
+<blockquote style="MARGIN-RIGHT: 0px" dir="ltr">
+<p align="left"><img src="5_2%1.bmp" alt=""> &nbsp; <img src="5_2%2.bmp" alt=""> &nbsp; <img src="5_2%3.bmp" alt=""></p>
+<p align="left">
+<u>开关</u>用于控制配准程序启动或停止，有灰色/绿色/黄色三种状态，用于指示配准程序运行状态。绿色代表正在执行配准，灰色代表当前未执行配准，黄色代表已提交中断指令，内核正在中断当前配准操作。</p>
+<p align="left">
+注1：按下启动后尽管启动按钮显示 <u>执行中</u> 字样并变为绿色，但配准不会立即启动，因为此时并行计算池被分布式资源调度器接管，内核将在合适时机开始配准。</p>
+<p align="left"><b> 注2：如需中断当前配准请按下 <u>执行中</u> 按钮，<font color="#FF0000"> 不要 </font>使用 'Ctrl+C' 强制中断。强制中断将损坏Reg3D内核，并导致资源调度器无法回收占用的资源&#40; Reg3D Version &lt; 2.4.0 &#41;，直至您重启Reg3D! </b> <br>
+按钮按下后将维持短暂浅绿色高亮(时长由资源调度器内部决定)，内核接受中断请求后按钮将变为黄色并显示<u>中断</u> 字样。稍后内核将自动释放资源，分布式资源调度器将自动完成资源回收。</p>
+</blockquote>
+</body>
+</html>
+
