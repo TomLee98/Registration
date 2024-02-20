@@ -38,7 +38,7 @@ classdef taskParser < handle
             this.distrib = distrib_;
 
             %PARSE This function parse the task and generate task queue
-            pathToParser = fileparts(fullfile(mfilename));
+            pathToParser = fileparts(mfilename("fullpath"));
             rf = importdata([pathToParser, filesep, 'configuration.ini']);
             rf = string(rf).split(":");
             if ~ismember(this.regopt.Algorithm, rf(:,1))
