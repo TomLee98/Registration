@@ -187,7 +187,6 @@
     <LOW>Low</LOW>
     <LOW_MEMORY_WARNING>The available memory is too small and the exclusive mode cannot be enabled.</LOW_MEMORY_WARNING>
     <LTGLOBAL>Global(Long-Term)</LTGLOBAL>
-    <LTLOCAL>Local(Long-Term)</LTLOCAL>
     <MAGENTA>Magenta</MAGENTA>
     <MAIN_APP>Main Application</MAIN_APP>
     <MASK>Mask</MASK>
@@ -210,7 +209,7 @@
     <METADATA>Metadata</METADATA>
     <MGLOBAL>Global(Manually)</MGLOBAL>
     <MIN>Min</MIN>
-    <MIN_CONTROL_VAL>Minimum Control Amount</MIN_CONTROL_VAL>
+    <CONTROL_VAL>Control Amount</CONTROL_VAL>
     <MIN_ITERATION_STEP>Minimum Iteration Step</MIN_ITERATION_STEP>
     <MIN_Z_PROJECTION>Minimum Z Projection</MIN_Z_PROJECTION>
     <MISSING_HELP>help.html file is missing</MISSING_HELP>
@@ -250,8 +249,7 @@
     <PIECEWISE_LINEAR>Piecewise linear</PIECEWISE_LINEAR>
     <PIXEL_HISTOGRAM>Pixel Histogram</PIXEL_HISTOGRAM>
     <PLAY_MODE>Play Mode</PLAY_MODE>
-    <POINT_CLOUD>Point Cloud</POINT_CLOUD>
-    <POINT_CLOUD_PREVIEW>Point Cloud(Preview)</POINT_CLOUD_PREVIEW>
+    <POINT_CLOUD_PREVIEW>Generate Point Cloud(Preview)</POINT_CLOUD_PREVIEW>
     <POLYGON>Polygon</POLYGON>
     <POLYNOMIAL>Polynomial</POLYNOMIAL>
     <POLYNOMIAL_ORDER>Polynomial Order</POLYNOMIAL_ORDER>
@@ -291,12 +289,11 @@
     <REGISTRATION_RANGE>Registration Range</REGISTRATION_RANGE>
     <REGISTRATION_SETTING>Registration Setting</REGISTRATION_SETTING>
     <REGISTRATION_SOLUTION_ERROR>No registration solution set up</REGISTRATION_SOLUTION_ERROR>
-    <REGISTRATION_TEMPLATE>Registration Template</REGISTRATION_TEMPLATE>
+    <TEMPLATE>Template</TEMPLATE>
     <REGISTRATOR>Register</REGISTRATOR>
     <REGMODE_CURRENT_GLOBAL>Current Registration Mode: Global</REGMODE_CURRENT_GLOBAL>
     <REGMODE_CURRENT_LOCAL>Current Registration Mode: Local</REGMODE_CURRENT_LOCAL>
     <REGMODE_CURRENT_LTGLOBAL>Current Registration Mode: Global(Long-Term)</REGMODE_CURRENT_LTGLOBAL>
-    <REGMODE_CURRENT_LTLOCAL>Current Registration Mode: Local(Long-Term)</REGMODE_CURRENT_LTLOCAL>
     <REGMODE_CURRENT_MGLOBAL>Current Registration Mode: Global(Manually)</REGMODE_CURRENT_MGLOBAL>
     <REMOVE>Remove</REMOVE>
     <REMOVE_BACKGROUND>Remove Background</REMOVE_BACKGROUND>
@@ -394,7 +391,6 @@
     <VERTICAL_FLIP>Vertical Flip</VERTICAL_FLIP>
     <VIDEO_DATA>Video Data</VIDEO_DATA>
     <VOLUME>Volume</VOLUME>
-    <VOXEL>Voxel</VOXEL>
     <WAITING>waiting</WAITING>
     <WARNING>Warning</WARNING>
     <WELCOME_TO_Reg3D_App>Welcome to Reg3D App</WELCOME_TO_Reg3D_App>

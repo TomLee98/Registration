@@ -1,4 +1,4 @@
-function [status, url] = acquire_update(url, ver)
+function [status, url, ver_latest] = acquire_update(url, ver)
 %ACQUIRE_UPDATE This function compare localhost app version and cloud version,
 % return the update status and source url
 % Input:
@@ -52,6 +52,7 @@ else
     url = "";
 end
 
+ver_latest = ver_latest.char();
 end
 
 function res = compare_version(ver_lhs, ver_rhs)

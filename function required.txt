@@ -162,7 +162,7 @@ V1.6        Sika deer           梅花鹿
 
 ====================Important Architecture Update =========================
 V2.0        Wukong              悟空
-  |- V2.0.0     2024/02/19   12:00
+  |- V2.0.0     2024/02/20   17:00
   |     |- [Update] new framework: Wukong kernel for the modern app
   |     |- [Update] new powerful task manager introduced
   |     |- [Update] new powerful distributed file system
@@ -190,22 +190,30 @@ V2.0        Wukong              悟空
   |     |- [Fix Bugs] fix some bugs because different path formats in PC and UNIX
   |     |- [Note] long-term(large deformation) mode is offline
   |     |- [Note] one channel registration is offline
-  |- V2.0.1     2024/
+  |- V2.0.1     2024/2/
+  |     |- [Fix Bugs] TODO: fix crop operation memory over allocated bug
+  |- V2.0.2     2024/2/
+  |     |- [Fix Bugs] TODO: fix evaluation memory over allocated bug
+  |- V2.0.3     2024/2/
+  |     |- [Fix Bugs]
+  |- V2.1.0     2024/
   |     |- [Update] TODO: improve long-term global registration to large deformation
   |     |- [Update] TODO: improve long-term local registration to large deformation
   |     |- [Update] TODO: new task manager function introduced
+  |- V2.1.1     2024/
   |     |- [Fix Bugs] TODO: fix long-term registration out of memory when key frames is too much
-  |     |- [Fix Bugs] TODO: fix crop operation memory over allocated bug
-  |     |- [Fix Bugs] TODO: fix evaluation memory over allocated bug
-  |- V2.0.2     2024/
+  |- V2.2.0     2024/
   |     |- [Update] TODO: registration history manager
   |     |- [Update] TODO: new task manager function introduced
   |     |- [Update] TODO: memory mapping low level optimal(mpimgs class design)
   |     |- [Update] TODO:new one channel global registration method introduced
   |     |- [Update] TODO:new one channel local registration method introduced
   |     |- [Update] TODO:new one channel manually global registration method introduced
-  |     |- [Fix Bugs] TODO: cropped nd2 files with bad properties
-  |- V2.0.3     2024/
+  |- V2.3.0     2024/
   |     |- [Update] TODO: new movie exporter object for better movie export operation(parpool)
   |     |- [Update] TODO: inregdemons run in thread parpool
   |     |- [Update] TODO: registration by using deep learning algorithm
+  |- V2.4.0     2024/
+  |     |- [Update] TODO: add kernel daemon process to clear resource 
+  |     |           commonication file for avoiding kernel broken accidentally
+  |     |- 

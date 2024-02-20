@@ -44,21 +44,17 @@ classdef regopt
 
         % ==================== longterm properties ======================
         lt_keyframes    (1,:) double {mustBePositive, mustBeInteger} = 1
+        lt_autokey      (1,1) logical = true
         lt_stdobj_th    (1,1) double {mustBeInRange(lt_stdobj_th, 0, 5)} = 2.0
         lt_scale_th     (1,1) double {mustBeNonnegative} = 3.0
-        lt_pct_ds       (1,1) string {mustBeMember(lt_pct_ds, ["GA","RAND","NU"])} = "GA"
-        lt_vox_ds       (1,1) string {mustBeMember(lt_vox_ds, ["1X1","2X2","3X3"])} = "2X2"
-        lt_pct_ds_arg   (1,1) double {mustBePositive} = 2.0
-        lt_pct_tol      (1,1) double {mustBePositive} = 1e-5
+        lt_ds           (1,1) string {mustBeMember(lt_ds, ["GA","RAND","NU"])} = "GA"
+        lt_ds_arg       (1,1) double {mustBePositive} = 2.0
+        lt_tol          (1,1) double {mustBePositive} = 1e-5
         lt_olr          (1,1) double {mustBeInRange(lt_olr, 0, 1)} = 0.1
         lt_iter_coeff   (1,1) double {mustBeInRange(lt_iter_coeff, 0, 1)} = 0.5
-        lt_pct_itn_max  (1,1) double {mustBePositive, mustBeInteger} = 50
-        lt_vox_itn_max  (1,:) double {mustBePositive, mustBeInteger} = 100
+        lt_itn_max      (1,1) double {mustBePositive, mustBeInteger} = 50
         lt_step_max     (1,1) double {mustBePositive} = 1e-2
         lt_step_min     (1,1) double {mustBePositive} = 1e-6
-        lt_autoctrst    (1,1) logical = true
-        lt_comacc       (1,1) double {mustBeMember(lt_comacc, [2048, 4096, 8192])} = 2048
-        lt_afs          (1,1) double {mustBeInRange(lt_afs, 0.5, 3)} = 1.0
 
         % =================== manual parameters ====================
         m_tform_type     (1,1) string {mustBeMember(m_tform_type, ...
@@ -145,17 +141,12 @@ classdef regopt
             addParameter(p, 'RL',               this.region_lbl);
             addParameter(p, 'Gamma',            this.gamma);
             addParameter(p, 'GridUnit',         this.grid_unit);
-            addParameter(p, 'DS',               this.ds);
             addParameter(p, 'SC',               this.strc_chl);
             addParameter(p, 'FC',               this.func_chl);
             addParameter(p, 'KeyFrames',        this.lt_keyframes);
-            addParameter(p, 'PCTDS',            this.lt_pct_ds);
-            addParameter(p, 'PCTDSArg',         this.lt_pct_ds_arg);
-            addParameter(p, 'VoxDS',            this.lt_vox_ds);
-            addParameter(p, 'TolPCT',           this.lt_pct_tol);
+            addParameter(p, 'AutoKeyFrame',     this.lt_autokey);
+            addParameter(p, 'Tol',              this.lt_tol);
             addParameter(p, 'Outlier',          this.lt_olr);
-            addParameter(p, 'MaxPCTIterN',      this.lt_pct_itn_max);
-            addParameter(p, 'MaxVoxIterN',      this.lt_vox_itn_max);
 
             % =============== overloading parameters =============
             switch this.reg_alg
@@ -170,6 +161,7 @@ classdef regopt
                             addParameter(p, 'Interp',       this.gl_interp);
                             addParameter(p, 'ThFG',         this.ocstdobj_th);
                             addParameter(p, 'ThScale',      this.ocscale_th);
+                            addParameter(p, 'DS',           this.ds);
                         case "local"
                             addParameter(p, 'MaxIterN',     this.lo_itn_max);
                             addParameter(p, 'AFS',          this.afs);
@@ -185,6 +177,7 @@ classdef regopt
                             addParameter(p, 'MaxIterN',     this.gl_itn_max);
                             addParameter(p, 'IterCoeff',    this.iter_coeff);
                             addParameter(p, 'Interp',       this.gl_interp);
+                            addParameter(p, 'DS',           this.ds);
                         case "local"
                             addParameter(p, 'MaxIterN',     this.lo_itn_max);
                             addParameter(p, 'AFS',          this.afs);
@@ -196,31 +189,23 @@ classdef regopt
                         otherwise
                     end
                 case "MANREG"
-                    switch this.reg_mode
-                        case "global"
-                            addParameter(p, 'TformType',    this.m_tform_type);
-                            addParameter(p, 'Interp',       this.m_interp);
-                            addParameter(p, 'Degree',       this.m_degree);
-                            addParameter(p, 'DView',        this.m_dview);
-                            addParameter(p, 'Projection',   this.m_proj);
-                            addParameter(p, 'Resampling',   this.m_rs);
-                            addParameter(p, 'Isometric',    this.m_isometric);
-                        otherwise
-                    end
+                    addParameter(p, 'TformType',    this.m_tform_type);
+                    addParameter(p, 'Interp',       this.m_interp);
+                    addParameter(p, 'Degree',       this.m_degree);
+                    addParameter(p, 'DView',        this.m_dview);
+                    addParameter(p, 'Projection',   this.m_proj);
+                    addParameter(p, 'Resampling',   this.m_rs);
+                    addParameter(p, 'Isometric',    this.m_isometric);
                 case "LTREG"
-                    switch this.reg_mode
-                        case "global"
-                            addParameter(p, 'ThFG',         this.lt_stdobj_th);
-                            addParameter(p, 'ThScale',      this.lt_scale_th);
-                            addParameter(p, 'MaxStep',      this.lt_step_max);
-                            addParameter(p, 'MinStep',      this.lt_step_min);
-                            addParameter(p, 'IterCoeff',    this.lt_iter_coeff);
-                        case "local"
-                            addParameter(p, 'AFS',          this.lt_afs);
-                            addParameter(p, 'AutoContrast', this.lt_autoctrst);
-                            addParameter(p, 'RepAcc',       this.lt_comacc);
-                        otherwise
-                    end
+                    addParameter(p, 'TformType',    this.tform_type);
+                    addParameter(p, 'MaxIterN',     this.lt_itn_max);
+                    addParameter(p, 'ThFG',         this.lt_stdobj_th);
+                    addParameter(p, 'ThScale',      this.lt_scale_th);
+                    addParameter(p, 'MaxStep',      this.lt_step_max);
+                    addParameter(p, 'MinStep',      this.lt_step_min);
+                    addParameter(p, 'IterCoeff',    this.lt_iter_coeff);
+                    addParameter(p, 'DS',           this.lt_ds);
+                    addParameter(p, 'DSArg',        this.lt_ds_arg);
                 otherwise
             end
 
@@ -304,26 +289,25 @@ classdef regopt
                                "Projection",    this.m_proj, ...
                                "Resampling",    this.m_rs, ...
                                "Isometric",     this.m_isometric, ...
-                               "Hardware",      this.hardware, ...
                                "SC",            this.strc_chl, ...
-                               "FC",            this.func_chl);
+                               "FC",            this.func_chl, ...
+                               "Hardware",      this.hardware);
                 case "LTREG"
-                    r = struct("KeyFrames",     this.lt_keyframes, ...
+                    r = struct("TformType",     this.tform_type, ...
+                               "KeyFrames",     this.lt_keyframes, ...
+                               "AutoKeyFrame",  this.lt_autokey, ...
                                "ThFG",          this.lt_stdobj_th, ...
                                "ThScale",       this.lt_scale_th, ...
-                               "PCTDS",         this.lt_pct_ds, ...
-                               "PCTDSArg",      this.lt_pct_ds_arg, ...
-                               "VoxDS",         this.lt_vox_ds, ...
-                               "TolPCT",        this.lt_pct_tol, ...
+                               "DS",            this.lt_ds, ...
+                               "DSArg",         this.lt_ds_arg, ...
+                               "Tol",           this.lt_tol, ...
                                "Outlier",       this.lt_olr, ...
                                "IterCoeff",     this.lt_iter_coeff, ...
-                               "MaxPCTIterN",   this.lt_pct_itn_max, ...
-                               "MaxVoxIterN",   this.lt_vox_itn_max, ...
+                               "MaxIterN",      this.lt_itn_max, ...
                                "MaxStep",       this.lt_step_max, ...
                                "MinStep",       this.lt_step_min, ...
-                               "AutoContrast",  this.lt_autoctrst, ...
-                               "RepAcc",        this.lt_comacc, ...
-                               "AFS",           this.lt_afs, ...
+                               "SC",            this.strc_chl, ...
+                               "FC",            this.func_chl, ...
                                "Hardware",      this.hardware);
                 otherwise
 
@@ -401,22 +385,21 @@ classdef regopt
                     this.strc_chl = r_.SC;
                     this.func_chl = r_.FC;
                 case "LTREG"
+                    this.tform_type = r_.TformType;
                     this.lt_keyframes = r_.KeyFrames;
+                    this.lt_autokey = r_.AutoKeyFrame;
                     this.lt_stdobj_th = r_.ThFG;
                     this.lt_scale_th = r_.ThScale;
-                    this.lt_pct_ds = r_.PCTDS;
-                    this.lt_pct_ds_arg = r_.pctDSArg;
-                    this.lt_vox_ds = r_.VoxDS;
-                    this.lt_pct_tol = r_.TolPCT;
+                    this.lt_ds = r_.DS;
+                    this.lt_ds_arg = r_.DSArg;
+                    this.lt_tol = r_.Tol;
                     this.lt_olr = r_.Outlier;
                     this.lt_iter_coeff = r_.IterCoeff;
-                    this.lt_pct_itn_max = r_.MaxPCTIterN;
-                    this.lt_vox_itn_max = r_.MaxVoxIterN;
+                    this.lt_itn_max = r_.MaxIterN;
                     this.lt_step_max = r_.MaxStep;
                     this.lt_step_min = r_.MinStep;
-                    this.lt_autoctrst = r_.AutoContrast;
-                    this.lt_comacc = r_.RepAcc;
-                    this.lt_afs = r_.AFS;
+                    this.strc_chl = r_.SC;
+                    this.func_chl = r_.FC;
                 otherwise
             end
         end
