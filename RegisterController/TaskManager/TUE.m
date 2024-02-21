@@ -45,7 +45,7 @@ classdef TUE < handle
                     elseif this.regopt.Mode == "local"
                         if this.volopt.Hardware == "cpu"
                             
-                        else
+                        elseif this.volopt.Hardware == "cpu|gpu"
                             
                         end
                     end
@@ -70,14 +70,10 @@ classdef TUE < handle
                 case "MANREG"
 
                 case "LTREG"
-                    if this.regopt.Mode == "global"
+                    if this.volopt.Hardware == "cpu"
 
-                    elseif this.regopt.Mode == "local"
-                        if this.volopt.Hardware == "cpu"
-                            
-                        else
-                            
-                        end
+                    else
+
                     end
                 otherwise
             end
@@ -89,10 +85,9 @@ classdef TUE < handle
         function t_use = imregtform_time_use(this)
             switch this.regopt.RegType
                 case "auto"
-                    if this.regopt.RegMode == "Global"
+                    if this.regopt.Mode == "Global"
                         [~, rp] = ismember(this.regopt.TformType, ...
-                            ["translation","rigid","similarity","affine"]);
-                        if rp == 4, rp = 3; end
+                            ["translation","rigid","affine"]);
                         procsp = this.IMREGTFORM_TRS_PPS ...
                             *this.IMREGTFORM_TRS_RID_AFF_RATIO(rp);
                         t_use = this.pixels_calc_num() / procsp;
@@ -105,7 +100,7 @@ classdef TUE < handle
         end
 
         function t_use = imregdemons_time_use(this)
-            switch this.regopt.RegMode
+            switch this.regopt.Mode
                 case "Local"
                     pn =  this.volopt.width*this.volopt.height*this.volopt.slices*this.nregfr;
                     t_use = pn / this.IMREGDEMONS_ACF_1_PPS;
@@ -119,16 +114,19 @@ classdef TUE < handle
 
         end
 
+        function t_use = imregdeform_time_use(this)
+            
+        end
+
         function t_use = imregopzr_time_use(this)
 
         end
 
         function t_use = imwarp_time_use(this)
             [~, rp_type] = ismember(this.regopt.TformType, ...
-                ["translation","rigid","similarity","affine"]);
-            if rp_type == 4, rp_type =3; end
+                ["translation","rigid","affine"]);
 
-            switch this.regopt.RegMode
+            switch this.regopt.Mode
                 case "Global"
                     [~, rp_alg] = ismember(this.regopt.Interp_Rigid, ["linear","cubic"]);
                     procsp = this.IMWARP_TRS_CUBIC_PPS ...

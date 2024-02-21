@@ -59,9 +59,14 @@ else
     regds = 1/str2double(regopt.DS.extractBefore("X"));
 end
 
+mf = regopt.MedianFilter;
+of = regopt.OpenOperator;
+gf = regopt.GaussianFilter;
+ga = regopt.Gamma;
+
 % 1. extract the reference volume
 [refvol_ds, ds_scale] = ReSample(refvol, regds);
-refvol_ds = doPreProcessOn(refvol_ds);
+refvol_ds = doPreProcessOn(refvol_ds, mf, of, gf, ga);
 
 % 2. extract functional and structured channel data
 avol_sc = grv(movsrc, fmode, regopt.SC);
@@ -81,7 +86,7 @@ max_setp = regopt.MaxStep;
 min_setp = regopt.MinStep;
 iter_coeff = regopt.IterCoeff;
 max_itern = regopt.MaxIterN;
-max_itern_z = regopt.MaxZOptIterN;
+max_shift_z = regopt.MaxZOptShift;
 zopt_tol = regopt.TolZOpt;
 vpl = regopt.VPL;
 itpalg = regopt.Interp;
@@ -91,14 +96,14 @@ parfor m = 1:numel(regfrs)
     avol_sc_m = avol_sc(:,:,:,m);
     avol_fc_m = avol_fc(:,:,:,m);
     avol_sc_m_ds = ReSample(avol_sc_m, ds_scale);
-    avol_sc_m_ds = doPreProcessOn(avol_sc_m_ds);
+    avol_sc_m_ds = doPreProcessOn(avol_sc_m_ds, mf, of, gf, ga);
 
     if (isMATLABReleaseOlderThan("R2022b")) ...
             || tf_type ~= "affine"
         % older than R2022b, call function estimate...
         % ptf: pre-transformation as affine3d object
         [ptf, ~] = imregopzr(avol_sc_m_ds, refvol_ds, res_ds, tf_type, ...
-            max_itern_z, zopt_tol);
+            max_shift_z, zopt_tol);
     else
         % call imregmoment for estimation
         % ptf: pre-transformation as affinetform3d object
@@ -298,16 +303,20 @@ end
 
 
 % ====================== Utility Functions =======================
-function vs = doPreProcessOn(vs, mfsize, ofsize, gfsize)
+function vs = doPreProcessOn(vs, mfsize, ofsize, gfsize, ga)
 arguments
     vs 
-    mfsize (1,3)   double {mustBeInteger, mustBePositive} = [3,3,3]
-    ofsize (1,3)   double {mustBeInteger, mustBePositive} = [5,5,2]
-    gfsize (1,3)   double {mustBeInteger, mustBePositive} = [3,3,1]
+    mfsize  (1,3)   double {mustBeInteger, mustBePositive} = [3,3,3]
+    ofsize  (1,3)   double {mustBeInteger, mustBePositive} = [5,5,2]
+    gfsize  (1,3)   double {mustBeInteger, mustBePositive} = [3,3,1]
+    ga      (1,1)   double {mustBeInRange(ga, 0, 2)} = 1
 end
 
 % remove possible salt and pepper noise
 vs = medfilt3(vs, mfsize, "replicate");
+
+% feature enhance: contrast balance by gamma transformation
+vs = uint16(single(vs).^ga);
 
 % open operation to remove strong bright noise
 vs = imopen(vs, offsetstrel("ball", ofsize(1), ofsize(2), ofsize(3)));
@@ -320,23 +329,24 @@ vs = imopen(vs, offsetstrel("ball", ofsize(1), ofsize(2), ofsize(3)));
 vs = imgaussfilt3(vs, "FilterSize", gfsize, "Padding", "replicate");
 end
 
-function [tf_est, movol_est] = imregopzr(moving, fixed, rsFixed, tformType, nmax, tol)
+function [tf_est, movol_est] = imregopzr(moving, fixed, rsFixed, tformType, shift_max, tol)
 % This function use imregcorr and z optimization for transformation
 % estimation on platform version < R2022b
 arguments
-    moving      (:,:,:) double
-    fixed       (:,:,:) double
+    moving      (:,:,:) uint16
+    fixed       (:,:,:) uint16
     rsFixed     (1,3)   double      % [x,y,z] coordinate resolution, unit as um/pix
     tformType   (1,1)   string  {mustBeMember(tformType, ...
                                 ["translation", "rigid", "affine"])} = "translation"
-    nmax        (1,1)   double {mustBeNonnegative, mustBeInteger} = 100
+    shift_max   (1,1)   double {mustBeNonnegative} = 2
     tol         (1,1)   double {mustBeInRange(tol, 0, 1)} = 1e-3
 end
 
 % cancel affine transformation support
 if tformType == "affine", tformType = "rigid"; end
 
-zlim = size(fixed, 3)*[-1, 1];
+% zlim = size(fixed, 3)*[-1, 1];
+zlim = [-1, 1]*shift_max;
 
 % do maximum z projection  for imregcorr
 mov_img = max(moving, [], 3);
@@ -365,7 +375,7 @@ mov_img = padarray(mov_img, [dh(2), dw(2)], "replicate","post");
 rref = imref2d(size(ref_img), rsFixed(1), rsFixed(2));
 rref3d = imref3d(size(fixed), rsFixed(1), rsFixed(2), rsFixed(3));
 
-fminbnd_opts = optimset('MaxIter',nmax, 'TolX', tol);
+fminbnd_opts = optimset('MaxIter',100, 'TolX', tol);
 
 % 2-D rigid transformation estimation
 tf2d_ = imregcorr(mov_img, rref, ref_img, rref, tformType);  % rigid2d, affine2d, transltform2d or rigidtform2d
@@ -426,7 +436,7 @@ end
 switch A.Mode
     case "global"
         VALID_FIELD = ["Mode", "RegModal", "MedianFilter", "OpenOperator", ...
-            "GaussianFilter", "MaxZOptIterN", "TolZOpt", "TformType", ...
+            "GaussianFilter", "MaxZOptShift", "TolZOpt", "Gamma", "TformType", ...
             "MaxStep", "MinStep", "MaxIterN", "IterCoeff", "VPL", "Interp", ...
             "DS", "SC", "FC", "Hardware"];
     case "local"

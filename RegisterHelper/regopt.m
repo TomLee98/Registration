@@ -23,12 +23,12 @@ classdef regopt
         mfilter         (1,3) double {mustBeNonnegative, mustBeInteger} = [3,3,3]
         open_operator   (1,3) double {mustBeNonnegative, mustBeInteger} = [5,5,2]
         gfilter         (1,3) double {mustBeNonnegative, mustBeInteger} = [3,3,3]
-        zopt_itn_max    (1,1) double {mustBeNonnegative, mustBeInteger} = 100
+        gamma           (1,1) double {mustBeInRange(gamma, 0, 4)} = 1.0
+        zopt_shift_max  (1,1) double {mustBeNonnegative} = 2
         zopt_tol        (1,1) double {mustBeInRange(zopt_tol, 0, 1)} = 1e-3
 
         % ================== one channel unique properties ================
         region_lbl      (1,1) string {mustBeMember(region_lbl, ["ORN","PN","LN","KC","MBON"])} = "ORN"
-        gamma           (1,1) double {mustBeInRange(gamma, 0, 4)} = 2.0
         ocstdobj_th     (1,1) double {mustBeInRange(ocstdobj_th, 0, 5)} = 2.0
         ocscale_th      (1,1) double {mustBeNonnegative} = 3.0
         grid_unit       (1,1) string {mustBeMember(grid_unit, ["auto","1 1 1","2 2 1","3 3 1","4 4 1"])} = "auto"
@@ -135,7 +135,7 @@ classdef regopt
             addParameter(p, 'MedianFilter',     this.mfilter);
             addParameter(p, 'OpenOperator',     this.open_operator);
             addParameter(p, 'GaussianFilter',   this.gfilter);
-            addParameter(p, 'MaxZOptIterN',     this.zopt_itn_max);
+            addParameter(p, 'MaxZOptShift',     this.zopt_shift_max);
             addParameter(p, 'TolZOpt',          this.zopt_tol);
             addParameter(p, 'VPL',              this.vpl);
             addParameter(p, 'RL',               this.region_lbl);
@@ -254,8 +254,9 @@ classdef regopt
                                        "MedianFilter",  this.mfilter, ...
                                        "OpenOperator",  this.open_operator, ...
                                        "GaussianFilter",this.gfilter, ...
-                                       "MaxZOptIterN",  this.zopt_itn_max, ...
+                                       "MaxZOptShift",  this.zopt_shift_max, ...
                                        "TolZOpt",       this.zopt_tol, ...
+                                       "Gamma",         this.gamma, ...
                                        "MaxStep",       this.step_max, ...
                                        "MinStep",       this.step_min, ...
                                        "MaxIterN",      this.gl_itn_max, ...
@@ -350,8 +351,9 @@ classdef regopt
                             this.mfilter = r_.MedianFilter;
                             this.open_operator = r_.OpenOperator;
                             this.gfilter = r_.GaussianFilter;
-                            this.zopt_itn_max = r_.MaxZOptIterN;
+                            this.zopt_shift_max = r_.MaxZOptShift;
                             this.zopt_tol = r_.TolZOpt;
+                            this.gamma = r_.Gamma;
                             this.step_max = r_.MaxStep;
                             this.step_min = r_.MinStep;
                             this.gl_itn_max = r_.MaxIterN;

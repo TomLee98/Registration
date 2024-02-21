@@ -197,6 +197,7 @@
     <MAX_ITERATION_N>Max Iteration Number</MAX_ITERATION_N>
     <MAX_ITERATION_STEP>Maximum Iteration Step</MAX_ITERATION_STEP>
     <MAX_Z_PROJECTION>Maximum Z Projection</MAX_Z_PROJECTION>
+    <MAX_Z_SHIFT>Maximum Z Shift</MAX_Z_SHIFT>
     <MEAN>Mean</MEAN>
     <MEAN_Z_PROJECTION>Mean Z Projection</MEAN_Z_PROJECTION>
     <MEDIAN>Median</MEDIAN>

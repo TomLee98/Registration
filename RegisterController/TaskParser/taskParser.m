@@ -58,7 +58,6 @@ classdef taskParser < handle
                 % runnning efficiency and response sensitivity
                 batch_sz = this.nworker*2;
             end
-            
 
             this.Results = this.pfunc(this.movtmpl, ...
                                       this.regfrs, ...
