@@ -21,7 +21,7 @@ classdef regopt
         gl_interp       (1,1) string {mustBeMember(gl_interp, ["linear","cubic"])} = "linear"
         lo_interp       (1,1) string {mustBeMember(lo_interp, ["linear","cubic"])} = "linear"
         mfilter         (1,3) double {mustBeNonnegative, mustBeInteger} = [3,3,3]
-        open_operator   (1,3) double {mustBeNonnegative, mustBeInteger} = [5,5,2]
+        open_operator   (1,2) double {mustBeNonnegative, mustBeInteger} = [3,2]
         gfilter         (1,3) double {mustBeNonnegative, mustBeInteger} = [3,3,3]
         gamma           (1,1) double {mustBeInRange(gamma, 0, 4)} = 1.0
         zopt_shift_max  (1,1) double {mustBeNonnegative} = 2

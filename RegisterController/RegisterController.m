@@ -3,14 +3,9 @@ classdef RegisterController < handle
     % The RegWorker object can select registration algorithm and use the
     % TaskManager for multi-user calculation scheduling
 
-    % user -> Run -> TaskManager -> align_one_vf
-
-    properties(Hidden, Constant)
-        WORKER_STATE = enumeration('matlab.lang.OnOffSwitchState')
-
-        STATUS_SUCCESS = 0
-        STATUS_FAILED = -1
-        STATUS_EXTSTOP = -2
+    properties(Constant)
+        KERNEL_OFF = 0
+        KERNEL_ON = 1
     end
 
     properties(Access = private)
@@ -23,7 +18,7 @@ classdef RegisterController < handle
         caller              % caller, must be Register object
         taskmgr             % TaskManager object
         regworker           % RegisterWorker object
-        state               % 1-by-1 OnOffSwitchState enum, can be "on" or "off"
+        state               % 1-by-1 double, could be 0 or 1
         runtime             % 1-by-1 double, correction time used, seconds
     end
 
@@ -57,7 +52,7 @@ classdef RegisterController < handle
             % 
             this.taskmgr = TaskManager(regopt_);
 
-            this.state = this.WORKER_STATE(1);
+            this.state = this.KERNEL_OFF;
         end
 
         function set.RegisterOptions(this, r_)
@@ -66,7 +61,7 @@ classdef RegisterController < handle
                 r_  (1,1)   regopt
             end
 
-            if this.state == this.WORKER_STATE(1)
+            if this.state == this.KERNEL_OFF
                 this.regopts = r_;
             else
                 warning("RegisterController:invalidOperation", ...
@@ -80,7 +75,7 @@ classdef RegisterController < handle
                 r_  (1,2)   double  {mustBeNonnegative, mustBeInteger}
             end
 
-            if this.state == this.WORKER_STATE(1)
+            if this.state == this.KERNEL_OFF
                 this.nw_protected = r_;
             else
                 warning("RegisterController:invalidOperation", ...
@@ -98,7 +93,7 @@ classdef RegisterController < handle
                 r_  (1,1)   logical
             end
 
-            if this.state == this.WORKER_STATE(1)
+            if this.state == this.KERNEL_OFF
                 this.distrib = r_;
             else
                 warning("RegisterController:invalidOperation", ...
@@ -122,7 +117,7 @@ classdef RegisterController < handle
     end
 
     methods(Access=public)
-        function status = run(this, movraw_, movaligned_, movtmpl_, regfr_)
+        function run(this, movraw_, movaligned_, movtmpl_, regfr_)
             % This function is the controller of registration
             arguments
                 this
@@ -139,15 +134,16 @@ classdef RegisterController < handle
             % initialize register worker
             this.regworker = RegisterWorker(movraw_, movaligned_);
 
-            mpiprofile on
+            % mpiprofile on
 
             % turn on engine
-            this.state = this.WORKER_STATE(2);
+            this.state = this.KERNEL_ON;
             tic;
 
+            % endless loop
             task = this.taskmgr.Task;
             while ~isempty(task)
-                if this.state == this.WORKER_STATE(1)
+                if this.state == this.KERNEL_OFF
                     break;
                 end
                 status = this.regworker.correct(task);
@@ -158,37 +154,14 @@ classdef RegisterController < handle
 
             this.runtime = toc;
 
-            mpiprofile viewer
+            % mpiprofile viewer
 
-            if this.state == this.WORKER_STATE(1)
-                % already off state
-                status = this.STATUS_EXTSTOP;
-            else
-                status = this.STATUS_SUCCESS;
-                % change to off state
-                this.state = this.WORKER_STATE(1);
-            end
-
-            % clean resource
-            clear(this.taskmgr);
-            delete(this.regworker);
-
-            % send the complete message
-            switch this.regopts.Algorithm
-                case "MANREG"
-                    this.caller.SendMessage(["REGISTRATION_FRAMES", ...
-                        sprintf(" %.1f", movraw_.Time(regfr_))]);
-                otherwise
-                    this.caller.SendMessage(["REGISTRATION_COMPLETE",""]);
-                    this.caller.SendMessage(["TIME_COST_SEC", sprintf(" %.1f", this.RunTime)]);
-            end
-
+            this.clear_after_running();
         end
 
-        function status = stop(this)
-            this.state = matlab.lang.OnOffSwitchState("off");
-
-            status = this.STATUS_SUCCESS;
+        function stop(this)
+            % change state
+            this.state = this.KERNEL_OFF;
         end
 
         function delete(this)
@@ -196,6 +169,34 @@ classdef RegisterController < handle
             delete(this.regworker);
 
             % ~
+        end
+    end
+
+    methods(Access=private, Hidden)
+        function clear_after_running(this)
+            % clean resource
+            clear(this.taskmgr);
+            delete(this.regworker);
+
+            switch this.state
+                case this.KERNEL_ON      % normal exit
+                    % send the complete message
+                    switch this.regopts.Algorithm
+                        case "MANREG"
+                            this.caller.SendMessage(["REGISTRATION_FRAMES", ...
+                                sprintf(" %.1f", movraw_.Time(regfr_))]);
+                        otherwise
+                            this.caller.SendMessage(["REGISTRATION_COMPLETE",""]);
+                            this.caller.SendMessage(["TIME_COST_SEC", sprintf(" %.1f", this.RunTime)]);
+                    end
+
+                    this.state = this.KERNEL_OFF;
+                case this.KERNEL_OFF     % force exit
+                    % send the stop message
+                    this.caller.SendMessage(["TERMINATE_REGISTRATION",""]);
+                    this.caller.SendMessage(["TIME_COST_SEC", sprintf(" %.1f", this.RunTime)]);
+                otherwise
+            end
         end
     end
 end

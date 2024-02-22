@@ -5,7 +5,7 @@ classdef TaskManager < handle
         % ASK FOR REQUIRE DELAY
         REQUIRE_DELAY = 3;
 
-        BUSY_RATIO = 4;
+        BUSY_RATIO = 5;
     end
 
     properties(Access=private, Hidden)
