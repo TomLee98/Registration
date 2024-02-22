@@ -139,7 +139,7 @@ classdef RegisterController < handle
             % initialize register worker
             this.regworker = RegisterWorker(movraw_, movaligned_);
 
-            % mpiprofile on
+            mpiprofile on
 
             % turn on engine
             this.state = this.WORKER_STATE(2);
@@ -158,7 +158,7 @@ classdef RegisterController < handle
 
             this.runtime = toc;
 
-            % mpiprofile viewer
+            mpiprofile viewer
 
             if this.state == this.WORKER_STATE(1)
                 % already off state

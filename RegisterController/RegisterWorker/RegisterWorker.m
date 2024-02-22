@@ -30,6 +30,7 @@ classdef RegisterWorker < handle
             Algorithm = task_.RegOptions.Algorithm;
             regopt_ =  task_.RegOptions.Options;
             regopt_.Mode = task_.RegOptions.Mode;   % dynamic combine registration mode
+            regopt_.SubAlgorithm = task_.RegOptions.SubAlgorithm;
             movtmpl_ = task_.RegTemplate.RefVol;
 
             switch Algorithm

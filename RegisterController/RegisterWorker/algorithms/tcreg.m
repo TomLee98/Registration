@@ -433,19 +433,20 @@ if ~ismember("Mode", fieldnames(A))
         "Unsupported arguments input."));
 end
 
+VALID_FIELD_PUBLIC = ["Mode", "SubAlgorithm", "SC", "FC", "Hardware", ...
+    "MaxIterN", "VPL", "Interp"];
+
 switch A.Mode
     case "global"
-        VALID_FIELD = ["Mode", "RegModal", "MedianFilter", "OpenOperator", ...
+        VALID_FIELD_PRIVATE = ["RegModal", "MedianFilter", "OpenOperator", ...
             "GaussianFilter", "MaxZOptShift", "TolZOpt", "Gamma", "TformType", ...
-            "MaxStep", "MinStep", "MaxIterN", "IterCoeff", "VPL", "Interp", ...
-            "DS", "SC", "FC", "Hardware"];
+            "MaxStep", "MinStep",  "IterCoeff", "DS"];
     case "local"
-        VALID_FIELD = ["Mode", "SubAlgorithm", "MaxIterN", "AFS",  "GR", "GS", "VPL", "Interp", ...
-            "ImageRehist", "RepAcc", "SC", "FC", "Hardware"];
+        VALID_FIELD_PRIVATE = ["AFS", "GR", "GS", "ImageRehist", "RepAcc"];
     otherwise
 end
 
-if ~all(ismember(fieldnames(A), VALID_FIELD))
+if ~all(ismember(fieldnames(A), [VALID_FIELD_PUBLIC, VALID_FIELD_PRIVATE]))
     throw(MException("mustBeRegistrationOption:invalidOption", ...
         "Unsupported arguments input."));
 end

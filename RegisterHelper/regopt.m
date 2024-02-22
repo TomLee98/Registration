@@ -73,9 +73,10 @@ classdef regopt
     end
 
     properties(GetAccess=public, Dependent)
-        Options
         Algorithm
         Mode
+        Options
+        SubAlgorithm
     end
 
     methods
@@ -124,6 +125,20 @@ classdef regopt
 
             this.reg_mode = r_;
         end
+
+        function r = get.SubAlgorithm(this)
+            r = this.sub_reg_alg;
+        end
+        
+        function this = set.SubAlgorithm(this, r_)
+            arguments
+                this
+                r_  (1,1)   string {mustBeMember(r_, ["usual","advanced"])} ...
+                    = "usual"
+            end
+
+            this.sub_reg_alg = r_;
+        end
     end
 
     methods(Access=public, Hidden)
@@ -131,7 +146,6 @@ classdef regopt
             p = inputParser;
             % =========== not overloading parameters =============
             addParameter(p, 'RegModal',         this.reg_modal);
-            addParameter(p, 'SubAlgorithm',     this.sub_reg_alg);
             addParameter(p, 'MedianFilter',     this.mfilter);
             addParameter(p, 'OpenOperator',     this.open_operator);
             addParameter(p, 'GaussianFilter',   this.gfilter);
@@ -268,8 +282,7 @@ classdef regopt
                                        "FC",            this.func_chl, ...
                                        "Hardware",      this.hardware);
                         case "local"
-                            r = struct("SubAlgorithm",  this.sub_reg_alg, ...
-                                       "MaxIterN",      this.lo_itn_max, ...
+                            r = struct("MaxIterN",      this.lo_itn_max, ...
                                        "AFS",           this.afs, ...
                                        "GR",            this.grid_regulation, ...
                                        "GS",            this.grid_spacing, ...
@@ -364,7 +377,6 @@ classdef regopt
                             this.strc_chl = r_.SC;
                             this.func_chl = r_.FC;
                         case "local"
-                            this.sub_reg_alg = r_.SubAlgorithm;
                             this.lo_itn_max = r_.MaxIterN;
                             this.afs = r_.AFS;
                             this.grid_regulation = r_.GR;
