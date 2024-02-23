@@ -186,7 +186,7 @@ end
 
 switch A.Mode
     case "global"
-        VALID_FIELD = ["Mode", "TformType", "Degree", "DView", "Interp", ...
+        VALID_FIELD = ["Mode", "SubAlgorithm", "TformType", "Degree", "DView", "Interp", ...
             "Projection", "Resampling", "Isometric", "SC", "FC", "Hardware"];
     otherwise
 end

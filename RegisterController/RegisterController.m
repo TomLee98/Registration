@@ -156,7 +156,7 @@ classdef RegisterController < handle
 
             % mpiprofile viewer
 
-            this.clear_after_running();
+            this.clear_after_running(movraw_, regfr_);
         end
 
         function stop(this)
@@ -173,7 +173,7 @@ classdef RegisterController < handle
     end
 
     methods(Access=private, Hidden)
-        function clear_after_running(this)
+        function clear_after_running(this, movraw_, regfr_)
             % clean resource
             clear(this.taskmgr);
             delete(this.regworker);
