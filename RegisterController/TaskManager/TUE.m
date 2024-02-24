@@ -12,6 +12,8 @@ classdef TUE < handle
         IMWARP_DEMON_TUSE = 10                      % typical using, actually can be omitted
         IMREGDEMONS_ACF_1_PPS = 1.04E5              % pixels per second
 
+        % IMAGE_SIZE CONSTANT, SAME WITH <RESAMPLE>
+        EC50 = 256
     end
 
     properties(SetAccess=immutable, Hidden)
@@ -143,8 +145,8 @@ classdef TUE < handle
 
             elseif this.volopt.channels == 2
                 if this.regopt.DS == "auto"
-                    scale = 256./max([this.volopt.width, ...
-                        this.volopt.height]);
+                    sz_max = max(this.volopt.width, this.volopt.height);
+                    scale = 1/(this.EC50/(this.EC50 + sz_max));
                 else
                     scale = str2double(string(this.regopt.DS).extractBefore(2));
                 end

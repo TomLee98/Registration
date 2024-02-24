@@ -6,6 +6,8 @@ classdef regrcf < handle
         VALID_RCF_FIELDNAMES = ["user_id", "submit_time", "nworkers", "memory", ...
                                 "disk", "nworkers_req", "nworkers_rel", "counts_rec", ...
                                 "status", "resource", "progress"];
+
+        RECYCLE_REJECT_PROGRESS_THRESHOLD = 0.9
     end
 
     properties(SetAccess=immutable, Hidden)
@@ -442,7 +444,7 @@ classdef regrcf < handle
         end
 
         function update_recycle_resource(this)
-            if this.data.progress >= 0.95
+            if this.data.progress >= this.RECYCLE_REJECT_PROGRESS_THRESHOLD
                 % only a little tasks, skip parpool restart to save time
                 return;
             end
@@ -493,6 +495,10 @@ classdef regrcf < handle
     end
 end
 
+% ======================== utility function ============================
+
+% This function estimate the max workers in the situation with volume and
+% registration options
 function [r, n] = GetTaskWorkersMaxN(volopt_, regopt_)
 switch regopt_.Mode
     case "global"

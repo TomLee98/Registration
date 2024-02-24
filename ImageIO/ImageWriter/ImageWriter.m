@@ -85,12 +85,10 @@ classdef ImageWriter < handle
 
             switch lower(ext)
                 case ".tif"
-                    if ft == true
-                        % reset the block size
-                        block = mov.MetaData.frames;
-                        % indeterminate progress bar
-                        this.caller.SetProgressBar(0, true);
-                    end
+                    % reset the block size
+                    block = mov.MetaData.frames;
+                    % indeterminate progress bar
+                    this.caller.SetProgressBar(0, true);
                 otherwise
                     block = min(ceil(mov.MetaData.frames/20), block);
                     this.caller.SetProgressBar(0);

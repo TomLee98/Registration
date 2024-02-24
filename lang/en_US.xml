@@ -76,6 +76,7 @@
     <DOCUMENT>Document</DOCUMENT>
     <DOWNLOADING>Downloading…</DOWNLOADING>
     <DOWNSAMPLING>Downsampling</DOWNSAMPLING>
+    <DOWNSAMPLING_OFF_RECOMMAND>We strongly recommend that you turn off downsampling for better motion estimation.</DOWNSAMPLING_OFF_RECOMMAND>
     <DUAL_CHANNEL>Dual Channel</DUAL_CHANNEL>
     <DVIEW>Viewing Angle (Normal)</DVIEW>
     <DVIEW_XY>XY Plane(Z)</DVIEW_XY>
@@ -264,6 +265,7 @@
     <PRP>Problem reporting procedure:</PRP>
     <PRP_PRIVACY_FRIENDLY>The problem reporting process does not collect your</PRP_PRIVACY_FRIENDLY>
     <PYRAMID_COEFFICIENT>Pyramid Coefficient</PYRAMID_COEFFICIENT>
+    <PYTHON_INTERPRETER>Python Interpreter</PYTHON_INTERPRETER>
     <RANDOM_UNIFORM>Random(uniform)</RANDOM_UNIFORM>
     <RATIO>Ratio</RATIO>
     <RAW>Raw</RAW>

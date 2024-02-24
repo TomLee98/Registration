@@ -134,7 +134,7 @@ classdef RegisterController < handle
             % initialize register worker
             this.regworker = RegisterWorker(movraw_, movaligned_);
 
-            % mpiprofile on
+            mpiprofile on
 
             % turn on engine
             this.state = this.KERNEL_ON;
@@ -149,12 +149,11 @@ classdef RegisterController < handle
                 status = this.regworker.correct(task);
                 this.taskmgr.update(status);    % can hang out for resource
                 task = this.taskmgr.Task;
-                % drawnow
             end
 
             this.runtime = toc;
 
-            % mpiprofile viewer
+            mpiprofile viewer
 
             this.clear_after_running(movraw_, regfr_);
         end

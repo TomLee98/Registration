@@ -1,4 +1,4 @@
-function [series_rs, scale] = ReSample(series, scale)
+function [scale, series_rs] = ReSample(series, scale)
 %DOWNSAMPLING The function downsampling volume series for registration 
 % speed up, using 'linear' as downsampling method, series must with
 % dimension order: X,Y(,C,Z,T)
@@ -7,8 +7,18 @@ function [series_rs, scale] = ReSample(series, scale)
 %   - scale: 0-1 for volume downsampling, > 1for upsampling, inf for auto
 %            sampling
 % Output:
-%   - series_rs: resampling movie series
 %   - scale: resampling scale
+%   - series_rs: resampling movie series
+%
+% example 1:
+% If you only need the auto resampling scale, use:
+%   scale = ReSample(series) or scale = ReSample(series, inf)
+%
+% example 2:
+% If you need the resampling series, use:
+%   [scale, series_rs] = ReSample(series, scale)
+%
+% see also: imresize, imresize3
 
 arguments
     series  (:,:,:,:,:)   uint16
@@ -19,6 +29,11 @@ EC50 = 256;
 if isinf(scale)
     sz_max = max(size(series, [1, 2]));
     scale = EC50/(EC50 + sz_max);
+end
+
+if nargout == 1
+    series_rs = [];
+    return;
 end
 
 ndim = ndims(series);

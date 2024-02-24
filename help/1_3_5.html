@@ -148,13 +148,17 @@
 </li></ul>
 <blockquote style="MARGIN-RIGHT: 0px" dir="ltr">
 <p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt"><span><span style="FONT-SIZE: 12pt; FONT-FAMILY: 宋体; mso-bidi-font-size: 11.0pt; mso-bidi-font-family: 'Times New Roman'; mso-bidi-theme-font: minor-bidi; mso-ansi-language: EN-US; mso-fareast-language: ZH-CN; mso-bidi-language: AR-SA">
-<span style="FONT-SIZE: 12pt; FONT-FAMILY: 宋体; mso-bidi-font-size: 11.0pt">注1：建议配准方案由简单到复杂，逐步提升配准质量。迭代时注意更复杂的配准方案对应更小的初始迭代步长以及更低的运动水平，防止迭代不收敛。</span></span></span></p>
+<span style="FONT-SIZE: 12pt; FONT-FAMILY: 宋体; mso-bidi-font-size: 11.0pt"><font color="#FF0000">注1：</font>配准需要逐步提升配准质量。<b><u><font color="#FF0000">仿射变换</font></u> 需要在已完成平移/刚体的图像基础上进行。</b>迭代时注意更复杂的运动估计对应更小的迭代步长，防止迭代不收敛。</span></span></span></p>
 <p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt">&nbsp;</p>
 <p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt"><span><span style="FONT-SIZE: 12pt; FONT-FAMILY: 宋体; mso-bidi-font-size: 11.0pt; mso-bidi-font-family: 'Times New Roman'; mso-bidi-theme-font: minor-bidi; mso-ansi-language: EN-US; mso-fareast-language: ZH-CN; mso-bidi-language: AR-SA">
-注2：迭代步长右侧图标显示当前计算机CPU生产商，单击可获得计算机详细配置。当CPU为单核时，不建议运行大文件配准。</span></span></p>
+注2：当前焦点为配准设置面板时，您可以按下 <u>V</u> 键以获得模板帧预处理预览。</span></span></p>
 <p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt">&nbsp;</p>
 <p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt"><span><span style="FONT-SIZE: 12pt; FONT-FAMILY: 宋体; mso-bidi-font-size: 11.0pt; mso-bidi-font-family: 'Times New Roman'; mso-bidi-theme-font: minor-bidi; mso-ansi-language: EN-US; mso-fareast-language: ZH-CN; mso-bidi-language: AR-SA">
 注3：不同的数据可能需要应用不同的帧运算模板。对于难以配准的部分帧，可以尝试选定<u>配准范围</u>并调整配准参数，多次迭代至达到标准。</span></span></p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt">&nbsp;</p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt"><span><span style="FONT-SIZE: 12pt; FONT-FAMILY: 宋体; mso-bidi-font-size: 11.0pt; mso-bidi-font-family: 'Times New Roman'; mso-bidi-theme-font: minor-bidi; mso-ansi-language: EN-US; mso-fareast-language: ZH-CN; mso-bidi-language: AR-SA">
+注4：迭代步长右侧图标显示当前计算机CPU/GPU生产商，单击可获得计算机详细配置。</span></span></p>
+
 </blockquote>
 </blockquote>
 <br>
@@ -312,7 +316,7 @@ N维图像直方图规定化</a>。</span></o:p></span></span></p>
 <p align="left"><font size="5" face="宋体"><strong><font size="4">2</font> <font size="4">变换强度</font></strong></font></p>
 <blockquote style="MARGIN-RIGHT: 0px" dir="ltr">
 <p align="left"><font size="4" face="宋体"><strong>2.1 平移</strong></font></p>
-<p align="left"><font face="宋体"<img src="1_3_5%C.bmp" alt=""></font></p>
+<p align="left"><font face="宋体"><img src="1_3_5%C.bmp" alt=""></font></p>
 <p align="left">&nbsp; 平移面板包含配准帧相对于模板帧在三个平移自由度上的运动强度。</p>
 <p align="left"><font size="4" face="宋体"><strong>2.2 旋转</strong></font></p>
 <p align="left"><font face="宋体"><img src="1_3_5%D.bmp" alt=""></font></p>

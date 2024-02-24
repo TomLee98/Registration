@@ -1,6 +1,6 @@
 function [n, src] = ParseWorkersNumber(regopt_)
-% PARSEWORKERSNUMBER This function gets the maximum workers number with 
-% memory size as constrain by parse the passed regopt object
+% PARSEWORKERSNUMBER This function gets the maximum workers number which 
+% omits the data size as constrain by parse the passed regopt object
 % Input:
 %   - regopt_: 1-by-1 regopt object
 % Output:

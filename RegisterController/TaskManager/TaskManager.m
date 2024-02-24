@@ -5,7 +5,7 @@ classdef TaskManager < handle
         % ASK FOR REQUIRE DELAY
         REQUIRE_DELAY = 3;
 
-        BUSY_RATIO = 5;
+        BUSY_RATIO = 4;     % experience value
     end
 
     properties(Access=private, Hidden)
@@ -278,7 +278,9 @@ classdef TaskManager < handle
                     % generate the first rcf, exclusive
                     % at least one worker
                     this.rcfobj.NWorkersMax = max(this.PSMWN - this.nw_protected, 1);
-                    this.rcfobj.NWorkers = this.rcfobj.NWorkersMax;
+
+                    % avoid waste of parpool opening
+                    this.rcfobj.NWorkers = min(this.rcfobj.NWorkersMax, numel(this.regfrs));
 
                     % require from rcf pool
                     this.rcfobj.update_resource("REQUIRE");
@@ -335,7 +337,7 @@ classdef TaskManager < handle
                 this.rcfobj = regrcf(this.sfolder, this.volopts, this.regopts, this.regfrs);
 
                 this.rcfobj.NWorkersMax = max(this.PSMWN - this.nw_protected, 1);
-                this.rcfobj.NWorkers = this.rcfobj.NWorkersMax;
+                this.rcfobj.NWorkers = min(this.rcfobj.NWorkersMax, numel(this.regfrs));
                 this.nworker_cur = this.rcfobj.NWorkers;
                 this.rcfobj.Status = "Run";
             end
