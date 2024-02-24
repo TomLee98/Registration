@@ -257,6 +257,39 @@ classdef regmov < matlab.mixin.Copyable
         end
     end
 
+    methods(Access=public)
+        function gather(this)
+            % this function gathers data from disk file to memory
+            if isnumeric(this.mptr)
+                % already in memory
+                return;
+            else
+                D = this.mptr.Data;
+                delete(this.mptr);  % release resource
+                this.mptr = D;
+            end
+        end
+
+        function spread(this)
+            % this function spreads data from memory to disk file
+            if ismember(class(this.mptr), ["mpimg", "mpimgs"])
+                % already in memory
+                return;
+            else
+                tmpfolder = mpimg.findtmpfolder(this.mopt); % mpimgs ?
+                this.mptr = mpimg(tmpfolder, [], this.mptr, this.mopt.dimOrder);
+            end
+        end
+
+        function delete(this)
+            if ismember(class(this.mptr), ["mpimg", "mpimgs"])
+                delete(this.mptr);
+            end
+
+            % ~
+        end
+    end
+
     methods(Access=public, Hidden)
         function r = isempty(this)
             r = isempty(this.Movie);
@@ -329,29 +362,6 @@ classdef regmov < matlab.mixin.Copyable
 
                 movobj = regmov(mov, mopt_, t_, this.bkg);
                 movobj.Transformation = tf_;
-            end
-        end
-
-        function gather(this)
-            % this function gathers data from disk file to memory
-            if isnumeric(this.mptr)
-                % already in memory
-                return;
-            else
-                D = this.mptr.Data;
-                delete(this.mptr);  % release resource
-                this.mptr = D;
-            end
-        end
-
-        function spread(this)
-            % this function spreads data from memory to disk file
-            if ismember(class(this.mptr), ["mpimg", "mpimgs"])
-                % already in memory
-                return;
-            else
-                tmpfolder = mpimg.findtmpfolder(this.mopt); % mpimgs ?
-                this.mptr = mpimg(tmpfolder, [], this.mptr, this.mopt.dimOrder);
             end
         end
     end
