@@ -156,11 +156,10 @@
 注2：当前焦点为配准设置面板时，您可以按下 <u>V</u> 键以获得模板帧预处理预览。</span></span></p>
 <p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt">&nbsp;</p>
 <p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt"><span><span style="FONT-SIZE: 12pt; FONT-FAMILY: 宋体; mso-bidi-font-size: 11.0pt; mso-bidi-font-family: 'Times New Roman'; mso-bidi-theme-font: minor-bidi; mso-ansi-language: EN-US; mso-fareast-language: ZH-CN; mso-bidi-language: AR-SA">
-<font color="#FF0000">注3：</font>您可以关闭<u>粗配准</u>以少量提升配准速度，前提是您的图像<font color="#FF0000">不包含</font>剧烈运动(px &lt; 0.5 * STEP_MAX * ITERATION_NUM_MAX / RESOLUTION)。</span></span></p>
+<font color="#FF0000">注3：</font>您可以关闭<u>粗配准</u>以少量提升配准速度，前提是您的图像<font color="#FF0000">不包含</font>剧烈运动(px &lt; 0.5 * STEP_MAX * ITERATION_NUM_MAX / RESOLUTION), 否则将产生较差的运动估计。</span></span></p>
 <p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt"><span><span style="FONT-SIZE: 12pt; FONT-FAMILY: 宋体; mso-bidi-font-size: 11.0pt; mso-bidi-font-family: 'Times New Roman'; mso-bidi-theme-font: minor-bidi; mso-ansi-language: EN-US; mso-fareast-language: ZH-CN; mso-bidi-language: AR-SA">
 <p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt">&nbsp;</p>
 注4：不同的数据可能需要应用不同的帧运算模板。对于难以配准的部分帧，可以尝试选定<u>配准范围</u>并调整配准参数，多次迭代至达到标准。</span></span></p>
-<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt">&nbsp;</p>
 <p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt"><span><span style="FONT-SIZE: 12pt; FONT-FAMILY: 宋体; mso-bidi-font-size: 11.0pt; mso-bidi-font-family: 'Times New Roman'; mso-bidi-theme-font: minor-bidi; mso-ansi-language: EN-US; mso-fareast-language: ZH-CN; mso-bidi-language: AR-SA">
 注5：迭代步长右侧图标显示当前计算机CPU/GPU生产商，单击可获得计算机详细配置。</span></span></p>
 
@@ -269,7 +268,7 @@ N维图像直方图规定化</a>。</span></o:p></span></span></p>
 	<u>投影</u>：用于确定配准平面的投影方法。可选最大值(常用)，最小值，中位值，平均值。</span></div>
 </li></ul>
 <ul><li>
-<div align="left"><span style="FONT-SIZE: 12pt; FONT-FAMILY: 宋体; mso-bidi-font-size: 11.0pt"><u>几何变换</u>：可选<u>平移</u>，<u>刚体</u>，<u>分段线性</u>，<u>多项式</u>。具体应用场景可参考<span lang="EN-US">MATLAB帮助文档： <a href="https://ww2.mathworks.cn/help/images/ref/fitgeotform2d.html">对控制点对组进行几何变换拟合</a></span>，<span lang="EN-US"><a href="https://ww2.mathworks.cn/help/images/matrix-representation-of-geometric-transformations.html">几何变换的矩阵表示</a></span>。</span></div>
+<div align="left"><span style="FONT-SIZE: 12pt; FONT-FAMILY: 宋体; mso-bidi-font-size: 11.0pt"><u>几何变换</u>：可选<u>平移</u>，<u>刚体</u>，<u>仿射</u>，<u>分段线性</u>，<u>多项式</u>。具体应用场景可参考<span lang="EN-US">MATLAB帮助文档：<a href="https://ww2.mathworks.cn/help/images/ref/fitgeotform2d.html">对控制点对组进行几何变换拟合</a></span>，<span lang="EN-US"><a href="https://ww2.mathworks.cn/help/images/matrix-representation-of-geometric-transformations.html">几何变换的矩阵表示</a></span>。</span></div>
 </li></ul>
 <ul><li>
 <div align="left">
@@ -290,7 +289,7 @@ N维图像直方图规定化</a>。</span></o:p></span></span></p>
 </li></ul>
 <blockquote style="MARGIN-RIGHT: 0px" dir="ltr">
 <p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt"><span><span style="FONT-SIZE: 12pt; FONT-FAMILY: 宋体; mso-bidi-font-size: 11.0pt">
-	注1：为获得精准的几何变换，请严格按照 <u>控制量</u> 控制所选点对数量。</span></span></p>
+	注1：为获得精准的几何变换(包括 <u>平移</u> 与 <u>刚体</u>)，请严格按照 <u>控制量</u> 控制所选点对数量。</span></span></p>
 <p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt">&nbsp;</p>
 </blockquote>
 </blockquote>
