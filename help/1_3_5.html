@@ -8,9 +8,9 @@
 <blockquote style="MARGIN-RIGHT: 0px" dir="ltr">
 <p align="left"><font face="宋体"><img src="1_3_5%1.bmp" alt="">
 </font></p>
-<p align="left">&nbsp;配准器包括三个部分，配准(器)设置，配准范围及配准评估。 导入数据后，配准器菜单自动解锁。</p>
-<p align="left"><font size="5"><strong>&nbsp;一、配准设置</strong></font></p>
-<p align="left">&nbsp;配准控制流程将根据单通道或双通道图像自动选择合适的算法，因此配准设置面板会产生对应的变化（下图以双通道图像配准为例）。</p>
+<p align="left">&nbsp;配准器包括三个部分，(配准器)参数设置，配准范围及结果评估。 导入数据后，配准器菜单自动解锁。</p>
+<p align="left"><font size="5"><strong>&nbsp;一、参数设置</strong></font></p>
+<p align="left">&nbsp;配准控制流程将根据单通道或双通道图像自动选择合适的算法，因此参数设置面板会产生对应的变化（下图以双通道图像配准为例）。</p>
 <blockquote>
 <p align="left"><font size="4" face="宋体"><strong>1 全局自动配准</strong></font></p>
 <p align="left"><img src="1_3_5%2.bmp" alt=""> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <img src="1_3_5%3.bmp" alt=""/></p>
@@ -53,12 +53,14 @@
 </tbody>
 </table>
 <p dir="ltr" align="left">&nbsp;</p>
-<ul style="MARGIN-RIGHT: 0px" dir="ltr">
-<li>
+<ul style="MARGIN-RIGHT: 0px" dir="ltr"><li>
 <div align="left"><u>定位<span lang="EN-US">/</span>信号</u>： <span style="FONT-SIZE: 12pt; FONT-FAMILY: 宋体; mso-bidi-font-size: 11.0pt; mso-bidi-font-family: 'Times New Roman'; mso-bidi-theme-font: minor-bidi; mso-ansi-language: EN-US; mso-fareast-language: ZH-CN; mso-bidi-language: AR-SA">
 确定不同颜色通道的作用，配准程序将使用定位通道作为基准，将其几何变换应用在信号通道上。这里的假设是定位通道与信号通道间的运动差异可以忽略不计。</span></div>
-</li>
-</ul>
+</li></ul>
+<ul style="MARGIN-RIGHT: 0px" dir="ltr"><li>
+<div align="left"><u>粗配准</u>： <span style="FONT-SIZE: 12pt; FONT-FAMILY: 宋体; mso-bidi-font-size: 11.0pt; mso-bidi-font-family: 'Times New Roman'; mso-bidi-theme-font: minor-bidi; mso-ansi-language: EN-US; mso-fareast-language: ZH-CN; mso-bidi-language: AR-SA">
+用于估计初始几何变换的强鲁棒算法，可选<u>质心估计</u>，<u>相位相关</u>，<u>质心&amp;相位</u> 或<u>关闭</u>(不建议)。</span></div>
+</li></ul>
 <ul style="MARGIN-RIGHT: 0px" dir="ltr">
 <li>
 <div align="left"><span style="FONT-SIZE: 12pt; FONT-FAMILY: 宋体; mso-bidi-font-size: 11.0pt; mso-bidi-font-family: 'Times New Roman'; mso-bidi-theme-font: minor-bidi; mso-ansi-language: EN-US; mso-fareast-language: ZH-CN; mso-bidi-language: AR-SA">
@@ -154,10 +156,13 @@
 注2：当前焦点为配准设置面板时，您可以按下 <u>V</u> 键以获得模板帧预处理预览。</span></span></p>
 <p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt">&nbsp;</p>
 <p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt"><span><span style="FONT-SIZE: 12pt; FONT-FAMILY: 宋体; mso-bidi-font-size: 11.0pt; mso-bidi-font-family: 'Times New Roman'; mso-bidi-theme-font: minor-bidi; mso-ansi-language: EN-US; mso-fareast-language: ZH-CN; mso-bidi-language: AR-SA">
-注3：不同的数据可能需要应用不同的帧运算模板。对于难以配准的部分帧，可以尝试选定<u>配准范围</u>并调整配准参数，多次迭代至达到标准。</span></span></p>
+<font color="#FF0000">注3：</font>您可以关闭<u>粗配准</u>以少量提升配准速度，前提是您的图像<font color="#FF0000">不包含</font>剧烈运动(px &lt; 0.5 * STEP_MAX * ITERATION_NUM_MAX / RESOLUTION)。</span></span></p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt"><span><span style="FONT-SIZE: 12pt; FONT-FAMILY: 宋体; mso-bidi-font-size: 11.0pt; mso-bidi-font-family: 'Times New Roman'; mso-bidi-theme-font: minor-bidi; mso-ansi-language: EN-US; mso-fareast-language: ZH-CN; mso-bidi-language: AR-SA">
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt">&nbsp;</p>
+注4：不同的数据可能需要应用不同的帧运算模板。对于难以配准的部分帧，可以尝试选定<u>配准范围</u>并调整配准参数，多次迭代至达到标准。</span></span></p>
 <p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt">&nbsp;</p>
 <p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt"><span><span style="FONT-SIZE: 12pt; FONT-FAMILY: 宋体; mso-bidi-font-size: 11.0pt; mso-bidi-font-family: 'Times New Roman'; mso-bidi-theme-font: minor-bidi; mso-ansi-language: EN-US; mso-fareast-language: ZH-CN; mso-bidi-language: AR-SA">
-注4：迭代步长右侧图标显示当前计算机CPU/GPU生产商，单击可获得计算机详细配置。</span></span></p>
+注5：迭代步长右侧图标显示当前计算机CPU/GPU生产商，单击可获得计算机详细配置。</span></span></p>
 
 </blockquote>
 </blockquote>

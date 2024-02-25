@@ -80,7 +80,7 @@ classdef regrcf < handle
             this.data.user_id = uid;
             this.data.submit_time = string(datetime("now"));
             [this.data.resource, this.nmax] = GetTaskWorkersMaxN(volopt_, regopt_);
-            this.tueobj = TUE(volopt_, regopt_, regfrs_);
+            this.tueobj = TUE(volopt_, regopt_, regfrs_, this.nmax);
         end
 
         function r = get.UserId(this)

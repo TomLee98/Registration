@@ -82,6 +82,7 @@ rref_ds  = imref3d(size(refvol_ds), res_ds(1), res_ds(2), res_ds(3));
 % extract local variables instead of struct spread
 reg_modal = regopt.RegModal;
 tf_type = regopt.TformType;
+coarse_alg = regopt.CoarseAlg;
 max_setp = regopt.MaxStep;
 min_setp = regopt.MinStep;
 iter_coeff = regopt.IterCoeff;
@@ -100,7 +101,7 @@ parfor m = 1:numel(regfrs)
 
     % use imregopzr for better initialized transformation
     [ptf, ~] = imregopzr(avol_sc_m_ds, refvol_ds, res_ds, ...
-            max_shift_z, zopt_tol);
+            max_shift_z, zopt_tol, coarse_alg);
 
     fival_sc = mean(avol_sc_m(:,[1,end],:),"all");
     fival_fc =  mean(avol_fc_m(:,[1,end],:),"all");
@@ -309,7 +310,7 @@ switch A.Mode
     case "global"
         VALID_FIELD_PRIVATE = ["RegModal", "MedianFilter", "OpenOperator", ...
             "GaussianFilter", "MaxZOptShift", "TolZOpt", "Gamma", "TformType", ...
-            "MaxStep", "MinStep",  "IterCoeff", "DS"];
+            "MaxStep", "MinStep",  "IterCoeff", "DS", "CoarseAlg"];
     case "local"
         VALID_FIELD_PRIVATE = ["AFS", "GR", "GS", "ImageRehist", "RepAcc"];
     otherwise

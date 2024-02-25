@@ -13,6 +13,7 @@ classdef regopt
         tform_type      (1,1) string {mustBeMember(tform_type, ["translation","rigid","affine"])} = "translation"
         step_max        (1,1) double {mustBePositive} = 1e-1
         step_min        (1,1) double {mustBePositive} = 1e-4
+        coarse_alg      (1,1) string {mustBeMember(coarse_alg, ["mmt","pcorr","both","none"])} = "mmt"
         gl_itn_max      (1,1) double {mustBePositive, mustBeInteger} = 50
         lo_itn_max      (1,:) double {mustBePositive, mustBeInteger} = 100
         iter_coeff      (1,1) double {mustBeInRange(iter_coeff, 0, 1)} = 0.5
@@ -58,7 +59,7 @@ classdef regopt
 
         % =================== manual parameters ====================
         m_tform_type     (1,1) string {mustBeMember(m_tform_type, ...
-                                    ["translation","rigid","poly","pwl"])} ...
+                                    ["translation","rigid","affine","poly","pwl"])} ...
                                     = "translation"
         m_degree        (1,1) double {mustBeMember(m_degree, [2,3,4])} = 2
         m_dview         (1,1) string {mustBeMember(m_dview, ["XY","ZX","YZ"])} = "XY"
@@ -151,6 +152,7 @@ classdef regopt
             addParameter(p, 'GaussianFilter',   this.gfilter);
             addParameter(p, 'MaxZOptShift',     this.zopt_shift_max);
             addParameter(p, 'TolZOpt',          this.zopt_tol);
+            addParameter(p, 'CoarseAlg',        this.coarse_alg);
             addParameter(p, 'VPL',              this.vpl);
             addParameter(p, 'RL',               this.region_lbl);
             addParameter(p, 'Gamma',            this.gamma);
@@ -241,6 +243,7 @@ classdef regopt
                                        "MaxStep",   this.step_max, ...
                                        "MinStep",   this.step_min, ...
                                        "MaxIterN",  this.gl_itn_max, ...
+                                       "CoarseAlg", this.coarse_alg, ...
                                        "IterCoeff", this.iter_coeff, ...
                                        "VPL",       this.vpl, ...
                                        "Interp",    this.gl_interp, ...
@@ -270,6 +273,7 @@ classdef regopt
                                        "GaussianFilter",this.gfilter, ...
                                        "MaxZOptShift",  this.zopt_shift_max, ...
                                        "TolZOpt",       this.zopt_tol, ...
+                                       "CoarseAlg",     this.coarse_alg, ...
                                        "Gamma",         this.gamma, ...
                                        "MaxStep",       this.step_max, ...
                                        "MinStep",       this.step_min, ...
@@ -338,6 +342,7 @@ classdef regopt
                             this.tform_type = r_.TformType;
                             this.step_max = r_.MaxStep;
                             this.step_min = r_.MinStep;
+                            this.coarse_alg = r_.CoarseAlg;
                             this.gl_itn_max = r_.MaxIterN;
                             this.iter_coeff = r_.IterCoeff;
                             this.vpl = r_.VPL;
@@ -366,6 +371,7 @@ classdef regopt
                             this.gfilter = r_.GaussianFilter;
                             this.zopt_shift_max = r_.MaxZOptShift;
                             this.zopt_tol = r_.TolZOpt;
+                            this.coarse_alg = r_.CoarseAlg;
                             this.gamma = r_.Gamma;
                             this.step_max = r_.MaxStep;
                             this.step_min = r_.MinStep;

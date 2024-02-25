@@ -84,73 +84,64 @@ mp = cpcorr(mp, fp, pavol_sc_rz, ptmvol_rz);
 if isMATLABReleaseOlderThan("R2022b")
     switch regopt_.TformType
         case "pwl"
-            tf = fitgeotrans(mp, fp, "pwl");
+            tf = fitgeotrans(mp, fp, "pwl");    % PiecewiseLinearTransformation2D
         case "poly"
-            tf = fitgeotrans(mp, fp, "polynomial", regopt_.Degree);
+            tf = fitgeotrans(mp, fp, "polynomial", regopt_.Degree); % PolynomialTransformation2D
         otherwise
-            if size(fp,1) < 3
-                while true
-                    % add random points for constructing a triangle
-                    px = randi(size(ptmvol_rz, 2), 3-size(fp,1), 1);
-                    py = randi(size(ptmvol_rz, 1), 3-size(fp,1), 1);
-                    fpp = [fp; [px, py]];
-                    % avoid three points at a common line
-                    if abs(det(fpp(2:3,:)-fpp(1,:))) > eps
-                        mpp = [mp; mp+[px, py]-fp];
-                        fp = fpp;
-                        mp = mpp;
-                        break;
-                    end
+            [mp, fp] = CompensateTriagle(mp, fp, ptmvol_rz);
+
+            if regopt_.TformType == "affine"
+                tf = fitgeotrans(mp, fp, "affine");    % affine2d
+            else
+                tf = fitgeotrans(mp, fp, "nonreflectivesimilarity");    % affine2d
+
+                % append geometric constrains
+                if regopt_.TformType == "translation"
+                    % omit scaling and rotation
+                    tf.T(1:2,1:2) = eye(2);
+                elseif regopt_.TformType == "rigid"
+                    % omit scaling
+                    tf.T(1:2,1:2) = ...
+                        tf.T(1:2,1:2) / sqrt(abs(det(tf.T(1:2,1:2))));
+                else
+                    throw(MException("manreg:invalidGeometricTransformation", ...
+                        "Invalid geometric transformation."));
                 end
             end
-            tf = fitgeotrans(mp, fp, "nonreflectivesimilarity");    % affine2d
-            if regopt_.TformType == "translation"
-                % omit scaling and rotation
-                tf.T(1:2,1:2) = eye(2);     
-            elseif regopt_.TformType == "rigid"
-                % omit scaling
-                tf.T(1:2,1:2) = ...
-                    tf.T(1:2,1:2) / sqrt(abs(det(tf.T(1:2,1:2))));
-            else
-            end
+
             % modify the translation because of resampling
             tf.T(3,1:2) = tf.T(3,1:2)./fliplr(rs);
     end
 else
     switch regopt_.TformType
         case "pwl"
-            tf = fitgeotrans(mp, fp, "pwl");
+            tf = fitgeotform2d(mp, fp, "pwl");      % PiecewiseLinearTransformation2D
         case "poly"
-            tf = fitgeotrans(mp, fp, "polynomial", regopt_.Degree);
+            tf = fitgeotform2d(mp, fp, "polynomial", regopt_.Degree);   % 	PolynomialTransformation2D
         otherwise
-            if size(fp,1) < 3
-                while true
-                    % add random points for constructing a triangle
-                    px = randi(size(ptmvol_rz, 2), 3-size(fp,1), 1);
-                    py = randi(size(ptmvol_rz, 1), 3-size(fp,1), 1);
-                    fpp = [fp; [px, py]];
-                    % avoid three points at a common line
-                    if abs(det(fpp(2:3,:)-fpp(1,:))) > eps
-                        mpp = [mp; mp+[px, py]-fp];
-                        fp = fpp;
-                        mp = mpp;
-                        break;
-                    end
-                end
-            end
-            tf = fitgeotform2d(mp, fp, "similarity");    % simtform2d
-            if regopt_.TformType == "translation"
-                % omit scaling and rotation
-                tf.Scale = 1;
-                tf.RotationAngle = 0;
-            elseif regopt_.TformType == "rigid"
-                % omit scaling
-                tf.Scale = 1;
-            else
-            end
+            [mp, fp] = CompensateTriagle(mp, fp, ptmvol_rz);
 
-            % modify the translation because of resampling
-            tf.Translation = tf.Translation./fliplr(rs);
+            if regopt_.TformType == "affine"
+                tf = fitgeotform2d(mp, fp, "affine");    % affinetform2d
+                tf.A(1:2, 3) = tf.A(1:2, 3)./fliplr(rs)';
+            else
+                tf = fitgeotform2d(mp, fp, "similarity");    % simtform2d
+
+                if regopt_.TformType == "translation"
+                    % omit scaling and rotation
+                    tf.Scale = 1;
+                    tf.RotationAngle = 0;
+                elseif regopt_.TformType == "rigid"
+                    % omit scaling
+                    tf.Scale = 1;
+                else
+                    throw(MException("manreg:invalidGeometricTransformation", ...
+                        "Invalid geometric transformation."));
+                end
+
+                % modify the translation because of resampling
+                tf.Translation = tf.Translation./fliplr(rs);
+            end
     end
 end
 
@@ -175,6 +166,24 @@ srv(movdst_, avol_fc, fmode, regopt_.FC);
 movdst_.Transformation{regfrs_, 3} = tf;
 
 status = 0;
+end
+
+function [mp, fp] = CompensateTriagle(mp, fp, img)
+if size(fp, 1) < 3
+    while true
+        % add random points for constructing a triangle
+        px = randi(size(img, 2), 3-size(fp,1), 1);
+        py = randi(size(img, 1), 3-size(fp,1), 1);
+        fpp = [fp; [px, py]];
+        % avoid three points at a common line
+        if abs(det(fpp(2:3,:)-fpp(1,:))) > eps
+            mpp = [mp; mp+[px, py]-fp];
+            fp = fpp;
+            mp = mpp;
+            break;
+        end
+    end
+end
 end
 
 

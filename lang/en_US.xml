@@ -34,6 +34,7 @@
     <CIRCLE_HAT>Circle Hat</CIRCLE_HAT>
     <CLEAR>Clear</CLEAR>
     <CLOSE>Close</CLOSE>
+    <COARSE_REG>Coarse Registration</COARSE_REG>
     <COLOR>Color</COLOR>
     <COLOR_CHANNEL>Color Channel</COLOR_CHANNEL>
     <COLOR_MAPPING>Color Mapping</COLOR_MAPPING>
@@ -76,7 +77,6 @@
     <DOCUMENT>Document</DOCUMENT>
     <DOWNLOADING>Downloading…</DOWNLOADING>
     <DOWNSAMPLING>Downsampling</DOWNSAMPLING>
-    <DOWNSAMPLING_OFF_RECOMMAND>We strongly recommend that you turn off downsampling for better motion estimation.</DOWNSAMPLING_OFF_RECOMMAND>
     <DUAL_CHANNEL>Dual Channel</DUAL_CHANNEL>
     <DVIEW>Viewing Angle (Normal)</DVIEW>
     <DVIEW_XY>XY Plane(Z)</DVIEW_XY>
@@ -194,6 +194,8 @@
     <MASK_LOADED>Mask loaded</MASK_LOADED>
     <MASK_MISMATCH>Mask size mismatch</MASK_MISMATCH>
     <MASK_REMOVED>Mask removed</MASK_REMOVED>
+    <MASS_CENTER_ESTIMATION>Mass Center Estimation</MASS_CENTER_ESTIMATION>
+    <MASS_PHASE_BOTH>Mass &amp; Phase</MASS_PHASE_BOTH>
     <MAX>Max</MAX>
     <MAX_ITERATION_N>Max Iteration Number</MAX_ITERATION_N>
     <MAX_ITERATION_STEP>Maximum Iteration Step</MAX_ITERATION_STEP>
@@ -248,6 +250,7 @@
     <PERFORM_AUTO_REGISTRATION>Perform automatic registration</PERFORM_AUTO_REGISTRATION>
     <PERFORM_LONGTERM_REGISTRATION>Perform long-term registration</PERFORM_LONGTERM_REGISTRATION>
     <PERIMETER>Perimeter</PERIMETER>
+    <PHASE_CORRELATION>Phase Correlation</PHASE_CORRELATION>
     <PIECEWISE_LINEAR>Piecewise linear</PIECEWISE_LINEAR>
     <PIXEL_HISTOGRAM>Pixel Histogram</PIXEL_HISTOGRAM>
     <PLAY_MODE>Play Mode</PLAY_MODE>
@@ -266,6 +269,7 @@
     <PRP_PRIVACY_FRIENDLY>The problem reporting process does not collect your</PRP_PRIVACY_FRIENDLY>
     <PYRAMID_COEFFICIENT>Pyramid Coefficient</PYRAMID_COEFFICIENT>
     <PYTHON_INTERPRETER>Python Interpreter</PYTHON_INTERPRETER>
+    <PYTHON_INTERPRETER_SELECTION>Select a Python Interpreter</PYTHON_INTERPRETER_SELECTION>
     <RANDOM_UNIFORM>Random(uniform)</RANDOM_UNIFORM>
     <RATIO>Ratio</RATIO>
     <RAW>Raw</RAW>
@@ -285,12 +289,12 @@
     <REGION_PROPERTY_SLICE>Region Property(Slice)</REGION_PROPERTY_SLICE>
     <REGION_PROPERTY_VOLUME>Region Property(Volume)</REGION_PROPERTY_VOLUME>
     <REGISTRATION_COMPLETE>Registration complete</REGISTRATION_COMPLETE>
-    <REGISTRATION_EVALUATION>Registration Evaluation</REGISTRATION_EVALUATION>
+    <REGISTRATION_EVALUATION>Transformation Evaluation</REGISTRATION_EVALUATION>
     <REGISTRATION_FRAMES>Registration frames(Seconds):</REGISTRATION_FRAMES>
     <REGISTRATION_GOODNESS>Registration Goodness</REGISTRATION_GOODNESS>
     <REGISTRATION_IMAGE>Registered Image</REGISTRATION_IMAGE>
     <REGISTRATION_RANGE>Registration Range</REGISTRATION_RANGE>
-    <REGISTRATION_SETTING>Registration Setting</REGISTRATION_SETTING>
+    <REGISTRATION_SETTING>Parameters Setting</REGISTRATION_SETTING>
     <REGISTRATION_SOLUTION_ERROR>No registration solution set up</REGISTRATION_SOLUTION_ERROR>
     <TEMPLATE>Template</TEMPLATE>
     <REGISTRATOR>Register</REGISTRATOR>
