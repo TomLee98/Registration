@@ -29,7 +29,10 @@ classdef regmov < matlab.mixin.Copyable
         ZProjMethod     % variable, get/set, stored
         Transformation  % variable, get/set, stored
         Bytes           % variable,     get, not stored
-        Background      % variable, get/set, stored
+        Background      % variable,     get, stored
+        EMin            % variable,     get, not stored
+        EMax            % variable,     get, not stored
+        EMedian         % variable,     get, not stored
     end
 
     methods
@@ -39,7 +42,7 @@ classdef regmov < matlab.mixin.Copyable
                 mptr_   
                 mopt_   (1,12)  table  {mustBeMovieOptions}
                 t_      (:,1)   double {mustBeNonnegative}
-                bkg_    (1,:)   double {mustBeNonnegative}
+                bkg_            double {mustBeNonnegative}
             end
             if ~ismember(class(mptr_), ["mpimg", "mpimgs"]) ...
                     && ~isnumeric(mptr_)
@@ -189,7 +192,7 @@ classdef regmov < matlab.mixin.Copyable
                 r_  (:, 3) cell
             end
             if size(r_, 1) ~= this.mopt.frames
-                throw(MException("regmov:badTime", ...
+                throw(MException("regmov:badTransformation", ...
                     "Number of Timesteps not match."));
             end
 
@@ -227,19 +230,57 @@ classdef regmov < matlab.mixin.Copyable
             r = this.bkg;
         end
 
-        function set.Background(this, r_)
-            arguments
-                this
-                r_  (1,:)   double {mustBeNonnegative}
-            end
-            if numel(r_) ~= numel(this.mopt.cOrder)
-                throw(MException("regmov:badTime", ...
-                    "Number of color channels not match."));
-            end
+        function r = get.EMin(this)
+            % use random resample for quick and better lower bound 
+            % estimation
 
-            this.bkg = r_;
+            r = zeros([1, this.MetaData.channels]);
+
+            npix = this.MetaData.width * this.MetaData.height * ...
+                this.MetaData.images;
+
+            % we select at most 1e6 points from
+            LX = rand(min(1e6, npix), 5);
+            LX(:,1) = round((this.MetaData.height-1)*LX(:,1)) + 1;  % rows
+            LX(:,2) = round((this.MetaData.width-1)*LX(:,2))+ 1;   % cols
+            LX(:,4) = round((this.MetaData.slices-1)*LX(:,4)) + 1;  % depth
+            LX(:,5) = round((this.MetaData.frames-1)*LX(:,5)) + 1;  % time
+
+            % modify the color channel indices
+            for k = 1:numel(r)
+                LX(:,3) = k;
+                ind_k = sub2ind(size(this.Movie), LX(:,1),LX(:,2),LX(:,3),LX(:,4),LX(:,5));
+                r(k) = min(this.Movie(ind_k),[],"all");
+            end
         end
 
+        function r = get.EMax(this)
+            % use frame sortted resample for quick and better upper
+            % bound estimation
+
+            r = zeros([1, this.MetaData.channels]);
+
+            floc = randperm(this.MetaData.frames, 5);
+
+            % modify the color channel indices
+            for k = 1:numel(r)
+                r(k) = max(this.Movie(:,:,k,:,floc), [], "all");
+            end
+        end
+
+        function r = get.EMedian(this)
+            % use frame sortted resample for quick and better median
+            % estimation
+
+            r = zeros([1, this.MetaData.channels]);
+
+            floc = randperm(this.MetaData.frames, 5);
+
+            % modify the color channel indices
+            for k = 1:numel(r)
+                r(k) = median(this.Movie(:,:,k,:,floc),"all");
+            end
+        end
     end
 
     methods(Access = protected)
@@ -295,12 +336,14 @@ classdef regmov < matlab.mixin.Copyable
             r = isempty(this.Movie);
         end
 
-        function movobj = crop(this, dim_, r_)
+        function movobj = vcrop(this, dim_, r_)
             arguments
                 this
                 dim_  (1,1) string
                 r_    (:,2) double {mustBePositive, mustBeInteger}
             end
+
+            validateattributes(r_', "double", "nondecreasing");
 
             mopt_ = this.mopt;
             t_ = this.t;
@@ -308,61 +351,137 @@ classdef regmov < matlab.mixin.Copyable
             bkg_ = this.bkg;
 
             if ismember(class(this.mptr), ["mpimg", "mpimgs"])
-                mptr_ = this.mptr.crop(dim_, r_);
-                dim_ = dim_.split("");
-                dim_ = dim_(2:end);
-                for n = 1:numel(dim_)
-                    switch dim_(n)
-                        case "X"
-                            mopt_.width = mopt_.width - (diff(r_(n,:))+1);
-                        case "Y"
-                            mopt_.height = mopt_.height - (diff(r_(n,:))+1);
-                        case "C"
-                            mopt_.channels = mopt_.channels - (diff(r_(n,:))+1);
-                            bkg_ = bkg_(r_(n,1):r_(n:2));
-                        case "Z"
-                            mopt_.slices = mopt_.slices - (diff(r_(n,:))+1);
-                        case "T"
-                            mopt_.frames = mopt_.frames - (diff(r_(n,:))+1);
-                            t_ = t_(r_(n,1):r_(n:2));
-                            tf_ = tf_(r_(n,1):r_(n:2), :);
-                    end
+
+                mptr_ = this.mptr.vcrop(dim_, r_);
+
+                switch dim_
+                    case "XY"
+                        mopt_.width = diff(r_(1,:))+1;
+                        mopt_.height = diff(r_(2,:))+1;
+                        % crop the non-rigid registration displacement field
+                        tf_(:,2) = cellfun(@(x)df_crop_xy(x, r_), ...
+                            tf_(:,2),'UniformOutput',false);
+                    case "Z"
+                        mopt_.slices = diff(r_(n,:))+1;
+                        % crop the non-rigid registration displacement field
+                        tf_(:,2) = cellfun(@(x)df_crop_z(x, r_), ...
+                            tf_(:,2),'UniformOutput',false);
+                    otherwise
+                        throw(MException("regmov:vcrop:invalidUse", ...
+                            "Undefined using of vcrop. Only 'XY' and 'Z' mode are supported."));
                 end
+
+                % update images number (if slices changed)
                 mopt_.images = mopt_.slices*mopt_.channels*mopt_.frames;
 
+                % generate a regmov obj
                 movobj = regmov(mptr_, mopt_, t_, bkg_);
                 movobj.Transformation = tf_;
             elseif isnumeric(this.mptr)
-                if numel(dim_) ~= size(r_, 1)
-                    throw(MException("regmov:invalidCrop", ...
-                        "Crop dimension not match."));
-                end
-                validateattributes(r_, "double", "nondecreasing");
-                %TODO: ANY DIMENSION ORDER SUPPORT
-                warning("regmov:unfinishFunction", "Only partial functions " + ...
-                    "are supported.");
                 switch dim_
                     case "XY"
                         mov = CropXY(this.Movie, r_');
-                        mopt_.width = mopt_.width - (diff(r_(1,:))+1);
-                        mopt_.height = mopt_.height - (diff(r_(2,:))+1);
+                        mopt_.width = diff(r_(1,:))+1;
+                        mopt_.height = diff(r_(2,:))+1;
+                        tf_(:,2) = cellfun(@(x)df_crop_xy(x, r_), tf_(:,2),'UniformOutput',false);
                     case "Z"
                         mov = CropZ(this.Movie, r_);
-                        mopt_.slices = mopt_.slices - (diff(r_)+1);
-                    case "T"
-                        mov = CropT(this.Movie, r_);
-                        mopt_.frames = mopt_.slices - (diff(r_)+1);
-                        t_ = t_(r_(1):r_(2));
-                        tf_ = tf_(r_(1):r_(2));
+                        mopt_.slices = diff(r_)+1;
+                        tf_(:,2) = cellfun(@(x)df_crop_z(x, r_), tf_(:,2),'UniformOutput',false);
                     otherwise
-                        throw(MException("regmov:invalidOperation", ...
-                            "Unsupported operation."));
+                        throw(MException("regmov:vcrop:invalidUse", ...
+                            "Undefined using of vcrop. Only 'XY' and 'Z' mode are supported."));
                 end
                 mopt_.images = mopt_.slices*mopt_.channels*mopt_.frames;
 
                 movobj = regmov(mov, mopt_, t_, this.bkg);
                 movobj.Transformation = tf_;
             end
+
+            function A = df_crop_xy(A, r)
+                % A: m-by-n-by-p-by-3
+                if ~isempty(A)
+                    A = A(r(2,1):r(2,2),r(1,1):r(1,2),:,:);
+                end
+            end
+
+            function A = df_crop_z(A, r)
+                % A: m-by-n-by-p-by-3
+                if ~isempty(A)
+                    A = A(:,:,r(1):r(2),:);
+                end
+            end
+        end
+
+        function movobj = tcrop(this, r_)
+            arguments
+                this
+                r_    (1,:) double {mustBePositive, mustBeInteger}
+            end
+
+            validateattributes(r_, "double", "nondecreasing");
+
+            mopt_ = this.mopt; 
+
+            mopt_.frames = numel(r_);
+            mopt_.images = mopt_.slices*mopt_.channels*mopt_.frames;
+            t_ = this.t(r_);
+            tf_ = this.tform(r_, :);
+
+            if ismember(class(this.mptr), ["mpimg", "mpimgs"])
+                mptr_ = this.mptr.tcrop(r_);
+                movobj = regmov(mptr_, mopt_, t_, this.bkg);
+            else
+                mov = CropT(this.mptr, r_);
+                movobj = regmov(mov, mopt_, t_, this.bkg);
+            end
+
+            movobj.Transformation = tf_;
+        end
+
+        function rmbkg(this, r_)
+            arguments
+                this
+                r_  double  {mustBeNonnegative, mustBeVector}
+            end
+
+            if numel(r_) ~= this.MetaData.channels
+                throw(MException("regmov:rmbkg:invalidChannelsNumber", ...
+                    "Channels number not match."));
+            end
+
+            this.bkg = r_;
+
+            if ismember(class(this.mptr), ["mpimg", "mpimgs"])
+                % mpimg overloading 'minus' operator
+                this.mptr = this.mptr - r_;
+            else
+                % remove on each channel
+                locstr = repmat(":", 1, 5);
+                for k = 1:numel(r_)
+                    locstr("C"==this.MetaData.dimOrder) = string(k);
+                    d_expstr = "this.mptr(" + locstr.join(",") + ")";
+                    sub_str = sprintf("-this.bkg(%d);", k);
+                    eval(d_expstr + "=" + d_expstr + sub_str);
+                end
+            end
+        end
+
+        function rcbkg(this)
+            if ismember(class(this.mptr), ["mpimg", "mpimgs"])
+                this.mptr = this.mptr + this.bkg;
+            else
+                 % add on each channel
+                locstr = repmat(":", 1, 5);
+                for k = 1:numel(this.bkg)
+                    locstr("C"==this.MetaData.dimOrder) = string(k);
+                    d_expstr = "this.mptr(" + locstr.join(",") + ")";
+                    sub_str = sprintf("+this.bkg(%d);", k);
+                    eval(d_expstr + "=" + d_expstr + sub_str);
+                end
+            end
+
+            this.bkg = 0*this.bkg;
         end
     end
 

@@ -86,25 +86,19 @@ classdef TUE < handle
         function t_use = imregtform_time_use(this)
             switch this.regopt.Options.TformType
                 case "translation"
-                    t_use = this.pixels_calc_num()/this.IMREGTFORM_TRANSL_PPS;
+                    t_use = this.pnpc()/this.IMREGTFORM_TRANSL_PPS;
                 case "rigid"
-                    t_use = this.pixels_calc_num()/this.IMREGTFORM_RIGID_PPS;
+                    t_use = this.pnpc()/this.IMREGTFORM_RIGID_PPS;
                 case "affine"
-                    t_use = this.pixels_calc_num()/this.IMREGTFORM_AFFINE_PPS;
+                    t_use = this.pnpc()/this.IMREGTFORM_AFFINE_PPS;
                 otherwise
                     t_use = 0;
             end
         end
 
         function t_use = imregdemons_time_use(this)
-            switch this.regopt.Mode
-                case "Local"
-                    pn =  this.volopt.width*this.volopt.height*this.volopt.slices*this.nregfr;
-                    t_use = pn / this.IMREGDEMONS_ACF_1_PPS;
-                    t_use = 0.5*t_use *(this.regopt.AFS+1);
-                otherwise
-                    t_use = 0;
-            end
+            % TODO: add time estimation
+            t_use = 0;
         end
 
         function t_use = imregdeform_time_use(this)
@@ -112,7 +106,7 @@ classdef TUE < handle
         end
 
         function t_use = imregopzr_time_use(this)
-            t_use = this.pixels_calc_num()/this.IMREGOPZR_PPS;
+            t_use = this.pnpc()/this.IMREGOPZR_PPS;
         end
 
         function t_use = imwarp_time_use(this)
@@ -126,7 +120,7 @@ classdef TUE < handle
         end
 
         function t_use = preproc_time_use(this)
-            t_use = this.pixels_calc_num()/this.PREPROC_PPS;
+            t_use = this.pnpc()/this.PREPROC_PPS;
         end
 
         function t_use = yield_time_use(this)
@@ -135,15 +129,16 @@ classdef TUE < handle
                 4/this.nws*(this.nregfr + 100);
         end
 
-        function pn = pixels_calc_num(this)
+        function pn = pnpc(this)
+            % This function calculate the pixels number per channel
             if this.volopt.channels == 1
 
             elseif this.volopt.channels == 2
-                if this.regopt.DS == "auto"
+                if this.regopt.Options.DS == "auto"
                     sz_max = max(this.volopt.width, this.volopt.height);
                     scale = 1/(this.EC50/(this.EC50 + sz_max));
                 else
-                    scale = str2double(string(this.regopt.DS).extractBefore(2));
+                    scale = str2double(string(this.regopt.Options.DS).extractBefore(2));
                 end
 
                 % single color channel

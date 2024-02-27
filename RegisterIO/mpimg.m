@@ -10,6 +10,7 @@ classdef mpimg < matlab.mixin.Copyable
         BYTES_UINT32 = 4
         BYTES_UINT64 = 8
         INNER_DIMENSION_ORDER = ["X","Y","C","Z","T"]
+        INNER_BLOCK_SIZE = 50
     end
 
     properties(Access=public, Dependent)
@@ -21,7 +22,7 @@ classdef mpimg < matlab.mixin.Copyable
         DataSize        % variable, get
         DataDims        % variable, get
         DataBytes       % variable, get
-        Filename        % variable, get
+        FileName        % variable, get
     end
 
     properties(Access = private, Hidden)
@@ -69,10 +70,10 @@ classdef mpimg < matlab.mixin.Copyable
             if (~isempty(folder_) && isfolder(folder_)) ...
                     && isempty(file_) && ~isempty(data_)
                 file_ = mpimg.genfilename(folder_);
-                this.newmapfile(file_, data_);
+                this.newmptr(file_, data_);
             elseif isempty(folder_) && (~isempty(file_)&&~isfile(file_)) ...
                     && ~isempty(data_)
-                this.newmapfile(file_, data_);
+                this.newmptr(file_, data_);
             else
                 throw(MException("mpimg:invalidUse", ...
                     "Can not parse input arguments."));
@@ -166,7 +167,7 @@ classdef mpimg < matlab.mixin.Copyable
             r = prod(this.DataSize)*bytes_per_elem;
         end
 
-        function r = get.Filename(this)
+        function r = get.FileName(this)
             r = this.memptr.Filename;
         end
     end
@@ -191,7 +192,7 @@ classdef mpimg < matlab.mixin.Copyable
             end
 
             if isfile(file_)
-                this.linkextmptr(file_, format_, dimorder_);
+                this.linkextf(file_, format_, dimorder_);
 
                 if this.isdisplay, fprintf("Memery mapping linked.\n"); end
             else
@@ -200,7 +201,7 @@ classdef mpimg < matlab.mixin.Copyable
             end
         end
 
-        function mptr = crop(this, dim_, r_)
+        function mptr = vcrop(this, dim_, r_)
             arguments
                 this
                 dim_  (1,1) string
@@ -218,7 +219,7 @@ classdef mpimg < matlab.mixin.Copyable
                 throw(MException("mpimg:invalidCrop", ...
                     "Crop dimension not match."));
             end
-            validateattributes(r_, "double", "nondecreasing");
+            validateattributes(r_', "double", "nondecreasing");
 
             sz = repmat({':'}, 1, numel(this.INNER_DIMENSION_ORDER));
             [~, p] = ismember(dim_, this.INNER_DIMENSION_ORDER);
@@ -231,7 +232,112 @@ classdef mpimg < matlab.mixin.Copyable
             end
 
             mptr = this.crop_(sz);
+        end
 
+        function mptr = tcrop(this, r_)
+            arguments
+                this
+                r_    (1,:) double {mustBePositive, mustBeInteger}
+            end
+
+            % also call crop_
+            [s, ~] = ismember("T", this.dimorder);
+            if any(~s)
+                throw(MException("mpimg:invalidCrop", ...
+                    "No dimension for this operation."));
+            end
+
+            validateattributes(r_, "double", "nondecreasing");
+
+            sz = repmat({':'}, 1, numel(this.INNER_DIMENSION_ORDER));
+            [~, p] = ismember("T", this.INNER_DIMENSION_ORDER);
+            if r_(end) > this.DataSize("T"==this.dimorder)
+                throw(MException("mpimg:invalidCropRange", ...
+                    "Crop range is out of data size."));
+            end
+
+            % transform to char array representation
+            r_ = "[" + string(r_).join(",") + "]";
+            r_ = char(r_);
+
+            sz{p} = r_;
+
+            mptr = this.crop_(sz);
+        end
+
+        function this = promote(this, dim_)
+            % This function promote a new dimension next the last dimension
+            % for example, [X,Y,Z] could be promoted as [X,Y,Z,T], etc
+            arguments
+                this
+                dim_    (1,1)   string
+            end
+
+            if ~ismember(dim_, this.INNER_DIMENSION_ORDER)
+                throw(MException("mpimg:promote:invalidPromote", ...
+                    "Only 'X','Y','C','Z','T' are valid "))
+            end
+
+            % TODO: 
+        end
+
+        function mptr = plus(this, r_)
+            % operator '+' overloading, data plus number on each channel
+            % TODO: we have better using fseek/... for same file
+            % modification rather than create a new file
+            arguments
+                this
+                r_  double  {mustBeVector}
+            end
+
+            nc = this.DataSize("C"==this.DimOrder);
+
+            if numel(r_) ~= nc
+                throw(MException("regmov:plus:invalidChannelsNumber", ...
+                    "Channels number not match."));
+            end
+
+            % range splitter for blocked data saving
+            nt = this.DataSize("T"==this.DimOrder);
+            t_range_ = range_splitter(sprintf("1:%d", nt), this.INNER_BLOCK_SIZE);
+
+            sz_ = repmat({':'}, 1, numel(this.INNER_DIMENSION_ORDER));
+
+            % create the primer
+            sz_{end} = t_range_(1);
+            expr = "this.Data("+string(sz_).join(",")+");";
+            data_ = eval(expr);
+            for c = 1:nc
+                % modify the data on channel c
+                data_(:,:,c,:,:) = data_(:,:,c,:,:) + r_(c);
+            end
+            
+            % generate new memmapping
+            [folder_, ~, ~] = fileparts(this.memptr.Filename);
+            mptr = mpimg(string(folder_), [], data_, ...
+                this.dimorder, this.isautoclear, this.isconst, this.isdisplay);
+
+            % link the data blocks to primer
+            for t = 2:numel(t_range_)
+                sz_{end} = t_range_(t);
+                expr = "this.Data("+string(sz_).join(",")+");";
+                data_ = eval(expr);
+                for c = 1:nc
+                    % modify the data on channel c
+                    data_(:,:,c,:,:) = data_(:,:,c,:,:) + r_(c);
+                end
+                mptr.concat(data_);
+            end
+        end
+
+        function mptr = minus(this, r_)
+            % operator '-' overloading, data plus number on each channel
+            arguments
+                this
+                r_  double  {mustBeVector}
+            end
+
+            mptr = this.plus(-r_);
         end
 
         function r = isempty(this)
@@ -290,11 +396,11 @@ classdef mpimg < matlab.mixin.Copyable
             end
 
             % memmapping
-            this.newmapfile(file_, data_);
+            this.newmptr(file_, data_);
         end
 
         % This function create a new file contains data_
-        function newmapfile(this, file_, data_)
+        function newmptr(this, file_, data_)
             % memmapping
             msize_ = size(data_);
             datatype_ = class(data_);
@@ -319,7 +425,7 @@ classdef mpimg < matlab.mixin.Copyable
             if this.isdisplay, fprintf("Memery mapping done.\n"); end
         end
 
-        function linkextmptr(this, file_, format_, dimorder_)
+        function linkextf(this, file_, format_, dimorder_)
             [~, ~, ext] = fileparts(file_);
             if ~strcmp(ext, '.dat')
                 throw(MException("mpimg:linkextmptr:invalidUse", ...
@@ -368,19 +474,78 @@ classdef mpimg < matlab.mixin.Copyable
             [~, p] = ismember(this.dimorder, this.INNER_DIMENSION_ORDER);
             sz_ = sz_(p);
 
-            % generate the cropped data
-            data_ = this.Data; %#ok<NASGU>
-            expr = "data_("+string(sz_).join(",")+");";
-            data_ = eval(expr);
+            % range splitter for blocked data saving
+            t_range_ = range_splitter(sz_{end}, this.INNER_BLOCK_SIZE);
 
+            % create the primer
+            sz_{end} = t_range_(1);
+            expr = "this.Data("+string(sz_).join(",")+");";
+            data_ = eval(expr);
             % generate new memmapping
             [folder_, ~, ~] = fileparts(this.memptr.Filename);
             mptr = mpimg(string(folder_), [], data_, ...
                 this.dimorder, this.isautoclear, this.isconst, this.isdisplay);
 
+            % link the data blocks to primer
+            for k = 2:numel(t_range_)
+                sz_{end} = t_range_(k);
+                expr = "this.Data("+string(sz_).join(",")+");";
+                data_ = eval(expr);
+
+                mptr.concat(data_);
+            end
+
             if this.isdisplay == true
                 fprintf("New mpimg object inherits this properites.")
             end
+        end
+
+        function concat(this, data_)
+            % this function concatnate the data on the last dimension,
+            % which requires the compatible data size
+            % Note that: concatnate is self operation for avoiding IO overhead
+
+            sz_ = size(data_);
+            if numel(sz_) > numel(this.dimorder) ...
+                    || numel(sz_) < numel(this.dimorder) - 1 ...
+                    || any(sz_(1:end-1)~=this.DataSize(1:end-1))
+                throw(MException("mpimg:concatnate:invalidUse", ...
+                    "Data is not compatible."));
+            end
+            if class(data_) ~= this.DataType
+                warning("mpimg:concatnate:badUse", ...
+                    "Data format will be changed to %s.", this.DataType);
+                data_ = cast(data_, this.DataType);
+            end
+
+            % record this file name
+            file_ = this.FileName;
+            datatype_ = this.DataType;
+            fmt_ = this.DataSize;
+
+            % cut the memptr linkage
+            this.memptr = [];
+
+            % open the file with 'append' mode and write
+            try
+                fid = fopen(file_, "a");
+                fwrite(fid, data_, datatype_);
+                fclose(fid);
+            catch ME
+                throwAsCaller(ME);
+            end
+            
+            % update and relink the new file
+            if numel(sz_) == numel(this.dimorder) - 1
+                nb = 1;
+            else
+                nb = sz_(end);
+            end
+            msize_ = [fmt_(1:end-1), fmt_(end)+nb];
+
+            format_ = {datatype_, msize_, 'mov'};
+
+            this.linkextf(file_, format_, this.dimorder);
         end
     end
 
@@ -511,4 +676,27 @@ classdef mpimg < matlab.mixin.Copyable
             end
         end
     end
+end
+
+% ===================== utility function ==========================
+function nbs = range_splitter(s, bsz)
+% This function help to split the range string as numblock setting
+% Input:
+%   - s: the sliced indices indicator string, like "1:20" or "1,3,5,7,8" etc
+%   - bsz: 1-by-1 positive integer, the splitted block size
+% Output:
+%   - nbs: q-by-1 string array, with splitted indicator s
+
+v = str2num(s); %#ok<ST2NM>
+
+nb = ceil(numel(v) / bsz);
+nbs = strings(nb, 1);
+
+
+% soop: string object oriented programming(
+for k = 1:nb
+    nbs(k) = string(v((k-1)*bsz+1:min(k*bsz, numel(v)))).join(",");
+    nbs(k) = "[" + nbs(k) + "]";
+end
+
 end

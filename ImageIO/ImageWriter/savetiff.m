@@ -22,6 +22,7 @@ arguments
     turbo       (1,1)   logical = false
 end
 
+% memory size validation
 mem = GetAvailableMemory();
 if mem < (mov.Bytes.mem + mov.Bytes.map)
     warning("No enough memory for tiff saving.");
@@ -32,7 +33,7 @@ end
 [path, ~, ~] = fileparts(file);
 file = char(file);
 
-% extract data from regmov
+% extract data from regmov to memory
 chs = mov.MetaData.cOrder;
 img = mov.Movie(:,:,ch==chs,:,:);   % 5D array
 

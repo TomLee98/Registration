@@ -65,7 +65,7 @@ gf = regopt.GaussianFilter;
 ga = regopt.Gamma;
 
 % 1. extract the reference volume
-[ds_scale, refvol_ds] = ReSample(refvol, regds);
+[ds_scale, refvol_ds] = Resample(refvol, regds);
 refvol_ds = preproc_tc(refvol_ds, mf, of, gf, ga);
 
 % 2. extract functional and structured channel data
@@ -96,7 +96,7 @@ parfor m = 1:numel(regfrs)
     % downsampling  on selected volume
     avol_sc_m = avol_sc(:,:,:,m);
     avol_fc_m = avol_fc(:,:,:,m);
-    [~, avol_sc_m_ds] = ReSample(avol_sc_m, ds_scale);
+    [~, avol_sc_m_ds] = Resample(avol_sc_m, ds_scale);
     avol_sc_m_ds = preproc_tc(avol_sc_m_ds, mf, of, gf, ga);
 
     % use imregopzr for better initialized transformation
@@ -155,7 +155,7 @@ DF = cell(numel(regfrs), 1);
 fmode = ["none", string(regfrs).join(",")];
 
 % 1. extract the reference volume
-[~, refvol_ds] = ReSample(refvol, 1/4);
+[~, refvol_ds] = Resample(refvol, 1/4);
 
 % 2. extract functional and structured channel data
 avol_sc = grv(movsrc, fmode, regopt.SC);
@@ -226,7 +226,7 @@ DF = cell(numel(regfrs), 1);
 fmode = ["none", string(regfrs).join(",")];
 
 % 1. extract the reference volume
-[~, refvol_ds] = ReSample(refvol, 1/4);
+[~, refvol_ds] = Resample(refvol, 1/4);
 
 % 2. extract functional and structured channel data
 avol_sc = grv(movsrc, fmode, regopt.SC);

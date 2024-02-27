@@ -1,4 +1,4 @@
-function [scale, series_rs] = ReSample(series, scale)
+function [scale, series_rs] = Resample(series, scale)
 %DOWNSAMPLING The function downsampling volume series for registration 
 % speed up, using 'linear' as downsampling method, series must with
 % dimension order: X,Y(,C,Z,T)
