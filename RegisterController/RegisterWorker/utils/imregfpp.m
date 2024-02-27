@@ -27,30 +27,52 @@ switch args.Operator
             "NumOctaves",args.NumOctave);
         ptsDistorted = detectKAZEFeatures(moving, "Threshold",args.QT, ...
             "NumOctaves",args.NumOctave);
-
     case "SIFT"
-
+        ptsOriginal = detectSIFTFeatures(fixed, "ContrastThreshold",args.QT, ...
+            "NumLayersInOctave",args.NumOctave);
+        ptsDistorted = detectSIFTFeatures(moving, "ContrastThreshold",args.QT, ...
+            "NumLayersInOctave",args.NumOctave);
     case "SURF"
-
+        ptsOriginal = detectSURFFeatures(fixed, "MetricThreshold",args.QT, ...
+            "NumOctaves",args.NumOctave);
+        ptsDistorted = detectSURFFeatures(moving, "MetricThreshold",args.QT, ...
+            "NumOctaves",args.NumOctave);
     case "BRISK"
-
+        ptsOriginal = detectBRISKFeatures(fixed, "MinQuality",args.QT, ...
+            "NumOctaves",args.NumOctave, "MinContrast",0);
+        ptsDistorted = detectBRISKFeatures(moving, "MinQuality",args.QT, ...
+            "NumOctaves",args.NumOctave, "MinContrast",0);
     case "Harris"
-
+        ptsOriginal = detectHarrisFeatures(fixed, "MinQuality",args.QT);
+        ptsDistorted = detectHarrisFeatures(moving, "MinQuality",args.QT);
     otherwise
+        throw(MException("imregfpp:invalidDetector", ...
+            "Unrecognized detector."));
 end
 
+% extract the features (with pesudo pairs)
 [featuresOriginal,validPtsOriginal] = extractFeatures(original,ptsOriginal);
 [featuresDistorted,validPtsDistorted] = extractFeatures(distorted,ptsDistorted);
 
+% match the features
 index_pairs = matchFeatures(featuresOriginal,featuresDistorted);
 
+% extract the matched point pairs
 matchedPtsOriginal  = validPtsOriginal(index_pairs(:,1));
 matchedPtsDistorted = validPtsDistorted(index_pairs(:,2));
 
+% estimate the 2d translation transformation
 if isMATLABReleaseOlderThan("R2022b")
-    [tform,inlierIdx] = estimateGeometricTransform2D(matchedPtsDistorted, matchedPtsOriginal, "affine");
+    [tform,inlierIdx] = estimateGeometricTransform2D(matchedPtsDistorted, ...
+                                                     matchedPtsOriginal, ...
+                                                     "affine");
+    % cast to translation: throw shear and rotation
+    tform = tfcast(tform);
 else
-    [tform,inlierIdx] = estgeotform2d(matchedPtsDistorted, matchedPtsOriginal, "affine");
+    [tform,inlierIdx] = estgeotform2d(matchedPtsDistorted, ...
+                                      matchedPtsOriginal, ...
+                                      "affine");
+    tform = tfcast_old(tform);
 end
 
 inlierPtsOriginal  = matchedPtsOriginal(inlierIdx,:);
@@ -59,3 +81,23 @@ inlierPtsDistorted = matchedPtsDistorted(inlierIdx,:);
 points = {inlierPtsDistorted, inlierPtsOriginal};
 end
 
+% ======================= utilities function ===========================
+
+function A = tfcast(A)
+% This function cast the transformation to translation only
+if isa(A, "affinetform2d")
+    % remove shear and rotation
+    A.A(1:2, 1:2) = eye(2);
+else
+    A = transltform2d();
+end
+end
+
+function A = tfcast_old(A)
+if isa(A, "affine2d")
+    % remove shear and rotation
+    A.T(1:2, 1:2) = eye(2);
+else
+    A = affine2d();
+end
+end

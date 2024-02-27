@@ -12,7 +12,7 @@ function status = tcreg(movsrc_, movdst_, movtmpl_, regfrs_, regopt_)
 %   - status: 1-by-1 double, 0 for normal exit, other code for bad exit
 %
 %   see also: regmov, regtmpl, imregtform, imregcorr, imwarp, imregdemons, 
-%   imhistmatchn, imref3d
+%             imregopzr, imregmc, imregfpp, imhistmatchn, imref3d
 
 arguments
     movsrc_ (1,1)   regmov
@@ -94,7 +94,7 @@ vpl = regopt.VPL;
 itpalg = regopt.Interp;
 
 for m = 1:numel(regfrs)
-    % downsampling  on selected volume
+    % downsampling on selected volume
     avol_sc_m = avol_sc(:,:,:,m);
     avol_fc_m = avol_fc(:,:,:,m);
     [~, avol_sc_m_ds] = Resample(avol_sc_m, ds_scale);
@@ -122,7 +122,7 @@ for m = 1:numel(regfrs)
     end
     optimizer.MaximumIterations = max_itern;
 
-    % do fine registration: imregtform
+    % do fine registration: imregtform base on intensity
     tf = imregtform(avol_sc_m_ds, rref_ds, refvol_ds, rref_ds, tf_type, ...
         optimizer, metric, "PyramidLevels",vpl, "InitialTransformation",ptf);
 
@@ -155,7 +155,7 @@ function status = tcreg_local_cpu(movsrc, movdst, refvol, regfrs, regopt)
 DF = cell(numel(regfrs), 1);
 fmode = ["none", string(regfrs).join(",")];
 
-% 1. extract the reference volume
+% 1. extract the brightness reference volume
 [~, refvol_ds] = Resample(refvol, 1/4);
 
 % 2. extract functional and structured channel data
@@ -226,7 +226,7 @@ function status = tcreg_local_gpu(movsrc, movdst, refvol, regfrs, regopt)
 DF = cell(numel(regfrs), 1);
 fmode = ["none", string(regfrs).join(",")];
 
-% 1. extract the reference volume
+% 1. extract the brightness reference volume
 [~, refvol_ds] = Resample(refvol, 1/4);
 
 % 2. extract functional and structured channel data
@@ -322,6 +322,6 @@ if ~all(ismember(fieldnames(A), [VALID_FIELD_PUBLIC, VALID_FIELD_PRIVATE]))
         "Unsupported arguments input."));
 end
 
-% Escape value checking for tcreg calling faster
+% Escape value checking for tcreg running faster
 
 end
