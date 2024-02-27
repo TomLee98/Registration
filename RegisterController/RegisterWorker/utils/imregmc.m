@@ -2,11 +2,11 @@ function tform = imregmc(moving, fixed, Rf)
 % IMREGMMT1: This function use 1 order moment (intensity mean) for 
 % translation shift estimation
 % Input:
-%   - moving:
-%   - fixed:
-%   - Rf:
+%   - moving: m-by-n uint16 matrix, the moving image
+%   - fixed: m-by-n uint16 matrix, the reference image
+%   - Rf: 1-by-1 imref2d object, as reference coordinate system
 % Output:
-%   - tform:
+%   - tform: 1-by-1 affine2d(MATLAB<R2022b) or transltform2d object
 %
 
 arguments

@@ -99,6 +99,7 @@
     <EXPORT_MASK_SUCCESS>Mask and area attributes exported successfully.</EXPORT_MASK_SUCCESS>
     <EXPORT_MOVIE>Export Movie</EXPORT_MOVIE>
     <EXPORT_TIME>Export Time</EXPORT_TIME>
+    <FEATURE_POINT_MATCHING>Feature Point Matching</FEATURE_POINT_MATCHING>
     <FEEDBACK_SUCCESS>Problem feedback successfully!</FEEDBACK_SUCCESS>
     <FILE>Files</FILE>
     <FILE_LOADING_COMPLETE>File loading completed:</FILE_LOADING_COMPLETE>
@@ -195,7 +196,6 @@
     <MASK_MISMATCH>Mask size mismatch</MASK_MISMATCH>
     <MASK_REMOVED>Mask removed</MASK_REMOVED>
     <MASS_CENTER_ESTIMATION>Mass Center Estimation</MASS_CENTER_ESTIMATION>
-    <MASS_PHASE_BOTH>Mass &amp; Phase</MASS_PHASE_BOTH>
     <MAX>Max</MAX>
     <MAX_ITERATION_N>Max Iteration Number</MAX_ITERATION_N>
     <MAX_ITERATION_STEP>Maximum Iteration Step</MAX_ITERATION_STEP>
@@ -231,6 +231,7 @@
     <NPC_CPU>Protected #cores(CPU)</NPC_CPU>
     <NPC_GPU>Protected #cores(GPU)</NPC_GPU>
     <NUM_MAX>Maximum</NUM_MAX>
+    <OCTAVE>Octave</OCTAVE>
     <OFF>Off</OFF>
     <OFFLINE>Offline</OFFLINE>
     <OK>OK</OK>
@@ -238,6 +239,7 @@
     <ONLINE>Online</ONLINE>
     <OPEN_OPERATOR>Open Operator</OPEN_OPERATOR>
     <OPACITY>Opacity</OPACITY>
+    <OPERATOR>Operator</OPERATOR>
     <OPTION>Options</OPTION>
     <ORDINARY>Ordinary</ORDINARY>
     <ORDINARY_TIPS>Program exceptions that may hinder processing such as registration</ORDINARY_TIPS>
@@ -270,6 +272,7 @@
     <PYRAMID_COEFFICIENT>Pyramid Coefficient</PYRAMID_COEFFICIENT>
     <PYTHON_INTERPRETER>Python Interpreter</PYTHON_INTERPRETER>
     <PYTHON_INTERPRETER_SELECTION>Select a Python Interpreter</PYTHON_INTERPRETER_SELECTION>
+    <QUALITY>Quality</QUALITY>
     <RANDOM_UNIFORM>Random(uniform)</RANDOM_UNIFORM>
     <RATIO>Ratio</RATIO>
     <RAW>Raw</RAW>
@@ -362,6 +365,7 @@
     <TERMINATE_REGISTRATION>Forced termination of registration</TERMINATE_REGISTRATION>
     <TEXT_FILE>Text file</TEXT_FILE>
     <THICKNESS_RANGE>Please enter the thickness range (layer):</THICKNESS_RANGE>
+    <THRESHOLD>Threshold</THRESHOLD>
     <TIME_COST>Time Cost</TIME_COST>
     <TIME_COST_SEC>Time cost(Seconds):</TIME_COST_SEC>
     <TIME_EXPORT_SUCCESS>Time export successful</TIME_EXPORT_SUCCESS>

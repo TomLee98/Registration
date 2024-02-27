@@ -83,6 +83,7 @@ rref_ds  = imref3d(size(refvol_ds), res_ds(1), res_ds(2), res_ds(3));
 reg_modal = regopt.RegModal;
 tf_type = regopt.TformType;
 coarse_alg = regopt.CoarseAlg;
+coarse_args = regopt.CoarseArgs;
 max_setp = regopt.MaxStep;
 min_setp = regopt.MinStep;
 iter_coeff = regopt.IterCoeff;
@@ -92,7 +93,7 @@ zopt_tol = regopt.TolZOpt;
 vpl = regopt.VPL;
 itpalg = regopt.Interp;
 
-parfor m = 1:numel(regfrs)
+for m = 1:numel(regfrs)
     % downsampling  on selected volume
     avol_sc_m = avol_sc(:,:,:,m);
     avol_fc_m = avol_fc(:,:,:,m);
@@ -101,7 +102,7 @@ parfor m = 1:numel(regfrs)
 
     % use imregopzr for better initialized transformation
     [ptf, ~] = imregopzr(avol_sc_m_ds, refvol_ds, res_ds, ...
-            max_shift_z, zopt_tol, coarse_alg);
+            max_shift_z, zopt_tol, coarse_alg, coarse_args);
 
     fival_sc = mean(avol_sc_m(:,[1,end],:),"all");
     fival_fc =  mean(avol_fc_m(:,[1,end],:),"all");
@@ -310,7 +311,7 @@ switch A.Mode
     case "global"
         VALID_FIELD_PRIVATE = ["RegModal", "MedianFilter", "OpenOperator", ...
             "GaussianFilter", "MaxZOptShift", "TolZOpt", "Gamma", "TformType", ...
-            "MaxStep", "MinStep",  "IterCoeff", "DS", "CoarseAlg"];
+            "MaxStep", "MinStep",  "IterCoeff", "DS", "CoarseAlg", "CoarseArgs"];
     case "local"
         VALID_FIELD_PRIVATE = ["AFS", "GR", "GS", "ImageRehist", "RepAcc"];
     otherwise

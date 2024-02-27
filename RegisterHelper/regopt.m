@@ -13,7 +13,8 @@ classdef regopt
         tform_type      (1,1) string {mustBeMember(tform_type, ["translation","rigid","affine"])} = "translation"
         step_max        (1,1) double {mustBePositive} = 1e-1
         step_min        (1,1) double {mustBePositive} = 1e-4
-        coarse_alg      (1,1) string {mustBeMember(coarse_alg, ["mmt","pcorr","both","none"])} = "mmt"
+        coarse_alg      (1,1) string {mustBeMember(coarse_alg, ["mmt","pcorr","fpp","none"])} = "mmt"
+        coarse_args     (1,1) struct = struct("Operator", "SIFT", "QT", 0.0133, "NumOctave", 3)
         gl_itn_max      (1,1) double {mustBePositive, mustBeInteger} = 50
         lo_itn_max      (1,:) double {mustBePositive, mustBeInteger} = 100
         iter_coeff      (1,1) double {mustBeInRange(iter_coeff, 0, 1)} = 0.5
@@ -145,6 +146,8 @@ classdef regopt
     methods(Access=public, Hidden)
         function this = set(this, varargin)
             p = inputParser;
+            p.StructExpand = false;     % allow parameters struct
+
             % =========== not overloading parameters =============
             addParameter(p, 'RegModal',         this.reg_modal);
             addParameter(p, 'MedianFilter',     this.mfilter);
@@ -153,6 +156,7 @@ classdef regopt
             addParameter(p, 'MaxZOptShift',     this.zopt_shift_max);
             addParameter(p, 'TolZOpt',          this.zopt_tol);
             addParameter(p, 'CoarseAlg',        this.coarse_alg);
+            addParameter(p, 'CoarseArgs',       this.coarse_args);
             addParameter(p, 'VPL',              this.vpl);
             addParameter(p, 'RL',               this.region_lbl);
             addParameter(p, 'Gamma',            this.gamma);
@@ -244,6 +248,7 @@ classdef regopt
                                        "MinStep",   this.step_min, ...
                                        "MaxIterN",  this.gl_itn_max, ...
                                        "CoarseAlg", this.coarse_alg, ...
+                                       "CoarseArgs",this.coarse_args, ...
                                        "IterCoeff", this.iter_coeff, ...
                                        "VPL",       this.vpl, ...
                                        "Interp",    this.gl_interp, ...
@@ -274,6 +279,7 @@ classdef regopt
                                        "MaxZOptShift",  this.zopt_shift_max, ...
                                        "TolZOpt",       this.zopt_tol, ...
                                        "CoarseAlg",     this.coarse_alg, ...
+                                       "CoarseArgs",    this.coarse_args, ...
                                        "Gamma",         this.gamma, ...
                                        "MaxStep",       this.step_max, ...
                                        "MinStep",       this.step_min, ...
@@ -343,6 +349,7 @@ classdef regopt
                             this.step_max = r_.MaxStep;
                             this.step_min = r_.MinStep;
                             this.coarse_alg = r_.CoarseAlg;
+                            this.coarse_args = r_.CoarseArgs;
                             this.gl_itn_max = r_.MaxIterN;
                             this.iter_coeff = r_.IterCoeff;
                             this.vpl = r_.VPL;
@@ -372,6 +379,7 @@ classdef regopt
                             this.zopt_shift_max = r_.MaxZOptShift;
                             this.zopt_tol = r_.TolZOpt;
                             this.coarse_alg = r_.CoarseAlg;
+                            this.coarse_args = r_.CoarseArgs;
                             this.gamma = r_.Gamma;
                             this.step_max = r_.MaxStep;
                             this.step_min = r_.MinStep;
