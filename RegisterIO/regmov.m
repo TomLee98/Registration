@@ -351,18 +351,17 @@ classdef regmov < matlab.mixin.Copyable
             bkg_ = this.bkg;
 
             if ismember(class(this.mptr), ["mpimg", "mpimgs"])
-
-                mptr_ = this.mptr.vcrop(dim_, r_);
-
                 switch dim_
                     case "XY"
+                        mptr_ = this.mptr.vcrop("YX", r_);
                         mopt_.width = diff(r_(1,:))+1;
                         mopt_.height = diff(r_(2,:))+1;
                         % crop the non-rigid registration displacement field
                         tf_(:,2) = cellfun(@(x)df_crop_xy(x, r_), ...
                             tf_(:,2),'UniformOutput',false);
                     case "Z"
-                        mopt_.slices = diff(r_(n,:))+1;
+                        mptr_ = this.mptr.vcrop("Z", r_);
+                        mopt_.slices = diff(r_)+1;
                         % crop the non-rigid registration displacement field
                         tf_(:,2) = cellfun(@(x)df_crop_z(x, r_), ...
                             tf_(:,2),'UniformOutput',false);

@@ -456,7 +456,7 @@ classdef mpimg < matlab.mixin.Copyable
             end
         end
 
-        % This function crop data and reture another mpimg object, which
+        % This function crop data and return another mpimg object, which
         % contains the cropped data
         function mptr = crop_(this, sz_)
             % sz must has the same dimension with dimorder
@@ -473,6 +473,11 @@ classdef mpimg < matlab.mixin.Copyable
             end
             [~, p] = ismember(this.dimorder, this.INNER_DIMENSION_ORDER);
             sz_ = sz_(p);
+
+            % fill time span automatically if ':' for compatibility
+            if strcmp(sz_{end}, ':')
+                sz_{end} = ['1',':', string(this.DataSize("T"==this.DimOrder)).char()];
+            end
 
             % range splitter for blocked data saving
             t_range_ = range_splitter(sz_{end}, this.INNER_BLOCK_SIZE);
