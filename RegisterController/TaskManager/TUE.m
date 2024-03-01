@@ -7,6 +7,10 @@ classdef TUE < handle
         IMREGTFORM_RIGID_PPS = 8.5E4        % pixels per second
         IMREGTFORM_AFFINE_PPS = 7.5E4       % pixels per second
 
+        IMREGDEMONS_GPU_PPS = 4E4           % @ AFS = 1.5
+        IMREGDEMONS_CPU_PPS = 4E3           % TODO: test the real acceleration ratio, may be not 10:1
+        IMHISTMATCHN_PPS = 3.5e5            % @ LOW LEVEL
+
         IMREGOPZR_PPS = 1E6                 % pixels per second
 
         PREPROC_PPS = 1E6                   % pixels per second
@@ -18,6 +22,7 @@ classdef TUE < handle
         EC50 = 256
 
         YIELD_TIME_CONST = 0.1              % from parallel toolbox configuration
+        PARALLEL_CONSTANT = 7/8
     end
 
     properties(SetAccess=immutable, Hidden)
@@ -43,7 +48,7 @@ classdef TUE < handle
             this.nws = nws_;
         end
         
-        function t = estimate(this)
+        function t = estimate(this, distrib)
             % this function generate the resource level mapping:
             % (volopt, regopt) -> positive real number (normalized calculation time)
             t = 0;
@@ -68,9 +73,22 @@ classdef TUE < handle
                             this.imregopzr_time_use() + ...
                             this.imregtform_time_use() + ...
                             2*this.imwarp_time_use() + ...
-                            this.yield_time_use();
+                            this.yield_time_use(distrib);
                     elseif this.regopt.Mode == "local"
-
+                        % in local algorithm, tcreg has pipeline with:
+                        % 1X imregdeform or 1X imregdemons, 1X imhistmatchn(optional), 
+                        % 2X imwarp(can be omitted), and 1X indipenmdent 
+                        % yield time estimation, 
+                        % so time calculation as:
+                        if this.regopt.SubAlgorithm == "usual"
+                            % imregdeform case
+                             t = this.imregdeform_time_use() + ...
+                                 this.imhistmatchn_time_use();
+                        elseif is.regopt.SubAlgorithm == "advanced"
+                            % imregdemons case
+                             t = this.imregdemons_time_use() + ...
+                                 this.imhistmatchn_time_use();
+                        end
                     end
                 case "MANREG"
 
@@ -97,12 +115,24 @@ classdef TUE < handle
         end
 
         function t_use = imregdemons_time_use(this)
-            % TODO: add time estimation
-            t_use = 0;
+            % TODO: use more accuracy time estimation
+            if this.volopt.Hardware == "cpu"
+                t_use = this.pnpc()/this.IMREGDEMONS_CPU_PPS;   % @AFS = 1.5
+            elseif this.volopt.Hardware == "cpu|gpu"
+                t_use = this.pnpc()/this.IMREGDEMONS_GPU_PPS;   % @AFS = 1.5
+            end
         end
 
         function t_use = imregdeform_time_use(this)
-            
+            t_use = 0;
+        end
+
+        function t_use = imhistmatchn_time_use(this)
+            if this.regopt.Options.ImageRehist == true
+                t_use = this.pnpc()/this.IMHISTMATCHN_PPS;  % @LOW-LEVEL
+            else
+                t_use = 0;
+            end
         end
 
         function t_use = imregopzr_time_use(this)
@@ -123,10 +153,19 @@ classdef TUE < handle
             t_use = this.pnpc()/this.PREPROC_PPS;
         end
 
-        function t_use = yield_time_use(this)
+        function t_use = yield_time_use(this, distrib)
             % an experience formation
-            t_use = this.YIELD_TIME_CONST * ...
-                4/this.nws*(this.nregfr + 100);
+            % T_N = (N_CPU/C*2)/w*(N+100)
+            N_CPU = feature('numCores');
+            if distrib == true
+                % tasker manager fixed the batch size
+                C = 2;
+            else
+                C = 4;  % could be modified
+            end
+
+            t_use = this.YIELD_TIME_CONST * ...     % seconds per yield loop
+                (N_CPU/C*2)/this.nws*(this.nregfr + 100);
         end
 
         function pn = pnpc(this)

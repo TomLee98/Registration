@@ -14,6 +14,7 @@ classdef regrcf < handle
         sfolder
         volopt
         regopt
+        distrib
         tueobj
     end
     properties(Access=private)
@@ -50,13 +51,14 @@ classdef regrcf < handle
     end
     
     methods
-        function this = regrcf(sfolder_, volopt_, regopt_, regfrs_)
+        function this = regrcf(sfolder_, volopt_, regopt_, regfrs_, distrib_)
             %REGRCF A Constructor
             arguments
                 sfolder_    (1,1)   string
                 volopt_     (1,12)  table
                 regopt_     (1,1)   regopt
                 regfrs_     (1,:)   double {mustBePositive, mustBeInteger}
+                distrib_    (1,1)   logical
             end
             
             if sfolder_ ~= "" && ~isfolder(sfolder_)
@@ -66,6 +68,7 @@ classdef regrcf < handle
             this.sfolder = sfolder_;
             this.volopt = volopt_;
             this.regopt = regopt_;
+            this.distrib = distrib_;
             
             % initialize rcf struct
             if ispc()
@@ -290,7 +293,7 @@ classdef regrcf < handle
                     case "Await"
                         nprocgs = 0;       %number of processors that gpu shared
                         % compare the resource needed and require linearly
-                        t = this.tueobj.estimate();     % single worker total time
+                        t = this.tueobj.estimate(this.distrib);
                         % generate task table:
                         % user  num_processor  t_estimate  resource  run_flag
                         tasks_ = table('Size', [numel(rcfpool), 5], ...
