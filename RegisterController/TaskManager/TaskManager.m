@@ -268,7 +268,8 @@ classdef TaskManager < handle
             if this.distrib == true
                 if isempty(this.rcfobj) || ~isvalid(this.rcfobj)
                     % initialize an rcf object
-                    this.rcfobj = regrcf(this.sfolder, this.volopts, this.regopts, this.regfrs);
+                    this.rcfobj = regrcf(this.sfolder, this.volopts, ...
+                        this.regopts, this.regfrs, this.distrib);
                 end
 
                 % adjust if there exists rcf
@@ -334,7 +335,8 @@ classdef TaskManager < handle
             else
                 % exclusive mode
                 % sfolder must be [], do nothing except update nworkers_cur
-                this.rcfobj = regrcf(this.sfolder, this.volopts, this.regopts, this.regfrs);
+                this.rcfobj = regrcf(this.sfolder, this.volopts, ...
+                    this.regopts, this.regfrs, this.distrib);
 
                 this.rcfobj.NWorkersMax = max(this.PSMWN - this.nw_protected, 1);
                 this.rcfobj.NWorkers = min(this.rcfobj.NWorkersMax, numel(this.regfrs));
