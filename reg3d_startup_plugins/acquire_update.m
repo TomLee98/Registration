@@ -1,4 +1,4 @@
-function [status, url, ver_latest] = acquire_update(url, ver)
+function [status, url, ver_latest, channel] = acquire_update(url, ver)
 %ACQUIRE_UPDATE This function compare localhost app version and cloud version,
 % return the update status and source url
 % Input:
@@ -8,6 +8,8 @@ function [status, url, ver_latest] = acquire_update(url, ver)
 %           "NO_UPDATE" for no new version, "ACCESS_FAILED" for remote 
 %           repository accessing failed
 %   - url: char array, the new app source url
+%   - ver_lastest: 1-by-1 string, the lastest app version
+%   - channel: 1-by-1 string, which could be "release", "debug" or "preview"
 
 % Version: 1.0.0
 % VERSION DEFINATION: <MAIN_VERSION>.<SUB_VERSION>.<PATCH_VERSION>
@@ -20,7 +22,7 @@ arguments
 end
 
 % read the repository and check the version
-ver_pattern = '[0-9][.][0-9][.][0-9]';
+ver_pattern = 'Reg3D V[0-9]*[.][0-9]*[.][0-9]*';
 
 listing = dir(url);
 if isempty(listing)
@@ -40,7 +42,12 @@ ver_repos(cellfun(@isempty, ver_repos)) = [];
 
 % transform version to number for comparing
 ver_repos =  fliplr(string(ver_repos));
+ver_repos = ver_repos.erase("Reg3D V");
 ver_latest = latest_version(ver_repos);
+
+% extract the channel
+loc = files_mlapp.contains(ver_latest) & files_mlapp.contains("mlappinstall");
+channel = files_mlapp(loc).extractBetween(") ", ".mlappinstall");
 
 if compare_version(ver, ver_latest) == -1
     status = "UPDATABLE";
