@@ -121,8 +121,8 @@ end
     end
 
     function T = tformto3d(tf0_, z_)
-        if isa(tf_, "affine2d")
-            T = [[[tf_.T(1:2,1:2),[0;0]];[0,0,1]];[tf0_.T(3,1:2), z_]];
+        if isa(tf0_, "affine2d")
+            T = [[[tf0_.T(1:2,1:2),[0;0]];[0,0,1]];[tf0_.T(3,1:2), z_]];
             T = [T, [0;0;0;1]];
             T = affine3d(T);
         else

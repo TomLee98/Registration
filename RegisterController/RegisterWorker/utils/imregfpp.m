@@ -39,9 +39,9 @@ switch args.Operator
             "NumOctaves",args.NumOctave);
     case "BRISK"
         ptsOriginal = detectBRISKFeatures(fixed, "MinQuality",args.QT, ...
-            "NumOctaves",args.NumOctave, "MinContrast",0);
+            "NumOctaves",args.NumOctave, "MinContrast",eps);
         ptsDistorted = detectBRISKFeatures(moving, "MinQuality",args.QT, ...
-            "NumOctaves",args.NumOctave, "MinContrast",0);
+            "NumOctaves",args.NumOctave, "MinContrast",eps);
     case "Harris"
         ptsOriginal = detectHarrisFeatures(fixed, "MinQuality",args.QT);
         ptsDistorted = detectHarrisFeatures(moving, "MinQuality",args.QT);
@@ -51,34 +51,61 @@ switch args.Operator
 end
 
 % extract the features (with pesudo pairs)
-[featuresOriginal,validPtsOriginal] = extractFeatures(original,ptsOriginal);
-[featuresDistorted,validPtsDistorted] = extractFeatures(distorted,ptsDistorted);
+[featuresOriginal,validPtsOriginal] = extractFeatures(fixed, ptsOriginal);
+[featuresDistorted,validPtsDistorted] = extractFeatures(moving, ptsDistorted);
 
 % match the features
-index_pairs = matchFeatures(featuresOriginal,featuresDistorted);
+index_pairs = matchFeatures(featuresOriginal,featuresDistorted,"Unique",true);
+
+if size(index_pairs, 1) < 3
+    % too less points, can not estimate the 'affine' transformation
+    % return identity transformation and empty object
+    points = {validPtsDistorted, validPtsOriginal};
+    if isMATLABReleaseOlderThan("R2022b")
+        tform = affine2d();
+    else
+        tform = transltform2d();
+    end
+
+    return;
+end
 
 % extract the matched point pairs
 matchedPtsOriginal  = validPtsOriginal(index_pairs(:,1));
 matchedPtsDistorted = validPtsDistorted(index_pairs(:,2));
 
 % estimate the 2d translation transformation
-if isMATLABReleaseOlderThan("R2022b")
-    [tform,inlierIdx] = estimateGeometricTransform2D(matchedPtsDistorted, ...
-                                                     matchedPtsOriginal, ...
-                                                     "affine");
-    % cast to translation: throw shear and rotation
-    tform = tfcast(tform);
-else
-    [tform,inlierIdx] = estgeotform2d(matchedPtsDistorted, ...
-                                      matchedPtsOriginal, ...
-                                      "affine");
-    tform = tfcast_old(tform);
+try
+    if isMATLABReleaseOlderThan("R2022b")
+        [tform,inlierIdx] = ...
+            estimateGeometricTransform2D(matchedPtsDistorted, matchedPtsOriginal, ...
+            "affine", "Confidence",99, "MaxDistance",2.5);
+        % cast to translation: throw shear and rotation
+        tform = tfcast(tform);
+    else
+        [tform,inlierIdx] = ...
+            estgeotform2d(matchedPtsDistorted, matchedPtsOriginal, ...
+            "affine", "Confidence",99, "MaxDistance",2.5);
+        tform = tfcast_old(tform);
+    end
+
+    inlierPtsOriginal  = matchedPtsOriginal(inlierIdx,:);
+    inlierPtsDistorted = matchedPtsDistorted(inlierIdx,:);
+
+    points = {inlierPtsDistorted, inlierPtsOriginal};
+catch
+    % estimation with strong constrains so that there is matching conflict
+    % between matchFeatures and estimateGeometricTransform2D/estgeotform2d
+    warning("imregfpp:fewerMatchingPoints", ...
+        "No enough points matching, coarse estimation may be bad.");
+    points = {validPtsDistorted, validPtsOriginal};
+    if isMATLABReleaseOlderThan("R2022b")
+        tform = affine2d();
+    else
+        tform = transltform2d();
+    end
 end
 
-inlierPtsOriginal  = matchedPtsOriginal(inlierIdx,:);
-inlierPtsDistorted = matchedPtsDistorted(inlierIdx,:);
-
-points = {inlierPtsDistorted, inlierPtsOriginal};
 end
 
 % ======================= utilities function ===========================

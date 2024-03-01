@@ -93,7 +93,7 @@ zopt_tol = regopt.TolZOpt;
 vpl = regopt.VPL;
 itpalg = regopt.Interp;
 
-for m = 1:numel(regfrs)
+parfor m = 1:numel(regfrs)
     % downsampling on selected volume
     avol_sc_m = avol_sc(:,:,:,m);
     avol_fc_m = avol_fc(:,:,:,m);
