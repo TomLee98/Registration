@@ -1,4 +1,4 @@
-function [n, src] = ParseWorkersNumber(regopt_)
+function [n, src] = ParseWorkersNumber(volopt_, regopt_, distrib_)
 % PARSEWORKERSNUMBER This function gets the maximum workers number which 
 % omits the data size as constrain by parse the passed regopt object
 % Input:
@@ -10,7 +10,9 @@ function [n, src] = ParseWorkersNumber(regopt_)
 % see also: regopt, GetCPUWorkersMaxN, GetGPUWorkersMaxN
 
 arguments
+    volopt_ (1,12)  table
     regopt_ (1,1)   regopt
+    distrib_(1,1)   logical
 end
 
 if regopt_.Algorithm == "MANREG"
@@ -31,7 +33,11 @@ else
                     case "cpu"
                         n = GetCPUWorkersMaxN([], []);
                     case "cpu|gpu"
-                        n = GetGPUWorkersMaxN();
+                        if distrib_ == true
+                            n = GetGPUWorkersMaxN();
+                        else
+                            n = GetGPUWorkersMaxN(volopt_);
+                        end
                     otherwise
                 end
                 src = regopt_.Options.Hardware;

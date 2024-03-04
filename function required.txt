@@ -235,13 +235,23 @@ V2.0        Wukong              悟空
   |     |- [Update] introduce three update channels, 'UFO' for preview channel,
   |     |           'rocket' for release channel, and 'bug' for debug channel
   |     |- [Fix Bugs] fix the crop bug when Reg3D at 'distributed' mode
-  |- V2.0.8     2024/3/4
+  |- V2.0.8     2024/3/5
   |     |- [Update] optimize 'mass center' coarse registration
-  |     |- [Fix Bugs] TODO: fix some multi-user running bugs
-  |     |- [Fix Bugs] fix the bad memory management on unix system
-  |     |- [Fix Bugs] optimize <srv> function for fast data saving
+  |     |- [Update] optimize 'Exclusive' mode gpu allocating rules
+  |     |- [Update] optimize <merge channel> behaviour
+  |     |- [Update] TODO: new help document for version 2.0.8
+  |     |- [Fix Bugs] fix memory management bug when switch between 'Excusive' and 'Distributed' mode
+  |     |- [Fix Bugs] fix <srv> function data saving bug
+  |     |- [Fix Bugs] fix refvol no update when <crop XY> and <crop Z>
+  |     |- [Fix Bugs] fix the leak of memory bug after cropping
+  |     |- [Fix Bugs] fix rigid transformation bug in MANREG
+  |     |- [Fix Bugs] fix RSTC panel initializing bug
   |- V2.0.9
+  |     |- [Update] TODO: add <Area Mask> to TCREG for super-robust registration
+  |     |- [Update] TODO: optimize <Flip Horizontal>, <Flip Vertical> memory allocating
   |     |- [Update] TODO: modify tooltip for multi-language support
+  |     |- [Fix Bugs] TODO: fix some multi-user running bugs
+
   |- V2.1.0     2024/3/
   |     |- [Update] TODO: improve long-term global registration to large deformation
   |     |- [Update] TODO: improve long-term local registration to large deformation

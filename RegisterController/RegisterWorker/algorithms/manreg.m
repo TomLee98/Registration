@@ -99,7 +99,7 @@ if isMATLABReleaseOlderThan("R2022b")
         case "poly"
             tf = fitgeotrans(mp, fp, "polynomial", degree); % PolynomialTransformation2D
         otherwise
-            [mp, fp] = CompensateTriagle(mp, fp, ptmvol_rz);
+            [mp, fp] = CompensateTriangle(mp, fp, ptmvol_rz);
 
             if tf_type == "affine"
                 tf = fitgeotrans(mp, fp, "affine");    % affine2d
@@ -130,7 +130,7 @@ else
         case "poly"
             tf = fitgeotform2d(mp, fp, "polynomial", degree);   % 	PolynomialTransformation2D
         otherwise
-            [mp, fp] = CompensateTriagle(mp, fp, ptmvol_rz);
+            [mp, fp] = CompensateTriangle(mp, fp, ptmvol_rz);
 
             if tf_type == "affine"
                 tf = fitgeotform2d(mp, fp, "affine");    % affinetform2d
@@ -179,8 +179,8 @@ movdst_.Transformation{regfrs_, 3} = tf;
 status = 0;
 end
 
-function [mp, fp] = CompensateTriagle(mp, fp, img)
-if size(fp, 1) < 3
+function [mp, fp] = CompensateTriangle(mp, fp, img)
+if size(fp, 1) == 1
     while true
         % add random points for constructing a triangle
         px = randi(size(img, 2), 3-size(fp,1), 1);
@@ -194,6 +194,11 @@ if size(fp, 1) < 3
             break;
         end
     end
+elseif size(fp, 2) == 2
+    throw(MException("manreg:CompendateTriangle:invalidPointsNumber", ...
+        "Two points estimation is not supported."));
+else
+    % do nothing
 end
 end
 

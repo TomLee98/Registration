@@ -26,7 +26,7 @@ status = 0;
 end
 
 function mustBeRegistrationOption(A)
-VALID_FIELD = ["Mode", "RegModal", "TformType", "MaxStep", "MinStep", "CoarseAlg", ...
+VALID_FIELD = ["Mode", "RegModal", "AreaMask", "TformType", "MaxStep", "MinStep", "CoarseAlg", ...
     "MaxIterN", "IterCoeff", "VPL", "Interp", "RL", "Gamma", "ThFG", "ThScale", "Hardware"];
 
 if ~all(ismember(fieldnames(A), VALID_FIELD))

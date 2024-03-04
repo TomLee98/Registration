@@ -10,6 +10,7 @@ classdef regopt
 
         % ============= one/two channel(s) common properties ==============
         reg_modal       (1,1) string {mustBeMember(reg_modal, ["multimodal", "monomodal"])} = "monomodal"
+        area_mask       (1,1) logical = false
         tform_type      (1,1) string {mustBeMember(tform_type, ["translation","rigid","affine"])} = "translation"
         step_max        (1,1) double {mustBePositive} = 1e-1
         step_min        (1,1) double {mustBePositive} = 1e-4
@@ -23,7 +24,7 @@ classdef regopt
         gl_interp       (1,1) string {mustBeMember(gl_interp, ["linear","cubic"])} = "linear"
         lo_interp       (1,1) string {mustBeMember(lo_interp, ["linear","cubic"])} = "linear"
         mfilter         (1,3) double {mustBePositive, mustBeInteger} = [3,3,3]
-        dfilter         (1,3) double {mustBeInteger} = [3,100,1000]
+        dfilter         (1,3) double {mustBeInteger} = [3,110,1000]
         gfilter         (1,3) double {mustBePositive, mustBeInteger} = [3,3,3]
         gamma           (1,1) double {mustBeInRange(gamma, 0, 4)} = 1.0
         zopt_shift_max  (1,1) double {mustBeNonnegative} = 2
@@ -150,6 +151,7 @@ classdef regopt
 
             % =========== not overloading parameters =============
             addParameter(p, 'RegModal',         this.reg_modal);
+            addParameter(p, 'AreaMask',         this.area_mask);
             addParameter(p, 'MedianFilter',     this.mfilter);
             addParameter(p, 'DilateFilter',     this.dfilter);
             addParameter(p, 'GaussianFilter',   this.gfilter);
@@ -243,6 +245,7 @@ classdef regopt
                     switch this.reg_mode
                         case "global"
                             r = struct("RegModal",  this.reg_modal, ...
+                                       "AreaMask",  this.area_mask, ...
                                        "TformType", this.tform_type, ...
                                        "MaxStep",   this.step_max, ...
                                        "MinStep",   this.step_min, ...
@@ -272,6 +275,7 @@ classdef regopt
                     switch this.reg_mode
                         case "global"
                             r = struct("RegModal",      this.reg_modal, ...
+                                       "AreaMask",      this.area_mask, ...
                                        "TformType",     this.tform_type, ...
                                        "MedianFilter",  this.mfilter, ...
                                        "DilateFilter",  this.dfilter, ...
@@ -345,6 +349,7 @@ classdef regopt
                     switch this.reg_mode
                         case "global"
                             this.reg_modal = r_.RegModal;
+                            this.area_mask = r_.AreaMask;
                             this.tform_type = r_.TformType;
                             this.step_max = r_.MaxStep;
                             this.step_min = r_.MinStep;
@@ -372,6 +377,7 @@ classdef regopt
                     switch this.reg_mode
                         case "global"
                             this.reg_modal = r_.RegModal;
+                            this.area_mask = r_.AreaMask;
                             this.tform_type = r_.TformType;
                             this.mfilter = r_.MedianFilter;
                             this.dfilter = r_.DilateFilter;

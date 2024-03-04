@@ -11,6 +11,7 @@
     <APPEND>添加</APPEND>
     <APPEND_COMMENTS>添加注释</APPEND_COMMENTS>
     <AREA>面积</AREA>
+    <AREA_MASK>区域蒙版</AREA_MASK>
     <ASK_FOR_UPDATE>有更新版本，是否更新？</ASK_FOR_UPDATE>
     <ATTACH_FILE_HERE>此处包含用于复现问题的附加文件</ATTACH_FILE_HERE>
     <ATTACH_FOLDER>附加文件夹</ATTACH_FOLDER>
@@ -210,7 +211,7 @@
     <MEDIUM>中</MEDIUM>
     <MEMORY>内存</MEMORY>
     <MEMORY_TIME>内存时间</MEMORY_TIME>
-    <MERGE_SOURCE>合并源(R-A)</MERGE_SOURCE>
+    <MERGE_SOURCE>合并源(R-S)</MERGE_SOURCE>
     <METADATA>元数据</METADATA>
     <MGLOBAL>全局(手动)</MGLOBAL>
     <MIN>最小值</MIN>

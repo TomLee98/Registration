@@ -127,14 +127,14 @@ classdef TaskManager < handle
             end
 
             this.regopts = regopt_;
-            [this.PSMWN, hardsrc] = ParseWorkersNumber(this.regopts);
             this.volopts = volopt_;
             this.regfrs = regfrs_;
             this.movtmpl = movtmpl_;
             this.distrib = distrib_;
             this.caller = caller_;
+            [this.PSMWN, hardsrc] = ParseWorkersNumber(volopt_, regopt_, distrib_);
             this.nw_protected = ...
-                ParseProtectedWorkersNumber(this.regopts.Algorithm, ...
+                ParseProtectedWorkersNumber(regopt_.Algorithm, ...
                                             hardsrc, ...
                                             nwprotect_);
 

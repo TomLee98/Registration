@@ -1,4 +1,4 @@
-function n = GetGPUWorkersMaxN()
+function n = GetGPUWorkersMaxN(volopt_)
 %GETGPUWORKERSMAXN This function calculate the GPU workers max number
 %depends on memory space using
 % NOTE that each gpu processed volume has the same size: 256*256*25, which
@@ -8,7 +8,16 @@ function n = GetGPUWorkersMaxN()
 %   - n: 1-by-1 positive integer, the maximum possible workers can be
 %   allocated in this task
 
-MEM_VOL_CONST = 2^30;
+FOLD_CONST = 100;
+SINGLE_BYTES = 4;
+
+if ~exist("volopt_", "var")
+    MEM_VOL_CONST = 2^30;
+else
+    MEM_VOL_CONST = volopt_.width * volopt_.height * volopt_.slices * ...
+        SINGLE_BYTES * FOLD_CONST;
+end
+
 if ispc()
     MEM_WORKER_CONST = 800*1024*1024; % bytes
 else
@@ -16,7 +25,6 @@ else
 end
 MEM_SECURATY_RATIO = 0.85;
 GPU_SECURATY_RATIO = 1;
-
 
 n_gpu = gpuDeviceCount;
 

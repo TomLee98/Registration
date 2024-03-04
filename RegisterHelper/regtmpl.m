@@ -1,9 +1,10 @@
 classdef regtmpl
     %REGTMPL This class is registration template defination, which supports
-    
+
     properties(SetAccess=immutable, GetAccess=private, Hidden)
         regdata
         fixvdef
+        auto_update
     end
 
     properties(Access=private, Hidden)
@@ -15,26 +16,34 @@ classdef regtmpl
     end
     
     methods
-        function this = regtmpl(regmov_, fixvdef_)
+        function this = regtmpl(regmov_, fixvdef_, auto_update_)
             %REGTMPL A Constructor
             arguments
                 regmov_     (1,1) regmov {mustBeTemplatable}
                 fixvdef_    (1,1) struct {mustBeFixedVolDefination} % with 'Global','Local','Channel'
+                auto_update_(1,1) logical = false
             end
             
             this.regdata = regmov_;     % shallow copy handle
             this.fixvdef = fixvdef_;
+            this.auto_update = auto_update_;    % perfermance option
 
-            this = gen_refvol(this);
+            this = update_ref(this);
         end
         
         function r = get.RefVol(this)
+            % case off for fast reading without update
+            if this.auto_update
+                % update the reference volume
+                this = update_ref(this);
+            end
+
             r = this.refvol;
         end
     end
 
     methods(Access=private, Hidden)
-        function this = gen_refvol(this)
+        function this = update_ref(this)
             % Note that: dimension order standarded as XYZ
             this.refvol = grv(this.regdata, ...
                               this.fixvdef.Sampling, ...

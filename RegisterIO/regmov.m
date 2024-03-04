@@ -318,7 +318,9 @@ classdef regmov < matlab.mixin.Copyable
                 return;
             else
                 tmpfolder = mpimg.findtmpfolder(this.mopt); % mpimgs ?
-                this.mptr = mpimg(tmpfolder, [], this.mptr, this.mopt.dimOrder);
+                D = this.mptr;
+                this.mptr = [];     % free variable
+                this.mptr = mpimg(tmpfolder, [], D, this.mopt.dimOrder);
             end
         end
 
