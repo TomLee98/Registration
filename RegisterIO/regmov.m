@@ -439,6 +439,7 @@ classdef regmov < matlab.mixin.Copyable
         end
 
         function rmbkg(this, r_)
+            % This function remove the background and store it
             arguments
                 this
                 r_  double  {mustBeNonnegative, mustBeVector}
@@ -467,6 +468,7 @@ classdef regmov < matlab.mixin.Copyable
         end
 
         function rcbkg(this)
+            % This function recover the background and reset it to zero
             if ismember(class(this.mptr), ["mpimg", "mpimgs"])
                 this.mptr = this.mptr + this.bkg;
             else
@@ -481,6 +483,72 @@ classdef regmov < matlab.mixin.Copyable
             end
 
             this.bkg = 0*this.bkg;
+        end
+
+        function ctset(this, v, cr, tr)
+            % This function set v to raw data with location: c & t dimension
+            arguments
+                this
+                v   (:,:,:,:)
+                cr  (1,1)    string {mustBeMember(cr, ["r","g","b"])}
+                tr  (1,1)    string
+            end
+
+            cr = (cr == this.mopt.cOrder);
+            tr = str2num(tr); %#ok<ST2NM>
+
+            if ismember(class(this.mptr), ["mpimg", "mpimgs"])
+                this.mptr.ctset(v, cr, tr);
+            else
+                % calling inner array processing
+                this.ctset_(v, cr, tr);
+            end
+        end
+    end
+
+    methods(Access=private, Hidden)
+        function expr = gen_expstr(this, cr, tr, istr)
+            t_loc = find(this.MetaData.dimOrder=="T");
+            c_loc = find(this.MetaData.dimOrder=="C");
+            cr = string(find(cr));
+
+            if isempty(cr) || isempty(t_loc) || isempty(c_loc)
+                throw(MException("regmov:ctset:invalidMovie", ...
+                    "Bad calling: invalid movie dimension."));
+            end
+
+            mov_ndim = numel(this.MetaData.dimOrder);
+
+            expr = "";
+
+            for dp = 1:mov_ndim
+                if dp == c_loc
+                    expr = expr + cr;
+                elseif dp == t_loc
+                    expr = expr + tr;
+                else
+                    expr = expr + ":";
+                end
+                if dp ~= mov_ndim, expr = expr + ","; end
+            end
+
+            expr = sprintf("this.mptr(%s)=%s;", expr, istr);
+        end
+
+        function ctset_(this, v, cr, tr)
+            % optimize the usual case for fast saving
+            switch this.mopt.dimOrder.join("")
+                case "XYCZT"
+                    this.mptr(:,:,cr,:,tr) = v;
+                case "XYZCT"
+                    this.mptr(:,:,:,cr,tr) = v;
+                otherwise
+                    % generate the crop expression
+                    expr = this.gen_expstr(cr, tr, "v");
+
+                    % simple modifing
+                    eval(expr);
+            end
         end
     end
 

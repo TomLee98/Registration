@@ -22,9 +22,9 @@ classdef regopt
         vpl             (1,1) double {mustBePositive, mustBeInteger} = 3
         gl_interp       (1,1) string {mustBeMember(gl_interp, ["linear","cubic"])} = "linear"
         lo_interp       (1,1) string {mustBeMember(lo_interp, ["linear","cubic"])} = "linear"
-        mfilter         (1,3) double {mustBeNonnegative, mustBeInteger} = [3,3,3]
-        open_operator   (1,2) double {mustBeNonnegative, mustBeInteger} = [3,2]
-        gfilter         (1,3) double {mustBeNonnegative, mustBeInteger} = [3,3,3]
+        mfilter         (1,3) double {mustBePositive, mustBeInteger} = [3,3,3]
+        dfilter         (1,3) double {mustBeInteger} = [3,100,1000]
+        gfilter         (1,3) double {mustBePositive, mustBeInteger} = [3,3,3]
         gamma           (1,1) double {mustBeInRange(gamma, 0, 4)} = 1.0
         zopt_shift_max  (1,1) double {mustBeNonnegative} = 2
         zopt_tol        (1,1) double {mustBeInRange(zopt_tol, 0, 1)} = 1e-3
@@ -151,7 +151,7 @@ classdef regopt
             % =========== not overloading parameters =============
             addParameter(p, 'RegModal',         this.reg_modal);
             addParameter(p, 'MedianFilter',     this.mfilter);
-            addParameter(p, 'OpenOperator',     this.open_operator);
+            addParameter(p, 'DilateFilter',     this.dfilter);
             addParameter(p, 'GaussianFilter',   this.gfilter);
             addParameter(p, 'MaxZOptShift',     this.zopt_shift_max);
             addParameter(p, 'TolZOpt',          this.zopt_tol);
@@ -274,7 +274,7 @@ classdef regopt
                             r = struct("RegModal",      this.reg_modal, ...
                                        "TformType",     this.tform_type, ...
                                        "MedianFilter",  this.mfilter, ...
-                                       "OpenOperator",  this.open_operator, ...
+                                       "DilateFilter",  this.dfilter, ...
                                        "GaussianFilter",this.gfilter, ...
                                        "MaxZOptShift",  this.zopt_shift_max, ...
                                        "TolZOpt",       this.zopt_tol, ...
@@ -374,7 +374,7 @@ classdef regopt
                             this.reg_modal = r_.RegModal;
                             this.tform_type = r_.TformType;
                             this.mfilter = r_.MedianFilter;
-                            this.open_operator = r_.OpenOperator;
+                            this.dfilter = r_.DilateFilter;
                             this.gfilter = r_.GaussianFilter;
                             this.zopt_shift_max = r_.MaxZOptShift;
                             this.zopt_tol = r_.TolZOpt;

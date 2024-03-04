@@ -31,8 +31,8 @@ mc_moving_x = sum((1:nx).*sum(moving, 1))/mmoving;
 mc_moving_y = sum((1:ny)'.*sum(moving, 2))/mmoving;
 
 % translate the pixels to image coordinate system
-tf_x = (mc_moving_x - mc_ref_x)*Rf.PixelExtentInWorldX;
-tf_y = (mc_moving_y - mc_ref_y)*Rf.PixelExtentInWorldY;
+tf_x = (mc_ref_x - mc_moving_x)*Rf.PixelExtentInWorldX;
+tf_y = (mc_ref_y - mc_moving_y)*Rf.PixelExtentInWorldY;
 
 if isMATLABReleaseOlderThan("R2022b")
     T = [[eye(2);[tf_x, tf_y]],[0;0;1]];

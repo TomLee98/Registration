@@ -78,6 +78,7 @@ switch calg
     case "pcorr"
         % use imregcorr for robust shift estimation, which is 
         % useful when there are high contrast scene
+        % note that 'rigid' and 'affine' always return bad estimation 
         tf0 = imregcorr(mov_img, rref, ref_img, rref, "translation");
     case "fpp"
         % use imregfpp for robust shift estimation, which is useful

@@ -60,13 +60,13 @@ else
 end
 
 mf = regopt.MedianFilter;
-of = regopt.OpenOperator;
+df = regopt.DilateFilter;
 gf = regopt.GaussianFilter;
 ga = regopt.Gamma;
 
 % 1. extract the reference volume
 [ds_scale, refvol_ds] = Resample(refvol, regds);
-refvol_ds = preproc_tc(refvol_ds, mf, of, gf, ga);
+refvol_ds_pp = preproc_tc(refvol_ds, mf, df, gf, ga);
 
 % 2. extract functional and structured channel data
 avol_sc = grv(movsrc, fmode, regopt.SC);
@@ -98,10 +98,11 @@ parfor m = 1:numel(regfrs)
     avol_sc_m = avol_sc(:,:,:,m);
     avol_fc_m = avol_fc(:,:,:,m);
     [~, avol_sc_m_ds] = Resample(avol_sc_m, ds_scale);
-    avol_sc_m_ds = preproc_tc(avol_sc_m_ds, mf, of, gf, ga);
+    avol_sc_m_ds_pp = preproc_tc(avol_sc_m_ds, mf, df, gf, ga);
 
     % use imregopzr for better initialized transformation
-    [ptf, ~] = imregopzr(avol_sc_m_ds, refvol_ds, res_ds, ...
+    % where the preprocess volumes are needed
+    [ptf, ~] = imregopzr(avol_sc_m_ds_pp, refvol_ds_pp, res_ds, ...
             max_shift_z, zopt_tol, coarse_alg, coarse_args);
 
     fival_sc = mean(avol_sc_m(:,[1,end],:),"all");
@@ -309,8 +310,8 @@ VALID_FIELD_PUBLIC = ["Mode", "SubAlgorithm", "SC", "FC", "Hardware", ...
 
 switch A.Mode
     case "global"
-        VALID_FIELD_PRIVATE = ["RegModal", "MedianFilter", "OpenOperator", ...
-            "GaussianFilter", "MaxZOptShift", "TolZOpt", "Gamma", "TformType", ...
+        VALID_FIELD_PRIVATE = ["RegModal", "MedianFilter", "GaussianFilter", ...
+            "DilateFilter", "MaxZOptShift", "TolZOpt", "Gamma", "TformType", ...
             "MaxStep", "MinStep",  "IterCoeff", "DS", "CoarseAlg", "CoarseArgs"];
     case "local"
         VALID_FIELD_PRIVATE = ["AFS", "GR", "GS", "ImageRehist", "RepAcc"];

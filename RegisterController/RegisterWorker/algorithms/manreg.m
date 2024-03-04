@@ -23,14 +23,25 @@ end
 
 fmode = ["none", string(regfrs_)];
 
+% extract variables because unix matlab bad memory management and memory leak
+% new variables decrease total memory allocating times to one
+dview = regopt_.DView;
+proj = regopt_.Projection;
+tf_type = regopt_.TformType;
+interp_alg = regopt_.Interp;
+sc = regopt_.SC;
+fc = regopt_.FC;
+rs = regopt_.Resampling;
+degree = regopt_.Degree;
+
 % extract functional and structured channel data
 % note that: avol with  dimension order X,Y,Z
-avol_sc = grv(movsrc_, fmode, regopt_.SC);
-avol_fc = grv(movsrc_, fmode, regopt_.FC);
-pfunc = str2func(regopt_.Projection);
+avol_sc = grv(movsrc_, fmode, sc);
+avol_fc = grv(movsrc_, fmode, fc);
+pfunc = str2func(proj);
 
 % get the projection on view direction
-switch regopt_.DView
+switch dview
     case "XY"
         pjdim = 3;
     case "ZX"
@@ -40,7 +51,7 @@ switch regopt_.DView
     otherwise
 end
 
-switch lower(regopt_.Projection)
+switch lower(proj)
     case {'min', 'max'}
         pavol_sc = squeeze(pfunc(avol_sc, [], pjdim));
         ptmvol = squeeze(pfunc(movtmpl_, [], pjdim));
@@ -65,7 +76,7 @@ pavol_sc = Remap(pavol_sc);
 ptmvol = Remap(ptmvol);
 
 % resampling the image for better alignment
-rs = regopt_.Resampling(setdiff([2,1,3], pjdim, "stable"));
+rs = rs(setdiff([2,1,3], pjdim, "stable"));
 pavol_sc_rz = imresize(pavol_sc, "Scale", rs, "Method","bilinear");
 ptmvol_rz = imresize(ptmvol, "Scale", rs, "Method","bilinear");
 
@@ -82,24 +93,24 @@ end
 mp = cpcorr(mp, fp, pavol_sc_rz, ptmvol_rz);
 
 if isMATLABReleaseOlderThan("R2022b")
-    switch regopt_.TformType
+    switch tf_type
         case "pwl"
             tf = fitgeotrans(mp, fp, "pwl");    % PiecewiseLinearTransformation2D
         case "poly"
-            tf = fitgeotrans(mp, fp, "polynomial", regopt_.Degree); % PolynomialTransformation2D
+            tf = fitgeotrans(mp, fp, "polynomial", degree); % PolynomialTransformation2D
         otherwise
             [mp, fp] = CompensateTriagle(mp, fp, ptmvol_rz);
 
-            if regopt_.TformType == "affine"
+            if tf_type == "affine"
                 tf = fitgeotrans(mp, fp, "affine");    % affine2d
             else
                 tf = fitgeotrans(mp, fp, "nonreflectivesimilarity");    % affine2d
 
                 % append geometric constrains
-                if regopt_.TformType == "translation"
+                if tf_type == "translation"
                     % omit scaling and rotation
                     tf.T(1:2,1:2) = eye(2);
-                elseif regopt_.TformType == "rigid"
+                elseif tf_type == "rigid"
                     % omit scaling
                     tf.T(1:2,1:2) = ...
                         tf.T(1:2,1:2) / sqrt(abs(det(tf.T(1:2,1:2))));
@@ -113,25 +124,25 @@ if isMATLABReleaseOlderThan("R2022b")
             tf.T(3,1:2) = tf.T(3,1:2)./fliplr(rs);
     end
 else
-    switch regopt_.TformType
+    switch tf_type
         case "pwl"
             tf = fitgeotform2d(mp, fp, "pwl");      % PiecewiseLinearTransformation2D
         case "poly"
-            tf = fitgeotform2d(mp, fp, "polynomial", regopt_.Degree);   % 	PolynomialTransformation2D
+            tf = fitgeotform2d(mp, fp, "polynomial", degree);   % 	PolynomialTransformation2D
         otherwise
             [mp, fp] = CompensateTriagle(mp, fp, ptmvol_rz);
 
-            if regopt_.TformType == "affine"
+            if tf_type == "affine"
                 tf = fitgeotform2d(mp, fp, "affine");    % affinetform2d
                 tf.A(1:2, 3) = tf.A(1:2, 3)./fliplr(rs)';
             else
                 tf = fitgeotform2d(mp, fp, "similarity");    % simtform2d
 
-                if regopt_.TformType == "translation"
+                if tf_type == "translation"
                     % omit scaling and rotation
                     tf.Scale = 1;
                     tf.RotationAngle = 0;
-                elseif regopt_.TformType == "rigid"
+                elseif tf_type == "rigid"
                     % omit scaling
                     tf.Scale = 1;
                 else
@@ -152,17 +163,17 @@ rref = imref2d(size(ptmvol));
 porder = [setdiff(1:3, pjdim, "stable"), pjdim];
 avol_sc = permute(avol_sc, porder);
 avol_fc = permute(avol_fc, porder);
-avol_sc = imwarp(avol_sc, tf, regopt_.Interp, "OutputView",rref, ...
-    'FillValues', fival_sc);
-avol_fc = imwarp(avol_fc, tf, regopt_.Interp, "OutputView",rref, ...
-    'FillValues', fival_fc);
+avol_sc = imwarp(avol_sc, tf, interp_alg, "OutputView",rref, ...
+    "FillValues", fival_sc);
+avol_fc = imwarp(avol_fc, tf, interp_alg, "OutputView",rref, ...
+    "FillValues", fival_fc);
 [~, porder] = ismember(1:3, porder);
 avol_sc = permute(avol_sc, porder);
 avol_fc = permute(avol_fc, porder);
 
 % set the movdst
-srv(movdst_, avol_sc, fmode, regopt_.SC);
-srv(movdst_, avol_fc, fmode, regopt_.FC);
+srv(movdst_, avol_sc, fmode, sc);
+srv(movdst_, avol_fc, fmode, fc);
 movdst_.Transformation{regfrs_, 3} = tf;
 
 status = 0;

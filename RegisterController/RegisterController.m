@@ -147,7 +147,7 @@ classdef RegisterController < handle
                     break;
                 end
                 status = this.regworker.correct(task);
-                this.taskmgr.update(status);    % can hang out for resource
+                this.taskmgr.update(status);    % could hang out for resource
                 task = this.taskmgr.Task;
             end
 

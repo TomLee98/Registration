@@ -22,7 +22,7 @@ classdef TUE < handle
         EC50 = 256
 
         YIELD_TIME_CONST = 0.1              % from parallel toolbox configuration
-        PARALLEL_CONSTANT = 7/8
+        PARALLEL_CONSTANT = 7/8             % from parallel toolbox configuration
     end
 
     properties(SetAccess=immutable, Hidden)
@@ -154,14 +154,19 @@ classdef TUE < handle
         end
 
         function t_use = yield_time_use(this, distrib)
-            % an experience formation
-            % T_N = (N_CPU/C*2)/w*(N+100)
-            N_CPU = feature('numCores');
+            % an experience formation:
+            % T_N = (N_CPU/C*2)/w*(N+100)*T
+            % note that: This is a typical estimation. The real situation is
+            % dependents on some frames convergence speed, which could be 
+            % prior estimated hardly
+
+            N_CPU = round(feature('numCores')*this.PARALLEL_CONSTANT);
+
             if distrib == true
                 % tasker manager fixed the batch size
                 C = 2;
             else
-                C = 4;  % could be modified
+                C = 4;  % could be modified by user in some versions
             end
 
             t_use = this.YIELD_TIME_CONST * ...     % seconds per yield loop

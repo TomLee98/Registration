@@ -8,8 +8,6 @@ function srv(mov_, v_, mode_, color_)
 %           "none" with keep the cropped volumes
 %   - color_: 1-by-1 string, indicating extract color channel, must be member
 %           in ["r", "g", "b"]
-%   - standard_: 1-by-1 logical, indicating whether input v follow the
-%           standard dimension order: X,Y,Z(,T) or not, true as default
 % Output:
 %   none
 % Behaviour:
@@ -30,27 +28,7 @@ end
 
 mf = str2func(mode_(1));
 t_range = "[" + string(mode_(2))+ "]";
-c_range = string(find(mov_.MetaData.cOrder == color_));
 t_loc = find(mov_.MetaData.dimOrder=="T");
-c_loc = find(mov_.MetaData.dimOrder=="C");
-
-if isempty(c_range) || isempty(t_loc) || isempty(c_loc)
-    throw(MException("grv:invalidMovie", ...
-        "Bad calling: invalid movie dimension."));
-end
-
-mov_ndim = numel(mov_.MetaData.dimOrder);
-expr = "";
-for dp = 1:mov_ndim
-    if dp == c_loc
-        expr = expr + c_range;
-    elseif dp == t_loc
-        expr = expr + t_range;
-    else
-        expr = expr + ":";
-    end
-    if dp ~= mov_ndim, expr = expr + ","; end
-end
 
 if ndims(v_) == 3
     % nothing
@@ -67,6 +45,7 @@ else
         "Unsupported dimensions data."))
 end
 
-expr = "mov_.Movie(" + expr + ") = v_;";
-eval(expr);
+% save volume at C & T
+mov_.ctset(v_, color_, t_range);
+
 end

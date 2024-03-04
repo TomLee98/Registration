@@ -65,6 +65,7 @@
     <DATA_TYPE>Data Type</DATA_TYPE>
     <DEVELOPING>Developing…</DEVELOPING>
     <DIAMOND_HAT>Diamond Hat</DIAMOND_HAT>
+    <DILATE_FILTER>Dilate Filter</DILATE_FILTER>
     <DIRECT>Direct</DIRECT>
     <DISCARD_RATIO>Discard Ratio</DISCARD_RATIO>
     <DISPLACEMENT_FIELD_ESTIMATION>Displacement Field Estimation</DISPLACEMENT_FIELD_ESTIMATION>
@@ -237,7 +238,6 @@
     <OK>OK</OK>
     <ON>On</ON>
     <ONLINE>Online</ONLINE>
-    <OPEN_OPERATOR>Open Operator</OPEN_OPERATOR>
     <OPACITY>Opacity</OPACITY>
     <OPERATOR>Operator</OPERATOR>
     <OPTION>Options</OPTION>

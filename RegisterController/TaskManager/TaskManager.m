@@ -17,7 +17,7 @@ classdef TaskManager < handle
         distrib         % 1-by-1 logical, distribution mode flag
         rcfobj          % 1-by-1 regrcf object, the content of resource communication file
                         % note that RCF should be a public protocal, shared
-        taskqueue       % 1-by-1 mQueue, queue with Task object
+        job             % 1-by-1 mQueue, queue with Task object
         task_cur        % 1-by-1 Task object, the current task
         nworker_old     % 1-by-1 positive integer, the old usable workers number
         nworker_cur     % 1-by-1 positive integer, the current usable workers number
@@ -143,7 +143,7 @@ classdef TaskManager < handle
 
             % communicate with rcf pool, no matter exclusive or distributed
             % here may hang out when no resource left
-            % talk to will update workers number
+            % <talk to> will update workers number
             this.talk_to_rcfpool();
 
             % NOTE: update_taskqueue must running before update_parpool
@@ -178,7 +178,7 @@ classdef TaskManager < handle
                 this.task_cur.Status = "Done";
 
                 % push the task to the tail of taskqueue
-                this.taskqueue.enqueue(this.task_cur);
+                this.job.enqueue(this.task_cur);
 
                 % update registration progress
                 this.regedfn = this.regedfn + numel(this.task_cur.RegFrames);
@@ -216,7 +216,7 @@ classdef TaskManager < handle
             this.rcfobj = [];
 
             % clear task queue
-            this.taskqueue = [];
+            this.job = [];
 
             % reset the counter
             this.nworker_old = 0;
@@ -350,10 +350,10 @@ classdef TaskManager < handle
                 % reset the task queue to match the workers
                 % get all tasks which status are "Await", resort the frame
                 % indices
-                if ~isempty(this.taskqueue)
+                if ~isempty(this.job)
                     regframes = [];
-                    while ~isempty(this.taskqueue)
-                        task_ = this.taskqueue.dequeue();
+                    while ~isempty(this.job)
+                        task_ = this.job.dequeue();
                         if task_.Status == "Done"
                             break;
                         elseif task_.Status == "Await"
@@ -371,16 +371,16 @@ classdef TaskManager < handle
                 p = taskParser(this.movtmpl, regframes, this.volopts, ...
                     this.regopts, this.nworker_cur, this.distrib);
                 p.parse(this.BUSY_RATIO);
-                this.taskqueue = p.Results;
+                this.job = p.Results;
             end
         end
 
         function get_new_task(this)
             % get the next task in queue
-            task_ = this.taskqueue.head();
+            task_ = this.job.head();
             if ~isempty(task_) && (task_.Status == "Await")
                 % new task dequeue
-                this.task_cur = this.taskqueue.dequeue();
+                this.task_cur = this.job.dequeue();
                 % change the task running flag
                 this.task_cur.Status = "Run";
             else

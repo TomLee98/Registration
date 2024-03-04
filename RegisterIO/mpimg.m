@@ -265,7 +265,7 @@ classdef mpimg < matlab.mixin.Copyable
             mptr = this.crop_(sz);
         end
 
-        function this = promote(this, dim_)
+        function promote(this, dim_)
             % This function promote a new dimension next the last dimension
             % for example, [X,Y,Z] could be promoted as [X,Y,Z,T], etc
             arguments
@@ -281,10 +281,34 @@ classdef mpimg < matlab.mixin.Copyable
             % TODO: 
         end
 
-        function mptr = plus(this, r_)
+        function ctset(this, v, cr, tr)
+            % This function select cr and tr at C & T dimension, then
+            % modify the data by v
+            arguments
+                this
+                v   (:,:,:,:)        % dim as [x,y,z,t]
+                cr  (1,:)   logical
+                tr  (1,:)   double  {mustBePositive, mustBeInteger}
+            end
+
+            % optimize the usual case for fast saving
+            switch this.dimorder.join("")
+                case "XYCZT"
+                    this.memptr.Data.mov(:,:,cr,:,tr) = v;
+                case "XYZCT"
+                    this.memptr.Data.mov(:,:,:,cr,tr) = v;
+                otherwise
+                    % generate the crop expression
+                    expr = this.gen_expstr(cr, tr, "v");
+
+                    % simple modifing
+                    eval(expr);
+            end
+        end
+
+        function this = plus(this, r_)
             % operator '+' overloading, data plus number on each channel
-            % TODO: we have better using fseek/... for same file
-            % modification rather than create a new file
+
             arguments
                 this
                 r_  double  {mustBeVector}
@@ -296,48 +320,35 @@ classdef mpimg < matlab.mixin.Copyable
                 throw(MException("regmov:plus:invalidChannelsNumber", ...
                     "Channels number not match."));
             end
-
+            
             % range splitter for blocked data saving
             nt = this.DataSize("T"==this.DimOrder);
             t_range_ = range_splitter(sprintf("1:%d", nt), this.INNER_BLOCK_SIZE);
 
             sz_ = repmat({':'}, 1, numel(this.INNER_DIMENSION_ORDER));
 
-            % create the primer
-            sz_{end} = t_range_(1);
-            expr = "this.Data("+string(sz_).join(",")+");";
-            data_ = eval(expr);
             for c = 1:nc
-                % modify the data on channel c
-                data_(:,:,c,:,:) = data_(:,:,c,:,:) + r_(c);
-            end
-            
-            % generate new memmapping
-            [folder_, ~, ~] = fileparts(this.memptr.Filename);
-            mptr = mpimg(string(folder_), [], data_, ...
-                this.dimorder, this.isautoclear, this.isconst, this.isdisplay);
+                sz_{"C"==this.dimorder} = c;
 
-            % link the data blocks to primer
-            for t = 2:numel(t_range_)
-                sz_{end} = t_range_(t);
-                expr = "this.Data("+string(sz_).join(",")+");";
-                data_ = eval(expr);
-                for c = 1:nc
-                    % modify the data on channel c
-                    data_(:,:,c,:,:) = data_(:,:,c,:,:) + r_(c);
+                for t = 1:numel(t_range_)
+                    sz_{"T"==this.dimorder} = t_range_(t);
+
+                    expr = "this.memptr.Data.mov("+string(sz_).join(",")+")";
+                    expr = sprintf("%s=%s+%.1f;", expr, expr, r_(c));
+
+                    eval(expr);
                 end
-                mptr.concat(data_);
             end
         end
 
-        function mptr = minus(this, r_)
+        function this = minus(this, r_)
             % operator '-' overloading, data plus number on each channel
             arguments
                 this
                 r_  double  {mustBeVector}
             end
 
-            mptr = this.plus(-r_);
+            this = this.plus(-r_);
         end
 
         function r = isempty(this)
@@ -539,7 +550,7 @@ classdef mpimg < matlab.mixin.Copyable
             catch ME
                 throwAsCaller(ME);
             end
-            
+
             % update and relink the new file
             if numel(sz_) == numel(this.dimorder) - 1
                 nb = 1;
@@ -551,6 +562,32 @@ classdef mpimg < matlab.mixin.Copyable
             format_ = {datatype_, msize_, 'mov'};
 
             this.linkextf(file_, format_, this.dimorder);
+        end
+
+        function expr = gen_expstr(this, cr, tr, istr)
+            t_loc = find(this.dimorder=="T");
+            c_loc = find(this.dimorder=="C");
+            cr = string(find(cr));
+
+            if isempty(cr) || isempty(t_loc) || isempty(c_loc)
+                throw(MException("regmov:ctset:invalidMovie", ...
+                    "Bad calling: invalid movie dimension."));
+            end
+
+            expr = "";
+
+            for dp = 1:this.DataDims
+                if dp == c_loc
+                    expr = expr + cr;
+                elseif dp == t_loc
+                    expr = expr + tr;
+                else
+                    expr = expr + ":";
+                end
+                if dp ~= this.DataDims, expr = expr + ","; end
+            end
+
+            expr = sprintf("this.memptr.Data.mov(%s)=%s;", expr, istr);
         end
     end
 
