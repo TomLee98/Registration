@@ -84,7 +84,7 @@ classdef TUE < handle
                             % imregdeform case
                              t = this.imregdeform_time_use() + ...
                                  this.imhistmatchn_time_use();
-                        elseif is.regopt.SubAlgorithm == "advanced"
+                        elseif this.regopt.SubAlgorithm == "advanced"
                             % imregdemons case
                              t = this.imregdemons_time_use() + ...
                                  this.imhistmatchn_time_use();
