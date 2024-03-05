@@ -235,7 +235,7 @@ V2.0        Wukong              悟空
   |     |- [Update] introduce three update channels, 'UFO' for preview channel,
   |     |           'rocket' for release channel, and 'bug' for debug channel
   |     |- [Fix Bugs] fix the crop bug when Reg3D at 'distributed' mode
-  |- V2.0.8     2024/3/5    12:00
+  |- V2.0.8     2024/3/5    14:00
   |     |- [Update] optimize 'mass center' coarse registration
   |     |- [Update] optimize 'Exclusive' mode gpu allocating rules
   |     |- [Update] optimize <merge channel> behaviour
