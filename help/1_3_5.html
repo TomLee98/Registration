@@ -59,7 +59,7 @@
 </li></ul>
 <ul style="MARGIN-RIGHT: 0px" dir="ltr"><li>
 <div align="left"><u>粗配准</u>： <span style="FONT-SIZE: 12pt; FONT-FAMILY: 宋体; mso-bidi-font-size: 11.0pt; mso-bidi-font-family: 'Times New Roman'; mso-bidi-theme-font: minor-bidi; mso-ansi-language: EN-US; mso-fareast-language: ZH-CN; mso-bidi-language: AR-SA">
-用于估计初始几何变换的强鲁棒算法，可选<u>质心估计</u>，<u>相位相关</u>，<u>质心&amp;相位</u> 或<u>关闭</u>(不建议)。</span></div>
+用于估计初始几何变换的强鲁棒算法，可选<u>质心估计</u>，<u>相位相关</u>，<u>特征点匹配</u> 或<u>关闭</u>(不建议)。</span></div> 当图像中仅有单一目标区域时，可启用相位相关或质心估计。当图像中仅有少量(&le;3)明显目标区域时，推荐质心估计(结合膨胀滤波器)。当图像中存在大量明显目标(&gt;5)区域且存在相对运动，推荐特征点匹配。
 </li></ul>
 <ul style="MARGIN-RIGHT: 0px" dir="ltr">
 <li>
@@ -86,12 +86,12 @@
 <ul style="margin-right: 0px" dir="ltr"><li>
 <p style="MARGIN-RIGHT: 0px" dir="ltr"><span><span lang="EN-US"><o:p>
 <span style="FONT-SIZE: 12pt; FONT-FAMILY: 宋体; mso-bidi-font-size: 11.0pt; mso-bidi-font-family: 'Times New Roman'; mso-bidi-theme-font: minor-bidi; mso-ansi-language: EN-US; mso-fareast-language: ZH-CN; mso-bidi-language: AR-SA">
-<u>开运算(预处理)</u>： 使用给定大小的开运算算子，滤除图像中非连通细碎前景，增强配准鲁棒性。</span></o:p></span></span></p>
+<u>高斯滤波器(预处理)</u>：使用给定大小的滤波器半径，对图像低通滤波，对于单光子共聚焦显微成像数据比较重要，增强配准鲁棒性。</span></o:p></span></span></p>
 </li></ul>
 <ul style="margin-right: 0px" dir="ltr"><li>
 <p style="MARGIN-RIGHT: 0px" dir="ltr"><span><span lang="EN-US"><o:p>
 <span style="FONT-SIZE: 12pt; FONT-FAMILY: 宋体; mso-bidi-font-size: 11.0pt; mso-bidi-font-family: 'Times New Roman'; mso-bidi-theme-font: minor-bidi; mso-ansi-language: EN-US; mso-fareast-language: ZH-CN; mso-bidi-language: AR-SA">
-<u>高斯滤波器(预处理)</u>：使用给定大小的滤波器半径对图像低通滤波，对于单光子共聚焦显微成像数据比较重要，增强配准鲁棒性。</span></o:p></span></span></p>
+<u>膨胀滤波器(预处理)</u>： 滤波器包含三个参数 &lt;膨胀半径&gt;，&lt;强度阈值&gt;，&lt;体积阈值&gt;。通过参数组合，您可以获得鲁棒的目标轮廓并用于质心粗配准。当膨胀半径非正时将禁用膨胀滤波器。当膨胀滤波器启用，强度阈值设置为-1时，将使用Otsu全局阈值算法自动确定强度阈值,否则使用给定非负值。体积阈值设置为-1时，仅保留图像中最大(18)连通域，否则保留所有膨胀连通域。</span></o:p></span></span></p>
 </li></ul>
 <ul style="margin-right: 0px" dir="ltr"><li>
 <p style="MARGIN-RIGHT: 0px" dir="ltr"><span><span lang="EN-US"><o:p>
@@ -149,19 +149,17 @@
 确定配准过程中几何变换造成的图像拉伸，变形部分像素值的计算方法。</span></span></div>
 </li></ul>
 <blockquote style="MARGIN-RIGHT: 0px" dir="ltr">
-<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt"><span><span style="FONT-SIZE: 12pt; FONT-FAMILY: 宋体; mso-bidi-font-size: 11.0pt; mso-bidi-font-family: 'Times New Roman'; mso-bidi-theme-font: minor-bidi; mso-ansi-language: EN-US; mso-fareast-language: ZH-CN; mso-bidi-language: AR-SA">
-<span style="FONT-SIZE: 12pt; FONT-FAMILY: 宋体; mso-bidi-font-size: 11.0pt"><font color="#FF0000">注1：</font>配准需要逐步提升配准质量。<b><u><font color="#FF0000">仿射变换</font></u> 需要在已完成平移/刚体的图像基础上进行。</b>迭代时注意更复杂的运动估计对应更小的迭代步长，防止迭代不收敛。</span></span></span></p>
 <p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt">&nbsp;</p>
 <p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt"><span><span style="FONT-SIZE: 12pt; FONT-FAMILY: 宋体; mso-bidi-font-size: 11.0pt; mso-bidi-font-family: 'Times New Roman'; mso-bidi-theme-font: minor-bidi; mso-ansi-language: EN-US; mso-fareast-language: ZH-CN; mso-bidi-language: AR-SA">
-注2：当前焦点为配准设置面板时，您可以按下 <u>V</u> 键以获得模板帧预处理预览。</span></span></p>
+注1：当前焦点为配准设置面板时，您可以按下 <u>V</u> 键以获得模板帧预处理预览。</span></span></p>
 <p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt">&nbsp;</p>
 <p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt"><span><span style="FONT-SIZE: 12pt; FONT-FAMILY: 宋体; mso-bidi-font-size: 11.0pt; mso-bidi-font-family: 'Times New Roman'; mso-bidi-theme-font: minor-bidi; mso-ansi-language: EN-US; mso-fareast-language: ZH-CN; mso-bidi-language: AR-SA">
-<font color="#FF0000">注3：</font>您可以关闭<u>粗配准</u>以少量提升配准速度，前提是您的图像<font color="#FF0000">不包含</font>剧烈运动(px &lt; 0.5 * STEP_MAX * ITERATION_NUM_MAX / RESOLUTION), 否则将产生较差的运动估计。</span></span></p>
+<font color="#FF0000">注2：</font>您可以关闭<u>粗配准</u>以少量提升配准速度，前提是您的图像<font color="#FF0000">不包含</font>剧烈运动(px &lt; 0.5 * STEP_MAX * ITERATION_NUM_MAX / RESOLUTION), 否则将产生差的运动估计。</span></span></p>
 <p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt"><span><span style="FONT-SIZE: 12pt; FONT-FAMILY: 宋体; mso-bidi-font-size: 11.0pt; mso-bidi-font-family: 'Times New Roman'; mso-bidi-theme-font: minor-bidi; mso-ansi-language: EN-US; mso-fareast-language: ZH-CN; mso-bidi-language: AR-SA">
 <p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt">&nbsp;</p>
-注4：不同的数据可能需要应用不同的帧运算模板。对于难以配准的部分帧，可以尝试选定<u>配准范围</u>并调整配准参数，多次迭代至达到标准。</span></span></p>
+注3：不同的数据可能需要应用不同的帧运算模板。对于难以配准的部分帧，可以尝试选定<u>配准范围</u>并调整配准参数，多次迭代至达到标准。</span></span></p>
 <p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt"><span><span style="FONT-SIZE: 12pt; FONT-FAMILY: 宋体; mso-bidi-font-size: 11.0pt; mso-bidi-font-family: 'Times New Roman'; mso-bidi-theme-font: minor-bidi; mso-ansi-language: EN-US; mso-fareast-language: ZH-CN; mso-bidi-language: AR-SA">
-注5：迭代步长右侧图标显示当前计算机CPU/GPU生产商，单击可获得计算机详细配置。</span></span></p>
+注4：迭代步长右侧图标显示当前计算机CPU/GPU生产商，单击可获得计算机详细配置。</span></span></p>
 
 </blockquote>
 </blockquote>
@@ -243,7 +241,7 @@ N维图像直方图规定化</a>。</span></o:p></span></span></p>
 注1：迭代数上限右侧图标显示当前计算机GPU生产商，单击可获得计算机详细配置。当计算机中不存在GPU时(如图所示)不建议运行大文件非刚体配准。</span></span></p>
 <p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt">&nbsp;</p>
 <p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt"><span><span style="FONT-SIZE: 12pt; FONT-FAMILY: 宋体; mso-bidi-font-size: 11.0pt; mso-bidi-font-family: 'Times New Roman'; mso-bidi-theme-font: minor-bidi; mso-ansi-language: EN-US; mso-fareast-language: ZH-CN; mso-bidi-language: AR-SA">
-注2：常用算法imregdeform要求MATLAB version &gt;= R2022a 并且具有Medical Imaging Toolbox。</span></span></p>
+注2：常用算法imregdeform要求MATLAB version &gt;= R2022a 并且具有Medical Imaging Toolbox。该方法完全使用CPU，无法通过<u>任务浏览器</u>保护计算资源。</span></span></p>
 <p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt">&nbsp;</p>
 <p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt"><span><span style="FONT-SIZE: 12pt; FONT-FAMILY: 宋体; mso-bidi-font-size: 11.0pt; mso-bidi-font-family: 'Times New Roman'; mso-bidi-theme-font: minor-bidi; mso-ansi-language: EN-US; mso-fareast-language: ZH-CN; mso-bidi-language: AR-SA">
 注3：常用算法imregdeform目前仅支持CPU并行计算。如果您具有高性能GPU图形卡，推荐使用高级算法imregdemons加速计算。</span></span></p>
@@ -261,7 +259,7 @@ N维图像直方图规定化</a>。</span></o:p></span></span></p>
 </li></ul>
 <ul><li>
 <div align="left"><span style="FONT-SIZE: 12pt; FONT-FAMILY: 宋体; mso-bidi-font-size: 11.0pt">
-<u>控制量</u>：提示手动配准需要选择的控制点数量。即两幅图像中对应点对的数量。</span></div>
+<u>控制量</u>：提示手动配准需要选择的最小控制点数量。</span></div>
 </li></ul>
 <ul><li>
 <div align="left"><span style="FONT-SIZE: 12pt; FONT-FAMILY: 宋体; mso-bidi-font-size: 11.0pt">
@@ -289,7 +287,7 @@ N维图像直方图规定化</a>。</span></o:p></span></span></p>
 </li></ul>
 <blockquote style="MARGIN-RIGHT: 0px" dir="ltr">
 <p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt"><span><span style="FONT-SIZE: 12pt; FONT-FAMILY: 宋体; mso-bidi-font-size: 11.0pt">
-	注1：为获得精准的几何变换(包括 <u>平移</u> 与 <u>刚体</u>)，请严格按照 <u>控制量</u> 控制所选点对数量。</span></span></p>
+	注1：为获得精准的几何变换(包括 <u>平移</u> 与 <u>刚体</u>)，请按照 <u>控制量</u> 选择最小控制点对数量。特别地，平移变换需要选择一个点对以获得最优估计。</span></span></p>
 <p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt">&nbsp;</p>
 </blockquote>
 </blockquote>

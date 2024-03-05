@@ -23,20 +23,28 @@ vs = medfilt3(vs, mfsize, "replicate");
 vs = uint16(single(vs).^ga);
 
 % =============== dilate filter for target enhancing ===================
-% create a mask with hard threshold
-if dfsize(2) >= 0
-    vs_mask = (vs >= dfsize(2));
-else
-    vs_u8 = Remap(vs, "uint8");
-    T = graythresh(vs_u8);
-    vs_mask = imbinarize(vs_u8, T); % otsu imbinarize
+if dfsize(1) > 0
+    % create a mask with hard threshold
+    if dfsize(2) >= 0
+        vs_mask = (vs >= dfsize(2));
+    else
+        vs_u8 = Remap(vs, "uint8");
+        T = graythresh(vs_u8);
+        vs_mask = imbinarize(vs_u8, T); % otsu imbinarize
+    end
+    % dilate the image s.t. finely chopped connected
+    vs_mask = imdilate(vs_mask, strel("sphere", dfsize(1)));
+
+    if dfsize(3) >= 0
+        % remove connected domains whose volume are lower than vTh
+        vs_mask = bwareaopen(vs_mask, dfsize(3), 18);
+    else
+        % only keep the maximum volume object
+
+    end
+    % modify the background to 0
+    vs(~vs_mask) = 0;
 end
-% dilate the image s.t. finely chopped connected
-vs_mask = imdilate(vs_mask, strel("sphere", dfsize(1)));
-% remove connected domains whose volume are lower than vTh
-vs_mask = bwareaopen(vs_mask, dfsize(3), 18);
-% modify the background to 0
-vs(~vs_mask) = 0;
 
 % gaussian low pass filter for volume smooth, more robust
 vs = imgaussfilt3(vs, "FilterSize", gfsize, "Padding", "replicate");

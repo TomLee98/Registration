@@ -235,11 +235,11 @@ V2.0        Wukong              悟空
   |     |- [Update] introduce three update channels, 'UFO' for preview channel,
   |     |           'rocket' for release channel, and 'bug' for debug channel
   |     |- [Fix Bugs] fix the crop bug when Reg3D at 'distributed' mode
-  |- V2.0.8     2024/3/5
+  |- V2.0.8     2024/3/5    12:00
   |     |- [Update] optimize 'mass center' coarse registration
   |     |- [Update] optimize 'Exclusive' mode gpu allocating rules
   |     |- [Update] optimize <merge channel> behaviour
-  |     |- [Update] TODO: new help document for version 2.0.8
+  |     |- [Update] new help document for version 2.0.8
   |     |- [Fix Bugs] fix memory management bug when switch between 'Excusive' and 'Distributed' mode
   |     |- [Fix Bugs] fix <srv> function data saving bug
   |     |- [Fix Bugs] fix refvol no update when <crop XY> and <crop Z>

@@ -95,18 +95,31 @@ mp = cpcorr(mp, fp, pavol_sc_rz, ptmvol_rz);
 if isMATLABReleaseOlderThan("R2022b")
     switch tf_type
         case "pwl"
-            tf = fitgeotrans(mp, fp, "pwl");    % PiecewiseLinearTransformation2D
-        case "poly"
-            tf = fitgeotrans(mp, fp, "polynomial", degree); % PolynomialTransformation2D
-        otherwise
-            [mp, fp] = CompensateTriangle(mp, fp, ptmvol_rz);
-
-            if tf_type == "affine"
-                tf = fitgeotrans(mp, fp, "affine");    % affine2d
+            if size(fp, 1) < 4
+                tf = fewControlPoints(false);
             else
+                tf = fitgeotrans(mp, fp, "pwl");    % PiecewiseLinearTransformation2D
+            end
+        case "poly"
+            if size(fp, 1) < nchoosek(degree+2, 2)
+                tf = fewControlPoints(false);
+            else
+                tf = fitgeotrans(mp, fp, "polynomial", degree); % PolynomialTransformation2D
+            end
+        otherwise
+            if tf_type == "affine"
+                if size(fp, 1) < 3
+                    tf = fewControlPoints(false);
+                else
+                    tf = fitgeotrans(mp, fp, "affine");    % affine2d
+                end
+            else
+                if size(fp, 1) < 2
+                    [mp, fp] = compensateTriangle(mp, fp, ptmvol_rz);
+                end
+
                 tf = fitgeotrans(mp, fp, "nonreflectivesimilarity");    % affine2d
 
-                % append geometric constrains
                 if tf_type == "translation"
                     % omit scaling and rotation
                     tf.T(1:2,1:2) = eye(2);
@@ -118,24 +131,38 @@ if isMATLABReleaseOlderThan("R2022b")
                     throw(MException("manreg:invalidGeometricTransformation", ...
                         "Invalid geometric transformation."));
                 end
-            end
 
-            % modify the translation because of resampling
-            tf.T(3,1:2) = tf.T(3,1:2)./fliplr(rs);
+                % modify the translation because of resampling
+                tf.T(3,1:2) = tf.T(3,1:2)./fliplr(rs);
+            end
     end
 else
     switch tf_type
         case "pwl"
-            tf = fitgeotform2d(mp, fp, "pwl");      % PiecewiseLinearTransformation2D
+            if size(fp, 1) < 4
+                tf = fewControlPoints(true);
+            else
+                tf = fitgeotform2d(mp, fp, "pwl");      % PiecewiseLinearTransformation2D
+            end
         case "poly"
-            tf = fitgeotform2d(mp, fp, "polynomial", degree);   % 	PolynomialTransformation2D
+            if size(fp, 1) < nchoosek(degree+2, 2)
+                tf = fewControlPoints(true);
+            else
+                tf = fitgeotform2d(mp, fp, "polynomial", degree);   % 	PolynomialTransformation2D
+            end
         otherwise
-            [mp, fp] = CompensateTriangle(mp, fp, ptmvol_rz);
-
             if tf_type == "affine"
-                tf = fitgeotform2d(mp, fp, "affine");    % affinetform2d
+                if size(fp, 1) < 3
+                    tf = fewControlPoints(true);
+                else
+                    tf = fitgeotform2d(mp, fp, "affine");    % affinetform2d
+                end
                 tf.A(1:2, 3) = tf.A(1:2, 3)./fliplr(rs)';
             else
+                if size(fp, 1) < 2
+                    [mp, fp] = compensateTriangle(mp, fp, ptmvol_rz);
+                end
+
                 tf = fitgeotform2d(mp, fp, "similarity");    % simtform2d
 
                 if tf_type == "translation"
@@ -179,27 +206,31 @@ movdst_.Transformation{regfrs_, 3} = tf;
 status = 0;
 end
 
-function [mp, fp] = CompensateTriangle(mp, fp, img)
-if size(fp, 1) == 1
-    while true
-        % add random points for constructing a triangle
-        px = randi(size(img, 2), 3-size(fp,1), 1);
-        py = randi(size(img, 1), 3-size(fp,1), 1);
-        fpp = [fp; [px, py]];
-        % avoid three points at a common line
-        if abs(det(fpp(2:3,:)-fpp(1,:))) > eps
-            mpp = [mp; mp+[px, py]-fp];
-            fp = fpp;
-            mp = mpp;
-            break;
-        end
+function [mp, fp] = compensateTriangle(mp, fp, img)
+while true
+    % add random points for constructing a triangle
+    px = randi(size(img, 2), 3-size(fp,1), 1);
+    py = randi(size(img, 1), 3-size(fp,1), 1);
+    fpp = [fp; [px, py]];
+    % avoid three points at a common line
+    if abs(det(fpp(2:3,:)-fpp(1,:))) > eps
+        mpp = [mp; mp+[px, py]-fp];
+        fp = fpp;
+        mp = mpp;
+        break;
     end
-elseif size(fp, 2) == 2
-    throw(MException("manreg:CompendateTriangle:invalidPointsNumber", ...
-        "Two points estimation is not supported."));
-else
-    % do nothing
 end
+end
+
+function tf = fewControlPoints(new_flag)
+if new_flag == false
+    tf = affine2d();
+else
+    tf = affinetform2d();
+end
+
+warning("manreg:tooFewControlPointsPairs", ...
+    "The number of control points does not meet the minimum requirements.");
 end
 
 
