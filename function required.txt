@@ -246,14 +246,15 @@ V2.0        Wukong              悟空
   |     |- [Fix Bugs] fix the leak of memory bug after cropping
   |     |- [Fix Bugs] fix rigid transformation bug in MANREG
   |     |- [Fix Bugs] fix RSTC panel initializing bug
-  |- V2.0.9     2024/3/9
+  |- V2.0.9     2024/3/7    12:00
   |     |- [Update] optimize <Flip Horizontal>, <Flip Vertical> memory allocating
-  |     |- [Update] TODO: combine coding with NuclearCounter
+  |     |- [Update] add reference volume export key 'E' on RSTC panel
+  |     |- [Update] fix <crop Z> inner bug
+  |     |- [Fix Bugs] fix imregmc bug when there is all zero in moving
+  |- V2.0.10    2024/3/
+  |     |- [Fix Bugs] TODO: fix some multi-user running bugs
   |     |- [Update] TODO: add <Area Mask> to TCREG for super-robust registration
   |     |- [Update] TODO: new tooltip for multi-language support
-  |     |- [Update] TODO: fix crop Z bug
-  |     |- [Fix Bugs] TODO: fix some multi-user running bugs
-  |     |- [Fix Bugs] fix imregmc bug when there is all zero in moving 
   |- V2.1.0     2024/3/16
   |     |- [Update] TODO: improve long-term global registration to large deformation
   |     |- [Update] TODO: improve long-term local registration to large deformation
