@@ -24,11 +24,11 @@ end
 mfixed = sum(fixed, "all");
 mmoving = sum(moving, "all");
 
-mc_ref_x = sum((1:nx).*sum(fixed, 1))/mfixed;
-mc_ref_y = sum((1:ny)'.*sum(fixed, 2))/mfixed;
+mc_ref_x = sum((1:nx).*sum(fixed, 1))/(mfixed+eps);
+mc_ref_y = sum((1:ny)'.*sum(fixed, 2))/(mfixed+eps);
 
-mc_moving_x = sum((1:nx).*sum(moving, 1))/mmoving;
-mc_moving_y = sum((1:ny)'.*sum(moving, 2))/mmoving;
+mc_moving_x = sum((1:nx).*sum(moving, 1))/(mmoving+eps);
+mc_moving_y = sum((1:ny)'.*sum(moving, 2))/(mmoving+eps);
 
 % translate the pixels to image coordinate system
 tf_x = (mc_ref_x - mc_moving_x)*Rf.PixelExtentInWorldX;

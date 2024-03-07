@@ -12,7 +12,7 @@ function [C, L] = CropZ(A, ROI)
 
 arguments
     A;
-    ROI (1,:) double
+    ROI (1,2) double    {mustBePositive, mustBeInteger}
 end
 if numel(size(A)) < 2
     error("Invalid Matrix A");
@@ -21,7 +21,7 @@ if ~issorted(ROI)
     error("Invalid time ROI, check the order");
 end
 if ~isempty(ROI)
-    eval_str = "A(:,:,:,ROI)";
+    eval_str = "A(:,:,:,ROI(1):ROI(2))";
     add_str = repmat(",:",1,ndims(A)-4);
     % insert time cut at end
     eval_str = insertAfter(eval_str,eval_str.strlength-1,add_str.join(""));
@@ -29,6 +29,6 @@ if ~isempty(ROI)
 else
     C = A;
 end
-L = numel(ROI);
+L = diff(ROI)+1;
 end
 

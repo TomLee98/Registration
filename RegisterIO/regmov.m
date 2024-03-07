@@ -506,6 +506,26 @@ classdef regmov < matlab.mixin.Copyable
                 this.ctset_(v, cr, tr);
             end
         end
+
+        function fliplr(this)
+            % This function flips left and right on XY plane
+            if ismember(class(this.mptr), ["mpimg", "mpimgs"])
+                this.mptr.fliplr();
+            else
+                % calling inner array processing
+                this.mptr = fliplr(this.mptr);
+            end
+        end
+
+        function flipud(this)
+            % This function flips up and down on XY plane
+            if ismember(class(this.mptr), ["mpimg", "mpimgs"])
+                this.mptr.flipud();
+            else
+                % calling inner array processing
+                this.mptr = flipud(this.mptr);
+            end
+        end
     end
 
     methods(Access=private, Hidden)

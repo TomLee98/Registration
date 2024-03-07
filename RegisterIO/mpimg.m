@@ -306,6 +306,24 @@ classdef mpimg < matlab.mixin.Copyable
             end
         end
 
+        function fliplr(this)
+            % This function flip left and right on XY plane at the same
+            % place
+            this.flip_("lr");
+        end
+
+        function flipud(this)
+            % This function flip up and down on XY plane at the same 
+            % place
+            this.flip_("ud");
+        end
+
+        function flipbt(this)
+            % This function flip up and down on XZ plane at the same 
+            % place
+            this.flip_("bt");
+        end
+
         function this = plus(this, r_)
             % operator '+' overloading, data plus number on each channel
 
@@ -513,6 +531,51 @@ classdef mpimg < matlab.mixin.Copyable
 
             if this.isdisplay == true
                 fprintf("New mpimg object inherits this properites.")
+            end
+        end
+
+        function flip_(this, direct)
+            dims_T_loc = find(this.dimorder=="T");
+            NT = this.DataSize(dims_T_loc);
+            Group_N = ceil(NT/this.INNER_BLOCK_SIZE);
+
+            [~, pdim_xy] = ismember(this.dimorder, this.INNER_DIMENSION_ORDER);
+            [~, pdim_xz] = ismember(this.dimorder, ["X","Z","C","Y","T"]);
+            [~, invpdim_xy] = ismember(this.INNER_DIMENSION_ORDER, this.dimorder);
+            [~, invpdim_xz] = ismember(["X","Z","C","Y","T"], this.dimorder);
+
+            % use subsasgn structure
+            expr = repmat({':'}, 1, this.DataDims);
+
+            for k = 1:Group_N
+                % read the data along dimension T
+                t_r = [(k-1)*this.INNER_BLOCK_SIZE+1, min(k*this.INNER_BLOCK_SIZE, NT)];
+                expr{dims_T_loc} = string(t_r).join(":");
+                expstr = sprintf("this.memptr.Data.mov(%s)", string(expr).join(","));
+                D = eval(expstr);
+
+                % permute D and flip
+                switch direct
+                    case "lr"
+                        D = fliplr(permute(D, pdim_xy));   % fliplr at dim: XYCZT
+
+                        % permute reverse
+                        D = permute(D, invpdim_xy);        %#ok<NASGU>
+                    case "ud"
+                        D = flipud(permute(D, pdim_xy));   % flipud at dim: XYCZT
+
+                        % permute reverse
+                        D = permute(D, invpdim_xy);        %#ok<NASGU>
+                    case "bt"
+                        D = flipud(permute(D, pdim_xz));   % flipud at dim: XZCYT
+
+                        % permute reverse
+                        D = permute(D, invpdim_xz);        %#ok<NASGU>
+                    otherwise
+                end
+                
+                % save the data along dimension T
+                eval(expstr+" = D;");
             end
         end
 
