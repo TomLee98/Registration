@@ -14,14 +14,16 @@ function [vs, rois] = preproc_tc(vs, mfsize, dfsize, gfsize, ga)
 
 arguments
     vs 
-    mfsize  (1,3)   double {mustBeInteger, mustBePositive} = [3,3,3]    % [x,y,z]
+    mfsize  (1,3)   double {mustBeInteger, mustBeNonnegative} = [3,3,3]    % [x,y,z]
     dfsize  (1,3)   double {mustBeInteger} = [3,100,1000]               % [r,iTh,vTh]
-    gfsize  (1,3)   double {mustBeInteger, mustBePositive} = [3,3,1]    % [x,y,z]
+    gfsize  (1,3)   double {mustBeInteger, mustBeNonnegative} = [3,3,1]    % [x,y,z]
     ga      (1,1)   double {mustBeInRange(ga, 0, 2)} = 1
 end
 
 % ============== remove possible salt and pepper noise =================
-vs = medfilt3(vs, mfsize, "replicate");
+if all(mfsize > 0)
+    vs = medfilt3(vs, mfsize, "replicate");
+end
 
 % ===== feature enhance: contrast balance by gamma transformation ======
 vs = uint16(single(vs).^ga);
@@ -68,6 +70,8 @@ else
 end
 
 % gaussian low pass filter for volume smooth, more robust
-vs = imgaussfilt3(vs, "FilterSize", gfsize, "Padding", "replicate");
+if all(gfsize > 0)
+    vs = imgaussfilt3(vs, "FilterSize", gfsize, "Padding", "replicate");
+end
 end
 

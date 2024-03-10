@@ -23,9 +23,9 @@ classdef regopt
         vpl             (1,1) double {mustBePositive, mustBeInteger} = 3
         gl_interp       (1,1) string {mustBeMember(gl_interp, ["linear","cubic"])} = "linear"
         lo_interp       (1,1) string {mustBeMember(lo_interp, ["linear","cubic"])} = "linear"
-        mfilter         (1,3) double {mustBePositive, mustBeInteger} = [3,3,3]
+        mfilter         (1,3) double {mustBeNonnegative, mustBeInteger} = [3,3,3]
         dfilter         (1,3) double {mustBeInteger} = [3,110,1000]
-        gfilter         (1,3) double {mustBePositive, mustBeInteger} = [3,3,3]
+        gfilter         (1,3) double {mustBeNonnegative, mustBeInteger} = [3,3,3]
         gamma           (1,1) double {mustBeInRange(gamma, 0, 4)} = 1.0
         zopt_shift_max  (1,1) double {mustBeNonnegative} = 2
         zopt_tol        (1,1) double {mustBeInRange(zopt_tol, 0, 1)} = 1e-3
