@@ -252,10 +252,13 @@ V2.0        Wukong              悟空
   |     |- [Update] fix <crop Z> inner bug
   |     |- [Fix Bugs] fix imregmc bug when there is all zero in moving
   |- V2.0.10    2024/3/
-  |     |- [Fix Bugs] TODO: fix some multi-user running bugs
-  |     |- [Update] TODO: add <Area Mask> to TCREG for super-robust registration
+  |     |- [Update] TODO: add <multiply connected domain -> load>
+  |     |- [Update] TODO: add activity generator for CaImAn, etc
+  |     |- [Update] TODO: optimize the mask loading memory allocating
   |     |- [Update] TODO: new tooltip for multi-language support
+  |     |- [Fix Bugs] TODO: fix some multi-user running bugs
   |- V2.1.0     2024/3/16
+  |     |- [Update] TODO: add <Area Mask> to TCREG for super-robust registration
   |     |- [Update] TODO: improve long-term global registration to large deformation
   |     |- [Update] TODO: improve long-term local registration to large deformation
   |     |- [Update] TODO: new task manager function introduced

@@ -194,10 +194,11 @@
     <LTGLOBAL>Global(Long-Term)</LTGLOBAL>
     <MAGENTA>Magenta</MAGENTA>
     <MAIN_APP>Main Application</MAIN_APP>
-    <MASK>Mask</MASK>
     <MASK_LOADED>Mask loaded</MASK_LOADED>
     <MASK_MISMATCH>Mask size mismatch</MASK_MISMATCH>
+    <MASK_MULTIPLY>Multiply Connected Mask</MASK_MULTIPLY>
     <MASK_REMOVED>Mask removed</MASK_REMOVED>
+    <MASK_SIMPLY>Simply Connected Mask</MASK_SIMPLY>
     <MASS_CENTER_ESTIMATION>Mass Center Estimation</MASS_CENTER_ESTIMATION>
     <MAX>Max</MAX>
     <MAX_ITERATION_N>Max Iteration Number</MAX_ITERATION_N>
@@ -338,6 +339,7 @@
     <SETTING_PANEL>Setting Panel</SETTING_PANEL>
     <SETTING_PREFERENCE>Settings and Preferences</SETTING_PREFERENCE>
     <SIGNAL>Signal</SIGNAL>
+    <SIGNAL_EXTRACTOR>Signal Extractor</SIGNAL_EXTRACTOR>
     <SINGLE_CHANNEL>Single Channel</SINGLE_CHANNEL>
     <SLICE>Slice</SLICE>
     <SLICE_FEW>Please select at least two slices</SLICE_FEW>
