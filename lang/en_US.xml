@@ -16,6 +16,8 @@
     <ATTACH_FILE_HERE>Additional files to reproduce the issue are included here</ATTACH_FILE_HERE>
     <ATTACH_FOLDER>Attach Folder</ATTACH_FOLDER>
     <AUTO>Auto</AUTO>
+    <BACKGROUND_MODEL>Background Model</BACKGROUND_MODEL>
+    <BASELINE_MODEL>Baseline Model</BASELINE_MODEL>
     <BEGIN>begin</BEGIN>
     <BICUBIC>Bicubic</BICUBIC>
     <BILINEAR>Bilinear</BILINEAR>
@@ -54,6 +56,7 @@
     <CONTRAST>Contrast</CONTRAST>
     <CONTROL_PANEL>Control Panel</CONTROL_PANEL>
     <CONTROL_REGISTRATION_RUNNING>Controlling registration procedure execution</CONTROL_REGISTRATION_RUNNING>
+    <CONTROL_VAL>Control Amount</CONTROL_VAL>
     <COVERAGE_OPERATION>Based on the current registration, the operation is irreversible, continue?</COVERAGE_OPERATION>
     <CPU_TIME>CPU Time</CPU_TIME>
     <CROP_FRAME>Crop Frame</CROP_FRAME>
@@ -87,10 +90,12 @@
     <EMAIL_FAILED>Email sending failed</EMAIL_FAILED>
     <EMAIL_SUCCESS>Mail sent successfully!</EMAIL_SUCCESS>
     <END>End</END>
+    <EQUIVALENT_RADIUS>Equivalent Radius</EQUIVALENT_RADIUS>
     <ERROR>Error</ERROR>
     <EXCLUSIVE>Exclusive</EXCLUSIVE>
     <EXCLUSIVE_WARNING>You are currently running in distributed mode. Exclusive mode may cause MATLAB to crash. Continue?</EXCLUSIVE_WARNING>
     <EXIT>Exit</EXIT>
+    <EXPONENTIAL_DISTRIBUTION>Exponential Distribution</EXPONENTIAL_DISTRIBUTION>
     <EXPORT>Export</EXPORT>
     <EXPORT_AS>Export as</EXPORT_AS>
     <EXPORT_CONFIGURATION>Export Configuration</EXPORT_CONFIGURATION>
@@ -107,14 +112,18 @@
     <FILE>Files</FILE>
     <FILE_LOADING_COMPLETE>File loading completed:</FILE_LOADING_COMPLETE>
     <FINISH_UPDATE>The download is complete, please close the program to complete the update</FINISH_UPDATE>
+    <FIT>Fit</FIT>
     <FIXED>Fixed</FIXED>
+    <FIXED_BACKGROUND>Fixed Background</FIXED_BACKGROUND>
     <FLAT_HAT>Flat Hat</FLAT_HAT>
+    <FLUORESCENCE_ONLY>Fluorescence Only</FLUORESCENCE_ONLY>
     <FONT>Font</FONT>
     <FRAME_FEW>Please select at least two frames</FRAME_FEW>
     <FRAME_OVERFLOW>Frames count overflow</FRAME_OVERFLOW>
     <FRAME_RATE>Frame Rate</FRAME_RATE>
     <FUNCTIONAL_BACKGROUND>Please enter the background on the signal channel:</FUNCTIONAL_BACKGROUND>
     <GAMMA>Gamma</GAMMA>
+    <GAMMA_DISTRIBUTION>Gamma Distribution</GAMMA_DISTRIBUTION>
     <GAUSSIAN_FILTER>Gaussian Filter</GAUSSIAN_FILTER>
     <GENERATE_MASK>Generate Mask</GENERATE_MASK>
     <GENERATION>Export mask</GENERATION>
@@ -156,6 +165,7 @@
     <INTERPOLATION>Interpolation</INTERPOLATION>
     <INVALID_BACKGROUND>Invalid background value</INVALID_BACKGROUND>
     <INVALID_FRAME_ORDER>Invalid frames order</INVALID_FRAME_ORDER>
+    <INVALID_MASK_FILE>Invalid Mask File: &lt;mask_to_save&gt; lost.</INVALID_MASK_FILE>
     <INVALID_PATH>Invalid path</INVALID_PATH>
     <INVALID_RULER>Invalid ruler: try resizing the ruler</INVALID_RULER>
     <INVALID_UPDATE_REPOSITORY>Checking for updates: Illegal repository path. Please check update_setting.ini</INVALID_UPDATE_REPOSITORY>
@@ -194,6 +204,7 @@
     <LTGLOBAL>Global(Long-Term)</LTGLOBAL>
     <MAGENTA>Magenta</MAGENTA>
     <MAIN_APP>Main Application</MAIN_APP>
+    <MASK_COMPONENTS>Mask Components</MASK_COMPONENTS>
     <MASK_LOADED>Mask loaded</MASK_LOADED>
     <MASK_MISMATCH>Mask size mismatch</MASK_MISMATCH>
     <MASK_MULTIPLY>Multiply Connected Mask</MASK_MULTIPLY>
@@ -217,22 +228,26 @@
     <METADATA>Metadata</METADATA>
     <MGLOBAL>Global(Manually)</MGLOBAL>
     <MIN>Min</MIN>
-    <CONTROL_VAL>Control Amount</CONTROL_VAL>
     <MIN_ITERATION_STEP>Minimum Iteration Step</MIN_ITERATION_STEP>
     <MIN_Z_PROJECTION>Minimum Z Projection</MIN_Z_PROJECTION>
     <MISSING_HELP>help.html file is missing</MISSING_HELP>
     <MISSING_PRIVACY>privacy html file is missing</MISSING_PRIVACY>
     <MIX_CHANNEL>Mix Channel</MIX_CHANNEL>
+    <MIXED_EXPONENTIAL>Mixed Exponential</MIXED_EXPONENTIAL>
     <MODAL>Modal</MODAL>
+    <MODEL_PARAMETERS>Model Parameters</MODEL_PARAMETERS>
     <MONOMODAL>Monomodal</MONOMODAL>
     <MOVIE_EXPORTED_SUCCESS>Video exported successfully</MOVIE_EXPORTED_SUCCESS>
     <MOVIE_EXPORT_INTERRUPTED>Movie export interrupted</MOVIE_EXPORT_INTERRUPTED>
     <MOVIE_FORMAT>Movie Format</MOVIE_FORMAT>
+    <MOVING_QUANTILE>Moving Quantile</MOVING_QUANTILE>
     <MULTI_CONNECTION>Multi-connected regions are found, and the largest singly connected subset has been selected</MULTI_CONNECTION>
     <MULTIMODAL>Multimodal</MULTIMODAL>
     <NO>No</NO>
+    <NOISE_MODEL>Noise Model</NOISE_MODEL>
     <NONE>None</NONE>
     <NONUNIFORM>Nonuniform</NONUNIFORM>
+    <NORMAL_DISTRIBUTION>Normal Distribution</NORMAL_DISTRIBUTION>
     <NPC_CPU>Protected #cores(CPU)</NPC_CPU>
     <NPC_GPU>Protected #cores(GPU)</NPC_GPU>
     <NUM_MAX>Maximum</NUM_MAX>
@@ -277,6 +292,7 @@
     <PYTHON_INTERPRETER>Python Interpreter</PYTHON_INTERPRETER>
     <PYTHON_INTERPRETER_SELECTION>Select a Python Interpreter</PYTHON_INTERPRETER_SELECTION>
     <QUALITY>Quality</QUALITY>
+    <QUANTILE>Quantile</QUANTILE>
     <RANDOM_UNIFORM>Random(uniform)</RANDOM_UNIFORM>
     <RATIO>Ratio</RATIO>
     <RAW>Raw</RAW>
@@ -303,6 +319,7 @@
     <REGISTRATION_RANGE>Registration Range</REGISTRATION_RANGE>
     <REGISTRATION_SETTING>Parameters Setting</REGISTRATION_SETTING>
     <REGISTRATION_SOLUTION_ERROR>No registration solution set up</REGISTRATION_SOLUTION_ERROR>
+    <REGRESSION_ORDER>Regression Order</REGRESSION_ORDER>
     <TEMPLATE>Template</TEMPLATE>
     <REGISTRATOR>Register</REGISTRATOR>
     <REGMODE_CURRENT_GLOBAL>Current Registration Mode: Global</REGMODE_CURRENT_GLOBAL>
@@ -330,6 +347,7 @@
     <RUN_MODAL>Run Modal</RUN_MODAL>
     <RUNNING_REGISTRATION>Run the registration program</RUNNING_REGISTRATION>
     <SAMPLING>Sampling</SAMPLING>
+    <SAVE>Save</SAVE>
     <SAVE_CONFIGURATION_FILE>Save configuration file</SAVE_CONFIGURATION_FILE>
     <SCALE>Scale</SCALE>
     <SCALE_RATIO>Ratio/Scale</SCALE_RATIO>
@@ -412,6 +430,7 @@
     <WELCOME_TO_Reg3D_App>Welcome to Reg3D App</WELCOME_TO_Reg3D_App>
     <WHITE>White</WHITE>
     <WIDTH>Width</WIDTH>
+    <WINDOW>Window</WINDOW>
     <WORKSHEET>Worksheet</WORKSHEET>
     <X_DIRECTION_LENGTH>X Scale</X_DIRECTION_LENGTH>
     <X_DIRECTION_RESOLUTION>X Resolution</X_DIRECTION_RESOLUTION>

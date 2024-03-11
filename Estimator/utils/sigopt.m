@@ -3,10 +3,10 @@ classdef sigopt
     %value class
     
     properties(Access=private, Hidden)
-        bl_model    (1,1) string {mustBeMember(bl_model, ["MoveMedian", "MixedExponential"])} = "MoveMedian"
+        bl_model    (1,1) string {mustBeMember(bl_model, ["MovingQuantile", "MixedExponential"])} = "MovingQuantile"
         bkg_model   (1,1) string {mustBeMember(bkg_model, ["Constant", "Flexible"])} = "Constant"
-        q_mm_min    (1,1) double {mustBeInRange(q_mm_min, 0, 100)} = 8
-        q_me_min    (1,1) double {mustBeInRange(q_me_min, 0, 100)} = 8
+        q_mm_min    (1,1) double {mustBeInRange(q_mm_min, 0, 100)} = 10
+        q_me_min    (1,1) double {mustBeInRange(q_me_min, 0, 100)} = 10
         q_mm_auto   (1,1) logical = false
         q_me_auto   (1,1) logical = false
         win_size    (1,1) double {mustBePositive, mustBeInteger} = 100
@@ -16,18 +16,21 @@ classdef sigopt
         background  (1,:) double {mustBeNonnegative} = 100
         bkg_auto    (1,1) logical = false
         f_only      (1,1) logical = false
+        noise_model (1,1) string {mustBeMember(noise_model, ["normal","exponential","gamma","none"])} = "normal"
+        denoise_auto(1,1) logical = false
     end
 
     properties(GetAccess=public, Dependent)
         BaselineModel
         BackgroundModel
+        Options
     end
     
     methods
         function this = sigopt(baseline_, background_)
             %SIGOPT A Constructor
             arguments
-                baseline_   (1,1)   string {mustBeMember(baseline_, ["MoveMedian", "MixedExponential"])} = "MoveMedian"
+                baseline_   (1,1)   string {mustBeMember(baseline_, ["MovingQuantile", "MixedExponential"])} = "MovingQuantile"
                 background_ (1,1)   string {mustBeMember(background_, ["Constant", "Flexible"])} = "Constant"
             end
             this.bl_model = baseline_;
@@ -54,10 +57,14 @@ classdef sigopt
         function this = set.BaselineModel(this, r)
             arguments
                 this
-                r   (1,1)  string {mustBeMember(r, ["MoveMedian", "MixedExponential"])} = "MoveMedian"
+                r   (1,1)  string {mustBeMember(r, ["MovingQuantile", "MixedExponential"])} = "MovingQuantile"
             end
 
             this.bl_model = r;
+        end
+
+        function r = get.Options(this)
+            r = this.gen_option_();
         end
     end
 
@@ -74,6 +81,8 @@ classdef sigopt
             addParameter(p, 'Background',       this.background);
             addParameter(p, 'AutoBackground',   this.bkg_auto);
             addParameter(p, 'FluorescenceOnly', this.f_only);
+            addParameter(p, 'NoiseModel',       this.noise_model);
+            addParameter(p, 'AutoDenoise',      this.denoise_auto);
 
             switch this.bl_model
                 case "MoveMedian"
@@ -107,11 +116,13 @@ classdef sigopt
                        "AutoRegress",       this.order_auto, ...
                        "Background",        this.background, ...
                        "AutoBackground",    this.bkg_auto, ...
-                       "FluorescenceOnly",  this.f_only);
+                       "FluorescenceOnly",  this.f_only, ...
+                       "NoiseModel",        this.noise_model, ...
+                       "AutoDenoise",       this.denoise_auto);
 
             % dynamic items added
             switch this.bl_model
-                case "MoveMedian"
+                case "MovingQuantile"
                     r.MinQuantileValue = this.q_mm_min;
                     r.AutoQuantile = this.q_mm_auto;
                 case "MixedExponential"
@@ -125,7 +136,7 @@ classdef sigopt
             % r_ is parser results struct, inverse the mapping
 
             switch this.bl_model
-                case "MoveMedian"
+                case "MovingQuantile"
                     this.q_mm_min = r_.MinQuantileValue;
                     this.q_mm_auto = r_.AutoQuantile;
                 case "MixedExponential"
@@ -141,6 +152,7 @@ classdef sigopt
             this.background = r_.Background;
             this.bkg_auto = r_.AutoBackground;
             this.f_only = r_FluorescenceOnly;
+            this.noise_model = r_.NoiseModel;
         end
     end
 end
