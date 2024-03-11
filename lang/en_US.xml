@@ -221,6 +221,7 @@
     <MIN_ITERATION_STEP>Minimum Iteration Step</MIN_ITERATION_STEP>
     <MIN_Z_PROJECTION>Minimum Z Projection</MIN_Z_PROJECTION>
     <MISSING_HELP>help.html file is missing</MISSING_HELP>
+    <MISSING_PRIVACY>privacy html file is missing</MISSING_PRIVACY>
     <MIX_CHANNEL>Mix Channel</MIX_CHANNEL>
     <MODAL>Modal</MODAL>
     <MONOMODAL>Monomodal</MONOMODAL>

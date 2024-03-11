@@ -256,6 +256,7 @@ V2.0        Wukong              悟空
   |     |- [Update] TODO: add activity generator for CaImAn, etc
   |     |- [Update] TODO: optimize the mask loading memory allocating
   |     |- [Update] TODO: new tooltip for multi-language support
+  |     |- [Fix Bugs] the scale bar access bug
   |     |- [Fix Bugs] TODO: fix some multi-user running bugs
   |- V2.1.0     2024/3/16
   |     |- [Update] TODO: add <Area Mask> to TCREG for super-robust registration
