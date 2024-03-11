@@ -13,14 +13,15 @@ classdef sigopt
         win_auto    (1,1) logical = false
         order       (1,1) double {mustBeInteger, mustBeInRange(order, 1,5)} = 1
         order_auto  (1,1) logical = false
-        background  (1,:) double {mustBeNonnegative} = 100
-        bkg_auto    (1,1) logical = false
+        background  (1,1) double {mustBeNonnegative} = 100
+        kernel      (1,1) string {mustBeMember(kernel, ["uniform","gaussian","log"])} = "uniform"
+        kernel_auto (1,1) logical = false
         f_only      (1,1) logical = false
         noise_model (1,1) string {mustBeMember(noise_model, ["normal","exponential","gamma","none"])} = "normal"
         denoise_auto(1,1) logical = false
     end
 
-    properties(GetAccess=public, Dependent)
+    properties(Access=public, Dependent)
         BaselineModel
         BackgroundModel
         Options
@@ -79,13 +80,14 @@ classdef sigopt
             addParameter(p, 'RegressOrder',     this.order);
             addParameter(p, 'AutoRegress',      this.order_auto);
             addParameter(p, 'Background',       this.background);
-            addParameter(p, 'AutoBackground',   this.bkg_auto);
+            addParameter(p, 'Kernel',           this.kernel);
+            addParameter(p, 'AutoKernel',       this.kernel_auto);
             addParameter(p, 'FluorescenceOnly', this.f_only);
             addParameter(p, 'NoiseModel',       this.noise_model);
             addParameter(p, 'AutoDenoise',      this.denoise_auto);
 
             switch this.bl_model
-                case "MoveMedian"
+                case "MovingQuantile"
                     addParameter(p, 'MinQuantileValue', this.q_mm_min);
                     addParameter(p, 'AutoQuantile',     this.q_mm_auto);
                 case "MixedExponential"
@@ -115,7 +117,8 @@ classdef sigopt
                        "RegressOrder",      this.order, ...
                        "AutoRegress",       this.order_auto, ...
                        "Background",        this.background, ...
-                       "AutoBackground",    this.bkg_auto, ...
+                       "Kernel",            this.kernel, ...
+                       "AutoKernel",        this.kernel_auto, ...
                        "FluorescenceOnly",  this.f_only, ...
                        "NoiseModel",        this.noise_model, ...
                        "AutoDenoise",       this.denoise_auto);
@@ -150,8 +153,9 @@ classdef sigopt
             this.order = r_.RegressOrder;
             this.order_auto = r_.AutoRegress;
             this.background = r_.Background;
-            this.bkg_auto = r_.AutoBackground;
-            this.f_only = r_FluorescenceOnly;
+            this.kernel = r_.Kernel;
+            this.kernel_auto = r_.AutoKernel;
+            this.f_only = r_.FluorescenceOnly;
             this.noise_model = r_.NoiseModel;
         end
     end

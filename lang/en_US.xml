@@ -16,7 +16,6 @@
     <ATTACH_FILE_HERE>Additional files to reproduce the issue are included here</ATTACH_FILE_HERE>
     <ATTACH_FOLDER>Attach Folder</ATTACH_FOLDER>
     <AUTO>Auto</AUTO>
-    <BACKGROUND_MODEL>Background Model</BACKGROUND_MODEL>
     <BASELINE_MODEL>Baseline Model</BASELINE_MODEL>
     <BEGIN>begin</BEGIN>
     <BICUBIC>Bicubic</BICUBIC>
@@ -116,6 +115,7 @@
     <FIXED>Fixed</FIXED>
     <FIXED_BACKGROUND>Fixed Background</FIXED_BACKGROUND>
     <FLAT_HAT>Flat Hat</FLAT_HAT>
+    <FLUORESCENCE_MODEL>Fluorescence Model</FLUORESCENCE_MODEL>
     <FLUORESCENCE_ONLY>Fluorescence Only</FLUORESCENCE_ONLY>
     <FONT>Font</FONT>
     <FRAME_FEW>Please select at least two frames</FRAME_FEW>
@@ -175,6 +175,10 @@
     <IRREVERSIBLE_CROP>Cropping operation is irreversible, continue?</IRREVERSIBLE_CROP>
     <ISOMETRIC>Isometric</ISOMETRIC>
     <ITERATION_COEFFICIENT>Iteration Coefficient</ITERATION_COEFFICIENT>
+    <KERNEL>Kernel</KERNEL>
+    <KERNEL_GAUSSIAN>Gaussian Kernel</KERNEL_GAUSSIAN>
+    <KERNEL_LAPLACIAN_GAUSSIAN>Laplacian of Gaussian Kernel</KERNEL_LAPLACIAN_GAUSSIAN>
+    <KERNEL_UNIFORM>Uniform Kernel</KERNEL_UNIFORM>
     <KEY_FRAME>Key Frame</KEY_FRAME>
     <LANGUAGE>Language</LANGUAGE>
     <LATEST_VERSION>The current program is the latest version</LATEST_VERSION>
