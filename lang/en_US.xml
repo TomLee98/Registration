@@ -30,6 +30,7 @@
     <CENTROID>Centroid</CENTROID>
     <CHANNEL_ALIGNMENT>Channel Alignment</CHANNEL_ALIGNMENT>
     <CHANNEL_ALIGNING>Aligning channels...</CHANNEL_ALIGNING>
+    <CHECK_ALL>Check All</CHECK_ALL>
     <CHECK_COMPONENT_BUG>Please check the components with bugs</CHECK_COMPONENT_BUG>
     <CHECK_UPDATE>Check Update</CHECK_UPDATE>
     <CIRCLE>Circle</CIRCLE>
@@ -150,6 +151,7 @@
     <HISTORY_RECORD>History Record</HISTORY_RECORD>
     <HORIZONTAL>Horizontal</HORIZONTAL>
     <HORIZONTAL_FLIP>Horizontal Flip</HORIZONTAL_FLIP>
+    <IGNORE_UNFIT_ITEMS>Automatically ignore unfitted components</IGNORE_UNFIT_ITEMS>
     <IMAGE>Images</IMAGE>
     <IMAGE_ANNOTATION>Image and Annotation</IMAGE_ANNOTATION>
     <IMAGE_EXPORT_SUCCESS>Images exported successfully</IMAGE_EXPORT_SUCCESS>
@@ -170,6 +172,7 @@
     <INVALID_RULER>Invalid ruler: try resizing the ruler</INVALID_RULER>
     <INVALID_UPDATE_REPOSITORY>Checking for updates: Illegal repository path. Please check update_setting.ini</INVALID_UPDATE_REPOSITORY>
     <INVERSE>Inverse</INVERSE>
+    <INVERSE_CHECK>Inverse Check</INVERSE_CHECK>
     <IRRECOVERABLE_BACKGROUND>Irrecoverable  background value</IRRECOVERABLE_BACKGROUND>
     <IRREVERSIBLE_CA>Channels alignment operation is irreversible, continue?</IRREVERSIBLE_CA>
     <IRREVERSIBLE_CROP>Cropping operation is irreversible, continue?</IRREVERSIBLE_CROP>

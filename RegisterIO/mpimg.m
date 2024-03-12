@@ -685,9 +685,9 @@ classdef mpimg < matlab.mixin.Copyable
                 numhistory_  (1,1)   double {mustBeNonnegative, mustBeInteger} = 0
             end
 
-            import java.io.File;
-            import javax.swing.filechooser.FileSystemView;
-            import java.lang.System;
+            import java.io.File.*;
+            import javax.swing.filechooser.FileSystemView.*;
+            import java.lang.System.*;
 
             warning('off', 'MATLAB:MKDIR:DirectoryExists');
 

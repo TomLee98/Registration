@@ -57,6 +57,7 @@ classdef Estimator < handle
 
             %TODO: use util estimators
 
+            % 
             parfor n = 1:numel(comps_)
                 mk = (mask_==comps_(n));
 
@@ -67,11 +68,23 @@ classdef Estimator < handle
 
             end
 
-            [~, locs] = ismember(comps_, this.lbl_mask);
-            this.activities(locs, :) = acts;
-
             % close parpool
             delete(gcp("nocreate"));
+
+            % extract dff
+
+            bkg = this.image_src.EMin;
+            bkg = bkg(c);
+            bkg = 100;
+
+            acts = detrend_df_f(acts', "WindowSize",opts_.Options.WindowSize, ...
+                "AutoQuantile", opts_.Options.AutoQuantile, ...
+                "MinQuantile", opts_.Options.MinQuantileValue, ...
+                "OnlyF", opts_.Options.FluorescenceOnly, ...
+                "Background", bkg);
+
+            [~, locs] = ismember(comps_, this.lbl_mask);
+            this.activities(locs, :) = acts';
         end
 
         function r = get.Activities(this)
