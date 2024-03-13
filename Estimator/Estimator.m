@@ -6,91 +6,213 @@ classdef Estimator < handle
     end
 
     properties(GetAccess=public, Dependent)
-        Activities      % get,  variable
-
+        Activities      % get,  variable,   s-by-t double array
+        Baseline        % get,  variable,   s-by-t double array
+        Noise           % get,  variable,   s-by-t double array
+        CaImAnData      % get,  variable,   1-by-1 struct, with field {A, C, b, f}
+        Significant     % get,  variable,   s-by-1 logical array
     end
     
     properties(Access=private, Hidden)
-        activities      % n-by-t double array, row for components, colume for time step
-        mask            % m-by-n-by-p nonnegtive integer label array
-        lbl_mask        % 1-by-s positive integer, labels in label array
+        f               % s-by-t double array, row for components, colume for time step
+        dff             % s-by-t double array, row for components, colume for time step
+        bl              % s-by-t double array, row for components, colume for time step
+        noise           % s-by-t double array, row for components, colume for time step
+        cidx            % 1-by-1 positive integer, indicate the channel index
+        opts            % 1-by-1 sigopt object
+
+        A_caiman        % m*n*p-by-s sparse double label matrix, s for number of components
+        C_caiman        % s-by-t double matrix, indicates weighted components activities
+        b_caiman        % m*n*p-by-r sparse array, r for rank of background
+        f_caiman        % r-by-t double matrix, indicates weighted background activities
     end
 
     properties(SetAccess=immutable, Hidden)
-        image_src      % 1-by-1 regmov object, the calcium image data 
+        image_src       % 1-by-1 regmov object, the calcium image data 
+        mask            % m-by-n-by-p nonnegtive integer label array
+        compidx         % 1-by-s positive integer, labels in label array
     end
     
     methods
         function this = Estimator(src_, mask_)
             arguments
                 src_     (1,1)   regmov
-                mask_    (:,:,:) 
+                mask_    (:,:,:) {mustBeMask}
             end
 
             this.image_src = src_;
             this.mask = mask_;
-            this.lbl_mask = unique(this.mask);
-            this.lbl_mask(this.lbl_mask==0) = [];
-            ncomp = numel(this.lbl_mask);
+            this.compidx = unique(this.mask);
+            this.compidx(this.compidx==0) = [];
+            ncomp = numel(this.compidx);
 
-            this.activities = nan(ncomp, this.image_src.MetaData.frames);
+            this.f = nan(ncomp, this.image_src.MetaData.frames);
         end
         
-        function fit(this, opts_, ch_, comps_)
+        function fit(this, opts_, fc_, comps_, withcm_)
             % This function fit the signal model
+            % DO NOT USE auto_parpool in this block
             arguments
                 this
                 opts_   (1,1)   sigopt
-                ch_     (1,1)   string  {mustBeMember(ch_, ["r","g","b"])}
+                fc_     (1,1)   string  {mustBeMember(fc_, ["r","g","b"])}
                 comps_  (1,:)   double  {mustBeNonnegative, mustBeInteger}
+                withcm_ (1,1)   logical = true
             end
 
-            fn = this.image_src.MetaData.frames;
-            c = (ch_ == this.image_src.MetaData.cOrder);
-            acts = nan(numel(comps_), fn);
-            src_img = this.image_src;
-            mask_ = this.mask;
+            this.opts = opts_;
+            this.cidx = find(fc_ == this.image_src.MetaData.cOrder);
 
-            % use parallel for speed up
-            delete(gcp("nocreate"));
-            parpool("Threads");
+            % estimate the raw fluorescence(remove background)
+            floc = ismember(comps_, this.compidx);
+            this.f(floc, :) = ...
+                estimateFluorescence(this.image_src, this.mask, opts_, comps_, fc_);
 
-            %TODO: use util estimators
+            if ~opts_.Options.FluorescenceOnly
+                % estimate the baseline
+                this.bl = estimateBaseline(this.f, this.opts);
 
-            % 
-            parfor n = 1:numel(comps_)
-                mk = (mask_==comps_(n));
+                % calculate the delta F over F
+                % omit the neuropil status in 1-photon calcium imaging
+                this.dff = (this.f - this.bl)./this.bl;
 
-                for t = 1:fn
-                    tmpvol = src_img.Movie(:,:,c,:,t); %#ok<PFBNS>
-                    acts(n, t) = mean(tmpvol(mk));
-                end
-
+                % estimate the noise
+                [this.dff, this.noise] = estimateNoise(this.dff, this.opts);
             end
 
-            % close parpool
-            delete(gcp("nocreate"));
-
-            % extract dff
-
-            bkg = this.image_src.EMin;
-            bkg = bkg(c);
-            bkg = 100;
-
-            acts = detrend_df_f(acts', "WindowSize",opts_.Options.WindowSize, ...
-                "AutoQuantile", opts_.Options.AutoQuantile, ...
-                "MinQuantile", opts_.Options.MinQuantileValue, ...
-                "OnlyF", opts_.Options.FluorescenceOnly, ...
-                "Background", bkg);
-
-            [~, locs] = ismember(comps_, this.lbl_mask);
-            this.activities(locs, :) = acts';
+            if withcm_ == true
+                this.cmcalc();
+            end
         end
 
         function r = get.Activities(this)
-            r = this.activities;
+            if this.opts.Options.FluorescenceOnly
+                r = this.dff;
+            else
+                r = this.f;
+            end
+        end
+
+        function r = get.Baseline(this)
+            r = this.bl;
+        end
+
+        function r = get.Noise(this)
+            r = this.noise;
+        end
+
+        function r = get.CaImAnData(this)
+            r = struct("A", this.A_caiman, ...
+                       "C", this.C_caiman, ...
+                       "b", this.b_caiman, ...
+                       "f", this.f_caiman);
+        end
+
+        function r = get.Significant(this)
+            % use significant level calculate the value
+            if ~opts_.Options.FluorescenceOnly
+                switch this.opts.Options.NoiseModel
+                    case "normal"
+                        p = str2double(this.opts.Options.Significance);
+                        psnr_th = 20*log10(abs(norminv(p)));
+                        r = quantile(this.dff, 0.99, 2) > psnr_th;
+                    case "exponential"
+
+                    case "gamma"
+
+                    otherwise
+
+                end
+            else
+                r = logical.empty(size(this.f, 1), 1);
+            end
         end
 
     end
+
+    methods(Access=private)
+        function cmcalc(this)
+            % This function calculate caiman initial data
+            % basic formula: Y = AC + bf + e
+
+            % A comes from mask as initialization
+            % flatten the mask
+            this.A_caiman = flattenMask(this.mask);
+
+            % set f as rank one vector with only 1
+            this.f_caiman = remat(1e4, 1, this.image_src.MetaData.frames);
+            
+            % set b format sparse matrix with rank one
+            this.b_caiman = repmat(1e-4, numel(this.mask), 1);
+            this.b_caiman = sparse(this.b_caiman);
+           
+            % calculate the C matrix with CNMF formation
+            % use parallel pool for speed up
+            src = this.image_src;
+            fc = this.cidx;
+            Q = (this.A_caiman'*this.A_caiman)\this.A_caiman';
+            cbkg = this.opts.Options.Background;    % camera fixed background estimation
+            c_caiman = zeros(size(this.A_caiman, 2), this.image_src.MetaData.frames);
+
+            Estimator.auto_parpool("on");
+
+            parfor t = 1:this.image_src.MetaData.frames
+                K = src.Movie(:,:,fc,:,t) - cbkg;   %#ok<PFBNS>
+                K = reshape(K, [], 1);  % flatten 
+                c_caiman(:, t) = Q * K;
+            end
+
+            Estimator.auto_parpool("off");
+
+            this.C_caiman = c_caiman;
+        end
+    end
+
+    methods(Static)
+
+        function parobj = auto_parpool(state, nw)
+            % This function auto configure the parpool,'thread' has high
+            % priority (>=R2022b)
+            arguments
+                state   (1,1)   string  {mustBeMember(state, ["on","off"])}
+                nw      (1,1)   double  {mustBePositive, mustBeInteger} = 8
+            end
+
+            switch state
+                case "on"
+                    % configure if parpool exists
+                    parobj = gcp("nocreate");
+                    if ~isempty(parobj)
+                        if nw == parobj.NumWorkers
+                            % keep state
+                            return;
+                        else
+                            delete(parobj);
+                        end
+                    end
+
+                    if isMATLABReleaseOlderThan("R2022b")
+                        parobj = parpool("local", nw);       % older <Processes>
+                    else
+                        parobj = parpool("Threads", nw);     % regionprops new support
+                    end
+                case "off"
+                    delete(gcp("nocreate"));
+                otherwise
+            end
+        end
+    end
 end
 
+function mustBeMask(A)
+if ndims(A) ~= 3 || ~isnumeric(A)
+    throw(MException("mustBeMask:invalidMaskFormation", ...
+        "Mask must be a numeric volume (3d array)."));
+end
+
+if any(A<0) || any(A~=round(A))
+    throw(MException("mustBeMask:invalidLabel", ...
+        "Mask must be with nonnegtive integer values as labels."));
+end
+
+end

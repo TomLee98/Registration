@@ -8,9 +8,7 @@ classdef sigopt
         q_mm_min    (1,1) double {mustBeInRange(q_mm_min, 0, 100)} = 10
         q_me_min    (1,1) double {mustBeInRange(q_me_min, 0, 100)} = 10
         q_mm_auto   (1,1) logical = false
-        q_me_auto   (1,1) logical = false
         win_size    (1,1) double {mustBePositive, mustBeInteger} = 100
-        win_auto    (1,1) logical = false
         order       (1,1) double {mustBeInteger, mustBeInRange(order, 1,5)} = 1
         order_auto  (1,1) logical = false
         background  (1,1) double {mustBeNonnegative} = 100
@@ -18,7 +16,7 @@ classdef sigopt
         kernel_auto (1,1) logical = false
         f_only      (1,1) logical = false
         noise_model (1,1) string {mustBeMember(noise_model, ["normal","exponential","gamma","none"])} = "normal"
-        denoise_auto(1,1) logical = false
+        sig_level   (1,1) string {mustBeMember(sig_level, ["0.05", "0.01", "0.001", "0.0001"])} = "0.01"
     end
 
     properties(Access=public, Dependent)
@@ -76,7 +74,6 @@ classdef sigopt
 
             % =========== not overloading parameters =============
             addParameter(p, 'WindowSize',       this.win_size);
-            addParameter(p, 'AutoWindow',       this.win_auto);
             addParameter(p, 'RegressOrder',     this.order);
             addParameter(p, 'AutoRegress',      this.order_auto);
             addParameter(p, 'Background',       this.background);
@@ -84,7 +81,7 @@ classdef sigopt
             addParameter(p, 'AutoKernel',       this.kernel_auto);
             addParameter(p, 'FluorescenceOnly', this.f_only);
             addParameter(p, 'NoiseModel',       this.noise_model);
-            addParameter(p, 'AutoDenoise',      this.denoise_auto);
+            addParameter(p, 'Significance',     this.sig_level);
 
             switch this.bl_model
                 case "MovingQuantile"
@@ -92,7 +89,6 @@ classdef sigopt
                     addParameter(p, 'AutoQuantile',     this.q_mm_auto);
                 case "MixedExponential"
                     addParameter(p, 'MinQuantileValue', this.q_me_min);
-                    addParameter(p, 'AutoQuantile',     this.q_me_auto);
                 otherwise
             end
 
@@ -113,7 +109,6 @@ classdef sigopt
      methods(Access=private)
         function r = gen_option_(this)
             r = struct("WindowSize",        this.win_size, ...
-                       "AutoWindow",        this.win_auto, ...
                        "RegressOrder",      this.order, ...
                        "AutoRegress",       this.order_auto, ...
                        "Background",        this.background, ...
@@ -121,7 +116,7 @@ classdef sigopt
                        "AutoKernel",        this.kernel_auto, ...
                        "FluorescenceOnly",  this.f_only, ...
                        "NoiseModel",        this.noise_model, ...
-                       "AutoDenoise",       this.denoise_auto);
+                       "Significance",      this.sig_level);
 
             % dynamic items added
             switch this.bl_model
@@ -130,7 +125,6 @@ classdef sigopt
                     r.AutoQuantile = this.q_mm_auto;
                 case "MixedExponential"
                     r.MinQuantileValue = this.q_me_min;
-                    r.AutoQuantile = this.q_me_auto;
                 otherwise
             end
         end
@@ -144,12 +138,10 @@ classdef sigopt
                     this.q_mm_auto = r_.AutoQuantile;
                 case "MixedExponential"
                     this.q_me_min = r_.MinQuantileValue;
-                    this.q_me_auto = r_.AutoQuantile;
                 otherwise
             end
 
             this.win_size = r_.WindowSize;
-            this.win_auto = r_.AutoWindow;
             this.order = r_.RegressOrder;
             this.order_auto = r_.AutoRegress;
             this.background = r_.Background;
@@ -157,6 +149,7 @@ classdef sigopt
             this.kernel_auto = r_.AutoKernel;
             this.f_only = r_.FluorescenceOnly;
             this.noise_model = r_.NoiseModel;
+            this.sig_level = r_.Significance;
         end
     end
 end
