@@ -24,38 +24,32 @@ Estimator.auto_parpool("on");
 % maximize the Log-likelihood for arguments
 valid_idx = find(~isnan(dff(:,1)));
 
-for n = 1:numel(valid_idx)
-    vid = valid_idx(n);
-    dff_n = dff(vid, :); %#ok<PFBNS>
+dff_vid = dff(valid_idx, :);
+noise_vid = noise(valid_idx, :);
+
+parfor n = 1:numel(valid_idx)
+    dff_n = dff_vid(n, :);
 
     % step1: estimate the components statistics properties
     switch nm
         case "normal"
             [p, ~] = eatimateNormalNoise(dff_n);
-        case "exponential"
-            [p, ~] = eatimateExponentialNoise(dff_n);
-        case "gamma"
-            [p, ~] = eatimateGammaNoise(dff_n);
-        otherwise
-    end
 
-    % step2: optimize the filter parameters s.t. properties matching good
-    switch nm
-        case "normal"
-            [w_sz, ~] = estimateNormalNoiseFilterWindow(p, dff_n);
-            dff_n_sm = smoothdata(dff_n, "loess", w_sz);
+            w_sz = estimateNormalNoiseFilterWindow(p, dff_n);
+            dff_n_sm = smoothdata(dff_n, "loess", round(w_sz));
             noise_n = dff_n - dff_n_sm;
-        case "exponential"
-
-        case "gamma"
-
         otherwise
+            % do nothing
+            dff_n_sm = dff_n;
+            noise_n = zeros(size(dff_n));
     end
 
-    dff(vid, :) = dff_n_sm;
-    noise(vid, :) = noise_n;
+    dff_vid(n, :) = dff_n_sm;
+    noise_vid(n, :) = noise_n;
 end
 
+dff(valid_idx, :) = dff_vid;
+noise(valid_idx, :) = noise_vid;
 
 Estimator.auto_parpool("off");
 
@@ -64,18 +58,20 @@ end
 % ===================== utils functions =====================
 % ======================== Normal Distribution =======================
 function [x, fval] = eatimateNormalNoise(f)
-v_max = max(f); v_min = 0;
+v_max = max(f); v_min = min(f);
 
 % assume that w1 = 0.9, w2 = 0.1
 w10 = 0.9; w20 = 0.1;
-g0 =  w20*(v_max-vmin)/mean(f);
-s0 = sqrt(var(f) - w20*(v_max^2-v_min^2)/(2*g0));
+g0 =  w20*(v_max-v_min)/mean(f);
+d0 = max(-v_min, 0.01);
+vsig_est = min(var(f)-0.01, w20*(v_max^2-v_min^2)/(2*g0) - w20^2/g0^2*(v_max-v_min)^2);
+s0 = sqrt(var(f) - vsig_est);
 
 % init parameters
-x0 = [w10, w20, s0, g0];
-lb = [0,   0,  0,   0];
-ub = [1,   1,  inf, inf];
-Aeq = [1,1,0,0];
+x0 = [w10; w20; s0; g0; d0];
+lb = [0;   0;   0;  0;  0.01];
+ub = [1;   1;   1; inf; 10];
+Aeq = [1,1,0,0,0];
 beq = 1;
 
 fminopts = optimoptions('fmincon','Algorithm','interior-point', ...
@@ -87,13 +83,16 @@ fminopts = optimoptions('fmincon','Algorithm','interior-point', ...
 end
 
 function f = opfun_normal(x, data)
-% x: w1, w2, s, g
+% x: w1, w2, s, g, d
 % p(u) = w1*1/(sqrt(2*pi)*s)*exp(-u^2/(2*s^2)) + w2*1/(g*u)
 
-p = x(1)/(sqrt(2*pi)*x(3))*exp(-data.^2/(2*x(3)^2)) + ...
-    x(2)*1/(x(4)*data);
+p1d = data(data <= x(5));
+p2d = data(data > x(5));
 
-f = -log(prod(p));       % negtive Log-likelihood
+p = prod(x(1)./(sqrt(2*pi)*x(3))*exp(-p1d.^2./(2*x(3)^2))) * ...
+    prod(x(2)./(x(4)*p2d+eps));
+
+f = -log(p);       % negtive Log-likelihood
 end
 
 function v = estimateNormalNoiseFilterWindow(p, f)
@@ -102,7 +101,7 @@ function v = estimateNormalNoiseFilterWindow(p, f)
 
 nnp = [p(1), p(3)];
 
-v = fminbnd(@(x)opfun_normal_winsize(x, nnp, f), 3, numel(f)/2);
+v = fminbnd(@(x)opfun_normal_winsize(x, nnp, f), 3, round(numel(f)/2));
 
 end
 
@@ -113,31 +112,12 @@ function v = opfun_normal_winsize(w, p, f)
 % f: raw data
 
 % local LSE for gaussian error removing
-f_sm = smoothdata(f, "loess", w);
+f_sm = smoothdata(f, "loess", round(w));
 
 err = f - f_sm;
 
-err = reshape(err, 1, []);
+err = reshape(err, [], 1);
 
-v = sqrt(err'*err)/(p(1)*p(2));
-end
-
-% ================== Exponential Distribution ==================
-
-function [x, fval] = eatimateExponentialNoise(f)
-
-end
-
-function f = opfun_exp(x, data)
-
-end
-
-% ================== Gamma Distribution ==================
-
-function [x, fval] = eatimateGammaNoise(f)
-
-end
-
-function f = opfun_gamma(x, data)
-
+% use reformed Jensen–Shannon divergence
+v = err'*err/var(err) + (var(err)+p(2)^2)/(std(err)*p(2)) - 2;
 end

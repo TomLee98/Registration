@@ -254,13 +254,16 @@ V2.0        Wukong              悟空
   |- V2.0.10    2024/3/16
   |     |- [Update] add <multiply connected domain -> load>
   |     |- [Update] add signal estimator for initial signal extraction
+  |     |- [Update] TODO: add <auto erode filter>: optimize region number and size automatically
   |     |- [Update] TODO: optimize the mask loading memory allocating
-  |     |- [Update] TODO: new tooltip for multi-language support
+  |     |- [Update] TODO: new help document for version 2.0.10
   |     |- [Fix Bugs] the scale bar access bug
-  |     |- [Fix Bugs] fix the bacground recycle behaviour for disk capacity saving
+  |     |- [Fix Bugs] fix the background recycle behaviour for disk capacity saving
+  |     |- [Fix Bugs] fix the frames cropping bug when modify the table item manually
   |     |- [Fix Bugs] TODO: fix some multi-user running bugs
   |- V2.1.0     2024/3/16
   |     |- [Update] TODO: add <Area Mask> to TCREG for super-robust registration
+  |     |- [Update] TODO: new tooltip for multi-language support
   |     |- [Update] TODO: improve long-term global registration to large deformation
   |     |- [Update] TODO: improve long-term local registration to large deformation
   |     |- [Update] TODO: new task manager function introduced

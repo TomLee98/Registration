@@ -22,6 +22,7 @@ switch opts.BaselineModel
         bl = estimateBaseline_MQ(F, args);
     case "MixedExponential"
         args = struct("q",      opts.Options.MinQuantileValue, ...
+                      "grid",   opts.Options.GridStep, ...
                       "auto",   opts.Options.AutoRegress, ...
                       "order",  opts.Options.RegressOrder);
         bl = estimateBaseline_ME(F, args);
@@ -32,6 +33,7 @@ end
 
 
 function bl = estimateBaseline_MQ(F, args)
+% this function use move quantile algorithm to calculate baseline
 
 Estimator.auto_parpool("on");
 
@@ -39,17 +41,17 @@ bl = nan(size(F), "like", F);
 
 if args.auto == true
     w = args.win;
-    parfor k = 1:size(F,2)
+    parfor k = 1:size(F, 1)
         q = auto_quantile(F(k, :));
         bl(k, :) = movrank1(F(k, :), q, w);
     end
 else
     if args.win >= size(F,2)
-        bl = quantile(F, 2)*ones(1, size(F,2));
+        bl = quantile(F, args.q/100, 2)*ones(1, size(F,2));
     else
         q = args.q;
         w = args.win;
-        parfor k = 1:size(F,2)
+        parfor k = 1:size(F, 1)
             bl(k, :) = movrank1(F(k, :), q, w);
         end
     end
@@ -112,7 +114,71 @@ end
 
 
 function bl = estimateBaseline_ME(F, args)
+% this function models the baseline as mixed exponential function as 
+% fluorescence decay based on fluorescence protein life time
 
+% extract the data lower than quantile threshold
+
+Estimator.auto_parpool("on");
+
+bl = nan(size(F), "like", F);
+
+if args.auto == true
+
+else
+    q = args.q;
+    g = args.grid;
+    d = args.order;
+    parfor k = 1:size(F, 1)
+        tmpf = F(k, :);
+
+        % calculate piecewise fluorescence baseline
+        N = ceil(numel(tmpf)/g);
+        for gs = 1:N
+            gvidx = (gs-1)*g+1:min(gs*g, numel(tmpf));
+            tmpf_gs = tmpf(gvidx);
+            vq = quantile(tmpf_gs, q/100);
+            tmpf_gs(tmpf_gs > vq) = nan;
+            tmpf(gvidx) = tmpf_gs;
+        end
+
+        % use makima interpolation to replace the nan value
+        % tmpf = fillmissing(tmpf, "makima");
+        
+        tmpx = (0:numel(tmpf)-1);
+        tmpxx = tmpx;
+
+        tmpxx(isnan(tmpf)) = [];
+        tmpf(isnan(tmpf)) = [];
+
+        % fit the mixed exponential function by LSE
+        s_fit = gen_mixexp(d);
+        st0 = [repmat(mean(tmpf)/d, 1, d); zeros(1, d)];
+        st0 = reshape(st0, 1, []);
+
+        ft = fittype(s_fit);
+        ftopts = fitoptions(ft);
+        ftopts = fitoptions(ftopts, "Robust", "Bisquare", ...
+            "Lower", zeros(1, 2*d), "StartPoint", st0);
+
+        fitobj = fit(tmpxx', tmpf', ft, ftopts);
+
+        bl(k, :) = feval(fitobj, tmpx);
+    end
 end
 
+Estimator.auto_parpool("off");
+end
 
+function s = gen_mixexp(order)
+arguments
+    order   (1,1)   {mustBeMember(order, 1:5)}  % avoid too high order overfitting
+end
+
+s = "a1*exp(-b1*x)";
+
+for k = 2:order
+    s = s + sprintf("+a%d*exp(-b%d*x)", k, k);
+end
+
+end

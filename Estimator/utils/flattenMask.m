@@ -10,6 +10,9 @@ d = unique(mask);
 d(d==0) = [];       % remove background
 d(isnan(d)) = [];   % remove possible uncentain components
 
+row_mask = [];
+col_mask = [];
+
 for k = 1:numel(d)
     vd_loc = find(mask == d(k));   % F order, linear sub index
     row_mask = [row_mask; vd_loc]; %#ok<AGROW>

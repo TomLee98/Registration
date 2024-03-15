@@ -96,7 +96,6 @@
     <EXCLUSIVE>Exclusive</EXCLUSIVE>
     <EXCLUSIVE_WARNING>You are currently running in distributed mode. Exclusive mode may cause MATLAB to crash. Continue?</EXCLUSIVE_WARNING>
     <EXIT>Exit</EXIT>
-    <EXPONENTIAL_DISTRIBUTION>Exponential</EXPONENTIAL_DISTRIBUTION>
     <EXPORT>Export</EXPORT>
     <EXPORT_AS>Export as</EXPORT_AS>
     <EXPORT_CONFIGURATION>Export Configuration</EXPORT_CONFIGURATION>
@@ -125,7 +124,6 @@
     <FRAME_RATE>Frame Rate</FRAME_RATE>
     <FUNCTIONAL_BACKGROUND>Please enter the background on the signal channel:</FUNCTIONAL_BACKGROUND>
     <GAMMA>Gamma</GAMMA>
-    <GAMMA_DISTRIBUTION>Gamma</GAMMA_DISTRIBUTION>
     <GAUSSIAN_FILTER>Gaussian Filter</GAUSSIAN_FILTER>
     <GENERATE_MASK>Generate Mask</GENERATE_MASK>
     <GENERATION>Export mask</GENERATION>
@@ -362,12 +360,12 @@
     <SCALE_THRESHOLD>Scale Threshold(um)</SCALE_THRESHOLD>
     <SCALE_UNIT>Scale Unit</SCALE_UNIT>
     <SELECTION_SOURCE>Select browser data source</SELECTION_SOURCE>
+    <SELECTION_SAVING_FOLDER>Select Saving Folder</SELECTION_SAVING_FOLDER>
     <SELF_DEFINITION>Self Definition</SELF_DEFINITION>
     <SETTING_PANEL>Setting Panel</SETTING_PANEL>
     <SETTING_PREFERENCE>Settings and Preferences</SETTING_PREFERENCE>
     <SIGNAL>Signal</SIGNAL>
     <SIGNAL_EXTRACTOR>Signal Extractor</SIGNAL_EXTRACTOR>
-    <SIGNIFICANCE_LEVEL>S.L.</SIGNIFICANCE_LEVEL>
     <SINGLE_CHANNEL>Single Channel</SINGLE_CHANNEL>
     <SLICE>Slice</SLICE>
     <SLICE_FEW>Please select at least two slices</SLICE_FEW>
@@ -440,6 +438,7 @@
     <WHITE>White</WHITE>
     <WIDTH>Width</WIDTH>
     <WINDOW>Window</WINDOW>
+    <WITH_CAIMAN>CaImAn Initial Value Estimation</WITH_CAIMAN>
     <WORKSHEET>Worksheet</WORKSHEET>
     <X_DIRECTION_LENGTH>X Scale</X_DIRECTION_LENGTH>
     <X_DIRECTION_RESOLUTION>X Resolution</X_DIRECTION_RESOLUTION>

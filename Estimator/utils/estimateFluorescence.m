@@ -31,7 +31,7 @@ keropt = struct("auto", opts.Options.AutoKernel, ...
                 "kernel", opts.Options.Kernel);
 kers = calc_kernels(mask, comps, keropt);
 
-for n = 1:numel(comps)
+parfor n = 1:numel(comps)
     % for each worker, use pre-calculated kernel to estimate signal
     fpar = nan(1, fn);
     [kr, bdbox] = kers{n}{:};       % deal the arguments
@@ -39,7 +39,7 @@ for n = 1:numel(comps)
 
     for t = 1:fn
         % model the fluorescence with constant expected camera background
-        mov_cr = mov.Movie(rb, cb, fc, hb, t) - bkg;
+        mov_cr = mov.Movie(rb, cb, fc, hb, t) - bkg; %#ok<PFBNS>
         mov_cr = cast(squeeze(mov_cr), "double");
 
         % weighted intensity, R^n->R

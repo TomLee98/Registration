@@ -16,7 +16,7 @@ if size(mask, 1) ~= prod(sz)
 end
 
 % reconstruct the mask volume
-v_mask = zeros(sz, "like", mask);
+v_mask = zeros(sz);
 for k = 1:size(mask, 2)
     vidx = full(mask(:, k));
     v_mask(vidx>0) = k;
