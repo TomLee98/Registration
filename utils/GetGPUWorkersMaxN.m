@@ -8,7 +8,7 @@ function n = GetGPUWorkersMaxN(volopt_)
 %   - n: 1-by-1 positive integer, the maximum possible workers can be
 %   allocated in this task
 
-FOLD_CONST = 100;
+FOLD_CONST = 96;
 SINGLE_BYTES = 4;
 
 if ~exist("volopt_", "var")
