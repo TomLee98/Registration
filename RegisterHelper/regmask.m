@@ -5,6 +5,7 @@ classdef regmask < handle
     properties(Access=private, Hidden)
         mask_vol
         mask_roi
+        bdbox
         label
     end
 
@@ -31,7 +32,11 @@ classdef regmask < handle
                 this.mask_roi = regmask.vol2roi(mask_);
             end
 
+            % 
             this.label = label_;
+
+            %
+            this.calc_bounding_box();
         end
 
         function r = get.MaskVol(this)
@@ -78,10 +83,21 @@ classdef regmask < handle
             end
 
         end
+
+        function bdbox = getBoundingBox(this, r_)
+            arguments
+                this
+                r_  (1,1)   % index or label
+            end
+
+
+        end
     end
 
     methods(Access=private, Hidden)
+        function calc_bounding_box(this)
 
+        end
     end
 
     methods(Static, Hidden)
@@ -93,11 +109,11 @@ classdef regmask < handle
 
         end
 
-        function mask_flat = flatten(maskobj)
+        function mask_flat = sparse_flatten(maskobj)
 
         end
 
-        function maskobj = recover(mask_flat, sz)
+        function maskobj = recover_dense(mask_flat, sz)
 
         end
     end

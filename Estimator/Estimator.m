@@ -109,12 +109,12 @@ classdef Estimator < handle
 
             if withcm == true
                 % save caiman data if possible
-                file_cm = fullfile(folder, file+"_activity_cm.mat");
+                file_cm = fullfile(folder, file+"_cm.mat");
                 A = this.A_caiman;
                 C = this.C_caiman;
                 b = this.b_caiman;
                 f = this.f_caiman;
-                save(file_cm, "A", "C", "b", "f", '-mat');
+                save(file_cm, "A", "C", "b", "f", '-v7');
             end
         end
 
