@@ -10,7 +10,7 @@ function bl = estimateBaseline(F, opts)
 % see also: movrank1
 
 arguments
-    F       (:,:)   double  {mustBePositive}
+    F       (:,:)   double
     opts    (1,1)   sigopt
 end
 
@@ -42,8 +42,10 @@ bl = nan(size(F), "like", F);
 if args.auto == true
     w = args.win;
     parfor k = 1:size(F, 1)
-        q = auto_quantile(F(k, :));
-        bl(k, :) = movrank1(F(k, :), q, w);
+        if all(~isnan(F(k, :)))
+            q = auto_quantile(F(k, :));
+            bl(k, :) = movrank1(F(k, :), q, w);
+        end
     end
 else
     if args.win >= size(F,2)
@@ -52,7 +54,9 @@ else
         q = args.q;
         w = args.win;
         parfor k = 1:size(F, 1)
-            bl(k, :) = movrank1(F(k, :), q, w);
+            if all(~isnan(F(k, :)))
+                bl(k, :) = movrank1(F(k, :), q, w);
+            end
         end
     end
 end
@@ -132,38 +136,40 @@ else
     parfor k = 1:size(F, 1)
         tmpf = F(k, :);
 
-        % calculate piecewise fluorescence baseline
-        N = ceil(numel(tmpf)/g);
-        for gs = 1:N
-            gvidx = (gs-1)*g+1:min(gs*g, numel(tmpf));
-            tmpf_gs = tmpf(gvidx);
-            vq = quantile(tmpf_gs, q/100);
-            tmpf_gs(tmpf_gs > vq) = nan;
-            tmpf(gvidx) = tmpf_gs;
+        if all(~isnan(tmpf))
+            % calculate piecewise fluorescence baseline
+            N = ceil(numel(tmpf)/g);
+            for gs = 1:N
+                gvidx = (gs-1)*g+1:min(gs*g, numel(tmpf));
+                tmpf_gs = tmpf(gvidx);
+                vq = quantile(tmpf_gs, q/100);
+                tmpf_gs(tmpf_gs > vq) = nan;
+                tmpf(gvidx) = tmpf_gs;
+            end
+
+            % use makima interpolation to replace the nan value
+            % tmpf = fillmissing(tmpf, "makima");
+
+            tmpx = (0:numel(tmpf)-1);
+            tmpxx = tmpx;
+
+            tmpxx(isnan(tmpf)) = [];
+            tmpf(isnan(tmpf)) = [];
+
+            % fit the mixed exponential function by LSE
+            s_fit = gen_mixexp(d);
+            st0 = [repmat(mean(tmpf)/d, 1, d); zeros(1, d)];
+            st0 = reshape(st0, 1, []);
+
+            ft = fittype(s_fit);
+            ftopts = fitoptions(ft);
+            ftopts = fitoptions(ftopts, "Robust", "Bisquare", ...
+                "Lower", zeros(1, 2*d), "StartPoint", st0);
+
+            fitobj = fit(tmpxx', tmpf', ft, ftopts);
+
+            bl(k, :) = feval(fitobj, tmpx);
         end
-
-        % use makima interpolation to replace the nan value
-        % tmpf = fillmissing(tmpf, "makima");
-        
-        tmpx = (0:numel(tmpf)-1);
-        tmpxx = tmpx;
-
-        tmpxx(isnan(tmpf)) = [];
-        tmpf(isnan(tmpf)) = [];
-
-        % fit the mixed exponential function by LSE
-        s_fit = gen_mixexp(d);
-        st0 = [repmat(mean(tmpf)/d, 1, d); zeros(1, d)];
-        st0 = reshape(st0, 1, []);
-
-        ft = fittype(s_fit);
-        ftopts = fitoptions(ft);
-        ftopts = fitoptions(ftopts, "Robust", "Bisquare", ...
-            "Lower", zeros(1, 2*d), "StartPoint", st0);
-
-        fitobj = fit(tmpxx', tmpf', ft, ftopts);
-
-        bl(k, :) = feval(fitobj, tmpx);
     end
 end
 

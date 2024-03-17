@@ -62,7 +62,7 @@ v_max = max(f); v_min = min(f);
 
 % assume that w1 = 0.9, w2 = 0.1
 w10 = 0.9; w20 = 0.1;
-g0 =  w20*(v_max-v_min)/mean(f);
+g0 = max(w20*(v_max-v_min)/mean(f), 0.1);
 d0 = max(-v_min, 0.01);
 vsig_est = min(var(f)-0.01, w20*(v_max^2-v_min^2)/(2*g0) - w20^2/g0^2*(v_max-v_min)^2);
 s0 = sqrt(var(f) - vsig_est);
@@ -89,10 +89,19 @@ function f = opfun_normal(x, data)
 p1d = data(data <= x(5));
 p2d = data(data > x(5));
 
-p = prod(x(1)./(sqrt(2*pi)*x(3))*exp(-p1d.^2./(2*x(3)^2))) * ...
-    prod(x(2)./(x(4)*p2d+eps));
+if ~isempty(p1d)
+    p1 = sum(log(x(1)./(sqrt(2*pi)*x(3))*exp(-p1d.^2./(2*x(3)^2))));
+else
+    p1 = 0;
+end
 
-f = -log(p);       % negtive Log-likelihood
+if ~isempty(p2d)
+    p2 = sum(log(x(2)./(x(4)*p2d)));
+else
+    p2 = 0;
+end
+
+f = -(p1 + p2); % negtive Log-likelihood 
 end
 
 function v = estimateNormalNoiseFilterWindow(p, f)

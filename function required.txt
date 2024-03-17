@@ -254,29 +254,31 @@ V2.0        Wukong              悟空
   |- V2.0.10    2024/3/
   |     |- [Update] add <multiply connected domain -> load>
   |     |- [Update] add signal estimator for initial signal extraction
-  |     |- [Update] TODO: optimize the mask loading memory allocating
-  |     |- [Update] TODO: add <auto erode filter>: optimize region number and size automatically
+  |     |- [Update] TODO: optimize the mask operation
   |     |- [Update] TODO: new help document for version 2.0.10
   |     |- [Fix Bugs] the scale bar access bug
   |     |- [Fix Bugs] fix the background recycle behaviour for disk capacity saving
   |     |- [Fix Bugs] fix the frames cropping bug when modify the table item manually
   |     |- [Fix Bugs] TODO: fix some multi-user running bugs
-  |- V2.1.0     2024/3/16
-  |     |- [Update] TODO: add <Area Mask> to TCREG for super-robust registration
+  |- V2.1.0     2024/3/
+  |     |- [Update] TODO: add <auto erode filter>: optimize region number and size automatically
+  |     |- [Update] TODO: add <local tracking> to signal estimator for better estimation
+  |     |- [Update] TODO: multiply connected region generator combination in Register App
   |     |- [Update] TODO: new tooltip for multi-language support
-  |     |- [Update] TODO: improve long-term global registration to large deformation
-  |     |- [Update] TODO: improve long-term local registration to large deformation
-  |     |- [Update] TODO: new task manager function introduced
   |- V2.1.1     2024/
+  |     |- [Update] TODO: new task manager function introduced
+  |     |- [Update] TODO: improve long-term global registration to large deformation
   |     |- [Fix Bugs] TODO: fix long-term registration out of memory when key frames is too much
   |- V2.1.2     2024/
   |     |- [Update] TODO: add auto scroll tips on <Parameters Panel>
+  |     |- [Update] TODO: improve long-term local registration to large deformation
   |     |- 
   |- V2.2.0     2024/
   |     |- [Update] TODO: registration history manager
   |     |- [Update] TODO: new task manager function introduced
   |     |- [Update] TODO: memory mapping low level optimal(mpimgs class design)
-  |     |- [Update] TODO:new one channel global registration method introduced
+  |     |- [Update] TODO: new one channel global registration method introduced
+  |     |- [Update] TODO: add <mask local tracking> as coarse registration for one channel registration
   |     |- [Update] TODO:new one channel local registration method introduced
   |     |- [Update] TODO:new one channel manually global registration method introduced
   |- V2.3.0     2024/
