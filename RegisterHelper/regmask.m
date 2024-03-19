@@ -18,7 +18,8 @@ classdef regmask < handle
         MaskVol         % get,      item is 3d labeled array
         MaskROI         % get,      item shape as: [cx, cy, r, id]
         MaskLabel       % get/set,  item is string
-        NumComps        % get,      item is nonnegtive integer
+        MaskComps       % get,      the components identities array
+        NumComps        % get,      number of components in mask
     end
     
     methods
@@ -83,8 +84,20 @@ classdef regmask < handle
             this.mask_lbl = r_;
         end
 
+        function r = get.MaskComps(this)
+            r = this.mask_comps;
+        end
+
         function r = get.NumComps(this)
             r = numel(this.mask_comps);
+        end
+
+        function r = size(this, dim)
+            arguments
+                this
+                dim     (1,:)   double  {mustBeMember(dim, [1,2,3])} = [1,2,3]
+            end
+            r = size(this.mask_vol, dim);
         end
 
         function mask_obj = crop(this, type_, r_)
@@ -144,7 +157,8 @@ classdef regmask < handle
                     % crop the volume
                     this.mask_vol = this.mask_vol(:, :, r_(1):r_(2));
 
-                    z_rm = setdiff(1:numel(this.mask_roi)+1, r_(1)+1:r_(2)+1);
+                    % skip first plane: indicate whole volume size
+                    z_rm = setdiff(2:numel(this.mask_roi), r_(1)+1:r_(2)+1);
                     planes_rm =  this.mask_roi(z_rm);
                     pcomp_rm = cellfun(@(x)x(:, 4), planes_rm, "UniformOutput",false);
                     pcomp_rm = unique(cell2mat(pcomp_rm), "sorted");
@@ -275,7 +289,10 @@ classdef regmask < handle
                 mask_z = mask_vol(:,:,z);
                 stats = regionprops("table", mask_z, "Area", "Centroid", ...
                     "EquivDiameter");
-                if isempty(stats), continue; end
+                if isempty(stats)
+                    mask_roi{z+1} = double.empty(0, 4);
+                    continue; 
+                end
 
                 lbl_z = find(stats.Area > 0);
 
