@@ -166,7 +166,7 @@
     <INTERPOLATION>Interpolation</INTERPOLATION>
     <INVALID_BACKGROUND>Invalid background value</INVALID_BACKGROUND>
     <INVALID_FRAME_ORDER>Invalid frames order</INVALID_FRAME_ORDER>
-    <INVALID_MASK_FILE>Invalid Mask File: &lt;mask_to_save&gt; lost.</INVALID_MASK_FILE>
+    <INVALID_MASK_FILE>Invalid Mask File: invalid variable exists</INVALID_MASK_FILE>
     <INVALID_PATH>Invalid path</INVALID_PATH>
     <INVALID_RULER>Invalid ruler: try resizing the ruler</INVALID_RULER>
     <INVALID_UPDATE_REPOSITORY>Checking for updates: Illegal repository path. Please check update_setting.ini</INVALID_UPDATE_REPOSITORY>
