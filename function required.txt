@@ -255,7 +255,7 @@ V2.0        Wukong              悟空
   |     |- [Update] add <multiply connected domain -> load>
   |     |- [Update] add signal estimator for initial signal extraction
   |     |- [Update] optimize the mask operation
-  |     |- [Update] TODO: new help document for version 2.0.10
+  |     |- [Update] new help document for version 2.0.10
   |     |- [Fix Bugs] the scale bar access bug
   |     |- [Fix Bugs] fix the background recycle behaviour for disk capacity saving
   |     |- [Fix Bugs] fix the frames cropping bug when modify the table item manually
