@@ -272,7 +272,7 @@ classdef regmask < handle
         end
     end
 
-    methods(Static, Hidden)
+    methods(Static)
         function [mask_roi, mask_lbl] = vol2roi(mask_vol)
             % This function transforms volume representation to roi
             % representation

@@ -29,29 +29,21 @@ classdef Estimator < handle
 
     properties(SetAccess=immutable, Hidden)
         image_src       % 1-by-1 regmov object, the calcium image data 
-        mask            % m-by-n-by-p nonnegtive integer label array
-        mask_label      % 1-by-n string array, indicate components label
+        mask            % 1-by-1 regmask object
         caller          % 1-by-1 Register object
-        compidx         % 1-by-s positive integer, labels in label array
     end
     
     methods
-        function this = Estimator(src_, mask_, label_, caller_)
+        function this = Estimator(src_, mask_, caller_)
             arguments
                 src_    (1,1)   regmov
-                mask_   (:,:,:) {mustBeMask}
-                label_  (1,:)   string
+                mask_   (1,1)   regmask
                 caller_ (1,1)   Register
             end
 
             this.image_src = src_;
             this.mask = mask_;
-            this.mask_label = label_;
-            this.compidx = unique(this.mask);
-            this.compidx(this.compidx==0) = [];
-            ncomp = numel(this.compidx);
-
-            this.fl = nan(ncomp, this.image_src.MetaData.frames);
+            this.fl = nan(this.mask.NumComps, this.image_src.MetaData.frames);
 
             this.caller = caller_;
         end
@@ -71,9 +63,9 @@ classdef Estimator < handle
             this.cidx = find(fc_ == this.image_src.MetaData.cOrder);
 
             % estimate the raw fluorescence(remove background)
-            [~, floc] = ismember(comps_, this.compidx);
+            [~, floc] = ismember(comps_, this.mask.MaskComps);
             this.fl(floc, :) = ...
-                estimateFluorescence(this.image_src, this.mask, opts_, comps_, fc_);
+                estimateFluorescence(this.image_src, this.mask.MaskVol, opts_, comps_, fc_);
 
             if ~opts_.Options.FluorescenceOnly
                 % estimate the baseline
@@ -94,12 +86,12 @@ classdef Estimator < handle
 
         function save(this, comps, folder, fname, withcm)
             % This function saves the data to the given folder
-            [~, floc] = ismember(comps, this.compidx);
+            [~, floc] = ismember(comps, this.mask.MaskComps);
             F = this.Activities(floc, :)';
 
             % save the neurons response as .xlsx
             T = array2table([this.image_src.Time, F], ...
-                "VariableNames", ["Time", this.mask_label(floc)]);
+                "VariableNames", ["Time", this.mask.MaskLabel(floc)]);
 
             [~, file, ~] = fileparts(fname);
             file_sheet = file + "_activity.xlsx";
@@ -181,7 +173,7 @@ classdef Estimator < handle
 
             % A comes from mask as initialization
             % flatten the mask
-            this.A_caiman = flattenMask(this.mask);
+            this.A_caiman = regmask.flatten(this.mask);
             this.A_caiman = this.A_caiman(:, sltidx);
             % renormalization A
             this.A_caiman = this.A_caiman./sum(this.A_caiman, 1);
@@ -190,7 +182,7 @@ classdef Estimator < handle
             this.f_caiman = repmat(1e4, 1, this.image_src.MetaData.frames);
             
             % set b format sparse matrix with rank one
-            this.b_caiman = repmat(1e-4, numel(this.mask), 1);
+            this.b_caiman = repmat(1e-4, prod(this.mask.size()), 1);
             this.b_caiman = sparse(this.b_caiman);
            
             % calculate the C matrix with CNMF formation
@@ -249,17 +241,4 @@ classdef Estimator < handle
             end
         end
     end
-end
-
-function mustBeMask(A)
-if ndims(A) ~= 3 || ~isnumeric(A)
-    throw(MException("mustBeMask:invalidMaskFormation", ...
-        "Mask must be a numeric volume (3d array)."));
-end
-
-if any(A<0,"all") || any(A~=round(A),"all")
-    throw(MException("mustBeMask:invalidLabel", ...
-        "Mask must be with nonnegtive integer values as labels."));
-end
-
 end
