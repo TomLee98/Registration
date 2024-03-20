@@ -1,0 +1,68 @@
+﻿<html>
+<head>
+<title></title>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+</head>
+<body>
+<p align="left"><font face="宋体"><strong>1.4.3 信号提取器</strong></font></p>
+<blockquote style="MARGIN-RIGHT: 0px" dir="ltr">
+<p align="left"><font face="宋体"><img src="1_4_3%1.bmp" alt=""></font></p>
+<p align="left"><font face="宋体">信号提取器为独立子程序，面板包括五个主要区域，如下图所示：</font></p>
+<p align="left"><font face="宋体"><img src="1_4_3%2.bmp" alt=""></font></p>
+<blockquote style="MARGIN-RIGHT: 0px" dir="ltr">
+<p style="MARGIN-RIGHT: 0px" dir="ltr" align="left"><font size="4">区域1.
+<strong>菜单栏</strong>，包括 <u>选项</u> 及 <u>帮助</u>。</font></p>
+<p style="MARGIN-RIGHT: 0px" dir="ltr" align="left"><font size="4">区域2.
+<strong>蒙版组分</strong>，勾选需要分析的蒙版组分。</font></p>
+<p style="MARGIN-RIGHT: 0px" dir="ltr" align="left"><font size="4">区域3.
+<strong>模型参数</strong>，调整模型参数用于计算蒙版内荧光强度变化。</font></p>
+<p style="MARGIN-RIGHT: 0px" dir="ltr" align="left"><font size="4">区域4.
+<strong>空间位置信息</strong>，点击蒙版组分，将显示其空间位置信息。</font></p>
+<p style="MARGIN-RIGHT: 0px" dir="ltr" align="left"><font size="4">区域5.
+  <strong>控制按钮</strong>，<u>拟合</u>荧光强度变化模型，<u>预览</u>部分组分荧光强度变化曲线，或<u>保存</u>结果。</font></p>
+</blockquote>
+&nbsp;
+<blockquote style="MARGIN-RIGHT: 0px" dir="ltr">
+<p align="left"><font face="宋体"><strong> 1. 菜单栏</strong></font></p>
+<blockquote style="MARGIN-RIGHT: 0px" dir="ltr">
+	<p align="left"><font face="宋体"><strong> 1.1 选项</strong></font></p>
+	<p align="left"><font face="宋体"><img src="1_4_3%3.bmp" alt=""></font></p>
+	<p align="left"><font face="宋体">选项菜单包括两个可选项。当 <u>CaImAn初值估计</u> 勾选时，拟合模型及保存时将附带<a href="https://github.com/flatironinstitute/CaImAn"> CaImAn</a> 估计荧光强度变化所需的初值。 </font></p>
+	<p align="left"><font face="宋体">当 <u>局部追踪</u> 勾选时，蒙版组分将对每一帧间采用 <a href = "https://ww2.mathworks.cn/help/vision/tracking-and-motion-estimation.html?s_tid=CRUX_lftnav">局部追踪</a>  并微调以获得组分空间位置的最佳估计。(Version &gt; 2.1.0)</font></p>
+	<p align="left"><font face="宋体"><strong> 1.2 帮助</strong></font></p>
+	无。
+</blockquote>
+<p align="left"><font face="宋体"><strong> 2. 蒙版组分</strong></font></p>
+<blockquote style="MARGIN-RIGHT: 0px" dir="ltr">
+	<li><u>蒙版组分</u> 中将显示每个组分的标签。任意组分拟合前将显示 <b>黄色三角</b> 符号，拟合后将变为 <b>绿色对勾</b> 或 <b>蓝色问号</b>。蓝色问号代表在当前参数下，该组分无明显荧光强度变化；绿色对勾则代表至少出现一次显著的荧光强度变化。</li>
+	<p align="center"><font face="宋体"><img src="1_4_3%4.bmp" alt=""></font></p>
+	<li>您可以双击标签字段修改标签，标枪将自动同步至主窗体。</li>
+</blockquote>
+<p align="left"><font face="宋体"><strong> 3. 模型参数</strong></font></p>
+<blockquote style="MARGIN-RIGHT: 0px" dir="ltr">
+	<li><u>发光模型</u></li>
+	<p align="center"><font face="宋体"><img src="1_4_3%5.bmp" alt=""></font></p>
+	&nbsp; <u>内核</u> 可选 <u>均匀核</u> 或 <u>高斯核</u>用于组分内荧光强度的加权平均, 均匀核代表每个像素权重相同，高斯核按高斯分布决定不同空间位置的像素权重。您可以使用 <u>自动</u>， 程序将根据组分体积自动确定。<br>
+	&nbsp; <u>固有强度</u> 为相机背景强度(期望)。<br>
+	&nbsp; <u>仅荧光强度</u> 该选项将仅计算荧光强度而非荧光强度相对变化。<br>
+	<br>
+	<li><u>基线模型</u></li>
+	<p align="center"><font face="宋体"><img src="1_4_3%6.bmp" alt=""></font></p>
+	&nbsp; 您可以选择 <u>移动分位数</u> 或 <u>混合指数</u> 作为组分荧光的基线估计。<u>移动分位数</u> 法通过使用滑动窗口的P分位数作为窗口中心值对应基线的估计。相比于混合指数方法，滑动分位数的估计更加鲁棒。混合指数方法仅考虑荧光分子的自然衰减(指数模型：恒定衰减比例假设)，从数据中拟合基线。混合指数法需要假定基线荧光强度上限。<br>
+	<br>
+	<li><u>噪声模型</u></li>
+	<p align="center"><font face="宋体"><img src="1_4_3%7.bmp" alt=""></font></p>
+	&nbsp; 您可以提供假定的噪声信息，程序将自动迭代确定分布参数，并迭代滤波器直至滤除该噪声（该过程所得可能并非全局最优解）。PSNR(峰值信噪比)规定活动强度阈值，当信号中存在超过阈值的部分，标记为显著活动序列。当假定噪声分布为 <u>无</u> 时，程序将不执行滤波，仅保留原始计算结果，此时任何组分的活动都被认为是显著的。
+	
+</blockquote>
+<p align="left"><font face="宋体"><strong> 4. 空间位置信息</strong></font></p>
+<p align="center"><font face="宋体"><img src="1_4_3%8.bmp" alt=""></font></p>
+	&nbsp; 空间位置信息即蒙版组分中选中项目的位置信息，单位为像素（体素）。
+<p align="left"><font face="宋体"><strong> 5. 控制按钮</strong></font></p>
+<p align="center"><font face="宋体"><img src="1_4_3%9.bmp" alt=""></font></p>
+	&nbsp; 当您勾选部分组分时，<u>拟合</u> 将变为可用，拟合后您可以选择预览图像或保存数据。保存数据包括一个包含时间、组分标签及活动强度的EXCEL(.xlsx)文件。若您在选项菜单中勾选了<u>CaImAn初值估计</u>， 将同时导出包含CaImAn初值(A,C,b,f)的 .mat文件，该文件可以被Scipy(python package)读取并转化为python支持的数据类型。
+</blockquote>
+</blockquote>
+</body>
+</html>
+
