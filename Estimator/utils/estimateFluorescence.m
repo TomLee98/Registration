@@ -58,7 +58,7 @@ kers = cell(size(comps));
 if keropt.auto == true
     % use volume coefficient of variation to estimate the best kernel
     stats = regionprops3(mask, "Volume");
-    stats(stats.Volume==0) = [];
+    stats(stats.Volume==0, :) = [];
     rho = std(stats.Volume)/mean(stats.Volume);
     if rho <= 0.3
         kernel = "uniform";

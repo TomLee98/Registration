@@ -29,16 +29,16 @@ classdef Estimator < handle
 
     properties(SetAccess=immutable, Hidden)
         image_src       % 1-by-1 regmov object, the calcium image data 
-        mask            % 1-by-1 regmask object
+        mask            % m-by-n-by-p regmask object
         caller          % 1-by-1 Register object
     end
     
     methods
         function this = Estimator(src_, mask_, caller_)
             arguments
-                src_    (1,1)   regmov
-                mask_   (1,1)   regmask
-                caller_ (1,1)   Register
+                src_    (1,1)       regmov
+                mask_   (:,:,:)     regmask
+                caller_ (1,1)       Register
             end
 
             this.image_src = src_;
