@@ -2,6 +2,10 @@ classdef ImageReader < handle
     %IMAGELOADER This class for easy data loading, which hides the low
     %level readers working, as an adapter between files reader and regmov
     %class
+
+    properties(Constant, Hidden)
+        INNER_DIM_ORDER = ["X","Y","C","Z","T"]
+    end
     
     properties(GetAccess=public, Dependent)
         Data
@@ -138,7 +142,7 @@ classdef ImageReader < handle
                     img = pfunc(this.srcfile, this.metadata, tspan, ft);
 
                     % reshape img to X,Y,C,Z,T order
-                    img = ImageReader.imreshape(img, info.opts);
+                    img = ImageReader.imreshape(img, info.opts, this.INNER_DIM_ORDER);
 
                     % write to disk file
                     fwrite(fid, img, "uint16");
@@ -160,7 +164,7 @@ classdef ImageReader < handle
                     this.data.link(dstfile, {"uint16", ...
                         [this.metadata.height, this.metadata.width, ...
                         this.metadata.channels, this.metadata.slices, ...
-                        this.metadata.frames], "mov"}, ["X","Y","C","Z","T"]);
+                        this.metadata.frames], "mov"}, this.INNER_DIM_ORDER);
                     delete(tmpfile);
                 end
             else
@@ -177,7 +181,7 @@ classdef ImageReader < handle
                     img = pfunc(this.srcfile, this.metadata, tspan, ft);
 
                     % reshape img to X,Y,C,Z,T order
-                    img = ImageReader.imreshape(img, info.opts);
+                    img = ImageReader.imreshape(img, info.opts, this.INNER_DIM_ORDER);
 
                     this.data(:,:,:,:,tspan(1):tspan(2)) = img;
                     this.caller.SetProgressBar(k/n_piece);
@@ -192,7 +196,7 @@ classdef ImageReader < handle
             end
 
             % normalized dimention order
-            this.metadata.dimOrder = ["X","Y","C","Z","T"];
+            this.metadata.dimOrder = this.INNER_DIM_ORDER;
 
             % turn off loader
             this.state = "off";
@@ -228,12 +232,25 @@ classdef ImageReader < handle
             end
         end
 
-        function img = imreshape(img, opts)
-            % reshape to X,Y,C,Z,T
+        function img = imreshape(img, opts, dord)
             frames = numel(img) ...
                 /(opts.height*opts.width*opts.channels*opts.slices);
-            img = reshape(img, opts.height, opts.width, opts.channels, ...
-                opts.slices, frames);
+
+            smap = struct("X", opts.width, ...
+                          "Y", opts.height, ...
+                          "Z", opts.slices, ...
+                          "C", opts.channels, ...
+                          "T", frames);
+
+            % reshape
+            ss = zeros(1, numel(opts.dimOrder));
+            for k = 1:numel(opts.dimOrder), ss(k)=smap.(opts.dimOrder(k)); end
+            ss = ss([2,1,3:end]);   % rows as Y, cols as X
+            img = reshape(img, ss);
+
+            % permute as "X","Y","C","Z","T"
+            [~, new_order] = ismember(opts.dimOrder, dord);
+            img = permute(img, new_order);
         end
     end
 end

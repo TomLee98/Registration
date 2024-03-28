@@ -16,6 +16,7 @@
     <ATTACH_FILE_HERE>Additional files to reproduce the issue are included here</ATTACH_FILE_HERE>
     <ATTACH_FOLDER>Attach Folder</ATTACH_FOLDER>
     <AUTO>Auto</AUTO>
+    <AUTO_CLEAR>Auto Clear</AUTO_CLEAR>
     <BASELINE_MODEL>Baseline Model</BASELINE_MODEL>
     <BEGIN>begin</BEGIN>
     <BICUBIC>Bicubic</BICUBIC>

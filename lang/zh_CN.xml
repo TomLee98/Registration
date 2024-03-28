@@ -16,6 +16,7 @@
     <ATTACH_FILE_HERE>此处包含用于复现问题的附加文件</ATTACH_FILE_HERE>
     <ATTACH_FOLDER>附加文件夹</ATTACH_FOLDER>
     <AUTO>自动</AUTO>
+    <AUTO_CLEAR>自动清空</AUTO_CLEAR>
     <BASELINE_MODEL>基线模型</BASELINE_MODEL>
     <BEGIN>开始</BEGIN>
     <BICUBIC>双立方</BICUBIC>
