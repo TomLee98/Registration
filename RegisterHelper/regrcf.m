@@ -325,10 +325,10 @@ classdef regrcf < handle
                                 / (rcf_k.progress + eps);   % avoid devided by 0
                             % uniform capture assumption -> modified factor
                             if rcf_k.nbatches > 2
-                                tasks_.t(k) = (1+1/(rcf_k.nbatches-2) * ...
-                                    log(rcf_k.nbatches-1)) * t_est;
+                                tasks_.t(k) = t_est / (1+1/(rcf_k.nbatches-2)*...
+                                    log(rcf_k.nbatches-1));
                             else
-                                tasks_.t(k) = t_est;
+                                tasks_.t(k) = t_est / 2;
                             end
                             running_proc(k) = (rcf_k.progress > 0 && ...
                                 rcf_k.progress < this.RECYCLE_REJECT_PROGRESS_THRESHOLD);
