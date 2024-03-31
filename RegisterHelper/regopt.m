@@ -69,6 +69,8 @@ classdef regopt
         m_interp        (1,1) string {mustBeMember(m_interp, ["linear","cubic"])} = "linear"
         m_rs            (1,3) double {mustBePositive} = [1,1,1]
         m_isometric     (1,1) logical = false
+        m_tfmat         (4,4) double {mustBeFinite} = eye(4)
+        m_tfmat_enable  (1,1) logical = false
     end
 
     properties(SetAccess=immutable, GetAccess=private, Hidden)
@@ -218,6 +220,8 @@ classdef regopt
                     addParameter(p, 'Projection',   this.m_proj);
                     addParameter(p, 'Resampling',   this.m_rs);
                     addParameter(p, 'Isometric',    this.m_isometric);
+                    addParameter(p, 'TFMatrix',     this.m_tfmat);
+                    addParameter(p, 'TFEnable',     this.m_tfmat_enable);
                 case "LTREG"
                     addParameter(p, 'TformType',    this.tform_type);
                     addParameter(p, 'MaxIterN',     this.lt_itn_max);
@@ -317,6 +321,8 @@ classdef regopt
                                "Projection",    this.m_proj, ...
                                "Resampling",    this.m_rs, ...
                                "Isometric",     this.m_isometric, ...
+                               "TFMatrix",      this.m_tfmat, ...
+                               "TFEnable",      this.m_tfmat_enable, ...
                                "SC",            this.strc_chl, ...
                                "FC",            this.func_chl, ...
                                "Hardware",      this.hardware);
@@ -416,6 +422,8 @@ classdef regopt
                     this.m_proj = r_.Projection;
                     this.m_rs = r_.Resampling;
                     this.m_isometric = r_.Isometric;
+                    this.m_tfmat = r_.TFMatrix;
+                    this.m_tfmat_enable = r_.TFEnable;
                     this.strc_chl = r_.SC;
                     this.func_chl = r_.FC;
                 case "LTREG"

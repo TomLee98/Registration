@@ -81,12 +81,12 @@
 <ul style="margin-right: 0px" dir="ltr"><li>
 <p style="MARGIN-RIGHT: 0px" dir="ltr"><span><span lang="EN-US"><o:p>
 <span style="FONT-SIZE: 12pt; FONT-FAMILY: 宋体; mso-bidi-font-size: 11.0pt; mso-bidi-font-family: 'Times New Roman'; mso-bidi-theme-font: minor-bidi; mso-ansi-language: EN-US; mso-fareast-language: ZH-CN; mso-bidi-language: AR-SA">
-<u>中值滤波器(预处理)</u>：使用给定大小的滤波器半径，滤除由于相机质量差异造成的局部过曝等椒盐噪声，增强配准鲁棒性。当半径为零时禁用滤波器。</span></o:p></span></span></p>
+<u>中值滤波器(预处理)</u>：使用给定大小的滤波器半径，滤除由于相机质量差异造成的局部过曝等椒盐噪声，增强配准鲁棒性。当半径为0时禁用滤波器。</span></o:p></span></span></p>
 </li></ul>
 <ul style="margin-right: 0px" dir="ltr"><li>
 <p style="MARGIN-RIGHT: 0px" dir="ltr"><span><span lang="EN-US"><o:p>
 <span style="FONT-SIZE: 12pt; FONT-FAMILY: 宋体; mso-bidi-font-size: 11.0pt; mso-bidi-font-family: 'Times New Roman'; mso-bidi-theme-font: minor-bidi; mso-ansi-language: EN-US; mso-fareast-language: ZH-CN; mso-bidi-language: AR-SA">
-<u>高斯滤波器(预处理)</u>：使用给定大小的滤波器半径，对图像低通滤波，对于单光子共聚焦显微成像数据比较重要，增强配准鲁棒性。当半径为零时禁用滤波器。</span></o:p></span></span></p>
+<u>高斯滤波器(预处理)</u>：使用给定大小的滤波器半径，对图像低通滤波，对于单光子共聚焦显微成像数据比较重要，增强配准鲁棒性。当半径为0时禁用滤波器。</span></o:p></span></span></p>
 </li></ul>
 <ul style="margin-right: 0px" dir="ltr"><li>
 <p style="MARGIN-RIGHT: 0px" dir="ltr"><span><span lang="EN-US"><o:p>
@@ -123,7 +123,7 @@
 </table>
 <ul style="margin-right: 0px" dir="ltr"><li>
 <p style="MARGIN-RIGHT: 0px" dir="ltr"><span><span lang="EN-US"><o:p><span style="FONT-SIZE: 12pt; FONT-FAMILY: 宋体; mso-bidi-font-size: 11.0pt; mso-bidi-font-family: 'Times New Roman'; mso-bidi-theme-font: minor-bidi; mso-ansi-language: EN-US; mso-fareast-language: ZH-CN; mso-bidi-language: AR-SA">
-<u>降采样</u>：通过对原始图像(结构通道)降采样，基于局部刚性假设得到较优位移估计。加速配准进程并降低资源利用率，但会因此损失部分精度。</span></o:p></span></span></p>
+<u>降采样</u>：通过对原始图像(结构通道)降采样，基于局部刚性假设得到较优位移估计。加速配准进程并降低资源利用率，但会因此损失部分精度。 <font color="#FF0000">首次配准推荐'2X2'或'自动'。</font></span></o:p></span></span></p>
 </li></ul>
 <ul style="MARGIN-RIGHT: 0px" dir="ltr">
 <li>

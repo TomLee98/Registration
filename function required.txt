@@ -260,18 +260,19 @@ V2.0        Wukong              悟空
   |     |- [Fix Bugs] fix the background recycle behaviour for disk capacity saving
   |     |- [Fix Bugs] fix the frames cropping bug when modify the table item manually
   |- V2.0.11    2024/3/28   13:00
-  |     |- [Update] modify the log display
+  |     |- [Update] modify the log screen behaviour
   |     |- [Fix Bugs] fix the data dimension bug when loading .ims file
-  |- V2.1.0     2024/3/30   0:00
-  |     |- [Update] TODO: multiply connected region generator combination in Register App
+  |- V2.1.0     2024/3/21   23:59
+  |     |- [Update] 'Ctrl+Tab' on main panel for changing view source
+  |     |- [Update] add manual transformation matrix configuration on 'TCREG'->'manreg'
   |     |- [Update] TODO: new tooltip for multi-language support
   |     |- [Fix Bugs] TODO: fix some multi-user running bugs
-  |     |- [Fix Bugs] TODO: fix the file loading support for .ims
   |- V2.1.1     2024/
+  |     |- [Update] TODO: multiply connected region generator combination in Register App
   |     |- [Update] TODO: add <local tracking> to signal estimator for better estimation
   |- V2.1.2     2024/
   |     |- [Update] TODO: new task manager function introduced
-  |     |- 
+  |     |- [Fix Bugs]
   |- V2.1.3     2024/
   |     |- [Update] TODO: improve long-term global registration to large deformation
   |     |- [Fix Bugs] TODO: fix long-term registration out of memory when key frames is too much
