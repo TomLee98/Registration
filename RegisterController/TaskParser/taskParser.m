@@ -3,6 +3,12 @@ classdef taskParser < handle
     % (volopt, regopt, regfrs) -> task queue
     % As example, long term rregistration need three steps, and taskParser
     % will generate the pipeline automatically
+
+    properties(Constant, Hidden)
+        % shared with TUE
+        C_DISTRIBUTION = 2;
+        C_EXCLUSIVE = 4;
+    end
     
     properties(GetAccess=public, SetAccess=private)
         Results     (1,:)   mQueue = mQueue()
@@ -49,14 +55,14 @@ classdef taskParser < handle
             this.pfunc = str2func(rf(this.regopt.Algorithm==rf(:,1), 2));
         end
         
-        function parse(this, br)
+        function parse(this)
             if this.distrib == false
                 % in exclusive mode, user can adjust the busy index
-                batch_sz = this.nworker*br;
+                batch_sz = this.nworker*this.C_EXCLUSIVE;
             else
                 % distribution mode must keep busy index as 2~3 for better
                 % runnning efficiency and response sensitivity
-                batch_sz = this.nworker*2;
+                batch_sz = this.nworker*this.C_DISTRIBUTION;
             end
 
             this.Results = this.pfunc(this.movtmpl, ...

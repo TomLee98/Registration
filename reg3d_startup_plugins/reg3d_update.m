@@ -13,7 +13,7 @@ arguments
 end
 
 % This function generate the auto_update script 
-ver_pattern = '[0-9][.][0-9][.][0-9]';
+ver_pattern = '[0-9]*[.][0-9]*[.][0-9]*';
 ver = regexp(mlapp_file, ver_pattern, "match");
 
 if auto_clean == true

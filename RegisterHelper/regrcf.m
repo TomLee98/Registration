@@ -3,9 +3,9 @@ classdef regrcf < handle
     % This class support the basic resource management
     
     properties(Constant, Hidden)
-        VALID_RCF_FIELDNAMES = ["user_id", "submit_time", "nworkers", "memory", ...
-                                "disk", "nworkers_req", "nworkers_rel", "counts_rec", ...
-                                "status", "resource", "progress"];
+        VALID_RCF_FIELDNAMES = ["user_id", "submit_time", "nworkers", "nbatches", ...
+                                "memory", "disk", "nworkers_req", "nworkers_rel", ...
+                                "counts_rec", "status", "resource", "progress"];
 
         RECYCLE_REJECT_PROGRESS_THRESHOLD = 0.9
     end
@@ -17,6 +17,7 @@ classdef regrcf < handle
         distrib
         tueobj
     end
+
     properties(Access=private)
         %                               string     double   double
         % nworkers_req: <key, value> = {user_id, [nworkers, is_get]}
@@ -24,10 +25,11 @@ classdef regrcf < handle
         data    (1,1)   struct = struct("user_id",          "", ...         % mark user identity
                                         "submit_time",      "", ...         % submit time, cpu or gpu pipeline
                                         "nworkers",         0, ...          % cpu worker = pure cpu + gpu worker
+                                        "nbatches",         0, ...          % total batches in the job
                                         "memory",           [], ...         % TODO: resource limitation
                                         "disk",             [], ...         % TODO: resource limitation
-                                        "nworkers_req",     struct(), ...   % required struct
-                                        "nworkers_rel",     struct(), ...   % released struct
+                                        "nworkers_req",     struct("null", 0), ...   % required struct
+                                        "nworkers_rel",     struct("null", 0), ...   % released struct
                                         "counts_rec",       0, ...          % recycle workers counts for [cpu, gpu]
                                         "status",           "Await", ...    % "Await", "Run", "Ready"
                                         "resource",         "", ...         % could be "cpu", "cpu|gpu"
@@ -45,6 +47,7 @@ classdef regrcf < handle
     properties(SetAccess=?TaskManager, GetAccess=public, Dependent)
         NWorkers
         NWorkersMax
+        NBatches
         Status
         Resource
         Progress
@@ -118,6 +121,19 @@ classdef regrcf < handle
             end
 
             this.nmax = r_;
+        end
+
+        function r = get.NBatches(this)
+            r = this.data.nbatches;
+        end
+
+        function set.NBatches(this, r_)
+            arguments
+                this
+                r_      (1,1)   double {mustBePositive, mustBeInteger}
+            end
+
+            this.data.nbatches = r_;
         end
 
         function r = get.Status(this)
@@ -238,14 +254,14 @@ classdef regrcf < handle
             if numel(rcfpool) > 1
                 for k = 1:numel(rcfpool)
                     if (rcfpool(k).status == "Await") ...
-                            && (rcfpool(k).UserId ~= this.data.user_id)
+                            && (rcfpool(k).user_id ~= this.data.user_id)
                         tf = true;
                         return;
                     end
                 end
             else
                 if (rcfpool.status == "Await") ...
-                        && (rcfpool.UserId ~= this.data.user_id)
+                        && (rcfpool.user_id ~= this.data.user_id)
                     tf = true;
                     return;
                 end
@@ -292,6 +308,7 @@ classdef regrcf < handle
                 switch this.data.status
                     case "Await"
                         nprocgs = 0;       %number of processors that gpu shared
+                        running_proc = false(numel(rcfpool), 1); % only acquired to running user
                         % compare the resource needed and require linearly
                         t = this.tueobj.estimate(this.distrib);
                         % generate task table:
@@ -304,10 +321,25 @@ classdef regrcf < handle
                             rcf_k = rcfpool(k);
                             tasks_.user(k) = rcf_k.user_id;
                             tasks_.nproc(k) = rcf_k.nworkers;
-                            tasks_.t(k) = seconds(datetime("now")-datetime(rcf_k.submit_time))...
-                                / (rcf_k.progress + 0.01);   % avoid devided by 0
+                            t_est = seconds(datetime("now")-datetime(rcf_k.submit_time))...
+                                / (rcf_k.progress + eps);   % avoid devided by 0
+                            % uniform capture assumption -> modified factor
+                            if rcf_k.nbatches > 2
+                                tasks_.t(k) = (1+1/(rcf_k.nbatches-2) * ...
+                                    log(rcf_k.nbatches-1)) * t_est;
+                            else
+                                tasks_.t(k) = t_est;
+                            end
+                            running_proc(k) = (rcf_k.progress > 0 && ...
+                                rcf_k.progress < this.RECYCLE_REJECT_PROGRESS_THRESHOLD);
                             tasks_.resrc(k) = rcf_k.resource;
                             tasks_.run(k) = (rcf_k.status == "Run");
+                        end
+
+                        if all(~running_proc)
+                            % until there exist a running user
+                            % keep status: 'Await'
+                            return;
                         end
 
                         % require workers
@@ -340,13 +372,15 @@ classdef regrcf < handle
                             end
                         end
 
-                        nproc_atot = fix(t/(t+t_other)*(this.nmax-nprocgs));
+                        % useful only at first requirement
+                        nproc_atot_req = fix(t/(t+t_other)*(this.nmax-nprocgs));
+                        nproc_atot_req = max(2, nproc_atot_req);    % require 2 workers at least
 
-                        % spread to users
+                        % required workers spread to running users
                         for k = 1:numel(rcfpool)
                             if tasks_.run(k) == true
                                 this.data.nworkers_req.(tasks_.user(k)) ...
-                                    = [round((1-tasks_.t(k)/(t+t_other))*nproc_atot), 0];
+                                    = [round((1-tasks_.t(k)/(t+t_other))*nproc_atot_req), 0];
                             end
                         end
 
@@ -355,6 +389,8 @@ classdef regrcf < handle
                             'VariableTypes', {'logical'}, ...
                             'VariableNames', {'is_alloc'}, ...
                             'RowNames', req_user);
+                        nproc_atot_rel = 0;
+
                         for k = 1:numel(rcfpool)
                             if ismember(rcfpool(k).user_id, req_user)
                                 % if required to current user
@@ -363,15 +399,14 @@ classdef regrcf < handle
                                 if ismember(uid, rel_user)
                                     % if current user in that release user list
                                     nproc_rel = rcfpool(k).nworkers_rel.(uid);
-                                    nproc_req = this.data.nworkers_req.(rcfpool(k).user_id);
-
-                                    % check if cpu resource requirement is satisfied
-                                    % and the resource was released
-                                    if (nproc_rel(1) == nproc_req(1)) ...
-                                            && (nproc_rel(2) == 1)
-                                        nproc_req(2) = 1;
+                                    
+                                    % check if the resource was released
+                                    % take the resource instead of current required
+                                    % for avoiding infinity requirement
+                                    if nproc_rel(2) == 1
                                         this.data.nworkers_req.(rcfpool(k).user_id) ...
-                                            = nproc_req;
+                                            = nproc_rel;
+                                        nproc_atot_rel = nproc_atot_rel + nproc_rel(1);
                                         reqsrc_(rcfpool(k).user_id, :).is_alloc = true;
                                     end
                                 end
@@ -380,7 +415,7 @@ classdef regrcf < handle
 
                         if all(reqsrc_.is_alloc)
                             % resource is satisfied, update allocated workers, change status
-                            this.data.nworkers = nproc_atot;
+                            this.data.nworkers = nproc_atot_rel;
                             this.data.status = "Ready";     % ready for requirement
                         else
                             % await until resource is ready
@@ -407,6 +442,7 @@ classdef regrcf < handle
                 relsrc_ = 0;   % total released resource
                 switch this.data.status
                     case "Run"
+                        rel_users = fieldnames(this.data.nworkers_rel);
                         % check others requirement
                         for k = 1:numel(rcfpool)
                             if rcfpool(k).status == "Await"
@@ -416,7 +452,10 @@ classdef regrcf < handle
                                     nproc_req = rcfpool(k).nworkers_req.(uid);
 
                                     % how many required, how many released
-                                    if nproc_req(2) ~= 1
+                                    % if this not mark released and that not mark
+                                    % required
+                                    if nproc_req(2) ~= 1 && ...
+                                            ~ismember(rcfpool(k).user_id, rel_users)
                                         % set release flag to 1
                                         this.data.nworkers_rel.(rcfpool(k).user_id) ...
                                             = [nproc_req(1), 1];

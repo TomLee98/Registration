@@ -5,7 +5,6 @@ classdef TaskManager < handle
         % ASK FOR REQUIRE DELAY
         REQUIRE_DELAY = 3;
 
-        BUSY_RATIO = 4;     % experience value
     end
 
     properties(Access=private, Hidden)
@@ -370,8 +369,11 @@ classdef TaskManager < handle
                 % use taskParser
                 p = taskParser(this.movtmpl, regframes, this.volopts, ...
                     this.regopts, this.nworker_cur, this.distrib);
-                p.parse(this.BUSY_RATIO);
+                p.parse();
                 this.job = p.Results;
+
+                % update batches
+                this.rcfobj.NBatches = this.job.size();
             end
         end
 

@@ -262,14 +262,15 @@ V2.0        Wukong              悟空
   |- V2.0.11    2024/3/28   13:00
   |     |- [Update] modify the log screen behaviour
   |     |- [Fix Bugs] fix the data dimension bug when loading .ims file
-  |- V2.1.0     2024/3/21   23:59
+  |- V2.1.0     2024/3/31   23:59
   |     |- [Update] 'Ctrl+Tab' on main panel for changing view source
   |     |- [Update] add manual transformation matrix configuration on 'TCREG'->'manreg'
-  |     |- [Update] TODO: new tooltip for multi-language support
-  |     |- [Fix Bugs] TODO: fix some multi-user running bugs
-  |- V2.1.1     2024/
+  |     |- [Fix Bugs] fix multi-user running bugs
+  |     |- [Fix Bugs] fix the version display bug when sub version >= 9
+  |- V2.1.1     2024/4/
   |     |- [Update] TODO: multiply connected region generator combination in Register App
   |     |- [Update] TODO: add <local tracking> to signal estimator for better estimation
+  |     |- [Update] TODO: new tooltip for multi-language support
   |- V2.1.2     2024/
   |     |- [Update] TODO: new task manager function introduced
   |     |- [Fix Bugs]

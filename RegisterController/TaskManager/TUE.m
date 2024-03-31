@@ -3,17 +3,17 @@ classdef TUE < handle
 
     properties(Constant, Hidden)
         % Global REGISTRATION HIDDEN PARAMETERS
-        IMREGTFORM_TRANSL_PPS = 3.4E5       % pixels per second
-        IMREGTFORM_RIGID_PPS = 8.5E4        % pixels per second
-        IMREGTFORM_AFFINE_PPS = 7.5E4       % pixels per second
+        IMREGTFORM_TRANSL_PPS = 1E5       % pixels per second
+        IMREGTFORM_RIGID_PPS = 3E4        % pixels per second
+        IMREGTFORM_AFFINE_PPS = 2.5E4       % pixels per second
 
-        IMREGDEMONS_GPU_PPS = 4E4           % @ AFS = 1.5
-        IMREGDEMONS_CPU_PPS = 4E3           % TODO: test the real acceleration ratio, may be not 10:1
-        IMHISTMATCHN_PPS = 3.5e5            % @ LOW LEVEL
+        IMREGDEMONS_GPU_PPS = 1.5E4           % @ AFS = 1.5
+        IMREGDEMONS_CPU_PPS = 1.5E3           % TODO: test the real acceleration ratio, may be not 10:1
+        IMHISTMATCHN_PPS = 1E5              % @ LOW LEVEL
 
-        IMREGOPZR_PPS = 1E6                 % pixels per second
+        IMREGOPZR_PPS = 3.5E5                 % pixels per second
 
-        PREPROC_PPS = 1E6                   % pixels per second
+        PREPROC_PPS = 3.5E5                   % pixels per second
 
         IMWARP_LINEAR_SPO = 0.05            % seconds per operation
         IMWARP_CUBIC_SPO = 0.3              % seconds per operation
@@ -23,6 +23,9 @@ classdef TUE < handle
 
         YIELD_TIME_CONST = 0.1              % from parallel toolbox configuration
         PARALLEL_CONSTANT = 7/8             % from parallel toolbox configuration
+
+        C_DISTRIBUTION = 2;
+        C_EXCLUSIVE = 4;
     end
 
     properties(SetAccess=immutable, Hidden)
@@ -164,9 +167,9 @@ classdef TUE < handle
 
             if distrib == true
                 % tasker manager fixed the batch size
-                C = 2;
+                C = this.C_DISTRIBUTION;
             else
-                C = 4;  % could be modified by user in some versions
+                C = this.C_EXCLUSIVE;  % could be modified by user in some versions
             end
 
             t_use = this.YIELD_TIME_CONST * ...     % seconds per yield loop
