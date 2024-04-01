@@ -272,7 +272,8 @@ V2.0        Wukong              悟空
   |     |- [Update] TODO: add <local tracking> to signal estimator for better estimation
   |     |- [Update] TODO: new tooltip for multi-language support
   |     |- [Update] new help document for version 2.1.x
-  |- V2.1.2     2024/
+  |     |- [Fix Bugs] fix the update bug when multi sub version >=10
+  |- V2.1.2     2024/4
   |     |- [Update] TODO: new task manager function introduced
   |     |- [Fix Bugs]
   |- V2.1.3     2024/

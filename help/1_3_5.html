@@ -288,9 +288,14 @@ N维图像直方图规定化</a>。</span></o:p></span></span></p>
 <div align="left"><span style="FONT-SIZE: 12pt; FONT-FAMILY: 宋体; mso-bidi-font-size: 11.0pt">
 <u>等距</u>：自动计算X,Y,Z三个方向的重采样比率，将原始数据重采样为立方体。此操作不会修改原始数据。</span></div>
 </li></ul>
+<ul><li>
+<div align="left"><span style="FONT-SIZE: 12pt; FONT-FAMILY: 宋体; mso-bidi-font-size: 11.0pt">
+<u>变换矩阵</u>：您可以按照 <a href="https://www.mathworks.com/help/images/matrix-representation-of-geometric-transformations.html">变换矩阵</a> 的定义设定。勾选右侧<u>应用</u>即可使用变换矩阵代替手动选择特征点。变换矩阵是3D变换，作用于当前帧。</span></div>
+</li></ul>
 <blockquote style="MARGIN-RIGHT: 0px" dir="ltr">
 <p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt"><span><span style="FONT-SIZE: 12pt; FONT-FAMILY: 宋体; mso-bidi-font-size: 11.0pt">
-	注1：为获得精准的几何变换(包括 <u>平移</u> 与 <u>刚体</u>)，请按照 <u>控制量</u> 选择最小控制点对数量。特别地，平移变换需要选择一个点对以获得最优估计。</span></span></p>
+注1：为获得精准的几何变换(包括 <u>平移</u> 与 <u>刚体</u>)，请按照 <u>控制量</u> 选择最小控制点对数量。特别地，平移变换需要选择一个点对以获得最优估计。<br><br>
+注2：变换矩阵相比于手动选择点对具有更高的优先级。即选择变换矩阵将使手动特征点对方案失效。</span></span></p>
 <p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt">&nbsp;</p>
 </blockquote>
 </blockquote>
