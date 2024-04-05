@@ -60,9 +60,9 @@ classdef TUE < handle
                     if this.regopt.Mode == "global"
 
                     elseif this.regopt.Mode == "local"
-                        if this.volopt.Hardware == "cpu"
+                        if this.regopt.Options.Hardware == "cpu"
                             
-                        elseif this.volopt.Hardware == "cpu|gpu"
+                        elseif this.regopt.Options.Hardware == "cpu|gpu"
                             
                         end
                     end
@@ -181,11 +181,15 @@ classdef TUE < handle
             if this.volopt.channels == 1
 
             elseif this.volopt.channels == 2
-                if this.regopt.Options.DS == "auto"
-                    sz_max = max(this.volopt.width, this.volopt.height);
-                    scale = 1/(this.EC50/(this.EC50 + sz_max));
-                else
-                    scale = str2double(string(this.regopt.Options.DS).extractBefore(2));
+                if this.regopt.Mode == "global"
+                    if this.regopt.Options.DS == "auto"
+                        sz_max = max(this.volopt.width, this.volopt.height);
+                        scale = 1/(this.EC50/(this.EC50 + sz_max));
+                    else
+                        scale = str2double(string(this.regopt.Options.DS).extractBefore(2));
+                    end
+                elseif this.regopt.Mode == "local"
+                    scale = 1;
                 end
 
                 % single color channel

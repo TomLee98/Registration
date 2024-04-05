@@ -59,7 +59,7 @@
 </li></ul>
 <ul style="MARGIN-RIGHT: 0px" dir="ltr"><li>
 <div align="left"><u>粗配准</u>： <span style="FONT-SIZE: 12pt; FONT-FAMILY: 宋体; mso-bidi-font-size: 11.0pt; mso-bidi-font-family: 'Times New Roman'; mso-bidi-theme-font: minor-bidi; mso-ansi-language: EN-US; mso-fareast-language: ZH-CN; mso-bidi-language: AR-SA">
-用于估计初始几何变换的强鲁棒算法，可选<u>质心估计</u>，<u>相位相关</u>，<u>特征点匹配</u> 或<u>关闭</u>(不建议)。</span></div> 当图像中仅有单一目标区域时，可启用相位相关或质心估计。当图像中仅有少量(&le;3)明显目标区域时，推荐质心估计(结合膨胀滤波器)。当图像中存在大量明显目标(&gt;5)区域且存在相对运动，推荐特征点匹配。
+用于估计初始几何变换的强鲁棒算法，可选<u>质心估计</u>，<u>相位相关</u>，<u>特征点匹配</u>，<u>极限点云</u> 或<u>关闭</u>(首次配准不建议)。</span></div> 当图像中仅有单一目标区域时，可启用相位相关或质心估计。当图像中仅有少量(&le;3)明显目标区域时，推荐质心估计(结合膨胀滤波器)。当图像中存在大量明显目标(&gt;5)区域且存在相对运动，推荐特征点匹配。
 </li></ul>
 <ul style="MARGIN-RIGHT: 0px" dir="ltr">
 <li>
@@ -96,7 +96,17 @@
 <ul style="margin-right: 0px" dir="ltr"><li>
 <p style="MARGIN-RIGHT: 0px" dir="ltr"><span><span lang="EN-US"><o:p>
 <span style="FONT-SIZE: 12pt; FONT-FAMILY: 宋体; mso-bidi-font-size: 11.0pt; mso-bidi-font-family: 'Times New Roman'; mso-bidi-theme-font: minor-bidi; mso-ansi-language: EN-US; mso-fareast-language: ZH-CN; mso-bidi-language: AR-SA">
-<u>迭代数上限 &amp; Z优化公差(预处理)</u>：对图像做粗配准估计时，用于估计Z方向位移的优化器参数。</span></o:p></span></span></p>
+<u>强化(膨胀滤波器)</u>： 当膨胀滤波器启用时，您可以勾选<u>强化</u>，此时程序使用遗传算法自动优化膨胀滤波器，以匹配模板帧的前景区域。由于耗时较长，建议对部分无效配准帧重配准时勾选。</span></o:p></span></span></p>
+</li></ul>
+<ul style="margin-right: 0px" dir="ltr"><li>
+<p style="MARGIN-RIGHT: 0px" dir="ltr"><span><span lang="EN-US"><o:p>
+<span style="FONT-SIZE: 12pt; FONT-FAMILY: 宋体; mso-bidi-font-size: 11.0pt; mso-bidi-font-family: 'Times New Roman'; mso-bidi-theme-font: minor-bidi; mso-ansi-language: EN-US; mso-fareast-language: ZH-CN; mso-bidi-language: AR-SA">
+<u>最大Z漂移 &amp; Z优化公差(预处理)</u>：对图像做粗配准估计时，用于估计Z方向位移的优化器参数。</span></o:p></span></span></p>
+</li></ul>
+<ul style="margin-right: 0px" dir="ltr"><li>
+<p style="MARGIN-RIGHT: 0px" dir="ltr"><span><span lang="EN-US"><o:p>
+<span style="FONT-SIZE: 12pt; FONT-FAMILY: 宋体; mso-bidi-font-size: 11.0pt; mso-bidi-font-family: 'Times New Roman'; mso-bidi-theme-font: minor-bidi; mso-ansi-language: EN-US; mso-fareast-language: ZH-CN; mso-bidi-language: AR-SA">
+<u>伽马</u>：对图像进行伽马变换以调节以用于粗配准。该变换不影响基于强度的精细配准。</span></o:p></span></span></p>
 </li></ul>
 <ul><li>
 <div align="left"><font face="宋体"><u>模态</u>：可选单模态或多模态。详情请见MATLAB 帮助文档：<a href="https://ww2.mathworks.cn/help/images/ref/imregconfig.html">基于强度的配准配置</a>。</font></div>
@@ -158,11 +168,15 @@
 <p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt">&nbsp;</p>
 <p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt"><span><span style="FONT-SIZE: 12pt; FONT-FAMILY: 宋体; mso-bidi-font-size: 11.0pt; mso-bidi-font-family: 'Times New Roman'; mso-bidi-theme-font: minor-bidi; mso-ansi-language: EN-US; mso-fareast-language: ZH-CN; mso-bidi-language: AR-SA">
 <font color="#FF0000">注3：</font>您可以关闭<u>粗配准</u>以少量提升配准速度，前提是您的图像<font color="#FF0000">不包含</font>剧烈运动(px &lt; 0.5 * STEP_MAX * ITERATION_NUM_MAX / RESOLUTION), 否则将产生差的运动估计。</span></span></p>
-<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt"><span><span style="FONT-SIZE: 12pt; FONT-FAMILY: 宋体; mso-bidi-font-size: 11.0pt; mso-bidi-font-family: 'Times New Roman'; mso-bidi-theme-font: minor-bidi; mso-ansi-language: EN-US; mso-fareast-language: ZH-CN; mso-bidi-language: AR-SA">
 <p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt">&nbsp;</p>
-注4：不同的数据可能需要应用不同的帧运算模板。对于难以配准的部分帧，可以尝试选定<u>配准范围</u>并调整配准参数，多次迭代至达到标准。</span></span></p>
 <p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt"><span><span style="FONT-SIZE: 12pt; FONT-FAMILY: 宋体; mso-bidi-font-size: 11.0pt; mso-bidi-font-family: 'Times New Roman'; mso-bidi-theme-font: minor-bidi; mso-ansi-language: EN-US; mso-fareast-language: ZH-CN; mso-bidi-language: AR-SA">
-注5：迭代步长右侧图标显示当前计算机CPU/GPU生产商，单击可获得计算机详细配置。</span></span></p>
+注4：不同的数据可能需要应用不同的帧运算模板。对于难以配准的部分帧，可以尝试选定<u>配准范围</u>并调整配准参数，多次迭代至达到标准。</span></span></p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt">&nbsp;</p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt"><span><span style="FONT-SIZE: 12pt; FONT-FAMILY: 宋体; mso-bidi-font-size: 11.0pt; mso-bidi-font-family: 'Times New Roman'; mso-bidi-theme-font: minor-bidi; mso-ansi-language: EN-US; mso-fareast-language: ZH-CN; mso-bidi-language: AR-SA">
+注5：预处理中滤波器运算顺序固定为<u>中值滤波器</u>、<u>膨胀滤波器</u>、<u>高斯滤波器</u>。</span></span></p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt">&nbsp;</p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt"><span><span style="FONT-SIZE: 12pt; FONT-FAMILY: 宋体; mso-bidi-font-size: 11.0pt; mso-bidi-font-family: 'Times New Roman'; mso-bidi-theme-font: minor-bidi; mso-ansi-language: EN-US; mso-fareast-language: ZH-CN; mso-bidi-language: AR-SA">
+注6：迭代步长右侧图标显示当前计算机CPU/GPU生产商，单击可获得计算机详细配置。</span></span></p>
 
 </blockquote>
 </blockquote>

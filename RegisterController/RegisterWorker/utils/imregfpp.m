@@ -61,12 +61,7 @@ if size(index_pairs, 1) < 3
     % too less points, can not estimate the 'affine' transformation
     % return identity transformation and empty object
     points = {validPtsDistorted, validPtsOriginal};
-    if isMATLABReleaseOlderThan("R2022b")
-        tform = affine2d();
-    else
-        tform = transltform2d();
-    end
-
+    tform = transltform2d();
     return;
 end
 
@@ -76,18 +71,11 @@ matchedPtsDistorted = validPtsDistorted(index_pairs(:,2));
 
 % estimate the 2d translation transformation
 try
-    if isMATLABReleaseOlderThan("R2022b")
-        [tform,inlierIdx] = ...
-            estimateGeometricTransform2D(matchedPtsDistorted, matchedPtsOriginal, ...
-            "affine", "Confidence",99, "MaxDistance",2.5);
-        % cast to translation: throw shear and rotation
-        tform = tfcast(tform);
-    else
-        [tform,inlierIdx] = ...
-            estgeotform2d(matchedPtsDistorted, matchedPtsOriginal, ...
-            "affine", "Confidence",99, "MaxDistance",2.5);
-        tform = tfcast_old(tform);
-    end
+    [tform,inlierIdx] = ...
+        estgeotform2d(matchedPtsDistorted, matchedPtsOriginal, ...
+        "affine", "Confidence",99, "MaxDistance",2.5);
+
+    tform = tfcast(tform);
 
     inlierPtsOriginal  = matchedPtsOriginal(inlierIdx,:);
     inlierPtsDistorted = matchedPtsDistorted(inlierIdx,:);
@@ -99,11 +87,7 @@ catch
     warning("imregfpp:fewerMatchingPoints", ...
         "No enough points matching, coarse estimation may be bad.");
     points = {validPtsDistorted, validPtsOriginal};
-    if isMATLABReleaseOlderThan("R2022b")
-        tform = affine2d();
-    else
-        tform = transltform2d();
-    end
+    tform = transltform2d();
 end
 
 end
@@ -117,14 +101,5 @@ if isa(A, "affinetform2d")
     A.A(1:2, 1:2) = eye(2);
 else
     A = transltform2d();
-end
-end
-
-function A = tfcast_old(A)
-if isa(A, "affine2d")
-    % remove shear and rotation
-    A.T(1:2, 1:2) = eye(2);
-else
-    A = affine2d();
 end
 end

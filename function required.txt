@@ -267,20 +267,26 @@ V2.0        Wukong              悟空
   |     |- [Update] add manual transformation matrix configuration on 'TCREG'->'manreg'
   |     |- [Fix Bugs] fix multi-user running bugs
   |     |- [Fix Bugs] fix the version display bug when sub version >= 9
-  |- V2.1.1     2024/4/
+  |- V2.1.1     2024/4/5    18:00
+  |     |- [Update] add <auto erode filter>: optimize region number and size automatically
+  |     |- [Update] add <uitimate erode> point pairs for coarse registration
+  |     |- [Update] TODO: new help document for version 2.1.x
+  |     |- [Fix Bugs] fix update error when remote update-info file sub version >=10
+  |     |- [Fix Bugs] fix 'TCREG'->'local' when using 'distributed' running mode
+  |     |- [Fix Bugs] fix the parpool inactive when channel alignment
+  |     |- [Note] Platform Validation: Windows 10/11/Ubuntu 20.04 + MATLAB R2022b~R2024a
+  |     |- [Note] Remove compatibility design for MATLAB R2022a or lower version, including
+  |     |           imregfpp, imregmc
+  |- V2.1.2     2024/4/
   |     |- [Update] TODO: multiply connected region generator combination in Register App
-  |     |- [Update] TODO: add <local tracking> to signal estimator for better estimation
   |     |- [Update] TODO: new tooltip for multi-language support
-  |     |- [Update] new help document for version 2.1.x
-  |     |- [Fix Bugs] fix the update bug when multi sub version >=10
-  |- V2.1.2     2024/4
+  |- V2.1.3     2024/4
+  |     |- [Update] TODO: add <local tracking> to signal estimator for better estimation
   |     |- [Update] TODO: new task manager function introduced
   |     |- [Fix Bugs]
-  |- V2.1.3     2024/
+  |- V2.1.4     2024/
   |     |- [Update] TODO: improve long-term global registration to large deformation
   |     |- [Fix Bugs] TODO: fix long-term registration out of memory when key frames is too much
-  |- V2.1.4     2024/
-  |     |- [Update] TODO: add <auto erode filter>: optimize region number and size automatically
   |- V2.1.5     2024/
   |     |- [Update] TODO: add auto scroll tips on <Parameters Panel>
   |     |- [Update] TODO: improve long-term local registration to large deformation
@@ -308,3 +314,5 @@ V2.0        Wukong              悟空
   |- V2.5.0     2024/
   |     |- [Update] TODO: add block tracking for multi-objects motion correction
   |     |- 
+  |- V2.6.0     ?2025/
+  |     |- [Update] TODO: external hardware accelerate support

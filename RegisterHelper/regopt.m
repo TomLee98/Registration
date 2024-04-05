@@ -14,7 +14,7 @@ classdef regopt
         tform_type      (1,1) string {mustBeMember(tform_type, ["translation","rigid","affine"])} = "translation"
         step_max        (1,1) double {mustBePositive} = 1e-1
         step_min        (1,1) double {mustBePositive} = 1e-4
-        coarse_alg      (1,1) string {mustBeMember(coarse_alg, ["mmt","pcorr","fpp","none"])} = "mmt"
+        coarse_alg      (1,1) string {mustBeMember(coarse_alg, ["mmt","pcorr","fpp","uepp","none"])} = "mmt"
         coarse_args     (1,1) struct = struct("Operator", "SIFT", "QT", 0.0133, "NumOctave", 3)
         gl_itn_max      (1,1) double {mustBePositive, mustBeInteger} = 50
         lo_itn_max      (1,:) double {mustBePositive, mustBeInteger} = 100
@@ -25,6 +25,7 @@ classdef regopt
         lo_interp       (1,1) string {mustBeMember(lo_interp, ["linear","cubic"])} = "linear"
         mfilter         (1,3) double {mustBeNonnegative, mustBeInteger} = [3,3,3]
         dfilter         (1,3) double {mustBeInteger} = [3,110,1000]
+        dfilter_enh     (1,1) logical = true
         gfilter         (1,3) double {mustBeNonnegative, mustBeInteger} = [3,3,3]
         gamma           (1,1) double {mustBeInRange(gamma, 0, 4)} = 1.0
         zopt_shift_max  (1,1) double {mustBeNonnegative} = 2
@@ -156,6 +157,7 @@ classdef regopt
             addParameter(p, 'AreaMask',         this.area_mask);
             addParameter(p, 'MedianFilter',     this.mfilter);
             addParameter(p, 'DilateFilter',     this.dfilter);
+            addParameter(p, 'DilateFilterEnh',  this.dfilter_enh);
             addParameter(p, 'GaussianFilter',   this.gfilter);
             addParameter(p, 'MaxZOptShift',     this.zopt_shift_max);
             addParameter(p, 'TolZOpt',          this.zopt_tol);
@@ -283,6 +285,7 @@ classdef regopt
                                        "TformType",     this.tform_type, ...
                                        "MedianFilter",  this.mfilter, ...
                                        "DilateFilter",  this.dfilter, ...
+                                       "DilateFilterEnh",this.dfilter_enh, ...
                                        "GaussianFilter",this.gfilter, ...
                                        "MaxZOptShift",  this.zopt_shift_max, ...
                                        "TolZOpt",       this.zopt_tol, ...
@@ -387,6 +390,7 @@ classdef regopt
                             this.tform_type = r_.TformType;
                             this.mfilter = r_.MedianFilter;
                             this.dfilter = r_.DilateFilter;
+                            this.dfilter_enh = r_.DilateFilterEnh;
                             this.gfilter = r_.GaussianFilter;
                             this.zopt_shift_max = r_.MaxZOptShift;
                             this.zopt_tol = r_.TolZOpt;

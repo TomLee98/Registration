@@ -10,6 +10,7 @@
     <ANIMATION>Animation</ANIMATION>
     <APPEND>Append</APPEND>
     <APPEND_COMMENTS>Append Comments</APPEND_COMMENTS>
+    <APPLY>Apply</APPLY>
     <AREA>Area</AREA>
     <AREA_MASK>Area Mask</AREA_MASK>
     <ASK_FOR_UPDATE>There is an updated version, is it updated?</ASK_FOR_UPDATE>
@@ -92,6 +93,7 @@
     <EMAIL_FAILED>Email sending failed</EMAIL_FAILED>
     <EMAIL_SUCCESS>Mail sent successfully!</EMAIL_SUCCESS>
     <END>End</END>
+    <ENHANCEMENT>Enhancement</ENHANCEMENT>
     <EQUIVALENT_RADIUS>Equivalent Radius</EQUIVALENT_RADIUS>
     <ERROR>Error</ERROR>
     <EXCLUSIVE>Exclusive</EXCLUSIVE>
@@ -407,10 +409,12 @@
     <TIME_SERIES_FILE>Time series file</TIME_SERIES_FILE>
     <TIME_STAMP>Time Stamp</TIME_STAMP>
     <TOO_MUCH_ROI>There are too many ROIs, please redraw and try to add them.</TOO_MUCH_ROI>
+    <TRANSFORMATION_MATRIX>Transformation Matrix</TRANSFORMATION_MATRIX>
     <TRANSLATION>Translation</TRANSLATION>
     <TRANSPARENT_MAPPING>Transparent Mapping</TRANSPARENT_MAPPING>
     <TRANSLATION_TOOLTIP>translation</TRANSLATION_TOOLTIP>
     <UI_INITIALIZE_SUCCESS>Interface initialized completely</UI_INITIALIZE_SUCCESS>
+    <ULTIMATE_EROSION_PT>Ultimate Erosion Point Cloud</ULTIMATE_EROSION_PT>
     <UNABLE_ACCESS_SERVER>Unable to access the remote server, please check the permissions</UNABLE_ACCESS_SERVER>
     <UNABLE_ACCESS_UPDATE_SETTING>Unable to open update_setting.ini. Insufficient permissions</UNABLE_ACCESS_UPDATE_SETTING>
     <UNRECOGNIZED_UPDATE_IDENTIFIER>Checking for updates: Unrecognized identifier. Please check update_setting.ini</UNRECOGNIZED_UPDATE_IDENTIFIER>

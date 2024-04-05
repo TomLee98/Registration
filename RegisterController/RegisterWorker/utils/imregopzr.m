@@ -1,45 +1,30 @@
-function [tf_est, movol_est] = imregopzr(moving, fixed, rsFixed, shift_max, tol, calg, cargs)
+function tf_est = imregopzr(moving, fixed, rsFixed, shift_max, tol, calg, cargs)
 %IMREGOPZR This function use imregcorr and z optimization for transformation
 % estimation on platform version < R2022b
 % Input:
 %   - moving:
 %   - fixed:
 %   - rsFixed:
-%   - tformType:
+%   - tfType: 
 %   - shift_max:
 %   - tol:
 %   - calg: 
 %   - cargs:
 % Output:
 %   - tf_est:
-%   - movol_est:
 %
 % see also: imregcorr, imregmc, imregfpp, fminbnd, imwarp
+
 arguments
     moving      (:,:,:) uint16
     fixed       (:,:,:) uint16
     rsFixed     (1,3)   double      % [x,y,z] coordinate resolution, unit as um/pix
     shift_max   (1,1)   double {mustBeNonnegative} = 2
     tol         (1,1)   double {mustBeInRange(tol, 0, 1)} = 1e-3
-    calg        (1,1)   string {mustBeMember(calg, ["mmt","pcorr","fpp","none"])} = "mmt"
-    cargs       (1,1)   struct {mustBeCoarseRegistrationArguments} = ...
-                        struct("Operator","SIFT", "QT",0.0133, "NumOctave",3);
+    calg        (1,1)   string {mustBeMember(calg, ["mmt","pcorr","fpp"])} = "mmt"
+    cargs       (1,1)   struct = struct("Operator","SIFT", "QT",0.0133, "NumOctave",3);
 end
 
-% compatibility flag
-is_matlab_old_ver = isMATLABReleaseOlderThan("R2022b");
-
-if calg == "none"
-    if is_matlab_old_ver == true
-        tf_est = affine3d();
-    else
-        tf_est = transltform3d();
-    end
-    movol_est = moving;
-    return;
-end
-
-% zlim = size(fixed, 3)*[-1, 1];
 zlim = [-1, 1]*shift_max;
 
 % do maximum z projection  for imregcorr
@@ -76,21 +61,15 @@ switch calg
         % predominant in the scene could be best
         tf0 = imregmc(mov_img, ref_img, rref);
     case "pcorr"
-        % use imregcorr for robust shift estimation, which is 
+        % use imregcorr for robust shift estimation, which is
         % useful when there are high contrast scene
-        % note that 'rigid' and 'affine' always return bad estimation 
+        % note that 'rigid' and 'affine' always return bad estimation
         tf0 = imregcorr(mov_img, rref, ref_img, rref, "translation");
     case "fpp"
         % use imregfpp for robust shift estimation, which is useful
         % when there are no strong time-varying local optical flow field
         [~, tf0] = imregfpp(mov_img, ref_img, cargs);
     otherwise
-        % identity transformation instead
-        if is_matlab_old_ver == true
-            tf0 = affine2d();
-        else
-            tf0 = transltform2d();
-        end
 end
 
 % optimize the z shift by immse as loss function
@@ -106,12 +85,6 @@ if abs(z_) < 1e-2, z_ = 0; end
 % transform rigid2d object to affine3d object as imregtform initialized
 % transformation estimation
 tf_est = tformto3d(tf0, z_);
-
-if nargout == 2
-    % 1 memory copy from <imwarp>
-    movol_est = imwarp(moving, rref3d, tf_est, "linear",...
-        "OutputView",rref3d, 'FillValues',fi_val);
-end
 
     function f = opfun(z_, mov_, ref_, ra_, tf0_, fival_)
         T = tformto3d(tf0_, z_);
@@ -132,13 +105,4 @@ end
             T = transltform3d(T);
         end
     end
-end
-
-function mustBeCoarseRegistrationArguments(A)
-fields_ = fieldnames(A);
-
-if ~isempty(setxor(fields_, ["Operator", "QT", "NumOctave"]))
-    throw(MException("mustBeCoarseRegistrationArguments:invalidArgumentsItem", ...
-        "Unrecognized aeguments."));
-end
 end
