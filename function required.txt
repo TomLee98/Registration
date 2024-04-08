@@ -267,7 +267,7 @@ V2.0        Wukong              悟空
   |     |- [Update] add manual transformation matrix configuration on 'TCREG'->'manreg'
   |     |- [Fix Bugs] fix multi-user running bugs
   |     |- [Fix Bugs] fix the version display bug when sub version >= 9
-  |- V2.1.1     2024/4/5    18:00
+  |- V2.1.1     2024/4/8    15:00
   |     |- [Update] add <auto erode filter>: optimize region number and size automatically
   |     |- [Update] add <uitimate erode> point pairs for coarse registration
   |     |- [Update] new help document for version 2.1.x
@@ -280,7 +280,6 @@ V2.0        Wukong              悟空
   |- V2.1.2     2024/4/14
   |     |- [Update] TODO: multiply connected region generator combination in Register App
   |     |- [Update] TODO: new tooltip for multi-language support
-  |     |- [Fix Bugs] fix the error when changing TCREG mode panel
   |- V2.1.3     2024/4
   |     |- [Update] TODO: add <local tracking> to signal estimator for better estimation
   |     |- [Update] TODO: new task manager function introduced
