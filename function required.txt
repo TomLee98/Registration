@@ -296,14 +296,6 @@ V2.0        Wukong              悟空
   |     |- [Update] TODO: registration history manager
   |- V2.2.1     2024/
   |     |- [Update] TODO: new task manager function introduced
-  |- V2.2.2
-  |     |- [Update] TODO: new one channel global registration method introduced
-  |- V2.2.3
-  |     |- [Update] TODO: add <mask local tracking> as coarse registration for one channel registration
-  |- V2.2.4
-  |     |- [Update] TODO:new one channel local registration method introduced
-  |- V2.2.5
-  |     |- [Update] TODO:new one channel manually global registration method introduced
   |- V2.3.0     2024/
   |     |- [Update] TODO: memory mapping low level optimal(mpimgs class design)
   |     |- [Update] TODO: new movie exporter object for better movie export operation(parpool)
