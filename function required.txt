@@ -277,9 +277,10 @@ V2.0        Wukong              悟空
   |     |- [Note] Platform Validation: Windows 10/11/Ubuntu 20.04 + MATLAB R2022b~R2024a
   |     |- [Note] Remove compatibility design for MATLAB R2022a or lower version, including
   |     |           imregfpp, imregmc
-  |- V2.1.2     2024/4/
+  |- V2.1.2     2024/4/14
   |     |- [Update] TODO: multiply connected region generator combination in Register App
   |     |- [Update] TODO: new tooltip for multi-language support
+  |     |- [Fix Bugs] fix the error when changing TCREG mode panel
   |- V2.1.3     2024/4
   |     |- [Update] TODO: add <local tracking> to signal estimator for better estimation
   |     |- [Update] TODO: new task manager function introduced
