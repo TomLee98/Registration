@@ -6,7 +6,7 @@ function tform = imregmc(moving, fixed, Rf)
 %   - fixed: m-by-n uint16 matrix, the reference image
 %   - Rf: 1-by-1 imref2d object, as reference coordinate system
 % Output:
-%   - tform: 1-by-1 affine2d(MATLAB<R2022b) or transltform2d object
+%   - tform: 1-by-1 transltform2d object
 %
 
 arguments

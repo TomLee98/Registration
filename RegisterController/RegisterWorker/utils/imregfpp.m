@@ -8,7 +8,7 @@ function [points, tform] = imregfpp(moving, fixed, args)
 % Output:
 %   - points: 1-by-2 cell array, {moving, fixed}, each element is 
 %     point feature object
-%   - tform: 1-by-1 affine2d(MATLAB<R2022b) or transltform2d object
+%   - tform: 1-by-1 transltform2d object
 
 arguments
     moving  (:,:)   uint16
@@ -59,7 +59,7 @@ index_pairs = matchFeatures(featuresOriginal,featuresDistorted,"Unique",true);
 
 if size(index_pairs, 1) < 3
     % too less points, can not estimate the 'affine' transformation
-    % return identity transformation and empty object
+    % return identity transformation
     points = {validPtsDistorted, validPtsOriginal};
     tform = transltform2d();
     return;
@@ -99,6 +99,7 @@ function A = tfcast(A)
 if isa(A, "affinetform2d")
     % remove shear and rotation
     A.A(1:2, 1:2) = eye(2);
+    A = transltform2d(A.A);
 else
     A = transltform2d();
 end

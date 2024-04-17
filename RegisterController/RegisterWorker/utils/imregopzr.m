@@ -1,6 +1,6 @@
 function tf_est = imregopzr(moving, fixed, rsFixed, shift_max, tol, calg, cargs)
 %IMREGOPZR This function use imregcorr and z optimization for transformation
-% estimation on platform version < R2022b
+% estimation
 % Input:
 %   - moving:
 %   - fixed:
@@ -11,7 +11,7 @@ function tf_est = imregopzr(moving, fixed, rsFixed, shift_max, tol, calg, cargs)
 %   - calg: 
 %   - cargs:
 % Output:
-%   - tf_est:
+%   - tf_est: 1-by-1 transltform3d object
 %
 % see also: imregcorr, imregmc, imregfpp, fminbnd, imwarp
 

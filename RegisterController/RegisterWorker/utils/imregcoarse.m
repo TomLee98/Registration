@@ -11,7 +11,7 @@ function [tf_est, movol_est] = imregcoarse(moving, fixed, rsFixed, tfType, shift
 %   - calg: 
 %   - cargs:
 % Output:
-%   - tf_est:
+%   - tf_est: 1-by-1 transltform2d, rigidtform2d or affinetform2d object
 %   - movol_est:
 %
 % see also: imregcorr, imregmc, imregfpp, fminbnd, imwarp
