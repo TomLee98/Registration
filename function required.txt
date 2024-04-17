@@ -267,7 +267,7 @@ V2.0        Wukong              悟空
   |     |- [Update] add manual transformation matrix configuration on 'TCREG'->'manreg'
   |     |- [Fix Bugs] fix multi-user running bugs
   |     |- [Fix Bugs] fix the version display bug when sub version >= 9
-  |- V2.1.1     2024/4/8    15:00
+  |- V2.1.1     2024/4/17    11:00
   |     |- [Update] add <auto erode filter>: optimize region number and size automatically
   |     |- [Update] add <uitimate erode> point pairs for coarse registration
   |     |- [Update] new help document for version 2.1.x
@@ -277,7 +277,7 @@ V2.0        Wukong              悟空
   |     |- [Note] Platform Validation: Windows 10/11/Ubuntu 20.04 + MATLAB R2022b~R2024a
   |     |- [Note] Remove compatibility design for MATLAB R2022a or lower version, including
   |     |           imregfpp, imregmc
-  |- V2.1.2     2024/4/14
+  |- V2.1.2     2024/4/
   |     |- [Update] TODO: multiply connected region generator combination in Register App
   |     |- [Update] TODO: new tooltip for multi-language support
   |     |- [Fix Bugs] fix the bug that 'channel alignment' bad behaviour
