@@ -38,6 +38,7 @@
     <CIRCLE>Circle</CIRCLE>
     <CIRCLE_HAT>Circle Hat</CIRCLE_HAT>
     <CLEAR>Clear</CLEAR>
+    <CLOCKWISE_90>Clockwise 90°</CLOCKWISE_90>
     <CLOSE>Close</CLOSE>
     <COARSE_REG>Coarse Registration</COARSE_REG>
     <COLOR>Color</COLOR>
@@ -59,6 +60,7 @@
     <CONTROL_PANEL>Control Panel</CONTROL_PANEL>
     <CONTROL_REGISTRATION_RUNNING>Controlling registration procedure execution</CONTROL_REGISTRATION_RUNNING>
     <CONTROL_VAL>Control Amount</CONTROL_VAL>
+    <COUNTERCLOCKWISE_90>Counterclockwise 90°</COUNTERCLOCKWISE_90>
     <COVERAGE_OPERATION>Based on the current registration, the operation is irreversible, continue?</COVERAGE_OPERATION>
     <CPU_TIME>CPU Time</CPU_TIME>
     <CROP_FRAME>Crop Frame</CROP_FRAME>
@@ -119,6 +121,7 @@
     <FIXED>Fixed</FIXED>
     <FIXED_BACKGROUND>Fixed Background</FIXED_BACKGROUND>
     <FLAT_HAT>Flat Hat</FLAT_HAT>
+    <FLIP>Flip</FLIP>
     <FLUORESCENCE_MODEL>Fluorescence Model</FLUORESCENCE_MODEL>
     <FLUORESCENCE_ONLY>Fluorescence Only</FLUORESCENCE_ONLY>
     <FONT>Font</FONT>
@@ -152,7 +155,6 @@
     <HISTORY_MANAGER>History Manager</HISTORY_MANAGER>
     <HISTORY_RECORD>History Record</HISTORY_RECORD>
     <HORIZONTAL>Horizontal</HORIZONTAL>
-    <HORIZONTAL_FLIP>Horizontal Flip</HORIZONTAL_FLIP>
     <IGNORE_UNFIT_ITEMS>Automatically ignore unfitted components</IGNORE_UNFIT_ITEMS>
     <IMAGE>Images</IMAGE>
     <IMAGE_ANNOTATION>Image and Annotation</IMAGE_ANNOTATION>
@@ -205,7 +207,6 @@
     <LOGFILE_EXPORT_TO>Export log files to</LOGFILE_EXPORT_TO>
     <LOGIN>Login</LOGIN>
     <LOGIN_LABNAS>Login - LabNas</LOGIN_LABNAS>
-    <LOG_SWITCH>Log switch, stop output when off</LOG_SWITCH>
     <LONG_TERM_ONCE_ONLY>Long-term mode only supports single registration</LONG_TERM_ONCE_ONLY>
     <LOSSLESS>Lossless</LOSSLESS>
     <LOW>Low</LOW>
@@ -270,7 +271,6 @@
     <OPERATOR>Operator</OPERATOR>
     <OPTION>Options</OPTION>
     <ORDINARY>Ordinary</ORDINARY>
-    <ORDINARY_TIPS>Program exceptions that may hinder processing such as registration</ORDINARY_TIPS>
     <OTHER>Other</OTHER>
     <OUTLIER_RATIO>Outlier Ratio</OUTLIER_RATIO>
     <PARAMETER>Parameter</PARAMETER>
@@ -293,7 +293,6 @@
     <PREVIEW>Preview</PREVIEW>
     <PRIVACY>privacy</PRIVACY>
     <PROGRESS>Progress</PROGRESS>
-    <PROGRESS_BAR>Progress bar</PROGRESS_BAR>
     <PROJECTION>Projection</PROJECTION>
     <PRP>Problem reporting procedure:</PRP>
     <PRP_PRIVACY_FRIENDLY>The problem reporting process does not collect your</PRP_PRIVACY_FRIENDLY>
@@ -351,10 +350,9 @@
     <RIGID>Rigid</RIGID>
     <RIGID_TOOLTIP>translation and rotation</RIGID_TOOLTIP>
     <ROI_SETTING>ROI Setting</ROI_SETTING>
-    <ROTATION>Rotation</ROTATION>
+    <ROTATE>Rotate</ROTATE>
     <RUN>Run</RUN>
     <RUN_MODAL>Run Modal</RUN_MODAL>
-    <RUNNING_REGISTRATION>Run the registration program</RUNNING_REGISTRATION>
     <SAMPLING>Sampling</SAMPLING>
     <SAVE>Save</SAVE>
     <SAVE_CONFIGURATION_FILE>Save configuration file</SAVE_CONFIGURATION_FILE>
@@ -362,7 +360,6 @@
     <SCALE_RATIO>Ratio/Scale</SCALE_RATIO>
     <SCALE_THRESHOLD>Scale Threshold(um)</SCALE_THRESHOLD>
     <SCALE_UNIT>Scale Unit</SCALE_UNIT>
-    <SELECTION_SOURCE>Select browser data source</SELECTION_SOURCE>
     <SELECTION_SAVING_FOLDER>Select Saving Folder</SELECTION_SAVING_FOLDER>
     <SELF_DEFINITION>Self Definition</SELF_DEFINITION>
     <SETTING_PANEL>Setting Panel</SETTING_PANEL>
@@ -372,7 +369,6 @@
     <SINGLE_CHANNEL>Single Channel</SINGLE_CHANNEL>
     <SLICE>Slice</SLICE>
     <SLICE_FEW>Please select at least two slices</SLICE_FEW>
-    <SLICE_FINE_TUNING>Slice fine-tuning</SLICE_FINE_TUNING>
     <SLICES_FEW_FOR_NEXT_STEP>The number of layers is small, and registration will not be possible after cropping</SLICES_FEW_FOR_NEXT_STEP>
     <SLICES_OVERFLOW>Slices number overflow</SLICES_OVERFLOW>
     <SLICE_VIEWER>Slice Viewer</SLICE_VIEWER>
@@ -388,7 +384,6 @@
     <SUBMIT>Submit</SUBMIT>
     <SUBMIT_BUG>Report Bugs</SUBMIT_BUG>
     <SUGGESTION>Suggestion</SUGGESTION>
-    <SUGGESTION_TIPS>Suggestions that may improve the utility, ease of use, or security of the program</SUGGESTION_TIPS>
     <SURFACE_AREA>Surface Area</SURFACE_AREA>
     <SYS_INITIALIZE_SUCCESS>System initialized completely</SYS_INITIALIZE_SUCCESS>
     <TASK_VIEWER>Task Viewer</TASK_VIEWER>
@@ -402,12 +397,30 @@
     <TIME_COST>Time Cost</TIME_COST>
     <TIME_COST_SEC>Time cost(Seconds):</TIME_COST_SEC>
     <TIME_EXPORT_SUCCESS>Time export successful</TIME_EXPORT_SUCCESS>
-    <TIME_FINE_TUNING>Time fine-tuning</TIME_FINE_TUNING>
     <TIME_FRAME>Time(Frame)</TIME_FRAME>
     <TIME_MISSING>Missing time series data</TIME_MISSING>
     <TIME_RANGE>Please enter a time range (frames):</TIME_RANGE>
     <TIME_SERIES_FILE>Time series file</TIME_SERIES_FILE>
     <TIME_STAMP>Time Stamp</TIME_STAMP>
+    <TIP_BTN_ORDINARY>Program exceptions that may hinder processing such as registration</TIP_BTN_ORDINARY>
+    <TIP_BTN_SUGGESTION>Suggestions that may improve the utility, ease of use, or security of the program</TIP_BTN_SUGGESTION>
+    <TIP_BTN_URGENT>Serious anomalies that may induce qualitative misjudgments of data</TIP_BTN_URGENT>
+    <TIP_CBX_APPLY_TMAT>Specify transformation and skip control point registration</TIP_CBX_APPLY_TMAT>
+    <TIP_CBX_AUTO_KEYFRAME>Automatically select keyframes to balance motion intensity</TIP_CBX_AUTO_KEYFRAME>
+    <TIP_CBX_ENHANCE>Enhanced algorithm automatically adjusts filter parameters to synchronize template frame foreground</TIP_CBX_ENHANCE>
+    <TIP_CBX_ISOMETRIC>Isometric resampling reconstructs volume cells into cubes</TIP_CBX_ISOMETRIC>
+    <TIP_CBX_LOCK>Lock the registration solution</TIP_CBX_LOCK>
+    <TIP_CBX_PHOTOBLEACHING>Compensating foreground photobleaching under constant background</TIP_CBX_PHOTOBLEACHING>
+    <TIP_SLR_PROGRESS>Progress bar</TIP_SLR_PROGRESS>
+    <TIP_SLR_TIME>Time</TIP_SLR_TIME>
+    <TIP_SPN_CPUS>It is recommended to retain 1~2 cores to maintain normal interaction</TIP_SPN_CPUS>
+    <TIP_SPN_GPUS>Number of threads available on GPU</TIP_SPN_GPUS>
+    <TIP_SPN_SLICE>Slice fine-tuning</TIP_SPN_SLICE>
+    <TIP_SPN_TIME>Time fine-tuning</TIP_SPN_TIME>
+    <TIP_TAB_GLOBAL>The automatic global geometric transformation based on intensity, phase, and features</TIP_TAB_GLOBAL>
+    <TIP_TAB_LOCAL>The automatic local deformation based on displacement field estimation</TIP_TAB_LOCAL>
+    <TIP_TAB_LTGLOBAL>The automatic global geometric transformation based on keyframes</TIP_TAB_LTGLOBAL>
+    <TIP_TAB_MGLOBAL>The regional deformation based on control points</TIP_TAB_MGLOBAL>
     <TOO_MUCH_ROI>There are too many ROIs, please redraw and try to add them.</TOO_MUCH_ROI>
     <TRANSFORMATION_MATRIX>Transformation Matrix</TRANSFORMATION_MATRIX>
     <TRANSLATION>Translation</TRANSLATION>
@@ -428,13 +441,11 @@
     <URGENT>Urgent</URGENT>
     <URGENT_EMAIL>Urgent questions will be sent to the maintainer's email. Continue?</URGENT_EMAIL>
     <URGENT_SUBJECT>Urgent exception: Reg3D App@SiLab, IBP, China</URGENT_SUBJECT>
-    <URGENT_TIPS>Serious anomalies that may induce qualitative misjudgments of data</URGENT_TIPS>
     <USER>User</USER>
     <USERNAME>User Name</USERNAME>
     <USUAL>Usual</USUAL>
     <VARIABLE_LOADED>Variable loaded</VARIABLE_LOADED>
     <VERTICAL>Vertical</VERTICAL>
-    <VERTICAL_FLIP>Vertical Flip</VERTICAL_FLIP>
     <VIDEO_DATA>Video Data</VIDEO_DATA>
     <VOLUME>Volume</VOLUME>
     <WAITING>waiting</WAITING>

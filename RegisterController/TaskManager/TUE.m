@@ -15,14 +15,14 @@ classdef TUE < handle
 
         PREPROC_PPS = 3.5E5                   % pixels per second
 
-        IMWARP_LINEAR_SPO = 0.05            % seconds per operation
-        IMWARP_CUBIC_SPO = 0.3              % seconds per operation
+        IMWARP_LINEAR_SPO = 0.05            % seconds per operation, nearly O(1) vs pixels number
+        IMWARP_CUBIC_SPO = 0.3              % seconds per operation, ...
 
         % IMAGE_SIZE CONSTANT, SAME WITH <RESAMPLE>
         EC50 = 256
 
-        YIELD_TIME_CONST = 0.1              % from parallel toolbox configuration
-        PARALLEL_CONSTANT = 7/8             % from parallel toolbox configuration
+        YIELD_TIME_CONST = 0.1              % parallel toolbox configuration
+        PARALLEL_CONSTANT = 7/8             % parallel toolbox configuration
 
         C_DISTRIBUTION = 2;
         C_EXCLUSIVE = 4;
@@ -70,7 +70,7 @@ classdef TUE < handle
                     if this.regopt.Mode == "global"
                         % in global algorithm, tcreg has pipeline with:
                         % about 1X proproc, 1X imregopzr, 1X imregtform, 
-                        % 2X imwarp, and 1X indipenmdent yield time estimation, 
+                        % 2X imwarp, and 1X independent yield time estimation, 
                         % so time calculation as:
                         t = this.preproc_time_use() + ...
                             this.imregopzr_time_use() + ...
@@ -80,7 +80,7 @@ classdef TUE < handle
                     elseif this.regopt.Mode == "local"
                         % in local algorithm, tcreg has pipeline with:
                         % 1X imregdeform or 1X imregdemons, 1X imhistmatchn(optional), 
-                        % 2X imwarp(can be omitted), and 1X indipenmdent 
+                        % 2X imwarp(can be omitted), and 1X independent 
                         % yield time estimation, 
                         % so time calculation as:
                         if this.regopt.SubAlgorithm == "usual"

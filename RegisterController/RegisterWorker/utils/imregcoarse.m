@@ -1,4 +1,4 @@
-function [tf_est, movol_est] = imregcoarse(moving, fixed, rsFixed, tfType, shift_max, tol, calg, cargs)
+function [tf_est, movol_est] = imregcoarse(moving, fixed, rsFixed, shift_max, tol, calg, cargs)
 %IMREGCOARSE This function use multiple robust coarse registration
 %algorithm for violently motion correction
 % Input:
@@ -19,10 +19,9 @@ arguments
     moving      (:,:,:) uint16
     fixed       (:,:,:) uint16
     rsFixed     (1,3)   double      % [x,y,z] coordinate resolution, unit as um/pix
-    tfType      (1,1)   string {mustBeMember(tfType, ["translation","rigid","affine"])} = "translation"
     shift_max   (1,1)   double {mustBeNonnegative} = 2
     tol         (1,1)   double {mustBeInRange(tol, 0, 1)} = 1e-3
-    calg        (1,1)   string {mustBeMember(calg, ["mmt","pcorr","fpp","uepp","none"])} = "mmt"
+    calg        (1,1)   string {mustBeMember(calg, ["mmt","pcorr","fpp","none"])} = "mmt"
     cargs       (1,1)   struct {mustBeCoarseRegistrationArguments} = ...
                         struct("Operator","SIFT", "QT",0.0133, "NumOctave",3);
 end
@@ -31,9 +30,6 @@ switch calg
     case "none"
         % only 3d identity transformation
         tf_est = transltform3d();
-    case "uepp"
-        % real 3d transformation
-        tf_est = imreguepp(moving, fixed, rsFixed, tfType);
     otherwise
         % pseudo 3d transformation: XY translation + Z translation
         tf_est = imregopzr(moving, fixed, rsFixed, shift_max, ...

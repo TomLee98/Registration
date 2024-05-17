@@ -277,15 +277,19 @@ V2.0        Wukong              悟空
   |     |- [Note] Platform Validation: Windows 10/11/Ubuntu 20.04 + MATLAB R2022b~R2024a
   |     |- [Note] Remove compatibility design for MATLAB R2022a or lower version, including
   |     |           imregfpp, imregmc
-  |- V2.1.2     2024/4/
+  |- V2.1.2     2024/5/19 
+  |     |- [Update] optimize tooltip for multi-language support
+  |     |- [Update] remove <uitimate erode> algorithm, will come back with DL algorithm
+  |     |- [Update] optimize context menu: add 90 degrees rotation
   |     |- [Update] TODO: multiply connected region generator combination in Register App
-  |     |- [Update] TODO: new tooltip for multi-language support
   |     |- [Fix Bugs] fix the bug that 'channel alignment' bad behaviour
-  |     |- [Fix Bugs] TODO: fix memory overflow bug when loading multiple times
   |     |- [Fix Bugs] fix z-projection checked after new loading bug
+  |     |- [Fix Bugs] TODO: fix computing resource allocation bug
+  |     |- [Note] memory overflow exception when loading multiple times on linux platform
   |- V2.1.3     2024/4
   |     |- [Update] TODO: add <local tracking> to signal estimator for better estimation
   |     |- [Update] TODO: new task manager function introduced
+  |     |- [Update] TODO: improve TUE object
   |     |- [Fix Bugs]
   |- V2.1.4     2024/
   |     |- [Update] TODO: improve long-term global registration to large deformation

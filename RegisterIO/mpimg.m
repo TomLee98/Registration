@@ -266,7 +266,7 @@ classdef mpimg < matlab.mixin.Copyable
         end
 
         function promote(this, dim_)
-            % This function promote a new dimension next the last dimension
+            % This function promotes a new dimension next the last dimension
             % for example, [X,Y,Z] could be promoted as [X,Y,Z,T], etc
             arguments
                 this
@@ -282,7 +282,7 @@ classdef mpimg < matlab.mixin.Copyable
         end
 
         function ctset(this, v, cr, tr)
-            % This function select cr and tr at C & T dimension, then
+            % This function selects cr and tr at C & T dimension, then
             % modify the data by v
             arguments
                 this
@@ -307,21 +307,26 @@ classdef mpimg < matlab.mixin.Copyable
         end
 
         function fliplr(this)
-            % This function flip left and right on XY plane at the same
+            % This function flips left and right on XY plane at the same
             % place
             this.flip_("lr");
         end
 
         function flipud(this)
-            % This function flip up and down on XY plane at the same 
+            % This function flips up and down on XY plane at the same 
             % place
             this.flip_("ud");
         end
 
         function flipbt(this)
-            % This function flip up and down on XZ plane at the same 
+            % This function flips up and down on XZ plane at the same 
             % place
             this.flip_("bt");
+        end
+
+        function rot90(this, k)
+            % This function rotate XY plane 90 degrees k times
+            this.rot90_(k);
         end
 
         function this = plus(this, r_)
@@ -579,6 +584,44 @@ classdef mpimg < matlab.mixin.Copyable
             end
         end
 
+        function rot90_(this, N)
+            % find temporal dimension and generate extraction prompt
+            sz_ = repmat({':'}, 1, this.DataDims);
+            locT = ("T"==this.DimOrder);
+            % TODO: locT matches this.Data dimensio order?
+            sz_{locT} = ['1',':', string(this.DataSize(locT)).char()];
+
+            % range splitter for blocked data saving
+            t_range_ = range_splitter(sz_{locT}, this.INNER_BLOCK_SIZE);
+
+            % create the primer
+            sz_{locT} = t_range_(1);
+            expr = "this.Data("+string(sz_).join(",")+");";
+            data_ = eval(expr);
+
+            % rotation
+            data_ = rot90(data_, N);
+
+            % generate new memmapping
+            [folder_, ~, ~] = fileparts(this.memptr.Filename);
+            mptr = mpimg(string(folder_), [], data_, ...
+                this.dimorder, this.isautoclear, this.isconst, this.isdisplay);
+
+            % link the data blocks to primer
+            for k = 2:numel(t_range_)
+                sz_{locT} = t_range_(k);
+                expr = "this.Data("+string(sz_).join(",")+");";
+                data_ = eval(expr);
+                data_ = rot90(data_, N);
+
+                mptr.concat(data_);
+            end
+
+            if this.isdisplay == true
+                fprintf("New mpimg object inherits this properites.")
+            end
+        end
+
         function concat(this, data_)
             % this function concatnate the data on the last dimension,
             % which requires the compatible data size
@@ -685,12 +728,6 @@ classdef mpimg < matlab.mixin.Copyable
                 numhistory_  (1,1)   double {mustBeNonnegative, mustBeInteger} = 0
             end
 
-            % for parallel threads
-            % import java.io.File.*;
-            % import javax.swing.filechooser.FileSystemView.*;
-            % import java.lang.System.*;
-
-            % test
             import java.io.*;
             import javax.swing.filechooser.*;
             import java.lang.*;
@@ -780,7 +817,7 @@ classdef mpimg < matlab.mixin.Copyable
                 if string(lang) == "zh"
                     marker = "本地磁盘";
                 else 
-                    marker = "LocalDisk"; % ??
+                    marker = "LocalDisk"; % ?? not confirm
                 end
                 diskType = fileSystemView.getSystemTypeDescription(file_);
                 tf_ = (string(diskType) == marker);

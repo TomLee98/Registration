@@ -122,7 +122,7 @@ parfor m = 1:numel(regfrs)
     % use imregcoarse for better initialized transformation
     % where the preprocess volumes are needed
     [ptf, ~] = imregcoarse(avol_sc_m_ds_pp, refvol_ds_pp, res_ds, ...
-            tf_type, max_shift_z, zopt_tol, coarse_alg, coarse_args);
+            max_shift_z, zopt_tol, coarse_alg, coarse_args);
 
     fival_sc = mean(avol_sc_m(:,[1,end],:),"all");
     fival_fc =  mean(avol_fc_m(:,[1,end],:),"all");

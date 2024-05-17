@@ -526,6 +526,31 @@ classdef regmov < matlab.mixin.Copyable
                 this.mptr = flipud(this.mptr);
             end
         end
+
+        function rot90(this, k)
+             % This function rotate 90 degrees on XY plane k times, 1 as default
+             arguments
+                 this
+                 k  (1,1)   double {mustBePositive,mustBeInteger} = 1
+             end
+
+             if ismember(class(this.mptr), ["mpimg", "mpimgs"])
+                 this.mptr.rot90(k);
+             else
+                 % calling inner array processing
+                 this.mptr = rot90(this.mptr, k);
+             end
+             
+             % odd rotation lead to X&Y size exchanging
+             if mod(k, 2)~=0
+                 width_old = this.mopt.width;
+                 xRes_old = this.mopt.xRes;
+                 this.mopt.width = this.mopt.height;
+                 this.mopt.xRes = this.mopt.yRes;
+                 this.mopt.height = width_old;
+                 this.mopt.yRes = xRes_old;
+             end
+        end
     end
 
     methods(Access=private, Hidden)
