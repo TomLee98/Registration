@@ -277,19 +277,18 @@ V2.0        Wukong              悟空
   |     |- [Note] Platform Validation: Windows 10/11/Ubuntu 20.04 + MATLAB R2022b~R2024a
   |     |- [Note] Remove compatibility design for MATLAB R2022a or lower version, including
   |     |           imregfpp, imregmc
-  |- V2.1.2     2024/5/19 
+  |- V2.1.2     2024/5/19    22:30
   |     |- [Update] optimize tooltip for multi-language support
   |     |- [Update] remove <uitimate erode> algorithm, will come back with DL algorithm
   |     |- [Update] optimize context menu: add 90 degrees rotation
   |     |- [Fix Bugs] fix the bug that 'channel alignment' bad behaviour
   |     |- [Fix Bugs] fix z-projection checked after new loading bug
-  |     |- [Fix Bugs] TODO: fix computing resource allocation bug
   |     |- [Note] memory overflow exception when loading multiple times on linux platform
   |- V2.1.3     2024/
   |     |- [Update] TODO: add <local tracking> to signal estimator for better estimation
   |     |- [Update] TODO: new task manager function introduced
   |     |- [Update] TODO: improve TUE object
-  |     |- [Fix Bugs]
+  |     |- [Fix Bugs] TODO: fix computing resource allocation bug
   |- V2.1.4     2024/
   |     |- [Update] TODO: improve long-term global registration to large deformation
   |     |- [Fix Bugs] TODO: fix long-term registration out of memory when key frames is too much
