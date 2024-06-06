@@ -15,6 +15,7 @@ classdef taskParser < handle
     end
 
     properties(Access=private, Hidden)
+        movsrc
         movtmpl
         regfrs
         volopt
@@ -25,9 +26,10 @@ classdef taskParser < handle
     end
     
     methods
-        function this = taskParser(movtmpl_, regfrs_, volopt_, regopt_, blocksz_, distrib_)
+        function this = taskParser(movsrc_, movtmpl_, regfrs_, volopt_, regopt_, blocksz_, distrib_)
             %TASKPARSER A Constructor
             arguments
+                movsrc_     (1,1)   regmov
                 movtmpl_    (1,1)   regtmpl 
                 regfrs_     (1,:)   double  {mustBePositive, mustBeInteger}
                 volopt_     (1,12)  table
@@ -36,6 +38,7 @@ classdef taskParser < handle
                 distrib_    (1,1)   logical = false
             end
 
+            this.movsrc = movsrc_;
             this.movtmpl = movtmpl_;
             this.regfrs = regfrs_;
             this.volopt = volopt_;
@@ -65,7 +68,8 @@ classdef taskParser < handle
                 batch_sz = this.nworker*this.C_DISTRIBUTION;
             end
 
-            this.Results = this.pfunc(this.movtmpl, ...
+            this.Results = this.pfunc(this.movsrc, ...
+                                      this.movtmpl, ...
                                       this.regfrs, ...
                                       this.volopt, ...
                                       this.regopt, ...

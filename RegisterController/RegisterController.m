@@ -128,7 +128,7 @@ classdef RegisterController < handle
             end
 
             % setup the task manager
-            this.taskmgr.setup(this.regopts, movraw_.MetaData, movtmpl_, regfr_, ...
+            this.taskmgr.setup(this.regopts, movraw_, movtmpl_, regfr_, ...
                 this.nw_protected, this.distrib, this.caller, true);
 
             % initialize register worker
@@ -147,7 +147,7 @@ classdef RegisterController < handle
                     break;
                 end
                 status = this.regworker.correct(task);
-                this.taskmgr.update(status);    % could hang out for resource
+                this.taskmgr.update(status);    % could hang out for resources
                 task = this.taskmgr.Task;
             end
 

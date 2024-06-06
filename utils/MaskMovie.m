@@ -12,7 +12,7 @@ function A = MaskMovie(A, mask, inverse)
 %   - A: the masked movie
 
 % Version 1.0.0
-% Copyright (c) 2022-2023, Weihan Li
+% Copyright (c) 2022-2024, Weihan Li
 
 arguments
     A
@@ -54,4 +54,6 @@ switch D
         end
     otherwise
         A = A.*mask;
+end
+
 end

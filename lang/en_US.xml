@@ -222,6 +222,7 @@
     <MASK_SIMPLY>Simply Connected Mask</MASK_SIMPLY>
     <MASS_CENTER_ESTIMATION>Mass Center Estimation</MASS_CENTER_ESTIMATION>
     <MAX>Max</MAX>
+    <MAX_DIVISION>Max Division</MAX_DIVISION>
     <MAX_ITERATION_N>Max Iteration Number</MAX_ITERATION_N>
     <MAX_ITERATION_STEP>Maximum Iteration Step</MAX_ITERATION_STEP>
     <MAX_Z_PROJECTION>Maximum Z Projection</MAX_Z_PROJECTION>
@@ -238,6 +239,7 @@
     <METADATA>Metadata</METADATA>
     <MGLOBAL>Global(Manually)</MGLOBAL>
     <MIN>Min</MIN>
+    <MIN_DIVISION>Min Division</MIN_DIVISION>
     <MIN_ITERATION_STEP>Minimum Iteration Step</MIN_ITERATION_STEP>
     <MIN_Z_PROJECTION>Minimum Z Projection</MIN_Z_PROJECTION>
     <MISSING_HELP>help.html file is missing</MISSING_HELP>

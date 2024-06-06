@@ -8,6 +8,7 @@ classdef TaskManager < handle
     end
 
     properties(Access=private, Hidden)
+        movsrc          % 1-by-1 regmov object, the registration movie source
         regopts         % 1-by-1 regopt object, the registration options
         volopts         % 1-by-12 table, the volume series options
         regfrs          % 1-by-t positive integer, registration frame indices
@@ -112,11 +113,11 @@ classdef TaskManager < handle
     end
 
     methods(Access=public)
-        function setup(this, regopt_, volopt_, movtmpl_, regfrs_, nwprotect_, distrib_, caller_, debug_)
+        function setup(this, regopt_, movsrc_, movtmpl_, regfrs_, nwprotect_, distrib_, caller_, debug_)
             arguments
                 this
                 regopt_     (1,1)   regopt           % the registration options struct
-                volopt_     (1,:)   table            % the movie information table
+                movsrc_     (1,1)   regmov           % the movie source
                 movtmpl_    (1,1)   regtmpl          
                 regfrs_     (1,:)   double {mustBePositive, mustBeInteger}
                 nwprotect_  (1,2)   double {mustBeNonnegative, mustBeInteger}
@@ -126,12 +127,13 @@ classdef TaskManager < handle
             end
 
             this.regopts = regopt_;
-            this.volopts = volopt_;
+            this.movsrc = movsrc_;      % only used by parser
+            this.volopts = movsrc_.MetaData;
             this.regfrs = regfrs_;
             this.movtmpl = movtmpl_;
             this.distrib = distrib_;
             this.caller = caller_;
-            [this.PSMWN, hardsrc] = ParseWorkersNumber(volopt_, regopt_, distrib_);
+            [this.PSMWN, hardsrc] = ParseWorkersNumber(this.volopts, regopt_, distrib_);
             this.nw_protected = ...
                 ParseProtectedWorkersNumber(regopt_.Algorithm, ...
                                             hardsrc, ...
@@ -153,8 +155,8 @@ classdef TaskManager < handle
             % and adjust the current parpool workers number
             this.update_parpool(debug_);
 
-            % get new task from taskqueue
-            this.get_new_task();
+            % take new task from taskqueue
+            this.take_new_task();
 
             % set the main panel progress bar at 0
             this.caller.SetProgressBar(0);
@@ -199,8 +201,8 @@ classdef TaskManager < handle
                     % ~
                 end
 
-                % get new task from taskqueue
-                this.get_new_task();
+                % take new task from taskqueue
+                this.take_new_task();
             else
                 throw(MException("TaskManager:update:invalidWorkerStatus", ...
                     "Can not create a new task. Workers status is %d.", status_));
@@ -261,8 +263,8 @@ classdef TaskManager < handle
         end
 
         function talk_to_rcfpool(this)
-            % This is the most iomportant function in TaskManager, which
-            % communicate with rcf pool, upload and download the schedule
+            % This is the most important function in TaskManager, which
+            % communicate with rcf pool, upload and download the schedule,
             % update the current workers number
             if this.distrib == true
                 if isempty(this.rcfobj) || ~isvalid(this.rcfobj)
@@ -367,7 +369,7 @@ classdef TaskManager < handle
                 end
 
                 % use taskParser
-                p = taskParser(this.movtmpl, regframes, this.volopts, ...
+                p = taskParser(this.movsrc, this.movtmpl, regframes, this.volopts, ...
                     this.regopts, this.nworker_cur, this.distrib);
                 p.parse();
                 this.job = p.Results;
@@ -377,7 +379,7 @@ classdef TaskManager < handle
             end
         end
 
-        function get_new_task(this)
+        function take_new_task(this)
             % get the next task in queue
             task_ = this.job.head();
             if ~isempty(task_) && (task_.Status == "Await")

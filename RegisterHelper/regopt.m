@@ -49,17 +49,15 @@ classdef regopt
         % ==================== longterm properties ======================
         lt_keyframes    (1,:) double {mustBePositive, mustBeInteger} = 1
         lt_autokey      (1,1) logical = true
-        lt_stdobj_th    (1,1) double {mustBeInRange(lt_stdobj_th, 0, 5)} = 2.0
-        lt_scale_th     (1,1) double {mustBeNonnegative} = 3.0
-        lt_ds           (1,1) string {mustBeMember(lt_ds, ["GA","RAND","NU"])} = "GA"
-        lt_ds_arg       (1,1) double {mustBePositive} = 2.0
-        lt_tol          (1,1) double {mustBePositive} = 1e-5
-        lt_olr          (1,1) double {mustBeInRange(lt_olr, 0, 1)} = 0.1
+        lt_autotpl      (1,1) logical  = true
+        lt_tgridminmax  (1,2) double {mustBePositive, mustBeInteger} = [10, 40] % typical 60*[10,40]=[600, 2400] volumes is best range
+        lt_regchain     (1,1) regchain = regchain.empty()
         lt_iter_coeff   (1,1) double {mustBeInRange(lt_iter_coeff, 0, 1)} = 0.5
         lt_itn_max      (1,1) double {mustBePositive, mustBeInteger} = 50
-        lt_step_max     (1,1) double {mustBePositive} = 1e-2
+        lt_step_max     (1,1) double {mustBePositive} = 2.5e-2
         lt_step_min     (1,1) double {mustBePositive} = 1e-6
-
+        lt_interp       (1,1) string {mustBeMember(lt_interp, ["linear","cubic"])} = "linear"
+        
         % =================== manual parameters ====================
         m_tform_type     (1,1) string {mustBeMember(m_tform_type, ...
                                     ["translation","rigid","affine","poly","pwl"])} ...
@@ -150,7 +148,7 @@ classdef regopt
     methods(Access=public, Hidden)
         function this = set(this, varargin)
             p = inputParser;
-            p.StructExpand = false;     % allow parameters struct
+            p.StructExpand = false;     % allow struct as parameter
 
             % =========== not overloading parameters =============
             addParameter(p, 'RegModal',         this.reg_modal);
@@ -169,12 +167,13 @@ classdef regopt
             addParameter(p, 'GridUnit',         this.grid_unit);
             addParameter(p, 'SC',               this.strc_chl);
             addParameter(p, 'FC',               this.func_chl);
-            addParameter(p, 'KeyFrames',        this.lt_keyframes);
-            addParameter(p, 'AutoKeyFrame',     this.lt_autokey);
-            addParameter(p, 'Tol',              this.lt_tol);
-            addParameter(p, 'Outlier',          this.lt_olr);
+            addParameter(p, 'Keyframes',        this.lt_keyframes);
+            addParameter(p, 'AutoKeyframe',     this.lt_autokey);
+            addParameter(p, 'AutoTemplate',     this.lt_autotpl);
+            addParameter(p, 'TGridMinMax',      this.lt_tgridminmax);
+            addParameter(p, 'RegChain',         this.lt_regchain);
 
-            % =============== overloading parameters =============
+            % =========== overloading parameters (shared name) ===========
             switch this.reg_alg
                 case "OCREG"
                     switch this.reg_mode
@@ -225,15 +224,12 @@ classdef regopt
                     addParameter(p, 'TFMatrix',     this.m_tfmat);
                     addParameter(p, 'TFEnable',     this.m_tfmat_enable);
                 case "LTREG"
-                    addParameter(p, 'TformType',    this.tform_type);
                     addParameter(p, 'MaxIterN',     this.lt_itn_max);
-                    addParameter(p, 'ThFG',         this.lt_stdobj_th);
-                    addParameter(p, 'ThScale',      this.lt_scale_th);
                     addParameter(p, 'MaxStep',      this.lt_step_max);
                     addParameter(p, 'MinStep',      this.lt_step_min);
                     addParameter(p, 'IterCoeff',    this.lt_iter_coeff);
-                    addParameter(p, 'DS',           this.lt_ds);
-                    addParameter(p, 'DSArg',        this.lt_ds_arg);
+                    addParameter(p, 'DS',           this.ds);
+                    addParameter(p, 'Interp',       this.lt_interp);
                 otherwise
             end
 
@@ -246,6 +242,7 @@ classdef regopt
 
     methods(Access=private)
         function r = gen_option_(this)
+            % this is a filter function
             switch this.reg_alg
                 case "OCREG"
                     switch this.reg_mode
@@ -330,15 +327,15 @@ classdef regopt
                                "FC",            this.func_chl, ...
                                "Hardware",      this.hardware);
                 case "LTREG"
-                    r = struct("TformType",     this.tform_type, ...
-                               "KeyFrames",     this.lt_keyframes, ...
-                               "AutoKeyFrame",  this.lt_autokey, ...
-                               "ThFG",          this.lt_stdobj_th, ...
-                               "ThScale",       this.lt_scale_th, ...
-                               "DS",            this.lt_ds, ...
-                               "DSArg",         this.lt_ds_arg, ...
-                               "Tol",           this.lt_tol, ...
-                               "Outlier",       this.lt_olr, ...
+                    r = struct("Keyframes",     this.lt_keyframes, ...
+                               "AutoKeyframe",  this.lt_autokey, ...
+                               "AutoTemplate",  this.lt_autotpl, ...
+                               "TGridMinMax",   this.lt_tgridminmax, ...
+                               "RegChain",      this.lt_regchain, ...
+                               "MaxZOptShift",  this.zopt_shift_max, ...
+                               "TolZOpt",       this.zopt_tol, ...
+                               "DS",            this.ds, ...
+                               "Interp",        this.lt_interp, ...
                                "IterCoeff",     this.lt_iter_coeff, ...
                                "MaxIterN",      this.lt_itn_max, ...
                                "MaxStep",       this.lt_step_max, ...
@@ -347,7 +344,6 @@ classdef regopt
                                "FC",            this.func_chl, ...
                                "Hardware",      this.hardware);
                 otherwise
-
             end
         end
 
@@ -431,19 +427,19 @@ classdef regopt
                     this.strc_chl = r_.SC;
                     this.func_chl = r_.FC;
                 case "LTREG"
-                    this.tform_type = r_.TformType;
-                    this.lt_keyframes = r_.KeyFrames;
-                    this.lt_autokey = r_.AutoKeyFrame;
-                    this.lt_stdobj_th = r_.ThFG;
-                    this.lt_scale_th = r_.ThScale;
-                    this.lt_ds = r_.DS;
-                    this.lt_ds_arg = r_.DSArg;
-                    this.lt_tol = r_.Tol;
-                    this.lt_olr = r_.Outlier;
+                    this.lt_keyframes = r_.Keyframes;
+                    this.lt_autokey = r_.AutoKeyframe;
+                    this.lt_autotpl = r_.AutoTemplate;
+                    this.lt_tgridminmax = r_.TGridMinMax;
+                    this.lt_regchain = r_.RegChain;
                     this.lt_iter_coeff = r_.IterCoeff;
                     this.lt_itn_max = r_.MaxIterN;
                     this.lt_step_max = r_.MaxStep;
                     this.lt_step_min = r_.MinStep;
+                    this.lt_interp = r_.Interp;
+                    this.zopt_shift_max = r_.MaxZOptShift;
+                    this.zopt_tol = r_.TolZOpt;
+                    this.ds = r_.DS;
                     this.strc_chl = r_.SC;
                     this.func_chl = r_.FC;
                 otherwise

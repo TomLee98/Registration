@@ -33,6 +33,7 @@ classdef regmov < matlab.mixin.Copyable
         EMin            % variable,     get, not stored
         EMax            % variable,     get, not stored
         EMedian         % variable,     get, not stored
+        MC              % variable,     get, not stored
     end
 
     methods
@@ -281,6 +282,39 @@ classdef regmov < matlab.mixin.Copyable
                 r(k) = median(this.Movie(:,:,k,:,floc),"all");
             end
         end
+
+        function r = get.MC(this)
+            % this function get the mass center of each volume, 
+            % r as t-by-3-by-c array, with [x,y,z]
+            if ismember(class(this.mptr), ["mpimg", "mpimgs"])
+                % TODO: 
+            elseif isnumeric(this.mptr)
+                [~, ct_loc] = ismember(["C","T"], this.mopt.dimOrder);
+                dimsum = setdiff(1:numel(this.mopt.dimOrder), ct_loc);
+                rsp = repmat({1}, 1, numel(this.mopt.dimOrder));
+
+                % get X,Y,Z dimension location and generate grid
+                xloc = find("X"==this.mopt.dimOrder); ny = size(this.mptr, xloc);
+                yloc = find("Y"==this.mopt.dimOrder); nx = size(this.mptr, yloc);
+                zloc = find("Z"==this.mopt.dimOrder); nz = size(this.mptr, zloc);
+                rsp_x = rsp; rsp_x{yloc} = [];  xgrid = reshape(1:nx, rsp_x{:});
+                rsp_y = rsp; rsp_y{xloc} = [];  ygrid = reshape(1:ny, rsp_y{:});
+                rsp_z = rsp; rsp_z{zloc} = [];  zgrid = reshape(1:nz, rsp_z{:});
+                rsp_c = rsp; rsp_c{ct_loc(1)} = []; cgrid = uint16(reshape(this.Background, rsp_c{:}));
+                pixval_tot = double(squeeze(sum(this.mptr-cgrid, dimsum)));
+
+                % calculate mass center
+                mc_ref_x = reshape(sum(xgrid.*sum(this.mptr-cgrid, [xloc,zloc]), yloc), ...
+                    size(this.mptr, ct_loc))./(pixval_tot+eps);
+                mc_ref_y = reshape(sum(ygrid.*sum(this.mptr-cgrid, [yloc,zloc]), xloc), ...
+                    size(this.mptr, ct_loc))./(pixval_tot+eps);
+                mc_ref_z = reshape(sum(zgrid.*sum(this.mptr-cgrid, [xloc,yloc]), zloc), ...
+                    size(this.mptr, ct_loc))./(pixval_tot+eps);
+
+                r = permute(cat(3, mc_ref_x, mc_ref_y, mc_ref_z), [2,3,1]);
+            end
+            
+        end
     end
 
     methods(Access = protected)
@@ -298,7 +332,7 @@ classdef regmov < matlab.mixin.Copyable
         end
     end
 
-    methods(Access=public)
+    methods(Access=public, Hidden)
         function gather(this)
             % this function gathers data from disk file to memory
             if isnumeric(this.mptr)
@@ -331,13 +365,13 @@ classdef regmov < matlab.mixin.Copyable
 
             % ~
         end
-    end
 
-    methods(Access=public, Hidden)
         function r = isempty(this)
             r = isempty(this.Movie);
         end
+    end
 
+    methods(Access=public)
         function movobj = vcrop(this, dim_, r_)
             arguments
                 this
@@ -550,6 +584,18 @@ classdef regmov < matlab.mixin.Copyable
                  this.mopt.height = width_old;
                  this.mopt.yRes = xRes_old;
              end
+        end
+
+        function movobj = maskby(this, mask)
+            % This function masked data and return a new regmov object
+            arguments
+                this    (1,1)
+                mask    (1,1)   regmask
+            end
+
+            % TODO: 
+
+            movobj = this;
         end
     end
 

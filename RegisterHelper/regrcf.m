@@ -268,6 +268,20 @@ classdef regrcf < handle
             end
         end
 
+        function tf = current_await_only(this)
+            rcfpool = this.readall();
+            tf = false;
+            if isempty(rcfpool), return; end
+
+            if isscalar(rcfpool)
+                if (rcfpool.status == "Await") ...
+                        && (rcfpool.user_id == this.data.user_id)
+                    tf = true;
+                    return;
+                end
+            end
+        end
+
         function update_resource(this, type_)
             arguments
                 this
@@ -303,6 +317,11 @@ classdef regrcf < handle
             if isempty(rcfpool)
                 % no rcf file, extensive allocating
                 this.data.status = "Ready";
+            elseif this.current_await_only()
+                % only an old rcf exists and it is current user
+                % set status to run, which will get resources in next 
+                % "recycle" switch
+                this.data.status = "Run";
             else
                 uid = this.data.user_id;
                 switch this.data.status
@@ -496,7 +515,7 @@ classdef regrcf < handle
 
             switch this.data.status
                 case "Run"
-                    if numel(rcfpool) == 1
+                    if isscalar(rcfpool)
                         % must be current user
                         nproc_tot = this.data.nworkers;
                     else

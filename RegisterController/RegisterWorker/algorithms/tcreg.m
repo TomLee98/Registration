@@ -98,8 +98,8 @@ reg_modal = regopt.RegModal;
 tf_type = regopt.TformType;
 coarse_alg = regopt.CoarseAlg;
 coarse_args = regopt.CoarseArgs;
-max_setp = regopt.MaxStep;
-min_setp = regopt.MinStep;
+max_step = regopt.MaxStep;
+min_step = regopt.MinStep;
 iter_coeff = regopt.IterCoeff;
 max_itern = regopt.MaxIterN;
 max_shift_z = regopt.MaxZOptShift;
@@ -131,12 +131,12 @@ parfor m = 1:numel(regfrs)
     [optimizer, metric] = imregconfig(reg_modal);
     switch reg_modal
         case "multimodal"
-            optimizer.InitialRadius = max_setp;
-            optimizer.Epsilon = min_setp;
+            optimizer.InitialRadius = max_step;
+            optimizer.Epsilon = min_step;
             optimizer.GrowthFactor = iter_coeff;
         case "monomodal"
-            optimizer.MaximumStepLength = max_setp;
-            optimizer.MinimumStepLength = min_setp;
+            optimizer.MaximumStepLength = max_step;
+            optimizer.MinimumStepLength = min_step;
             optimizer.RelaxationFactor = iter_coeff;
         otherwise
     end

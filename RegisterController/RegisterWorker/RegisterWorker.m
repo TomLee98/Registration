@@ -26,6 +26,7 @@ classdef RegisterWorker < handle
                 task_   (1,1)   task
             end
 
+            % extract the options from task
             regfrs_ = task_.RegFrames;
             Algorithm = task_.RegOptions.Algorithm;
             regopt_ =  task_.RegOptions.Options;
@@ -41,7 +42,7 @@ classdef RegisterWorker < handle
                     status = tcreg(this.mov_raw, this.mov_aligned, movtmpl_, ...
                                     regfrs_, regopt_);
                 case "LTREG"
-                    status = ocreg(this.mov_raw, this.mov_aligned, movtmpl_, ...
+                    status = ltreg(this.mov_raw, this.mov_aligned, movtmpl_, ...
                                     regfrs_, regopt_);
                 case "MANREG"
                     status = manreg(this.mov_raw, this.mov_aligned, movtmpl_, ...
@@ -53,7 +54,7 @@ classdef RegisterWorker < handle
         end
 
         function delete(this)
-            %
+            % ~
         end
     end
 end

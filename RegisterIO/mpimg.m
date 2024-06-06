@@ -241,8 +241,7 @@ classdef mpimg < matlab.mixin.Copyable
             end
 
             % also call crop_
-            [s, ~] = ismember("T", this.dimorder);
-            if any(~s)
+            if ~ismember("T", this.dimorder)
                 throw(MException("mpimg:invalidCrop", ...
                     "No dimension for this operation."));
             end
@@ -839,11 +838,11 @@ v = str2num(s); %#ok<ST2NM>
 
 nb = ceil(numel(v) / bsz);
 nbs = strings(nb, 1);
-
+nm = numel(v);
 
 % soop: string object oriented programming(
 for k = 1:nb
-    nbs(k) = string(v((k-1)*bsz+1:min(k*bsz, numel(v)))).join(",");
+    nbs(k) = string(v((k-1)*bsz+1:min(k*bsz, nm))).join(",");
     nbs(k) = "[" + nbs(k) + "]";
 end
 

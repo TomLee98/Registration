@@ -59,6 +59,8 @@ switch calg
     case "mmt"
         % use imregmmt1 for robust shift estimation, only if one
         % predominant in the scene could be best
+        ref_img = ref_img - fi_val;     % remove background for little objects better estimation
+        mov_img = mov_img - fi_val;
         tf0 = imregmc(mov_img, ref_img, rref);
     case "pcorr"
         % use imregcorr for robust shift estimation, which is

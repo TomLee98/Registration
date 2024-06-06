@@ -13,22 +13,28 @@ classdef regtmpl
 
     properties(GetAccess=public, Dependent)
         RefVol
+        FixDef
     end
     
     methods
-        function this = regtmpl(regmov_, fixvdef_, auto_update_)
+        function this = regtmpl(regmov_, fixvdef_, auto_update_, isemp_)
             %REGTMPL A Constructor
             arguments
                 regmov_     (1,1) regmov {mustBeTemplatable}
                 fixvdef_    (1,1) struct {mustBeFixedVolDefination} % with 'Global','Local','Channel'
                 auto_update_(1,1) logical = false
+                isemp_      (1,1) logical = false
             end
             
-            this.regdata = regmov_;     % shallow copy handle
+            this.regdata = regmov_;         % shallow copy handle
             this.fixvdef = fixvdef_;
-            this.auto_update = auto_update_;    % perfermance option
+            this.auto_update = auto_update_;% perfermance option
 
-            this = update_ref(this);
+            if isemp_ == false
+                this = update_ref(this);    % update refvol at first
+            else
+                this.refvol = [];
+            end
         end
         
         function r = get.RefVol(this)
@@ -39,6 +45,23 @@ classdef regtmpl
             end
 
             r = this.refvol;
+        end
+
+        function r = get.FixDef(this)
+            r = this.fixvdef;
+        end
+
+        function tf = isempty(this)
+            tf = isempty(this.refvol);
+        end
+    end
+
+    methods(Static)
+        function tl = empty()
+            regmov_ = regmov.empty();
+            fixvdef_ = struct("Sampling", ["mean", "1"], ...
+                "Channel",  "r");
+            tl = regtmpl(regmov_, fixvdef_, false, true);
         end
     end
 
@@ -85,10 +108,11 @@ end
 end
 
 function mustBeTemplatable(A)
-if ~ismember("T", A.MetaData.dimOrder) ...
-        || A.MetaData.frames == 0
-    throwAsCaller(MException("regmpl:mustBeTemplatable:" + ...
-        "invalidRegistrationMovie", ...
-        "Can not generate template because time dimension lost."));
+if ~isempty(A)
+    if ~ismember("T", A.MetaData.dimOrder)
+        throwAsCaller(MException("regmpl:mustBeTemplatable:" + ...
+            "invalidRegistrationMovie", ...
+            "Can not generate template because time dimension lost."));
+    end
 end
 end
