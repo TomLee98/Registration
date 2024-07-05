@@ -195,8 +195,13 @@ classdef Estimator < handle
 
             Estimator.auto_parpool("on");
 
+            % some par-worker process ending with function handle release, but shared
+            % workers will lost it
+            % so we need to pre-load data to memory
+            mov_data = src.Movie;
+            
             parfor t = 1:this.image_src.MetaData.frames
-                K = double(src.Movie(:,:,fc,:,t) - cbkg);   %#ok<PFBNS>
+                K = double(mov_data(:,:,fc,:,t) - cbkg);
                 K = reshape(K, [], 1);  % flatten 
                 c_caiman(:, t) = full(Q) * K;
             end

@@ -10,6 +10,7 @@ classdef regchain < handle
     properties(GetAccess=public, Dependent)
         isValid         % logical
         Template        % regtmpl object
+        ChainInfo       % struct, with {data, info}
     end
     
     properties(Access=private, Hidden)
@@ -29,6 +30,11 @@ classdef regchain < handle
         function r = get.Template(this)
             r = regtmpl(this.movsrc, struct("Sampling",["mean", string(num2str(this.regtpl{1}))], ...
                                             "Channel", this.opt_chain.sc));
+        end
+
+        function r = get.ChainInfo(this)
+            r = struct("data", this.tbl_chain, ...
+                       "info", this.regtpl);
         end
     end
 

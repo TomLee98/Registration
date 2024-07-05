@@ -359,7 +359,7 @@ classdef regmask < handle
             % This function transforms dense mask to sparse representation,
             % which could be recognize by python:scipy
             arguments
-                maskobj (1,1)   regmask
+                maskobj (:,:,:)   regmask
             end
 
             mask = maskobj.MaskVol;
@@ -367,6 +367,9 @@ classdef regmask < handle
             d = unique(mask);
             d(d==0) = [];
             d(isnan(d)) = [];
+
+            row_mask = [];
+            col_mask = [];
 
             for k = 1:numel(d)
                 vd_loc = find(mask == d(k));   % F order, linear sub index

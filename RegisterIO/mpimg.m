@@ -627,12 +627,21 @@ classdef mpimg < matlab.mixin.Copyable
             % Note that: concatnate is self operation for avoiding IO overhead
 
             sz_ = size(data_);
+
+            % validate dimensionality
             if numel(sz_) > numel(this.dimorder) ...
-                    || numel(sz_) < numel(this.dimorder) - 1 ...
-                    || any(sz_(1:end-1)~=this.DataSize(1:end-1))
+                    || numel(sz_) < numel(this.dimorder) - 1
                 throw(MException("mpimg:concatnate:invalidUse", ...
-                    "Data is not compatible."));
+                    "Data dimensionality is not compatible."));
             end
+
+            % validate size compability
+            if (numel(sz_)==numel(this.dimorder) && any(sz_(1:end-1)~=this.DataSize(1:end-1))) ...
+                    || (numel(sz_)==numel(this.dimorder)-1 && any(sz_~=this.DataSize(1:end-1)))
+                throw(MException("mpimg:concatnate:invalidUse", ...
+                    "Data size is not compatible."));
+            end
+
             if class(data_) ~= this.DataType
                 warning("mpimg:concatnate:badUse", ...
                     "Data format will be changed to %s.", this.DataType);

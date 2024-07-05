@@ -160,6 +160,8 @@ classdef TaskManager < handle
 
             % set the main panel progress bar at 0
             this.caller.SetProgressBar(0);
+            % set the motion viewer if needed
+            this.caller.UpdateRegOpts(this.task_cur);
         end
 
         function update(this, status_, debug_)

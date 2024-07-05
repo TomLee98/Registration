@@ -23,13 +23,18 @@ F = nan(numel(comps), mov.MetaData.frames);
 % start parpool
 Estimator.auto_parpool("on");
 
-fc = find(fc == mov.MetaData.cOrder);
+fc = (fc == mov.MetaData.cOrder);
 fn = mov.MetaData.frames;
 bkg = opts.Options.Background;
 
 keropt = struct("auto", opts.Options.AutoKernel, ...
                 "kernel", opts.Options.Kernel);
 kers = calc_kernels(mask, comps, keropt);
+
+% some par-worker process ending with function handle release, but shared
+% workers will lost it
+% so we need to pre-load data to memory
+mov_data = mov.Movie;
 
 parfor n = 1:numel(comps)
     % for each worker, use pre-calculated kernel to estimate signal
@@ -39,7 +44,7 @@ parfor n = 1:numel(comps)
 
     for t = 1:fn
         % model the fluorescence with constant expected camera background
-        mov_cr = mov.Movie(rb, cb, fc, hb, t) - bkg; %#ok<PFBNS>
+        mov_cr = mov_data(rb, cb, fc, hb, t) - bkg; %#ok<PFBNS>
         mov_cr = cast(squeeze(mov_cr), "double");
 
         % weighted intensity, R^n->R
