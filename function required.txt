@@ -287,10 +287,10 @@ V2.1        Wuneng               悟能
   |     |- [Fix Bugs] fix the bug that 'channel alignment' bad behaviour
   |     |- [Fix Bugs] fix z-projection checked after new loading bug
   |     |- [Note] memory overflow exception when loading multiple times on linux platform
-  |- V2.1.3     2024/7/7     22:00
+  |- V2.1.3     2024/7/13     22:00
   |     |- [Update] TODO: improve long-term global registration to large deformation
-  |     |- [Update] TODO: new task manager function introduced
   |     |- [Update] TODO: improve TUE object
+  |     |- [Update] TODO: new viewing mode in contextMenu: view mode: 2D or 3D
   |     |- [Update] optimize coarse registration based on mass center estimation for low intensity foreground
   |     |- [Fix Bugs] fix allocating bug: requirement block when 'fast user' has done 
   |     |             -> go to system switch for resource recycle
@@ -300,8 +300,10 @@ V2.1        Wuneng               悟能
   |     |- [Fix Bugs] fix the bug: TCREG&local registration with coarse-args off throw exception
   |- V2.1.4     2024/
   |     |- [Update] TODO: replace MaskMovie with regmask member function: maskby
+  |     |- [Update] TODO: new task manager function introduced
   |     |- [Update] TODO: add <local tracking> to signal estimator for better estimation
   |     |- [Update] TODO: less memory using Z-projection when "distributed" mode
+  |     |- [Fix Bugs] TODO: fix the progress bar bug under 3D view
   |- V2.1.5     2024/
   |     |- [Update] TODO: multiply connected region generator combination in Register App
   |     |- [Update] TODO: improve long-term local registration to large deformation

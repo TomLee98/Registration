@@ -1,5 +1,5 @@
 function C = TransformBCG(A, param)
-% this function transform image A (m*n matrix) intensity by
+% this function transform image A (m*n*p matrix) intensity by
 % using param struct
 % input:
 %   - A: the image need to be transformed,
@@ -14,8 +14,11 @@ function C = TransformBCG(A, param)
 
 arguments
     A (:,:,:) {mustBeNumeric}   % RGB
-    param (1,1) struct = struct("b",0,"c",1,"ga",1);
+    param (1,1) struct = struct("r",[0,65535],"b",0,"c",1,"ga",1);
 end
+
+% rectangle constrain
+A = max(min(A, param.r(2)), param.r(1));
 
 % rescale the pixel intensity
 A = rescale(A,0,intmax("uint16"));

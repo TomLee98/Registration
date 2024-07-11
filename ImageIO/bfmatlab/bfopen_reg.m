@@ -3,7 +3,7 @@ function volume = bfopen_reg(filename, sspan)
 %memory
 % Input:
 %   - filename: the imaging file name
-%   - wbar_flag: the flag for viewing processing bar
+%   - sspan: the slice indices array, start from 1
 % Output:
 %   - volume: the M*N*P imaging matrix
 
