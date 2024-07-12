@@ -292,6 +292,7 @@ V2.1        Wuneng               悟能
   |     |- [Update] TODO: improve TUE object
   |     |- [Update] new viewing mode in contextMenu: view mode: 2D or 3D
   |     |- [Update] new UI behaviour: progress bar color could be changed
+  |     |- [Update] new startup UI at beginning
   |     |- [Update] optimize coarse registration based on mass center estimation for low intensity foreground
   |     |- [Fix Bugs] fix allocating bug: requirement block when 'fast user' has done 
   |     |             -> go to system switch for resource recycle
