@@ -47,6 +47,7 @@
     <COMMA_SEPARATED>Comma Separated</COMMA_SEPARATED>
     <COMMON>Common</COMMON>
     <COMMON_PROBLEM>Common Problem</COMMON_PROBLEM>
+    <COMPLETE>Complete</COMPLETE>
     <COMPONENT_DESCRIPTION>Problem Description</COMPONENT_DESCRIPTION>
     <COMPONENT_PROBLEM>Components with Problems</COMPONENT_PROBLEM>
     <CONFIGURATION_CORRUPTED>The configuration file is corrupted</CONFIGURATION_CORRUPTED>
@@ -389,6 +390,7 @@
     <SUGGESTION>Suggestion</SUGGESTION>
     <SURFACE_AREA>Surface Area</SURFACE_AREA>
     <SYS_INITIALIZE_SUCCESS>System initialized completely</SYS_INITIALIZE_SUCCESS>
+    <SYS_INITIALIZING>System Initializing</SYS_INITIALIZING>
     <TASK_VIEWER>Task Viewer</TASK_VIEWER>
     <TARGET_BITRATE>Target Bitrate</TARGET_BITRATE>
     <T_CROPPED>T cropped</T_CROPPED>
@@ -447,6 +449,7 @@
     <USER>User</USER>
     <USERNAME>User Name</USERNAME>
     <USUAL>Usual</USUAL>
+    <VALIDATE_UPDATE>Validate update…</VALIDATE_UPDATE>
     <VARIABLE_LOADED>Variable loaded</VARIABLE_LOADED>
     <VERTICAL>Vertical</VERTICAL>
     <VIDEO_DATA>Video Data</VIDEO_DATA>
@@ -454,7 +457,7 @@
     <VOLUME_VIEWER>Volume Viewer</VOLUME_VIEWER>
     <WAITING>waiting</WAITING>
     <WARNING>Warning</WARNING>
-    <WELCOME_TO_Reg3D_App>Welcome to Reg3D App</WELCOME_TO_Reg3D_App>
+    <WELCOME>Welcome to Reg3D App</WELCOME>
     <WHITE>White</WHITE>
     <WIDTH>Width</WIDTH>
     <WINDOW>Window</WINDOW>

@@ -24,7 +24,7 @@ classdef regopt
         gl_interp       (1,1) string {mustBeMember(gl_interp, ["linear","cubic"])} = "linear"
         lo_interp       (1,1) string {mustBeMember(lo_interp, ["linear","cubic"])} = "linear"
         mfilter         (1,3) double {mustBeNonnegative, mustBeInteger} = [3,3,3]
-        dfilter         (1,3) double {mustBeInteger} = [3,110,1000]
+        dfilter         (1,3) double {mustBeInteger} = [3,115,1000]
         dfilter_enh     (1,1) logical = false
         gfilter         (1,3) double {mustBeNonnegative, mustBeInteger} = [3,3,3]
         gamma           (1,1) double {mustBeInRange(gamma, 0, 4)} = 1.0
@@ -47,7 +47,7 @@ classdef regopt
         func_chl        (1,1) string {mustBeMember(func_chl, ["r","g","b"])} = "g"
 
         % ==================== longterm properties ======================
-        lt_keyframes    (1,:) double {mustBePositive, mustBeInteger} = 1
+        lt_keyframes    (:,1) double {mustBePositive, mustBeInteger} = 1
         lt_autokey      (1,1) logical = true
         lt_autotpl      (1,1) logical  = true
         lt_tgridminmax  (1,2) double {mustBePositive, mustBeInteger} = [10, 40] % typical 60*[10,40]=[600, 2400] volumes is best range
@@ -333,7 +333,7 @@ classdef regopt
                                "TGridMinMax",   this.lt_tgridminmax, ...
                                "RegChain",      this.lt_regchain, ...
                                "MaxZOptShift",  this.zopt_shift_max, ...
-                               "TolZOpt",       this.zopt_tol, ...
+                               "DilateFilter",  this.dfilter, ...
                                "DS",            this.ds, ...
                                "Interp",        this.lt_interp, ...
                                "IterCoeff",     this.lt_iter_coeff, ...
@@ -437,8 +437,8 @@ classdef regopt
                     this.lt_step_max = r_.MaxStep;
                     this.lt_step_min = r_.MinStep;
                     this.lt_interp = r_.Interp;
+                    this.dfilter = r_.DilateFilter;
                     this.zopt_shift_max = r_.MaxZOptShift;
-                    this.zopt_tol = r_.TolZOpt;
                     this.ds = r_.DS;
                     this.strc_chl = r_.SC;
                     this.func_chl = r_.FC;

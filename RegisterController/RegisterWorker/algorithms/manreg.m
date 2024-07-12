@@ -7,7 +7,7 @@ function status = manreg(movsrc_, movdst_, movtmpl_, regfrs_, regopt_)
 %   - movtmpl_: m-by-n-by-p uint16 array, the registration template volume
 %   - regfrs_: 1-by-n positive integer numeric array, indicating the frames
 %              need to be aligned
-%   - regopt_: 1-by-1 regopt object, with registration options
+%   - regopt_: 1-by-1 struct, with registration options
 % Output:
 %   - status: 1-by-1 double, 0 for normal exit, other code for bad exit
 %

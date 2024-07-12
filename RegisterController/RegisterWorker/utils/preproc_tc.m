@@ -1,4 +1,4 @@
-function [vs, rois] = preproc_tc(vs, mfsize, dfsize, gfsize, gamma, roiref)
+function [vs, rois] = preproc_tc(vs, dfsize, mfsize, gfsize, gamma, roiref)
 %PREPROC_TC This funciton do image preprocess for better coarse registration
 % Input:
 %   - vs: m-by-n-by-p array, the image volume
@@ -15,8 +15,8 @@ function [vs, rois] = preproc_tc(vs, mfsize, dfsize, gfsize, gamma, roiref)
 
 arguments
     vs 
-    mfsize  (1,3)   double {mustBeInteger, mustBeNonnegative} = [3,3,3]     % [x,y,z]
     dfsize  (1,3)   double {mustBeInteger} = [3,100,1000]                   % [r,iTh,vTh]
+    mfsize  (1,3)   double {mustBeInteger, mustBeNonnegative} = [3,3,3]     % [x,y,z]
     gfsize  (1,3)   double {mustBeInteger, mustBeNonnegative} = [3,3,1]     % [x,y,z]
     gamma   (1,1)   double {mustBeInRange(gamma, 0, 2)} = 1
     roiref  (:,3)   double {mustBePositive, mustBeInteger} = double.empty(0,3)
@@ -66,9 +66,9 @@ if dfsize(1) > 0
     else
         % only keep the maximum volume object
         CC = bwconncomp(vs_mask, 18);
-        S = regionprops3(CC, "Area");
+        S = regionprops3(CC, "Volume");
         L = labelmatrix(CC);
-        [~, maxloc] = max(S.Area);
+        [~, maxloc] = max(S.Volume);
         vs_mask = ismember(L, maxloc);
     end
     % modify the background to 0

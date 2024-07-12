@@ -7,7 +7,7 @@ function status = ltreg(movsrc_, movdst_, movtmpl_, regfrs_, regopt_)
 %   - movtmpl_: m-by-n-by-p uint16 array, the registration template volume
 %   - regfrs_: 1-by-n positive integer numeric array, indicating the frames
 %              need to be aligned
-%   - regopt_: 1-by-1 regopt object, with registration options
+%   - regopt_: 1-by-1 struct, with registration options
 % Output:
 %   - status: 1-by-1 double, 0 for normal exit, other code for bad exit
 %
@@ -57,7 +57,7 @@ min_step = regopt_.MinStep;
 iter_coeff = regopt_.IterCoeff;
 max_itern = regopt_.MaxIterN;
 max_shift_z = regopt_.MaxZOptShift;
-zopt_tol = regopt_.TolZOpt;
+dfsize = regopt_.DilateFilter;
 itpalg = regopt_.Interp;
 vpl = fix(log(movsrc_.MetaData.slices)/log(4)) + 1;
 rc = regopt_.RegChain;  % registration chain object
@@ -84,13 +84,17 @@ parfor m = 1:numel(regfrs_)
     fival_sc = mean(avol_sc_m(:,[1,end],:),"all");
     fival_fc =  mean(avol_fc_m(:,[1,end],:),"all");
 
-    [~, avol_sc_m_ds] = Resample(avol_sc_m, ds_scale);
+    % preprocessing for robust registration
+    avol_sc_proc_m = preproc_tc(avol_sc_m, dfsize);   % dilate filter for robust estimation
+    kvs_par = preproc_tc(kvs_par, dfsize);
+
+    [~, avol_sc_m_ds] = Resample(avol_sc_proc_m, ds_scale);
     [~, kvol_m_ds] = Resample(kvs_par, ds_scale);
 
     % use imregcoarse for better initialized transformation
     % where the preprocess volumes are needed
     [ptf, ~] = imregcoarse(avol_sc_m_ds, kvol_m_ds, rs_ds, ...
-            max_shift_z, zopt_tol, "mmt");
+            max_shift_z);
 
     % do fine registration, align to keyframe
     ptf = imregtform(avol_sc_m_ds, rref_ds, kvol_m_ds, rref_ds, "affine", ...
@@ -127,7 +131,7 @@ end
 
 function mustBeRegistrationOption(A)
 VALID_FIELD = ["Mode", "SubAlgorithm", "Keyframes", "AutoKeyframe", "AutoTemplate", ...
-    "TGridMinMax", "RegChain", "MaxZOptShift", "TolZOpt", "DS", "Interp", ...
+    "TGridMinMax", "RegChain", "MaxZOptShift", "DilateFilter", "DS", "Interp", ...
     "MaxStep", "MinStep", "MaxIterN", "IterCoeff", "SC", "FC", "Hardware"];
 
 if ~all(ismember(fieldnames(A), VALID_FIELD))

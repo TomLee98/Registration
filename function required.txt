@@ -287,10 +287,11 @@ V2.1        Wuneng               悟能
   |     |- [Fix Bugs] fix the bug that 'channel alignment' bad behaviour
   |     |- [Fix Bugs] fix z-projection checked after new loading bug
   |     |- [Note] memory overflow exception when loading multiple times on linux platform
-  |- V2.1.3     2024/7/13     22:00
+  |- V2.1.3     2024/7/12     21:00
   |     |- [Update] TODO: improve long-term global registration to large deformation
   |     |- [Update] TODO: improve TUE object
   |     |- [Update] new viewing mode in contextMenu: view mode: 2D or 3D
+  |     |- [Update] new B&C adjuster UI, intensity display limits are supported
   |     |- [Update] new UI behaviour: progress bar color could be changed
   |     |- [Update] new startup UI at beginning
   |     |- [Update] optimize coarse registration based on mass center estimation for low intensity foreground
@@ -299,7 +300,9 @@ V2.1        Wuneng               悟能
   |     |- [Fix Bugs] fix the regmov concatenate bug when tcrop/vcrop
   |     |- [Fix Bugs] fix signal estimator parallel resource bug on server
   |     |- [Fix Bugs] fix the regmask flatten bug: bad variable validation
-  |     |- [Fix Bugs] fix the bug: TCREG&local registration with coarse-args off throw exception
+  |     |- [Fix Bugs] fix TCREG&local registration with coarse-args off throw exception
+  |     |- [Fix Bugs] fix the long-term registration setting panel exception
+  |     |- [Fix Bugs] fix read exception after data loading when mouse moving
   |- V2.1.4     2024/
   |     |- [Update] TODO: replace MaskMovie with regmask member function: maskby
   |     |- [Update] TODO: new task manager function introduced

@@ -6,7 +6,7 @@ function [code,info] = GetHardwareInfo()
 %   - info: a struct with 'cpu' and 'gpu', with the hardware information 
 %     details
 
-% Version 1.0.0
+% Version 1.1.0
 % Copyright (c) 2022-2023, Weihan Li
 
 % =============== process CPU information ==================
@@ -39,5 +39,39 @@ else
     info.gpu = string(fieldnames(gpuinfo))+ ...
         ": " + string((struct2cell(gpuinfo)));
 end
+
+% =============== process Memory information ==================
+if ispc()
+    [userview, sysview] = memory();
+    code.mem = "general";
+    info.mem = sprintf("Total Phys Mem: %d MB\n" + ...
+                       "Available Phys Mem: %d MB\n" + ...
+                       "MATLAB Used: %d MB", ...
+                       round(sysview.PhysicalMemory.Total/1024/1024), ...
+                       round(sysview.PhysicalMemory.Available/1024/1024), ...
+                       round(userview.MemUsedMATLAB/1024/1024));
+elseif isunix()
+    code.mem = "general";
+    [~,w] = unix('free -m | grep Mem');
+    % total    used    free    shared    buff/cache    available
+    stats = str2double(regexp(w,'[0-9]*','match'));
+    [~, id] = unix('whoami');
+    [~,w] = unix(['ps -aux | grep MATLAB | grep ', id]);
+    w = string(w).splitlines();
+    % user  pid  cpu_sys  cpu_user  ?  mem  group  pty  st  rt  path
+    w = w(1).split(" ");   
+    w(w=="")=[];
+    info.mem = sprintf("Total Phys Mem: %d MB\n" + ...
+                       "Available Phys Mem: %d MB\n" + ...
+                       "MATLAB Used: %d MB", ...
+                       stats(1), ...
+                       stats(end), ...
+                       str2double(w(6))/1024);
+else
+    % what is the fuck?
+    throw(MException("GetAvailableMemory:unknownOS", ...
+        "Unknown operation system."));
+end
+
 end
 

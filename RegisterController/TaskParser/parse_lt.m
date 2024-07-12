@@ -36,6 +36,7 @@ movtmpl_ = rc.Template;
 
 % modify the registration options
 regopt_ = set(regopt_, "RegChain", rc);
+regopt_ = set(regopt_, "Keyframes", rc.ChainInfo.data.kfidx);
 
 % allocate the tasks
 tasks_ = mQueue();

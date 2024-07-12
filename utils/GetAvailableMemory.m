@@ -17,7 +17,8 @@ elseif isunix()
     mem = (stats(3)+stats(end))*1e3;    % bytes
 else
     % what is the fuck?
-    error('Your operation system is so coooool.');
+    throw(MException("GetAvailableMemory:unknownOS", ...
+        "Unknown operation system."));
 end
 
 end

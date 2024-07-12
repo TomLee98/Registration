@@ -7,7 +7,7 @@ function status = tcreg(movsrc_, movdst_, movtmpl_, regfrs_, regopt_)
 %   - movtmpl_: m-by-n-by-p uint16 array, the registration template volume
 %   - regfrs_: 1-by-n positive integer numeric array, indicating the frames
 %              need to be aligned
-%   - regopt_: 1-by-1 regopt object, with registration options
+%   - regopt_: 1-by-1 struct, with registration options
 % Output:
 %   - status: 1-by-1 double, 0 for normal exit, other code for bad exit
 %
@@ -68,7 +68,7 @@ ga = regopt.Gamma;
 % 1. extract the reference volume
 [ds_scale, refvol_ds] = Resample(refvol, regds);
 if dfh == true
-    [refvol_ds_pp, roiref] = preproc_tc(refvol_ds, mf, df, gf, ga);
+    [refvol_ds_pp, roiref] = preproc_tc(refvol_ds, df, mf, gf, ga);
     if ~isempty(roiref)
         roiref(:, 1:3) = [];    % keep w,h,d
     else
@@ -79,7 +79,7 @@ if dfh == true
     end
 else
     roiref = double.empty(0, 3);
-    refvol_ds_pp = preproc_tc(refvol_ds, mf, df, gf, ga);
+    refvol_ds_pp = preproc_tc(refvol_ds, df, mf, gf, ga);
 end
 
 % 2. extract functional and structured channel data
@@ -114,9 +114,9 @@ parfor m = 1:numel(regfrs)
     [~, avol_sc_m_ds] = Resample(avol_sc_m, ds_scale);
 
     if dfh == true
-        avol_sc_m_ds_pp = preproc_tc(avol_sc_m_ds, mf, df, gf, ga, roiref);
+        avol_sc_m_ds_pp = preproc_tc(avol_sc_m_ds, df, mf, gf, ga, roiref);
     else
-        avol_sc_m_ds_pp = preproc_tc(avol_sc_m_ds, mf, df, gf, ga);
+        avol_sc_m_ds_pp = preproc_tc(avol_sc_m_ds, df, mf, gf, ga);
     end
 
     % use imregcoarse for better initialized transformation

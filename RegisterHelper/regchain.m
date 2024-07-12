@@ -70,7 +70,7 @@ classdef regchain < handle
                                     "step_max",      opts_.MaxStep, ...
                                     "step_min",      opts_.MinStep, ...
                                     "zopt_shift_max",opts_.MaxZOptShift, ...
-                                    "zopt_tol",      opts_.TolZOpt);
+                                    "dfsize",        opts_.DilateFilter);
 
             this.empty_flag = isemp_;
             this.valid_flag = false;
@@ -270,7 +270,7 @@ classdef regchain < handle
             tf = cell(numel(kfidx), 1);
             kv = cell(numel(kfidx), 1);
 
-            fmode_pre_inv = ["none", string(fliplr(kfidx(kfidx<=this.regtpl{1}))).join(",")];   % reverse time order
+            fmode_pre_inv = ["none", string(flipud(kfidx(kfidx<=this.regtpl{1}))).join(",")];   % reverse time order
             fmode_pre = ["none", string(kfidx(kfidx<=this.regtpl{1})).join(",")];   % reverse time order
             n_pre = sum(kfidx<=this.regtpl{1});
             fmode_post = ["none", string(kfidx(kfidx>this.regtpl{1})).join(",")];
@@ -292,7 +292,7 @@ classdef regchain < handle
             step_max = this.opt_chain.step_max;
             step_min = this.opt_chain.step_min;
             zs_max = this.opt_chain.zopt_shift_max;
-            zs_tol = this.opt_chain.zopt_tol;
+            dfsize = this.opt_chain.dfsize;
             rs = [this.movsrc.MetaData.xRes, this.movsrc.MetaData.yRes, ...
                 this.movsrc.MetaData.zRes];
             rref = imref3d(size(avol_sc_pre_inv, 1:3), rs(1),rs(2),rs(3)); % assume vol: x,y,z,t
@@ -322,8 +322,11 @@ classdef regchain < handle
                     fvol = avol{worker}(:,:,:,nw-1);
                     mvol = avol{worker}(:,:,:,nw);
 
-                    [ptf, ~] = imregcoarse(mvol, fvol, rs, zs_max, ...
-                        zs_tol, "mmt");
+                    % preprocessing for robust registration
+                    fvol_proc = preproc_tc(fvol, dfsize);
+                    mvol_proc = preproc_tc(mvol, dfsize);
+
+                    [ptf, ~] = imregcoarse(mvol_proc, fvol_proc, rs, zs_max);
 
                     % do fine registration: imregtform base on intensity
                     ptf = imregtform(mvol, rref, fvol, rref, "affine", ...
@@ -379,7 +382,7 @@ classdef regchain < handle
                           "MaxStep",      0.0625, ...
                           "MinStep",      1e-7, ...
                           "MaxZOptShift", 2, ...
-                          "TolZOpt",      1e-3);
+                          "DilateFilter", [3,115,1000]);
 
             c = regchain(regmov.empty(), ...
                          regtmpl.empty(), ...
