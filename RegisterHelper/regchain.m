@@ -16,7 +16,7 @@ classdef regchain < handle
     properties(Access=private, Hidden)
         movsrc      % 1-by-1 regmov, the movie source
         tbl_chain   % k-by-4 table, with {kfidx, fscope, tfmat, kfvol}
-        regtpl      % 1-by-4 cell, {absolute_index, channel_index, 3D array, mass_center}
+        regtpl      % 1-by-5 cell, {absolute_index, channel_index, 3D array, mass_center, mass_shift}
         opt_chain   % 1-by-1 struct, with registration chain options
         empty_flag  % 1-by-1 logical, indicate the empty status
         valid_flag  % 1-by-1 logical, indicate the validation status
@@ -55,7 +55,8 @@ classdef regchain < handle
             this.regtpl = {median(str2num(fidef.Sampling(2))), ...
                            find(fidef.Channel==movsrc_.MetaData.cOrder), ...
                            movtmpl_.RefVol, ...
-                           [0,0,0,0]}; %#ok<ST2NM>
+                           [0,0,0,0], ...
+                           nan(movsrc_.MetaData.frames,1)}; %#ok<ST2NM>
 
             % reorganize the chain options
             this.opt_chain = struct("template_auto", opts_.AutoTemplate, ...
@@ -108,6 +109,7 @@ classdef regchain < handle
                 this.regtpl{3} = grv(this.movsrc, ["none", string(pmc_st)], ...
                     this.opt_chain.sc);
                 this.regtpl{4} = mc(pmc_st, :);
+                this.regtpl{5} = sqrt(sum(mc_cpb(:,1:3).^2, 2));
             end
 
             %   2 select the keyframes

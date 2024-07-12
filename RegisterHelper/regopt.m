@@ -53,8 +53,8 @@ classdef regopt
         lt_tgridminmax  (1,2) double {mustBePositive, mustBeInteger} = [10, 40] % typical 60*[10,40]=[600, 2400] volumes is best range
         lt_regchain     (1,1) regchain = regchain.empty()
         lt_iter_coeff   (1,1) double {mustBeInRange(lt_iter_coeff, 0, 1)} = 0.5
-        lt_itn_max      (1,1) double {mustBePositive, mustBeInteger} = 50
-        lt_step_max     (1,1) double {mustBePositive} = 2.5e-2
+        lt_itn_max      (1,1) double {mustBePositive, mustBeInteger} = 100
+        lt_step_max     (1,1) double {mustBePositive} = 1e-2
         lt_step_min     (1,1) double {mustBePositive} = 1e-6
         lt_interp       (1,1) string {mustBeMember(lt_interp, ["linear","cubic"])} = "linear"
         

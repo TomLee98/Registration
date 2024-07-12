@@ -290,7 +290,8 @@ V2.1        Wuneng               悟能
   |- V2.1.3     2024/7/13     22:00
   |     |- [Update] TODO: improve long-term global registration to large deformation
   |     |- [Update] TODO: improve TUE object
-  |     |- [Update] TODO: new viewing mode in contextMenu: view mode: 2D or 3D
+  |     |- [Update] new viewing mode in contextMenu: view mode: 2D or 3D
+  |     |- [Update] new UI behaviour: progress bar color could be changed
   |     |- [Update] optimize coarse registration based on mass center estimation for low intensity foreground
   |     |- [Fix Bugs] fix allocating bug: requirement block when 'fast user' has done 
   |     |             -> go to system switch for resource recycle
