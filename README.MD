@@ -12,23 +12,29 @@
 [MODE 1: TWO CHANNELS REGISTRATION]
 
 [A. Two Channels Global Registration Pipeline]
+
 1. 
 
 [B. Two Channels Local Registration Pipeline]
+
 1. 
 
 [C. Two Channels Manual Global Registration Pipeline]
+
 1. 
 
 [D. Two Channels Long-term Global Registration Pipeline]
+
 1. 
 
 [MODE 2: ONE CHANNEL REGISTRATION]
 
 [A. One Channel Global Registration Pipeline]
+
 1. 
 
 [B. One Channel Manual Global Registration Pipeline]
+
 1. 
 
 
