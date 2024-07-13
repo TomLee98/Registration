@@ -1,4 +1,5 @@
-<html>
+<!DOCTYPE html>
+<html lang="zh">
 <head>
 <title></title>
 <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
@@ -55,11 +56,11 @@
 <p dir="ltr" align="left">&nbsp;</p>
 <ul style="MARGIN-RIGHT: 0px" dir="ltr"><li>
 <div align="left"><u>定位<span lang="EN-US">/</span>信号</u>： <span style="FONT-SIZE: 12pt; FONT-FAMILY: 宋体; mso-bidi-font-size: 11.0pt; mso-bidi-font-family: 'Times New Roman'; mso-bidi-theme-font: minor-bidi; mso-ansi-language: EN-US; mso-fareast-language: ZH-CN; mso-bidi-language: AR-SA">
-确定不同颜色通道的作用，配准程序将使用定位通道作为基准，将其几何变换应用在信号通道上。这里的假设是定位通道与信号通道间的运动差异可以忽略不计。</span></div>
+确定不同颜色通道的作用，配准程序将使用定位通道作为基准，将其几何变换应用在信号通道上。这里假设定位通道与信号通道间的运动差异可以忽略不计。</span></div>
 </li></ul>
 <ul style="MARGIN-RIGHT: 0px" dir="ltr"><li>
 <div align="left"><u>粗配准</u>： <span style="FONT-SIZE: 12pt; FONT-FAMILY: 宋体; mso-bidi-font-size: 11.0pt; mso-bidi-font-family: 'Times New Roman'; mso-bidi-theme-font: minor-bidi; mso-ansi-language: EN-US; mso-fareast-language: ZH-CN; mso-bidi-language: AR-SA">
-用于估计初始几何变换的强鲁棒算法，可选<u>质心估计</u>，<u>相位相关</u>，<u>特征点匹配</u>，<u>极限点云</u> 或<u>关闭</u>(首次配准不建议)。</span></div> 当图像中仅有单一目标区域时，可启用相位相关或质心估计。当图像中仅有少量(&le;3)明显目标区域时，推荐质心估计(结合膨胀滤波器)。当图像中存在大量明显目标(&gt;5)区域且存在相对运动，推荐特征点匹配。
+用于估计初始几何变换的强鲁棒算法，可选<u>质心估计</u>，<u>相位相关</u>，<u>特征点匹配</u>或<u>关闭</u>(首次配准不建议关闭)。</span></div> 当图像中仅有单一目标区域时，可启用相位相关或质心估计。当图像中仅有少量(&le;3)明显目标区域时，推荐质心估计(结合膨胀滤波器)。当图像中存在大量明显目标(&gt;5)区域且存在相对运动，推荐特征点匹配。
 </li></ul>
 <ul style="MARGIN-RIGHT: 0px" dir="ltr">
 <li>
@@ -316,7 +317,85 @@ N维图像直方图规定化</a>。</span></o:p></span></span></p>
 </blockquote>
 <p align="left"><font size="4" face="宋体"><strong>4 全局长时程配准</strong></font></p>
 <p align="left"><img src="1_3_5%7.bmp" alt=""> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <img src="1_3_5%8.bmp" alt=""></p>
+<blockquote style="MARGIN-RIGHT: 0px" dir="ltr">
+<p align="left"><font face="宋体"><u><b>常用</b></u>参数设置页面包括：</font></p>
+<ul><li>
+<div align="left"><font face="宋体"><u>配准模板</u>：填入用于生成模板帧的采样帧序号以确定采样帧。勾选<u>自动</u>时，程序将自动计算最接近荧光强度时空分布中心的帧作为模板。 </font></div>
+</li></ul>
+<ul><li>
+<div align="left">
+<u>采样（不可用）</u>：固定为计算平均值。</div>
+</li></ul>
+<ul><li>
+<div align="left"><u>几何变换（不可用）</u>： 固定为仿射变换。</div>
+</li></ul>
+<ul style="MARGIN-RIGHT: 0px" dir="ltr"><li>
+<div align="left"><u>定位<span lang="EN-US">/</span>信号</u>： <span style="FONT-SIZE: 12pt; FONT-FAMILY: 宋体; mso-bidi-font-size: 11.0pt; mso-bidi-font-family: 'Times New Roman'; mso-bidi-theme-font: minor-bidi; mso-ansi-language: EN-US; mso-fareast-language: ZH-CN; mso-bidi-language: AR-SA">
+确定不同颜色通道的作用，配准程序将使用定位通道作为基准，将其几何变换应用在信号通道上。这里假设定位通道与信号通道间的运动差异可以忽略不计。</span></div>
+</li></ul>
+<ul style="MARGIN-RIGHT: 0px" dir="ltr">
+<li>
+<div align="left"><span style="FONT-SIZE: 12pt; FONT-FAMILY: 宋体; mso-bidi-font-size: 11.0pt; mso-bidi-font-family: 'Times New Roman'; mso-bidi-theme-font: minor-bidi; mso-ansi-language: EN-US; mso-fareast-language: ZH-CN; mso-bidi-language: AR-SA">
+	<span><u>最小迭代步长</u>：确定配准过程的最终质量，当配准过程中损失函数（度量运动帧与模板帧差异）值的差异不超过最小迭代步长时配准过程停止。</span></span></div>
+</li>
+</ul>
+<ul style="MARGIN-RIGHT: 0px" dir="ltr"><li>
+<p style="MARGIN-RIGHT: 0px" dir="ltr"><span style="FONT-SIZE: 12pt; FONT-FAMILY: 宋体; mso-bidi-font-size: 11.0pt; mso-bidi-font-family: 'Times New Roman'; mso-bidi-theme-font: minor-bidi; mso-ansi-language: EN-US; mso-fareast-language: ZH-CN; mso-bidi-language: AR-SA">
+<u>最大迭代步长</u>： 确定配准的最大迭代步长，当图像剧烈运动时，增加最大迭代步长有利于损失收敛。</span></p>
+</li></ul>
+<ul style="margin-right: 0px" dir="ltr"><li>
+<p style="MARGIN-RIGHT: 0px" dir="ltr"><span lang="EN-US"><o:p><span style="FONT-SIZE: 12pt; FONT-FAMILY: 宋体; mso-bidi-font-size: 11.0pt; mso-bidi-font-family: 'Times New Roman'; mso-bidi-theme-font: minor-bidi; mso-ansi-language: EN-US; mso-fareast-language: ZH-CN; mso-bidi-language: AR-SA">
+<u>迭代因子</u>：通过控制迭代中步长变化的速率，以控制迭代过程收敛速度。</span></o:p></span></p>
+</li></ul>
+<ul style="MARGIN-RIGHT: 0px" dir="ltr"><li>
+<p style="MARGIN-RIGHT: 0px" dir="ltr"><span><span lang="EN-US"><o:p><span style="FONT-SIZE: 12pt; FONT-FAMILY: 宋体; mso-bidi-font-size: 11.0pt; mso-bidi-font-family: 'Times New Roman'; mso-bidi-theme-font: minor-bidi; mso-ansi-language: EN-US; mso-fareast-language: ZH-CN; mso-bidi-language: AR-SA">
+<u>迭代数上限</u>：作为停机限制，当配准过程中迭代达到上限时，无论损失是否收敛，当前配准均停止。</span></o:p></span></span></p>
+</li></ul>
+<br>
+<p align="left"><font face="宋体"><u><b>高级</b></u>参数设置页面包括：</font></p>
+<ul style="margin-right: 0px" dir="ltr"><li>
+<p style="MARGIN-RIGHT: 0px" dir="ltr"><span><span lang="EN-US"><o:p>
+<span style="FONT-SIZE: 12pt; FONT-FAMILY: 宋体; mso-bidi-font-size: 11.0pt; mso-bidi-font-family: 'Times New Roman'; mso-bidi-theme-font: minor-bidi; mso-ansi-language: EN-US; mso-fareast-language: ZH-CN; mso-bidi-language: AR-SA">
+<u>膨胀滤波器(预处理)</u>： 滤波器包含三个参数 &lt;膨胀半径&gt;，&lt;强度阈值&gt;，&lt;体积阈值&gt;。通过参数组合，您可以获得鲁棒的目标轮廓并用于质心粗配准。当膨胀半径为0时将禁用膨胀滤波器。当膨胀滤波器启用，强度阈值设置为-1时，将使用Otsu全局阈值算法自动确定强度阈值,否则使用给定非负值。体积阈值设置为-1时，仅保留图像中最大(18)连通域，否则保留所有膨胀连通域。<font color="#FF0000">该组件与全局配准面板膨胀滤波器共享数据。</font></span></o:p></span></span></p>
+</li></ul>
+<ul style="margin-right: 0px" dir="ltr"><li>
+<p style="MARGIN-RIGHT: 0px" dir="ltr"><span><span lang="EN-US"><o:p>
+<span style="FONT-SIZE: 12pt; FONT-FAMILY: 宋体; mso-bidi-font-size: 11.0pt; mso-bidi-font-family: 'Times New Roman'; mso-bidi-theme-font: minor-bidi; mso-ansi-language: EN-US; mso-fareast-language: ZH-CN; mso-bidi-language: AR-SA">
+<u>最大Z漂移</u>：对图像做粗配准估计时，用于估计Z方向位移的优化器参数。</span></o:p></span></span></p>
+</li></ul>
+<ul style="margin-right: 0px" dir="ltr"><li>
+<p style="MARGIN-RIGHT: 0px" dir="ltr"><span><span lang="EN-US"><o:p><span style="FONT-SIZE: 12pt; FONT-FAMILY: 宋体; mso-bidi-font-size: 11.0pt; mso-bidi-font-family: 'Times New Roman'; mso-bidi-theme-font: minor-bidi; mso-ansi-language: EN-US; mso-fareast-language: ZH-CN; mso-bidi-language: AR-SA">
+<u>关键帧</u>：关键帧即确定目标完整运动状态的关键体积。您可以指定帧或勾选<u>自动</u>(推荐)，此时程序将自动计算关键帧并应用于链式配准技术。</span></o:p></span></span></p>
+</li></ul>
+<ul style="margin-right: 0px" dir="ltr"><li>
+<p style="MARGIN-RIGHT: 0px" dir="ltr"><span><span lang="EN-US"><o:p><span style="FONT-SIZE: 12pt; FONT-FAMILY: 宋体; mso-bidi-font-size: 11.0pt; mso-bidi-font-family: 'Times New Roman'; mso-bidi-theme-font: minor-bidi; mso-ansi-language: EN-US; mso-fareast-language: ZH-CN; mso-bidi-language: AR-SA">
+<u>降采样</u>：通过对原始图像(结构通道)降采样，基于局部刚性假设得到较优位移估计。加速配准进程并降低资源利用率，但会因此损失部分精度。 <font color="#FF0000">首次配准推荐'2X2'或'自动'。</font></span></o:p></span></span></p>
+</li></ul>
+<ul><li>
+<div class="MsoNormal" style="MARGIN: 0cm 0cm 0pt"><span><u>插值</u>： <span style="FONT-SIZE: 12pt; FONT-FAMILY: 宋体; mso-bidi-font-size: 11.0pt; mso-bidi-font-family: 'Times New Roman'; mso-bidi-theme-font: minor-bidi; mso-ansi-language: EN-US; mso-fareast-language: ZH-CN; mso-bidi-language: AR-SA">
+确定配准过程中几何变换造成的图像拉伸，变形部分像素值的计算方法。</span></span></div>
+</li></ul>
+<ul style="margin-right: 0px" dir="ltr"><li>
+<p style="MARGIN-RIGHT: 0px" dir="ltr"><span><span lang="EN-US"><o:p><span style="FONT-SIZE: 12pt; FONT-FAMILY: 宋体; mso-bidi-font-size: 11.0pt; mso-bidi-font-family: 'Times New Roman'; mso-bidi-theme-font: minor-bidi; mso-ansi-language: EN-US; mso-fareast-language: ZH-CN; mso-bidi-language: AR-SA">
+<u>最少分划/最大分划</u>：当您指定自动计算关键帧时，最少分划与最大分划将规定可行时间段总数，程序将在时间上自动确定分划量与关键帧。当您指定关键帧时，此分划选项将被禁用。</span></o:p></span></span></p>
+</li></ul>
+<blockquote style="MARGIN-RIGHT: 0px" dir="ltr">
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt">&nbsp;</p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt"><span><span style="FONT-SIZE: 12pt; FONT-FAMILY: 宋体; mso-bidi-font-size: 11.0pt; mso-bidi-font-family: 'Times New Roman'; mso-bidi-theme-font: minor-bidi; mso-ansi-language: EN-US; mso-fareast-language: ZH-CN; mso-bidi-language: AR-SA">
+注1：当前焦点为配准设置面板时，您可以按下 <u>V</u> 键以获得模板帧预处理预览。</span></span></p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt">&nbsp;</p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt"><span><span style="FONT-SIZE: 12pt; FONT-FAMILY: 宋体; mso-bidi-font-size: 11.0pt; mso-bidi-font-family: 'Times New Roman'; mso-bidi-theme-font: minor-bidi; mso-ansi-language: EN-US; mso-fareast-language: ZH-CN; mso-bidi-language: AR-SA">
+注2：当配准链计算结束，红框所示区域将显示质心漂移曲线、所选关键帧及区间分划。</span></span></p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt">&nbsp;</p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt"><span><span style="FONT-SIZE: 12pt; FONT-FAMILY: 宋体; mso-bidi-font-size: 11.0pt; mso-bidi-font-family: 'Times New Roman'; mso-bidi-theme-font: minor-bidi; mso-ansi-language: EN-US; mso-fareast-language: ZH-CN; mso-bidi-language: AR-SA">
+注3：更高的分划量有助于更高精度的配准，但会增加配准时间。</span></span></p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt">&nbsp;</p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt"><span><span style="FONT-SIZE: 12pt; FONT-FAMILY: 宋体; mso-bidi-font-size: 11.0pt; mso-bidi-font-family: 'Times New Roman'; mso-bidi-theme-font: minor-bidi; mso-ansi-language: EN-US; mso-fareast-language: ZH-CN; mso-bidi-language: AR-SA">
+注4：迭代步长右侧图标显示当前计算机内存状态，单击可获得当前可用内存量及内存总量。</span></span></p>
 </blockquote>
+</blockquote>
+</blockquote>
+
 <p align="left"><font size="+2"><strong> 二、配准范围</strong></font></p>
 <p align="left"> <img src="1_3_5%9.bmp" alt=""></p>
 <p align="left"> 输入需要配准的范围(帧)并确定，切片语法与MATLAB命令行保持一致。</p>

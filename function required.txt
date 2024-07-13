@@ -302,13 +302,15 @@ V2.1        Wuneng               悟能
   |     |- [Fix Bugs] fix TCREG&local registration with coarse-args off throw exception
   |     |- [Fix Bugs] fix the long-term registration setting panel exception
   |     |- [Fix Bugs] fix read exception after data loading when mouse moving
-  |- V2.1.4     2024/
+  |- V2.1.4     2024/7/
+  |     |- [Update] TODO: long-term registration supported on "distributed mode"
   |     |- [Update] TODO: replace MaskMovie with regmask member function: maskby
   |     |- [Update] TODO: improve TUE object
   |     |- [Update] TODO: new task manager function introduced
   |     |- [Update] TODO: add <local tracking> to signal estimator for better estimation
   |     |- [Update] TODO: less memory using Z-projection when "distributed" mode
   |     |- [Fix Bugs] TODO: fix the progress bar bug under 3D view
+  |     |- [Fix Bugs] TODO: fix LUT range bug when view from 3D -> 2D
   |- V2.1.5     2024/
   |     |- [Update] TODO: multiply connected region generator combination in Register App
   |     |- [Update] TODO: improve long-term local registration to large deformation
