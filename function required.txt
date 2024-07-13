@@ -311,6 +311,7 @@ V2.1        Wuneng               悟能
   |     |- [Update] TODO: less memory using Z-projection when "distributed" mode
   |     |- [Fix Bugs] TODO: fix the progress bar bug under 3D view
   |     |- [Fix Bugs] TODO: fix LUT range bug when view from 3D -> 2D
+  |     |- [Fix Bugs] fix BugReporter initialization exception
   |- V2.1.5     2024/
   |     |- [Update] TODO: multiply connected region generator combination in Register App
   |     |- [Update] TODO: improve long-term local registration to large deformation

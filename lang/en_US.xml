@@ -70,8 +70,6 @@
     <CROP_Z>Thickness Cropping</CROP_Z>
     <CUBIC_HIGH_QUALITY>Cubic(High Quality)</CUBIC_HIGH_QUALITY>
     <CYAN>Cyan</CYAN>
-    <DATA_SELECTER>Data Selecter</DATA_SELECTER>
-    <DATA_TYPE>Data Type</DATA_TYPE>
     <DEVELOPING>Developing…</DEVELOPING>
     <DIAMOND_HAT>Diamond Hat</DIAMOND_HAT>
     <DILATE_FILTER>Dilate Filter</DILATE_FILTER>
@@ -452,7 +450,6 @@
     <VALIDATE_UPDATE>Validate update…</VALIDATE_UPDATE>
     <VARIABLE_LOADED>Variable loaded</VARIABLE_LOADED>
     <VERTICAL>Vertical</VERTICAL>
-    <VIDEO_DATA>Video Data</VIDEO_DATA>
     <VOLUME>Volume</VOLUME>
     <VOLUME_VIEWER>Volume Viewer</VOLUME_VIEWER>
     <WAITING>waiting</WAITING>
