@@ -34,7 +34,7 @@ classdef regchain < handle
 
         function r = get.ChainInfo(this)
             r = struct("data", this.tbl_chain, ...
-                       "info", this.regtpl);
+                       "info", {this.regtpl});
         end
     end
 
