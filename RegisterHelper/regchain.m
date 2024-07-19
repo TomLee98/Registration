@@ -326,7 +326,7 @@ classdef regchain < handle
                     fvol_proc = preproc_tc(fvol, dfsize);
                     mvol_proc = preproc_tc(mvol, dfsize);
 
-                    [ptf, ~] = imregcoarse(mvol_proc, fvol_proc, rs, zs_max);
+                    [ptf, ~] = imregcoarse(mvol_proc, fvol_proc, rs, true, zs_max);
 
                     % do fine registration: imregtform base on intensity
                     ptf = imregtform(mvol, rref, fvol, rref, "affine", ...

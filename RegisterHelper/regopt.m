@@ -10,41 +10,45 @@ classdef regopt
 
         % ============= one/two channel(s) common properties ==============
         reg_modal       (1,1) string {mustBeMember(reg_modal, ["multimodal", "monomodal"])} = "monomodal"
-        area_mask       (1,1) logical = false
-        tform_type      (1,1) string {mustBeMember(tform_type, ["translation","rigid","affine"])} = "translation"
         step_max        (1,1) double {mustBePositive} = 1e-1
         step_min        (1,1) double {mustBePositive} = 1e-4
-        coarse_alg      (1,1) string {mustBeMember(coarse_alg, ["mmt","pcorr","fpp","none"])} = "mmt"
-        coarse_args     (1,1) struct = struct("Operator", "SIFT", "QT", 0.0133, "NumOctave", 3)
         gl_itn_max      (1,1) double {mustBePositive, mustBeInteger} = 50
-        lo_itn_max      (1,:) double {mustBePositive, mustBeInteger} = 100
-        iter_coeff      (1,1) double {mustBeInRange(iter_coeff, 0, 1)} = 0.5
-        afs             (1,1) double {mustBeInRange(afs, 0.5, 3)} = 1.0
-        vpl             (1,1) double {mustBePositive, mustBeInteger} = 3
         gl_interp       (1,1) string {mustBeMember(gl_interp, ["linear","cubic"])} = "linear"
-        lo_interp       (1,1) string {mustBeMember(lo_interp, ["linear","cubic"])} = "linear"
-        mfilter         (1,3) double {mustBeNonnegative, mustBeInteger} = [3,3,3]
-        dfilter         (1,3) double {mustBeInteger} = [3,115,1000]
-        dfilter_enh     (1,1) logical = false
-        gfilter         (1,3) double {mustBeNonnegative, mustBeInteger} = [3,3,3]
-        gamma           (1,1) double {mustBeInRange(gamma, 0, 4)} = 1.0
+        iter_coeff      (1,1) double {mustBeInRange(iter_coeff, 0, 1)} = 0.5
+        vpl             (1,1) double {mustBePositive, mustBeInteger} = 3
         zopt_shift_max  (1,1) double {mustBeNonnegative} = 2
         zopt_tol        (1,1) double {mustBeInRange(zopt_tol, 0, 1)} = 1e-3
+        strc_chl        (1,1) string {mustBeMember(strc_chl, ["r","g","b",""])} = ""
+        func_chl        (1,1) string {mustBeMember(func_chl, ["r","g","b",""])} = ""
 
         % ================== one channel unique properties ================
-        region_lbl      (1,1) string {mustBeMember(region_lbl, ["ORN","PN","LN","KC","MBON"])} = "ORN"
-        ocstdobj_th     (1,1) double {mustBeInRange(ocstdobj_th, 0, 5)} = 2.0
-        ocscale_th      (1,1) double {mustBeNonnegative} = 3.0
-        grid_unit       (1,1) string {mustBeMember(grid_unit, ["auto","1 1 1","2 2 1","3 3 1","4 4 1"])} = "auto"
+        % for global:
+        oc_tform_type   (1,1) string {mustBeMember(oc_tform_type, ["translation","rigid","affine"])} = "translation"
+        oc_coarse_alg   (1,1) string {mustBeMember(oc_coarse_alg, ["mmt","pcorr","none"])} = "mmt"
+        oc_coarse_args  (1,1) struct = struct("Filter", "median", "VT", 1000, "Radius", 3)
+        oc_mfilter      (1,3) double {mustBeNonnegative, mustBeInteger} = [7,7,3]
+        oc_gfilter      (1,3) double {mustBeNonnegative, mustBeInteger} = [1,1,1]
 
         % ================ two channels unique properties ================
+        % [global]:
+        tc_tform_type   (1,1) string {mustBeMember(tc_tform_type, ["translation","rigid","affine"])} = "translation"
+        tc_coarse_alg   (1,1) string {mustBeMember(tc_coarse_alg, ["mmt","pcorr","fpp","none"])} = "mmt"
+        tc_coarse_args  (1,1) struct = struct("Operator", "SIFT", "QT", 0.0133, "NumOctave", 3)
+        tc_mfilter         (1,3) double {mustBeNonnegative, mustBeInteger} = [3,3,3]
+        tc_gfilter         (1,3) double {mustBeNonnegative, mustBeInteger} = [3,3,3]
+        dfilter         (1,3) double {mustBeInteger} = [3,115,1000]
+        dfilter_enh     (1,1) logical = false
+        area_mask       (1,1) logical = false
+        gamma           (1,1) double {mustBeInRange(gamma, 0, 4)} = 1.0
+        ds              (1,1) string {mustBeMember(ds, ["auto","1X1","2X2","3X3"])} = "auto"
+        % [local]:
+        lo_itn_max      (1,:) double {mustBePositive, mustBeInteger} = 100
+        lo_afs             (1,1) double {mustBeInRange(lo_afs, 0.5, 3)} = 1.0
+        lo_interp       (1,1) string {mustBeMember(lo_interp, ["linear","cubic"])} = "linear"
         img_rehist      (1,1) logical = false
         repacc          (1,1) double {mustBeMember(repacc, [2048, 4096, 8192])} = 2048
         grid_regulation (1,1) double {mustBeInRange(grid_regulation, 0, 5)} = 0.11
         grid_spacing    (1,3) double {mustBePositive} = [4,4,4]
-        ds              (1,1) string {mustBeMember(ds, ["auto","1X1","2X2","3X3"])} = "auto"
-        strc_chl        (1,1) string {mustBeMember(strc_chl, ["r","g","b"])} = "r"
-        func_chl        (1,1) string {mustBeMember(func_chl, ["r","g","b"])} = "g"
 
         % ==================== longterm properties ======================
         lt_keyframes    (:,1) double {mustBePositive, mustBeInteger} = 1
@@ -152,60 +156,51 @@ classdef regopt
 
             % =========== not overloading parameters =============
             addParameter(p, 'RegModal',         this.reg_modal);
-            addParameter(p, 'AreaMask',         this.area_mask);
-            addParameter(p, 'MedianFilter',     this.mfilter);
-            addParameter(p, 'DilateFilter',     this.dfilter);
-            addParameter(p, 'DilateFilterEnh',  this.dfilter_enh);
-            addParameter(p, 'GaussianFilter',   this.gfilter);
+            
             addParameter(p, 'MaxZOptShift',     this.zopt_shift_max);
             addParameter(p, 'TolZOpt',          this.zopt_tol);
-            addParameter(p, 'CoarseAlg',        this.coarse_alg);
-            addParameter(p, 'CoarseArgs',       this.coarse_args);
             addParameter(p, 'VPL',              this.vpl);
-            addParameter(p, 'RL',               this.region_lbl);
-            addParameter(p, 'Gamma',            this.gamma);
-            addParameter(p, 'GridUnit',         this.grid_unit);
+            addParameter(p, 'DS',               this.ds);
             addParameter(p, 'SC',               this.strc_chl);
             addParameter(p, 'FC',               this.func_chl);
-            addParameter(p, 'Keyframes',        this.lt_keyframes);
-            addParameter(p, 'AutoKeyframe',     this.lt_autokey);
-            addParameter(p, 'AutoTemplate',     this.lt_autotpl);
-            addParameter(p, 'TGridMinMax',      this.lt_tgridminmax);
-            addParameter(p, 'RegChain',         this.lt_regchain);
 
             % =========== overloading parameters (shared name) ===========
             switch this.reg_alg
                 case "OCREG"
                     switch this.reg_mode
                         case "global"
-                            addParameter(p, 'TformType',    this.tform_type);
+                            addParameter(p, 'TformType',    this.oc_tform_type);
+                            addParameter(p, 'MedianFilter',     this.oc_mfilter);
+                            addParameter(p, 'GaussianFilter',   this.oc_gfilter);
                             addParameter(p, 'MaxStep',      this.step_max);
                             addParameter(p, 'MinStep',      this.step_min);
                             addParameter(p, 'MaxIterN',     this.gl_itn_max);
                             addParameter(p, 'IterCoeff',    this.iter_coeff);
                             addParameter(p, 'Interp',       this.gl_interp);
-                            addParameter(p, 'ThFG',         this.ocstdobj_th);
-                            addParameter(p, 'ThScale',      this.ocscale_th);
-                            addParameter(p, 'DS',           this.ds);
-                        case "local"
-                            addParameter(p, 'MaxIterN',     this.lo_itn_max);
-                            addParameter(p, 'AFS',          this.afs);
-                            addParameter(p, 'Interp',       this.lo_interp);
+                            addParameter(p, 'CoarseAlg',    this.oc_coarse_alg);
+                            addParameter(p, 'CoarseArgs',   this.oc_coarse_args);
                         otherwise
                     end
                 case "TCREG"
                     switch this.reg_mode
                         case "global"
-                            addParameter(p, 'TformType',    this.tform_type);
+                            addParameter(p, 'Gamma',        this.gamma);
+                            addParameter(p, 'MedianFilter',     this.tc_mfilter);
+                            addParameter(p, 'GaussianFilter',   this.tc_gfilter);
+                            addParameter(p, 'DilateFilter',     this.dfilter);
+                            addParameter(p, 'DilateFilterEnh',  this.dfilter_enh);
+                            addParameter(p, 'AreaMask',     this.area_mask);
+                            addParameter(p, 'TformType',    this.tc_tform_type);
                             addParameter(p, 'MaxStep',      this.step_max);
                             addParameter(p, 'MinStep',      this.step_min);
                             addParameter(p, 'MaxIterN',     this.gl_itn_max);
                             addParameter(p, 'IterCoeff',    this.iter_coeff);
                             addParameter(p, 'Interp',       this.gl_interp);
-                            addParameter(p, 'DS',           this.ds);
+                            addParameter(p, 'CoarseAlg',    this.tc_coarse_alg);
+                            addParameter(p, 'CoarseArgs',   this.tc_coarse_args);
                         case "local"
                             addParameter(p, 'MaxIterN',     this.lo_itn_max);
-                            addParameter(p, 'AFS',          this.afs);
+                            addParameter(p, 'AFS',          this.lo_afs);
                             addParameter(p, 'Interp',       this.lo_interp);
                             addParameter(p, 'ImageRehist',  this.img_rehist);
                             addParameter(p, 'RepAcc',       this.repacc);
@@ -228,8 +223,12 @@ classdef regopt
                     addParameter(p, 'MaxStep',      this.lt_step_max);
                     addParameter(p, 'MinStep',      this.lt_step_min);
                     addParameter(p, 'IterCoeff',    this.lt_iter_coeff);
-                    addParameter(p, 'DS',           this.ds);
                     addParameter(p, 'Interp',       this.lt_interp);
+                    addParameter(p, 'Keyframes',    this.lt_keyframes);
+                    addParameter(p, 'AutoKeyframe', this.lt_autokey);
+                    addParameter(p, 'AutoTemplate', this.lt_autotpl);
+                    addParameter(p, 'TGridMinMax',  this.lt_tgridminmax);
+                    addParameter(p, 'RegChain',     this.lt_regchain);
                 otherwise
             end
 
@@ -247,31 +246,24 @@ classdef regopt
                 case "OCREG"
                     switch this.reg_mode
                         case "global"
-                            r = struct("RegModal",  this.reg_modal, ...
-                                       "AreaMask",  this.area_mask, ...
-                                       "TformType", this.tform_type, ...
-                                       "MaxStep",   this.step_max, ...
-                                       "MinStep",   this.step_min, ...
-                                       "MaxIterN",  this.gl_itn_max, ...
-                                       "CoarseAlg", this.coarse_alg, ...
-                                       "CoarseArgs",this.coarse_args, ...
-                                       "IterCoeff", this.iter_coeff, ...
-                                       "VPL",       this.vpl, ...
-                                       "Interp",    this.gl_interp, ...
-                                       "RL",        this.region_lbl, ...
-                                       "Gamma",     this.gamma, ...
-                                       "ThFG",      this.ocstdobj_th, ...
-                                       "ThScale",   this.ocscale_th, ...
-                                       "Hardware",  this.hardware);
-                        case "local"
-                            r = struct("MaxIterN",  this.lo_itn_max, ...
-                                       "AFS",       this.afs, ...
-                                       "VPL",       this.vpl, ...
-                                       "Interp",    this.lo_interp, ...
-                                       "RL",        this.region_lbl, ...
-                                       "Gamma",     this.gamma, ...
-                                       "GridUnit",  this.grid_unit, ...
-                                       "Hardware",  this.hardware);
+                            r = struct("RegModal",      this.reg_modal, ...
+                                       "TformType",     this.oc_tform_type, ...
+                                       "GaussianFilter",this.oc_gfilter, ...
+                                       "MedianFilter",  this.oc_mfilter, ...
+                                       "MaxStep",       this.step_max, ...
+                                       "MinStep",       this.step_min, ...
+                                       "MaxIterN",      this.gl_itn_max, ...
+                                       "CoarseAlg",     this.oc_coarse_alg, ...
+                                       "CoarseArgs",    this.oc_coarse_args, ...
+                                       "MaxZOptShift",  this.zopt_shift_max, ...
+                                       "TolZOpt",       this.zopt_tol, ...
+                                       "IterCoeff",     this.iter_coeff, ...
+                                       "VPL",           this.vpl, ...
+                                       "Interp",        this.gl_interp, ...
+                                       "DS",            this.ds, ...
+                                       "SC",            this.strc_chl, ...
+                                       "FC",            this.func_chl, ...
+                                       "Hardware",      this.hardware);
                         otherwise
                     end
                 case "TCREG"
@@ -279,15 +271,15 @@ classdef regopt
                         case "global"
                             r = struct("RegModal",      this.reg_modal, ...
                                        "AreaMask",      this.area_mask, ...
-                                       "TformType",     this.tform_type, ...
-                                       "MedianFilter",  this.mfilter, ...
+                                       "TformType",     this.tc_tform_type, ...
+                                       "MedianFilter",  this.tc_mfilter, ...
+                                       "GaussianFilter",this.tc_gfilter, ...
                                        "DilateFilter",  this.dfilter, ...
                                        "DilateFilterEnh",this.dfilter_enh, ...
-                                       "GaussianFilter",this.gfilter, ...
                                        "MaxZOptShift",  this.zopt_shift_max, ...
                                        "TolZOpt",       this.zopt_tol, ...
-                                       "CoarseAlg",     this.coarse_alg, ...
-                                       "CoarseArgs",    this.coarse_args, ...
+                                       "CoarseAlg",     this.tc_coarse_alg, ...
+                                       "CoarseArgs",    this.tc_coarse_args, ...
                                        "Gamma",         this.gamma, ...
                                        "MaxStep",       this.step_max, ...
                                        "MinStep",       this.step_min, ...
@@ -301,7 +293,7 @@ classdef regopt
                                        "Hardware",      this.hardware);
                         case "local"
                             r = struct("MaxIterN",      this.lo_itn_max, ...
-                                       "AFS",           this.afs, ...
+                                       "AFS",           this.lo_afs, ...
                                        "GR",            this.grid_regulation, ...
                                        "GS",            this.grid_spacing, ...
                                        "VPL",           this.vpl, ...
@@ -354,28 +346,22 @@ classdef regopt
                     switch this.reg_mode
                         case "global"
                             this.reg_modal = r_.RegModal;
-                            this.area_mask = r_.AreaMask;
-                            this.tform_type = r_.TformType;
+                            this.oc_tform_type = r_.TformType;
+                            this.oc_mfilter = r_.MedianFilter;
+                            this.oc_gfilter = r_.GaussianFilter;
+                            this.zopt_shift_max = r_.MaxZOptShift;
+                            this.zopt_tol = r_.TolZOpt;
                             this.step_max = r_.MaxStep;
                             this.step_min = r_.MinStep;
-                            this.coarse_alg = r_.CoarseAlg;
-                            this.coarse_args = r_.CoarseArgs;
+                            this.oc_coarse_alg = r_.CoarseAlg;
+                            this.oc_coarse_args = r_.CoarseArgs;
                             this.gl_itn_max = r_.MaxIterN;
                             this.iter_coeff = r_.IterCoeff;
                             this.vpl = r_.VPL;
                             this.gl_interp = r_.Interp;
-                            this.region_lbl = r_.RL;
-                            this.gamma = r_.Gamma;
-                            this.ocstdobj_th = r_.ThFG;
-                            this.ocscale_th = r_.ThScale;
-                        case "local"
-                            this.lo_itn_max = r_.MaxIterN;
-                            this.afs = r_.AFS;
-                            this.vpl = r_.VPL;
-                            this.lo_interp = r_.Interp;
-                            this.region_lbl = r_.RL;
-                            this.gamma = r_.Gamma;
-                            this.grid_unit = r_.GridUnit;
+                            this.ds = r_.DS;
+                            this.strc_chl = r_.SC;
+                            this.func_chl = r_.FC;
                         otherwise
                     end
                 case "TCREG"
@@ -383,15 +369,15 @@ classdef regopt
                         case "global"
                             this.reg_modal = r_.RegModal;
                             this.area_mask = r_.AreaMask;
-                            this.tform_type = r_.TformType;
-                            this.mfilter = r_.MedianFilter;
+                            this.tc_tform_type = r_.TformType;
+                            this.tc_mfilter = r_.MedianFilter;
                             this.dfilter = r_.DilateFilter;
                             this.dfilter_enh = r_.DilateFilterEnh;
-                            this.gfilter = r_.GaussianFilter;
+                            this.tc_gfilter = r_.GaussianFilter;
                             this.zopt_shift_max = r_.MaxZOptShift;
                             this.zopt_tol = r_.TolZOpt;
-                            this.coarse_alg = r_.CoarseAlg;
-                            this.coarse_args = r_.CoarseArgs;
+                            this.tc_coarse_alg = r_.CoarseAlg;
+                            this.tc_coarse_args = r_.CoarseArgs;
                             this.gamma = r_.Gamma;
                             this.step_max = r_.MaxStep;
                             this.step_min = r_.MinStep;
@@ -404,7 +390,7 @@ classdef regopt
                             this.func_chl = r_.FC;
                         case "local"
                             this.lo_itn_max = r_.MaxIterN;
-                            this.afs = r_.AFS;
+                            this.lo_afs = r_.AFS;
                             this.grid_regulation = r_.GR;
                             this.grid_spacing = r_.GS;
                             this.vpl = r_.VPL;

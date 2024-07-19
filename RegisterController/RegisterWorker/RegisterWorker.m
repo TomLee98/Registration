@@ -1,5 +1,5 @@
 classdef RegisterWorker < handle
-    %REGWORKER This class defines rigister worker, which accept the a Task
+    %REGWORKER This class defines register worker, which accept the a Task
     % comes from TaskManager object and finish it
     
     properties(Access = private, Hidden)

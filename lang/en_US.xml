@@ -97,6 +97,7 @@
     <END>End</END>
     <ENHANCEMENT>Enhancement</ENHANCEMENT>
     <EQUIVALENT_RADIUS>Equivalent Radius</EQUIVALENT_RADIUS>
+    <ERODE_RADIUS>Erode Radius</ERODE_RADIUS>
     <ERROR>Error</ERROR>
     <EXCLUSIVE>Exclusive</EXCLUSIVE>
     <EXCLUSIVE_WARNING>You are currently running in distributed mode. Exclusive mode may cause MATLAB to crash. Continue?</EXCLUSIVE_WARNING>
@@ -116,7 +117,8 @@
     <FEEDBACK_SUCCESS>Problem feedback successfully!</FEEDBACK_SUCCESS>
     <FILE>Files</FILE>
     <FILE_LOADING_COMPLETE>File loading completed:</FILE_LOADING_COMPLETE>
-    <FINISH_UPDATE>The download is complete, please close the program to complete the update</FINISH_UPDATE>
+    <FILTER>Filter</FILTER>
+    <FINISH_UPDATE>The download is complete, please restart the Reg3D app to complete the update</FINISH_UPDATE>
     <FIT>Fit</FIT>
     <FIXED>Fixed</FIXED>
     <FIXED_BACKGROUND>Fixed Background</FIXED_BACKGROUND>
@@ -452,6 +454,7 @@
     <VERTICAL>Vertical</VERTICAL>
     <VOLUME>Volume</VOLUME>
     <VOLUME_VIEWER>Volume Viewer</VOLUME_VIEWER>
+    <VOLUMETRIC_THRESHOLD>Volumetric Threshold</VOLUMETRIC_THRESHOLD>
     <WAITING>waiting</WAITING>
     <WARNING>Warning</WARNING>
     <WELCOME>Welcome to Reg3D App</WELCOME>
@@ -468,6 +471,7 @@
     <YELLOW>Yellow</YELLOW>
     <YES>Yes</YES>
     <Z_CROPPED>Z cropping complete</Z_CROPPED>
+    <Z_DIRECTION_RESOLUTION>Z Resolution</Z_DIRECTION_RESOLUTION>
     <Z_OPTIMAL_TOL>Z Optimal Tolerance</Z_OPTIMAL_TOL>
     <Z_PROJECTION>Z Projection</Z_PROJECTION>
 </struct>

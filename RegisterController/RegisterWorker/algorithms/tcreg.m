@@ -108,7 +108,7 @@ vpl = regopt.VPL;
 itpalg = regopt.Interp;
 
 parfor m = 1:numel(regfrs)
-    % downsampling on selected volume
+    % down sampling on selected volume
     avol_sc_m = avol_sc(:,:,:,m);
     avol_fc_m = avol_fc(:,:,:,m);
     [~, avol_sc_m_ds] = Resample(avol_sc_m, ds_scale);
@@ -121,7 +121,7 @@ parfor m = 1:numel(regfrs)
 
     % use imregcoarse for better initialized transformation
     % where the preprocess volumes are needed
-    [ptf, ~] = imregcoarse(avol_sc_m_ds_pp, refvol_ds_pp, res_ds, ...
+    ptf = imregcoarse(avol_sc_m_ds_pp, refvol_ds_pp, res_ds, true, ...
             max_shift_z, zopt_tol, coarse_alg, coarse_args);
 
     fival_sc = mean(avol_sc_m(:,[1,end],:),"all");
@@ -195,7 +195,7 @@ img_rehist = regopt.ImageRehist;
 repacc = regopt.RepAcc;
 
 parfor m = 1:numel(regfrs)
-    % downsampling  on selected volume
+    % down sampling  on selected volume
     avol_sc_m = avol_sc(:,:,:,m);
     avol_fc_m = avol_fc(:,:,:,m);
 
@@ -266,7 +266,7 @@ img_rehist = regopt.ImageRehist;
 repacc = regopt.RepAcc;
 
 parfor m = 1:numel(regfrs)
-    % downsampling  on selected volume
+    % down sampling  on selected volume
     avol_sc_m = avol_sc(:,:,:,m);
     avol_fc_m = avol_fc(:,:,:,m);
 

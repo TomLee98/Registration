@@ -7,7 +7,6 @@ function tform = imregmc(moving, fixed, Rf)
 %   - Rf: 1-by-1 imref2d object, as reference coordinate system
 % Output:
 %   - tform: 1-by-1 transltform2d object
-%
 
 arguments
     moving  (:,:)   uint16
@@ -21,9 +20,12 @@ if any(size(moving)~=size(fixed))
 end
 
 [ny, nx] = size(fixed);
+
+% on structured channel, omit local fluorescence mutation
 mfixed = sum(fixed, "all");
 mmoving = sum(moving, "all");
 
+% calculate mass center
 mc_ref_x = sum((1:nx).*sum(fixed, 1))/(mfixed+eps);
 mc_ref_y = sum((1:ny)'.*sum(fixed, 2))/(mfixed+eps);
 

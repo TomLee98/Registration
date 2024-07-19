@@ -1,6 +1,6 @@
 classdef scalebar < handle
     %SCALEBAR This class define a scale bar object, which could push in
-    % uifigure containter
+    % uifigure container
 
     properties(Constant, Hidden)
         DRAW_SUCCESS = 0
@@ -46,6 +46,7 @@ classdef scalebar < handle
             %SCALEBAR A Constructor
             this.scale = struct("xr",[], ...
                                 "yr",[], ...
+                                "zr",[], ...
                                 "unit","um");
             this.sbar = struct("xlen",10, ...
                                "ylen",10, ...
@@ -234,6 +235,7 @@ classdef scalebar < handle
             this.imheight = metadata.height;
             this.scale.xr = metadata.xRes;
             this.scale.yr = metadata.yRes;
+            this.scale.zr = metadata.zRes;
             this.sbar.xlen = min(this.sbar.xlen, 0.5*metadata.width*metadata.xRes);
             this.sbar.ylen = min(this.sbar.ylen, 0.5*metadata.height*metadata.yRes);
             this.sbar.sy = metadata.height - this.sbar.sx;
@@ -322,13 +324,14 @@ end
 
 function mustBeScale(A)
 fields = fieldnames(A);
-if ~isempty(setxor(fields, ["xr","yr","unit"]))
+if ~isempty(setxor(fields, ["xr","yr","zr","unit"]))
     throw(MException("mustBeScale:invalidArguments", ...
         "Invalid scale structure."));
 end
 
 validateattributes(A.xr, "double", {'positive','scalar'});
 validateattributes(A.yr, "double", {'positive','scalar'});
+validateattributes(A.zr, "double", {'positive','scalar'});
 validateattributes(A.unit, "string", {'scalar'});
 end
 

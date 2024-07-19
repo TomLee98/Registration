@@ -1,8 +1,8 @@
 classdef mpimg < matlab.mixin.Copyable
-    %MEMMAPPER This is memmepfile interface defination
-    % which is considered as handle class, as same as matfile class but more
+    %MEMMAPPER This is memmepfile interface definition
+    % which is considered as handle class, as same as mat-file class but more
     % fast when mapped file is not big enough(<20GB)
-    % TODO: increasement IO for low memory using 
+    % TODO: increment IO for low memory using 
 
     properties(Constant, Hidden)
         BYTES_UINT8 = 1
@@ -300,7 +300,7 @@ classdef mpimg < matlab.mixin.Copyable
                     % generate the crop expression
                     expr = this.gen_expstr(cr, tr, "v");
 
-                    % simple modifing
+                    % simple modifying
                     eval(expr);
             end
         end
@@ -377,7 +377,7 @@ classdef mpimg < matlab.mixin.Copyable
             r = isempty(this.memptr);
         end
 
-        % destructer
+        % destructor
         function delete(this)
             free(this);
 
@@ -587,7 +587,7 @@ classdef mpimg < matlab.mixin.Copyable
             % find temporal dimension and generate extraction prompt
             sz_ = repmat({':'}, 1, this.DataDims);
             locT = ("T"==this.DimOrder);
-            % TODO: locT matches this.Data dimensio order?
+            % TODO: locT matches this.Data dimension order?
             sz_{locT} = ['1',':', string(this.DataSize(locT)).char()];
 
             % range splitter for blocked data saving
@@ -622,9 +622,9 @@ classdef mpimg < matlab.mixin.Copyable
         end
 
         function concat(this, data_)
-            % this function concatnate the data on the last dimension,
+            % this function concatenate the data on the last dimension,
             % which requires the compatible data size
-            % Note that: concatnate is self operation for avoiding IO overhead
+            % Note that: concatenate is self operation for avoiding IO overhead
 
             sz_ = size(data_);
 
@@ -635,7 +635,7 @@ classdef mpimg < matlab.mixin.Copyable
                     "Data dimensionality is not compatible."));
             end
 
-            % validate size compability
+            % validate size compatibility
             if (numel(sz_)==numel(this.dimorder) && any(sz_(1:end-1)~=this.DataSize(1:end-1))) ...
                     || (numel(sz_)==numel(this.dimorder)-1 && any(sz_~=this.DataSize(1:end-1)))
                 throw(MException("mpimg:concatnate:invalidUse", ...
@@ -665,7 +665,7 @@ classdef mpimg < matlab.mixin.Copyable
                 throwAsCaller(ME);
             end
 
-            % update and relink the new file
+            % update and re-link the new file
             if numel(sz_) == numel(this.dimorder) - 1
                 nb = 1;
             else
@@ -730,7 +730,7 @@ classdef mpimg < matlab.mixin.Copyable
             %   - numhistory: 1-by-1 positive integer, the number of operation history
             %                   list, for space estimation
             % output:
-            %   - tf: 1-by-1 string, the temprory folder
+            %   - tf: 1-by-1 string, the temporary folder
             arguments
                 volopt_      (1,12)  table
                 numhistory_  (1,1)   double {mustBeNonnegative, mustBeInteger} = 0
@@ -756,7 +756,7 @@ classdef mpimg < matlab.mixin.Copyable
                     disk_table.is_local(p) = is_local_disk(files_(p));
                 end
 
-                % find the maximum diskpart as temporary root
+                % find the maximum disk part as temporary root
                 vp = disk_table.readable & disk_table.writable ...
                     & disk_table.is_local;
                 disk_table = disk_table(vp, :);
@@ -836,7 +836,7 @@ end
 
 % ===================== utility function ==========================
 function nbs = range_splitter(s, bsz)
-% This function help to split the range string as numblock setting
+% This function help to split the range string as number-block setting
 % Input:
 %   - s: the sliced indices indicator string, like "1:20" or "1,3,5,7,8" etc
 %   - bsz: 1-by-1 positive integer, the splitted block size

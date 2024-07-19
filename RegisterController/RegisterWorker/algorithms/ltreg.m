@@ -43,7 +43,7 @@ end
 avol_sc = grv(movsrc_, fmode, regopt_.SC);
 avol_fc = grv(movsrc_, fmode, regopt_.FC);
 
-% 3. generate reference object and downsampling reference object
+% 3. generate reference object and down sampling reference object
 rs = [movsrc_.MetaData.xRes, movsrc_.MetaData.yRes, movsrc_.MetaData.zRes];
 rs_ds = [movsrc_.MetaData.xRes/ds_scale, ...
           movsrc_.MetaData.yRes/ds_scale, ...
@@ -76,7 +76,7 @@ parfor m = 1:numel(regfrs_)
     kvs_par = kvs{ids(m)}; %#ok<PFBNS>
     tfs_par = tfs{ids(m)}; %#ok<PFBNS>
 
-    % STEP 1: downsampling and run localized registration to keyframe
+    % STEP 1: down sampling and run localized registration to key frame
     % selected volume
     avol_sc_m = avol_sc(:,:,:,m);
     avol_fc_m = avol_fc(:,:,:,m);
@@ -84,7 +84,7 @@ parfor m = 1:numel(regfrs_)
     fival_sc = mean(avol_sc_m(:,[1,end],:),"all");
     fival_fc =  mean(avol_fc_m(:,[1,end],:),"all");
 
-    % preprocessing for robust registration
+    % preprocess for robust registration
     avol_sc_proc_m = preproc_tc(avol_sc_m, dfsize);   % dilate filter for robust estimation
     kvs_par = preproc_tc(kvs_par, dfsize);
 
@@ -93,10 +93,10 @@ parfor m = 1:numel(regfrs_)
 
     % use imregcoarse for better initialized transformation
     % where the preprocess volumes are needed
-    [ptf, ~] = imregcoarse(avol_sc_m_ds, kvol_m_ds, rs_ds, ...
+    ptf = imregcoarse(avol_sc_m_ds, kvol_m_ds, rs_ds, true, ...
             max_shift_z);
 
-    % do fine registration, align to keyframe
+    % do fine registration, align to key frame
     ptf = imregtform(avol_sc_m_ds, rref_ds, kvol_m_ds, rref_ds, "affine", ...
         optimizer, metric, "PyramidLevels",vpl, "InitialTransformation",ptf);
 

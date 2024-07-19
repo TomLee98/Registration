@@ -1,15 +1,20 @@
-function tf_est = imregopzr(moving, fixed, rsFixed, shift_max, tol, calg, cargs)
+function tf_est = imregopzr(moving, fixed, rsFixed, sc_flag, shift_max, tol, calg, cargs)
 %IMREGOPZR This function use imregcorr and z optimization for transformation
 % estimation
 % Input:
-%   - moving:
-%   - fixed:
-%   - rsFixed:
-%   - tfType: 
-%   - shift_max:
-%   - tol:
-%   - calg: 
-%   - cargs:
+%   - moving: m-by-n-by-p uint16 moving volume
+%   - fixed: m-by-n-by-p uint16 reference volume
+%   - rsFixed: 1-by-3 array, [x,y,z] coordinate resolution, unit as um/pix
+%   - sc_flag: 1-by-1 logical, indicate if channel is structured channel,
+%              true as default
+%   - shift_max: 1-by-1 double, max shift at z direction, unit as pixel, 
+%               2 as default
+%   - tol: 1-by-1 double, z shift optimal tolerance, 1e-3 as default
+%   - calg: 1-by-1 string, must be in set ["mmt","pcorr","fpp","none"],
+%           "mmt" as default
+%   - cargs: 1-by-1 struct, with coarse registration parameters, which
+%           are ["Operator","QT","NumOctave"] at dual-channels mode and
+%               ["Filter", "VT", "Radius"] as one channel mode
 % Output:
 %   - tf_est: 1-by-1 transltform3d object
 %
@@ -19,6 +24,7 @@ arguments
     moving      (:,:,:) uint16
     fixed       (:,:,:) uint16
     rsFixed     (1,3)   double      % [x,y,z] coordinate resolution, unit as um/pix
+    sc_flag     (1,1)   logical = true
     shift_max   (1,1)   double {mustBeNonnegative} = 2
     tol         (1,1)   double {mustBeInRange(tol, 0, 1)} = 1e-3
     calg        (1,1)   string {mustBeMember(calg, ["mmt","pcorr","fpp"])} = "mmt"
@@ -59,9 +65,15 @@ switch calg
     case "mmt"
         % use imregmmt1 for robust shift estimation, only if one
         % predominant in the scene could be best
-        ref_img = ref_img - fi_val;     % remove background for little objects better estimation
-        mov_img = mov_img - fi_val;
-        tf0 = imregmc(mov_img, ref_img, rref);
+        if sc_flag == true
+            ref_img = ref_img - fi_val;     % remove background for little objects better estimation
+            mov_img = mov_img - fi_val;
+            tf0 = imregmc(mov_img, ref_img, rref);
+        else
+            % just return the transltform3d object
+            tf_est = imregmc3(moving, fixed, rref3d, cargs);
+            return;
+        end
     case "pcorr"
         % use imregcorr for robust shift estimation, which is
         % useful when there are high contrast scene

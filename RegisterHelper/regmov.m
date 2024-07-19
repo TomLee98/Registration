@@ -7,6 +7,7 @@ classdef regmov < matlab.mixin.Copyable
         BYTES_UINT16 = 2
         BYTES_UINT32 = 4
         BYTES_UINT64 = 8
+        INNER_BLOCK_SIZE = 50
     end
 
     properties(Access=private, Hidden)
@@ -157,7 +158,32 @@ classdef regmov < matlab.mixin.Copyable
                         "Movie does not have dimension: 'Z'."));
                 end
 
-                r = Projection(this.mptr.Data, this.zprojalg, pz);
+                rsp_t = repmat({':'}, 1, this.mptr.DataDims);
+                rsp_tnz = repmat({':'}, 1, this.mptr.DataDims-1);
+                [~, tloc] = ismember("T", this.mopt.dimOrder);
+                [~, zloc] = ismember("Z", this.mopt.dimOrder);
+
+                % partial loading and calculating
+                block_n = ceil(this.mopt.frames/this.INNER_BLOCK_SIZE);
+                mov_sz_zproj = this.mptr.DataSize;
+                mov_sz_zproj(zloc) = [];
+                r = zeros(mov_sz_zproj, this.mptr.DataType);
+                
+                tic;
+                % slow 40% than exclude typically
+                for nb = 1:block_n
+                    vidx = ((nb-1)*this.INNER_BLOCK_SIZE+1):min(...
+                        nb*this.INNER_BLOCK_SIZE, this.mopt.frames);
+                    rsp_t{tloc} = vidx;
+                    rsp_tnz{tloc-(tloc>zloc)} = vidx;
+
+                    data = subsref(this.mptr.Data, struct('type','()','subs',{rsp_t}));
+
+                    dr = Projection(data, this.zprojalg, pz);
+
+                    r = subsasgn(r, struct('type','()','subs',{rsp_tnz}), dr);
+                end
+                toc;
             elseif isnumeric(this.mptr)
                 [vz, pz] = ismember("Z", this.mopt.dimOrder);
                 if ~vz
@@ -165,7 +191,9 @@ classdef regmov < matlab.mixin.Copyable
                         "Movie does not have dimension: 'Z'."));
                 end
 
+                tic;
                 r = Projection(this.mptr, this.zprojalg, pz);
+                toc;
             end
         end
 
@@ -232,7 +260,7 @@ classdef regmov < matlab.mixin.Copyable
         end
 
         function r = get.EMin(this)
-            % use random resample for quick and better lower bound 
+            % use random re-sample for quick and better lower bound 
             % estimation
 
             r = zeros([1, this.MetaData.channels]);
@@ -256,7 +284,7 @@ classdef regmov < matlab.mixin.Copyable
         end
 
         function r = get.EMax(this)
-            % use frame sortted resample for quick and better upper
+            % use frame sorted re-sample for quick and better upper
             % bound estimation
 
             r = zeros([1, this.MetaData.channels]);
@@ -265,12 +293,12 @@ classdef regmov < matlab.mixin.Copyable
 
             % modify the color channel indices
             for k = 1:numel(r)
-                r(k) = max(this.Movie(:,:,k,:,floc), [], "all");
+                r(k) = max(this.Movie(:,:,k,:,floc), [], "all");    % dimensionality unsafe
             end
         end
 
         function r = get.EMedian(this)
-            % use frame sortted resample for quick and better median
+            % use frame sorted re-sample for quick and better median
             % estimation
 
             r = zeros([1, this.MetaData.channels]);
@@ -279,20 +307,57 @@ classdef regmov < matlab.mixin.Copyable
 
             % modify the color channel indices
             for k = 1:numel(r)
-                r(k) = median(this.Movie(:,:,k,:,floc),"all");
+                r(k) = median(this.Movie(:,:,k,:,floc),"all");      % dimensionality unsafe
             end
         end
 
         function r = get.MC(this)
             % this function get the mass center of each volume, 
             % r as t-by-3-by-c array, with [x,y,z]
-            if ismember(class(this.mptr), ["mpimg", "mpimgs"])
-                % TODO: 
-            elseif isnumeric(this.mptr)
-                [~, ct_loc] = ismember(["C","T"], this.mopt.dimOrder);
-                dimsum = setdiff(1:numel(this.mopt.dimOrder), ct_loc);
-                rsp = repmat({1}, 1, numel(this.mopt.dimOrder));
 
+            [~, ctloc] = ismember(["C","T"], this.mopt.dimOrder);
+            dimsum = setdiff(1:numel(this.mopt.dimOrder), ctloc);
+            rsp = repmat({1}, 1, numel(this.mopt.dimOrder));
+
+            if ismember(class(this.mptr), ["mpimg", "mpimgs"])
+                % note that mpimg as low level abstract of image, no reason
+                % to support mass-center
+                % we calculate mass center of volumes and concatenate them
+                xloc = find("X"==this.mopt.dimOrder); ny = this.mptr.DataSize(xloc);
+                yloc = find("Y"==this.mopt.dimOrder); nx = this.mptr.DataSize(yloc);
+                zloc = find("Z"==this.mopt.dimOrder); nz = this.mptr.DataSize(zloc);
+                rsp_x = rsp; rsp_x{yloc} = [];  xgrid = reshape(1:nx, rsp_x{:});
+                rsp_y = rsp; rsp_y{xloc} = [];  ygrid = reshape(1:ny, rsp_y{:});
+                rsp_z = rsp; rsp_z{zloc} = [];  zgrid = reshape(1:nz, rsp_z{:});
+                mc_ref_x = zeros(2, this.mopt.frames);
+                mc_ref_y = zeros(2, this.mopt.frames);
+                mc_ref_z = zeros(2, this.mopt.frames);
+                
+                cloc = ctloc(1); tloc = ctloc(2);
+                rsp_t = repmat({':'}, 1, this.mptr.DataDims);
+                rsp_c = rsp; rsp_c{cloc} = []; cgrid = uint16(reshape(this.Background, rsp_c{:}));
+
+                % partial loading and calculating
+                block_n = ceil(this.mopt.frames/this.INNER_BLOCK_SIZE);
+                
+                % slow 40% than exclude typically
+                for nb = 1:block_n
+                    vidx = ((nb-1)*this.INNER_BLOCK_SIZE+1):min(...
+                        nb*this.INNER_BLOCK_SIZE, this.mopt.frames);
+                    rsp_t{tloc} = vidx;
+
+                    data = subsref(this.mptr.Data, struct('type','()','subs',{rsp_t}));
+                    pixval_tot = double(squeeze(sum(data-cgrid, dimsum)));
+
+                    % calculate mass center
+                    mc_ref_x(:, vidx) = reshape(sum(xgrid.*sum(data-cgrid, [xloc,zloc]), yloc), ...
+                        [this.mptr.DataSize(ctloc(1)), numel(vidx)])./(pixval_tot+eps);
+                    mc_ref_y(:, vidx) = reshape(sum(ygrid.*sum(data-cgrid, [yloc,zloc]), xloc), ...
+                        [this.mptr.DataSize(ctloc(1)), numel(vidx)])./(pixval_tot+eps);
+                    mc_ref_z(:, vidx) = reshape(sum(zgrid.*sum(data-cgrid, [xloc,yloc]), zloc), ...
+                        [this.mptr.DataSize(ctloc(1)), numel(vidx)])./(pixval_tot+eps);
+                end
+            elseif isnumeric(this.mptr)
                 % get X,Y,Z dimension location and generate grid
                 xloc = find("X"==this.mopt.dimOrder); ny = size(this.mptr, xloc);
                 yloc = find("Y"==this.mopt.dimOrder); nx = size(this.mptr, yloc);
@@ -300,20 +365,20 @@ classdef regmov < matlab.mixin.Copyable
                 rsp_x = rsp; rsp_x{yloc} = [];  xgrid = reshape(1:nx, rsp_x{:});
                 rsp_y = rsp; rsp_y{xloc} = [];  ygrid = reshape(1:ny, rsp_y{:});
                 rsp_z = rsp; rsp_z{zloc} = [];  zgrid = reshape(1:nz, rsp_z{:});
-                rsp_c = rsp; rsp_c{ct_loc(1)} = []; cgrid = uint16(reshape(this.Background, rsp_c{:}));
+                rsp_c = rsp; rsp_c{ctloc(1)} = []; cgrid = uint16(reshape(this.Background, rsp_c{:}));
                 pixval_tot = double(squeeze(sum(this.mptr-cgrid, dimsum)));
+                pixval_tot = reshape(pixval_tot, numel(cgrid), []);
 
                 % calculate mass center
                 mc_ref_x = reshape(sum(xgrid.*sum(this.mptr-cgrid, [xloc,zloc]), yloc), ...
-                    size(this.mptr, ct_loc))./(pixval_tot+eps);
+                    size(this.mptr, ctloc))./(pixval_tot+eps);
                 mc_ref_y = reshape(sum(ygrid.*sum(this.mptr-cgrid, [yloc,zloc]), xloc), ...
-                    size(this.mptr, ct_loc))./(pixval_tot+eps);
+                    size(this.mptr, ctloc))./(pixval_tot+eps);
                 mc_ref_z = reshape(sum(zgrid.*sum(this.mptr-cgrid, [xloc,yloc]), zloc), ...
-                    size(this.mptr, ct_loc))./(pixval_tot+eps);
-
-                r = permute(cat(3, mc_ref_x, mc_ref_y, mc_ref_z), [2,3,1]);
+                 size(this.mptr, ctloc))./(pixval_tot+eps);
             end
-            
+
+            r = permute(cat(3, mc_ref_x, mc_ref_y, mc_ref_z), [2,3,1]);
         end
     end
 
