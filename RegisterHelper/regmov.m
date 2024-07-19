@@ -169,8 +169,7 @@ classdef regmov < matlab.mixin.Copyable
                 mov_sz_zproj(zloc) = [];
                 r = zeros(mov_sz_zproj, this.mptr.DataType);
                 
-                tic;
-                % slow 40% than exclude typically
+                % slow 50% than exclude typically
                 for nb = 1:block_n
                     vidx = ((nb-1)*this.INNER_BLOCK_SIZE+1):min(...
                         nb*this.INNER_BLOCK_SIZE, this.mopt.frames);
@@ -183,7 +182,7 @@ classdef regmov < matlab.mixin.Copyable
 
                     r = subsasgn(r, struct('type','()','subs',{rsp_tnz}), dr);
                 end
-                toc;
+
             elseif isnumeric(this.mptr)
                 [vz, pz] = ismember("Z", this.mopt.dimOrder);
                 if ~vz
@@ -191,9 +190,7 @@ classdef regmov < matlab.mixin.Copyable
                         "Movie does not have dimension: 'Z'."));
                 end
 
-                tic;
                 r = Projection(this.mptr, this.zprojalg, pz);
-                toc;
             end
         end
 

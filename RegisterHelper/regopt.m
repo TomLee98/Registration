@@ -155,14 +155,13 @@ classdef regopt
             p.StructExpand = false;     % allow struct as parameter
 
             % =========== not overloading parameters =============
-            addParameter(p, 'RegModal',         this.reg_modal);
-            
-            addParameter(p, 'MaxZOptShift',     this.zopt_shift_max);
-            addParameter(p, 'TolZOpt',          this.zopt_tol);
-            addParameter(p, 'VPL',              this.vpl);
-            addParameter(p, 'DS',               this.ds);
-            addParameter(p, 'SC',               this.strc_chl);
-            addParameter(p, 'FC',               this.func_chl);
+            addParameter(p, 'RegModal',     this.reg_modal);
+            addParameter(p, 'MaxZOptShift', this.zopt_shift_max);
+            addParameter(p, 'TolZOpt',      this.zopt_tol);
+            addParameter(p, 'VPL',          this.vpl);
+            addParameter(p, 'DS',           this.ds);
+            addParameter(p, 'SC',           this.strc_chl);
+            addParameter(p, 'FC',           this.func_chl);
 
             % =========== overloading parameters (shared name) ===========
             switch this.reg_alg
@@ -229,6 +228,7 @@ classdef regopt
                     addParameter(p, 'AutoTemplate', this.lt_autotpl);
                     addParameter(p, 'TGridMinMax',  this.lt_tgridminmax);
                     addParameter(p, 'RegChain',     this.lt_regchain);
+                    addParameter(p, 'DilateFilter', this.dfilter);
                 otherwise
             end
 

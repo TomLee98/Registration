@@ -190,18 +190,18 @@ V2.0        Wukong              悟空
   |     |- [Fix Bugs] fix some bugs because different path formats in PC and UNIX
   |     |- [Note] long-term(large deformation) mode is offline
   |     |- [Note] one channel registration is offline
-  |- V2.0.1     2024/2/21   22:20
+  |- V2.0.1     2024/02/21   22:20
   |     |- [Update] add gamma value to TCREG for contrast correction
   |     |- [Update] add Z shift limitation to TCREG
   |     |- [Update] remove Z shift iteration maximum number
-  |- V2.0.2     2024/2/22   21:50
+  |- V2.0.2     2024/02/22   21:50
   |     |- [Update] optimize TCREG multi-step fine tuning
   |     |- [Update] add reference volume preview key 'V' on TCREG
   |     |- [Fix Bugs] fix TCREG local mode registration bug 
   |     |- [Fix Bugs] fix progress bar extend bug
-  |- v2.0.3     2024/2/23   15:50
+  |- v2.0.3     2024/02/23   15:50
   |     |- [Fix Bugs] fix MANREG algorithm bug & kernel bug
-  |- V2.0.4     2024/2/24   22:00
+  |- V2.0.4     2024/02/24   22:00
   |     |- [Update] optimize the registration range setting: stay the last setting when dialog open
   |     |- [Update] auto configurate the python interpreter
   |     |- [Update] optimize little frames registration
@@ -211,7 +211,7 @@ V2.0        Wukong              悟空
   |     |- [Update] Remove the possible priority changing by user
   |     |- [Fix Bugs] fix tif file saving bug
   |     |- [Fix Bugs] fix VPL synchronize bug when data slices cropped 
-  |- V2.0.5     2024/2/25   22:00
+  |- V2.0.5     2024/02/25   22:00
   |     |- [Update] enable coarse registration algorithm selection
   |     |- [Update] add manual python interpreter setting
   |     |- [Update] add 'affine' transformation to MANREG
@@ -219,7 +219,7 @@ V2.0        Wukong              悟空
   |     |- [Update] new help document for version 2.0.5
   |     |- [Fix Bugs] fix MANREG registration on ZX/YZ view
   |     |- [Fix Bugs] using explicit regmov object 'delete' to increase memory security
-  |- V2.0.6     2024/2/27   14:30
+  |- V2.0.6     2024/02/27   14:30
   |     |- [Update] optimize distributed mode <crop> memory allocated
   |     |- [Update] append time stamp on slice viewer title
   |     |- [Update] optimize background auto remove speed
@@ -227,7 +227,7 @@ V2.0        Wukong              悟空
   |     |- [Fix Bugs] auto updating current viewing frame when view source changed
   |     |- [Fix Bugs] <background removing> refresh bug when new data loading
   |     |- [Fix Bugs] template structured and functional channel refreshing bug
-  |- V2.0.7     2024/3/2    0:00
+  |- V2.0.7     2024/03/2    0:00
   |     |- [Update] introduce the 'point pairs alignment' for coarse registration
   |     |- [Update] optimize viewer behaviour that looks like NIS Viewer
   |     |- [Update] optimize the image title location for avoiding screen blink
@@ -235,7 +235,7 @@ V2.0        Wukong              悟空
   |     |- [Update] introduce three update channels, 'UFO' for preview channel,
   |     |           'rocket' for release channel, and 'bug' for debug channel
   |     |- [Fix Bugs] fix the crop bug when Reg3D at 'distributed' mode
-  |- V2.0.8     2024/3/5    14:00
+  |- V2.0.8     2024/03/5    14:00
   |     |- [Update] optimize 'mass center' coarse registration
   |     |- [Update] optimize 'Exclusive' mode gpu allocating rules
   |     |- [Update] optimize <merge channel> behaviour
@@ -246,12 +246,12 @@ V2.0        Wukong              悟空
   |     |- [Fix Bugs] fix the leak of memory bug after cropping
   |     |- [Fix Bugs] fix rigid transformation bug in MANREG
   |     |- [Fix Bugs] fix RSTC panel initializing bug
-  |- V2.0.9     2024/3/7    13:00
+  |- V2.0.9     2024/03/7    13:00
   |     |- [Update] optimize <Flip Horizontal>, <Flip Vertical> memory allocating
   |     |- [Update] add reference volume export key 'E' on RSTC panel
   |     |- [Update] fix <crop Z> inner bug
   |     |- [Fix Bugs] fix imregmc bug when there is all zero in moving
-  |- V2.0.10    2024/3/20   23:30
+  |- V2.0.10    2024/03/20   23:30
   |     |- [Update] add <multiply connected domain -> load>
   |     |- [Update] add signal estimator for initial signal extraction
   |     |- [Update] optimize the mask operation
@@ -259,18 +259,18 @@ V2.0        Wukong              悟空
   |     |- [Fix Bugs] the scale bar access bug
   |     |- [Fix Bugs] fix the background recycle behaviour for disk capacity saving
   |     |- [Fix Bugs] fix the frames cropping bug when modify the table item manually
-  |- V2.0.11    2024/3/28   13:00
+  |- V2.0.11    2024/03/28   13:00
   |     |- [Update] modify the log screen behaviour
   |     |- [Fix Bugs] fix the data dimension bug when loading .ims file
   #     #
 
 V2.1        Wuneng               悟能
-  |- V2.1.0     2024/4/1    0:00
+  |- V2.1.0     2024/04/01    0:00
   |     |- [Update] 'Ctrl+Tab' on main panel for changing view source
   |     |- [Update] add manual transformation matrix configuration on 'TCREG'->'manreg'
   |     |- [Fix Bugs] fix multi-user running bugs
   |     |- [Fix Bugs] fix the version display bug when sub version >= 9
-  |- V2.1.1     2024/4/17    11:00
+  |- V2.1.1     2024/04/17    11:00
   |     |- [Update] add <auto erode filter>: optimize region number and size automatically
   |     |- [Update] add <uitimate erode> point pairs for coarse registration
   |     |- [Update] new help document for version 2.1.x
@@ -280,14 +280,14 @@ V2.1        Wuneng               悟能
   |     |- [Note] Platform Validation: Windows 10/11/Ubuntu 20.04 + MATLAB R2022b~R2024a
   |     |- [Note] Remove compatibility design for MATLAB R2022a or lower version, including
   |     |           imregfpp, imregmc
-  |- V2.1.2     2024/5/19    22:30
+  |- V2.1.2     2024/05/19    22:30
   |     |- [Update] optimize tooltip for multi-language support
   |     |- [Update] remove <uitimate erode> algorithm, will come back with DL algorithm
   |     |- [Update] optimize context menu: add 90 degrees rotation
   |     |- [Fix Bugs] fix the bug that 'channel alignment' bad behaviour
   |     |- [Fix Bugs] fix z-projection checked after new loading bug
   |     |- [Note] memory overflow exception when loading multiple times on linux platform
-  |- V2.1.3     2024/7/12     23:30
+  |- V2.1.3     2024/07/12     23:30
   |     |- [Update] improve long-term global registration to large deformation
   |     |- [Update] new viewing mode in contextMenu: view mode: 2D or 3D
   |     |- [Update] new B&C adjuster UI, intensity display limits are supported
@@ -302,22 +302,23 @@ V2.1        Wuneng               悟能
   |     |- [Fix Bugs] fix TCREG&local registration with coarse-args off throw exception
   |     |- [Fix Bugs] fix the long-term registration setting panel exception
   |     |- [Fix Bugs] fix read exception after data loading when mouse moving
-  |- V2.1.4     2024/7/20
+  |- V2.1.4     2024/07/19     21:00
   |     |- [Update] long-term registration supported on "distributed mode"
   |     |- [Update] single channel registration Global/MGlobal supported
   |     |- [Update] remove manual registration support on older than R2022b platform
-  |     |- [Update] TODO: less memory using Z-projection when "distributed" mode
-  |     |- [Update] Z-zoom on 3D view
+  |     |- [Update] less memory using Z-projection when "distributed" mode
+  |     |- [Update] Z-zoom on 3D view by modifying resolution in scale bar setting
   |     |- [Fix Bugs] fix the progress bar bad scaling under 3D view
   |     |- [Fix Bugs] fix BugReporter initialization exception
   |     |- [Fix Bugs] fix the long-term registration bug under 'exclusive' mode
   |     |- [Fix Bugs] fix R2024a tiff fast loading bug
   |- V2.1.5     2024/
-  |     |- [Update] TODO: improve TUE object
+  |     |- [Update] TODO: improve TUE object of local TCREG and LTREG 
   |     |- [Update] TODO: new task manager function introduced
   |     |- [Update] TODO: add <local tracking> to signal estimator for better estimation
 
   |- V2.1.6     2024/
+  |     |- [Update] TODO: improve TUE object of OCREG 
   |     |- [Update] TODO: multiply connected region generator combination in Register App
   |     |- [Update] TODO: replace MaskMovie with regmask member function: maskby
 
