@@ -7,9 +7,9 @@ function data = loadims(file, opts, tspan, turbo)
 %   - turbo: 1-by-1 logical, use external library for fast loading
 % Output:
 %   - info: struct with {opts, rt}, where opts is 1-by-12 metadata table,
-%     rt is n-by-1 nonnegtive double time array
+%     rt is n-by-1 nonnegative double time array
 %
-% where you can pass the time span as tspan for continous time cut
+% where you can pass the time span as tspan for continuous time cut
 
 arguments
     file    (1,1)   string

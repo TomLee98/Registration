@@ -6,9 +6,9 @@ function data = loadnd2(file, opts, tspan, turbo)
 %   - tspan: 1-by-2 positive integer array, [start, end] of frame indices
 %   - turbo: 1-by-1 logical, use external library for fast loading
 % Output:
-%   - data: ndimension matlab array
+%   - data: n dimension MATLAB array
 %
-% where you can pass the time span as tspan for continous time cut
+% where you can pass the time span as tspan for continuous time cut
 
 arguments
     file    (1,1)   string

@@ -1,5 +1,5 @@
 function info = loadmeta_bf(file)
-%LOADMETA_BF This funciton load the metadata by using package bfmatlab
+%LOADMETA_BF This function load the metadata by using package bfmatlab
 % Input:
 %   - file: 1-by-1 string or char array, image file path
 % Output:
@@ -37,7 +37,7 @@ end
 
 switch lower(ext)
     case ".tif"
-        % Ask the user to input necessary imformation
+        % Ask the user to input necessary information
         prompt = {'Enter the z scan thickness(\mum):',...
             'Enter the binning size:',...
             'Enter total optical magnification:',...
@@ -90,7 +90,7 @@ opts = table(width,...          % #pixel
             yRes,...            % μm/pixel
             zRes,...            % μm/layer z
             dataType,...        % uint8, uint16, single
-            dimOrder,...        % dimention order array
+            dimOrder,...        % dimension order array
             cOrder);            % color channel order
 
 rt = get_real_time(r, ext);
@@ -108,7 +108,7 @@ switch lower(ext)
         for k = 0:cc-1
             cinfo = info_bf.getChannelColor(0,k);
             % some format there is no color channel information such as
-            % tiff file exported from fiji
+            % tiff file exported from Fiji
             if isempty(cinfo)
                 disp("The channel order not found. Manual inputs are required.");
                 cn = info_bf.getPixelsSizeC(0).getValue(); % color channels number
@@ -147,7 +147,7 @@ switch lower(ext)
         for k = 0:cc-1
             cinfo = info_bf.getChannelColor(0,k);
             % some format there is no color channel information such as
-            % tiff file exported from fiji
+            % tiff file exported from Fiji
             if isempty(cinfo)
                 r = "";
                 return;
