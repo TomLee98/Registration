@@ -264,7 +264,7 @@ V2.0        Wukong              悟空
   |     |- [Fix Bugs] fix the data dimension bug when loading .ims file
   #     #
 
-V2.1        Wuneng               悟能
+V2.1        Wuneng              悟能
   |- V2.1.0     2024/04/01    0:00
   |     |- [Update] 'Ctrl+Tab' on main panel for changing view source
   |     |- [Update] add manual transformation matrix configuration on 'TCREG'->'manreg'
@@ -314,7 +314,7 @@ V2.1        Wuneng               悟能
   |     |- [Fix Bugs] fix R2024a tiff fast loading bug
   |- V2.1.5     2024/07/28
   |     |- [Update] TODO: add hdf5 file support for ImageJ(Fiji), etc.
-  |     |- [Update] TODO: improve TUE object of local TCREG and LTREG 
+  |     |- [Update] TODO: improve TUE object of local TCREG and LTREG
   |     |- [Update] TODO: new task manager function introduced
   |- V2.1.6     2024/
   |     |- [Update] TODO: improve TUE object of OCREG 
@@ -324,15 +324,14 @@ V2.1        Wuneng               悟能
   |     |- [Update] TODO: add <local tracking> to signal estimator for better estimation
 
 
-
-V2.2        Wujing               悟净             
+V2.2        Wujing              悟净             
   |- V2.2.0     2024/
   |     |- [Update] TODO: registration history manager
   |- V2.2.1     2024/
   |     |- [Update] TODO: new task manager function introduced
 
 
-V2.3        Xuanzang              玄奘
+V2.3        Xuanzang            玄奘
   |- V2.3.0     2024/
   |     |- [Update] TODO: memory mapping low level optimal(mpimgs class design)
   |     |- [Update] TODO: new movie exporter object for better movie export operation(parpool)
@@ -345,7 +344,110 @@ V2.3        Xuanzang              玄奘
   |     |- [Update] TODO: task batch mode, multi-movies registration 
 
 
+V2.4        Guanyin             观音
+  |- V2.4.0     2024/
+  |     |
+
+
+V2.6        Laojun              老君
+  |- V2.6.0     2024/
+  |     |
+
+
+V2.7        Rulai               如来
+  |- V2.7.0     2024/
+  |     |
+
+
+
 ====================Important Architecture Update =========================
-  |- V3.0   Galileo             伽利略
+V3.0        Archimedes          阿基米德
+  |- V3.0.0     2025/
+  |
+  |
+
+
+V3.1        Galileo             伽利略
+  |- V3.1.0     2025/
   |     |- [Update] TODO: external hardware accelerate support
   |     |- [Update] TODO: registration by using deep learning algorithm
+
+
+V3.2        Descartes           笛卡尔
+  |- V3.2.0     2025/
+  |
+  |
+
+
+V3.3        Newton              牛顿
+  |- V3.3.0     2025/
+  |
+  |
+
+
+V3.4        Watt                瓦特
+  |- V3.4.0     2025/
+  |
+  |
+
+
+V3.5        Maxwell             麦克斯韦
+  |- V3.5.0     2025/
+  |
+  |
+
+
+V3.6        Tesla               特斯拉
+  |- V3.6.0     2025/
+  |
+  |
+
+
+V3.7        Einstein            爱因斯坦
+  |- V3.7.0     2025/
+  |
+  |
+
+
+V3.8        Planck              普朗克
+  |- V3.8.0     2025/
+  |
+  |
+
+
+V3.9        Feynman             费曼
+  |- V3.9.0    2025/
+  |
+  |
+
+
+V3.10       Witten              威腾
+  |- V3.10.0    2025/
+  |
+  |
+
+
+====================Important Architecture Update =========================
+V4.0        Darwin              达尔文
+  |- V4.0.0     2026/
+  |
+  |
+
+
+V4.1        Morgan              摩尔根
+  |- 4.1.0      2026/
+  |
+  |
+
+
+V4.2        Crick               克里克
+  |- V4.2.0     2026/
+  |
+  |
+
+
+V4.3        Huxley              赫胥黎
+  |- V4.3.0     2026/
+  |
+  |
+  #

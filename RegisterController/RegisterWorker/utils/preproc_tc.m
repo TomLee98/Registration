@@ -97,7 +97,8 @@ end
 
 % gaussian low pass filter for volume smooth, more robust
 if all(gfsize > 0)
-    vs = imgaussfilt3(vs, "FilterSize", gfsize, "Padding", "replicate");
+    vs = imgaussfilt3(vs, (gfsize-1)/4, "FilterSize", gfsize, ...
+        "Padding", "replicate");
 end
 end
 
