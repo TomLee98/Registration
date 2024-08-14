@@ -14,7 +14,7 @@ classdef regopt
         step_min        (1,1) double {mustBePositive} = 1e-4
         gl_itn_max      (1,1) double {mustBePositive, mustBeInteger} = 50
         gl_interp       (1,1) string {mustBeMember(gl_interp, ["linear","cubic"])} = "linear"
-        iter_coeff      (1,1) double {mustBeInRange(iter_coeff, 0, 1)} = 0.5
+        iter_coeff      (1,1) double {mustBePositive} = 0.5
         vpl             (1,1) double {mustBePositive, mustBeInteger} = 3
         zopt_shift_max  (1,1) double {mustBeNonnegative} = 2
         zopt_tol        (1,1) double {mustBeInRange(zopt_tol, 0, 1)} = 1e-3

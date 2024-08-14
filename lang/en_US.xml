@@ -149,6 +149,7 @@
     <GRID_SPACING>Grid Spacing</GRID_SPACING>
     <GRID_STEP>Grid Step</GRID_STEP>
     <GRID_UNIT_SIZE>Grid Unit Size</GRID_UNIT_SIZE>
+    <GROWTH_FACTOR>Growth Factor</GROWTH_FACTOR>
     <HAT_SIZE>Hat Size</HAT_SIZE>
     <HEIGHT>Height</HEIGHT>
     <HELP>Help</HELP>
@@ -227,6 +228,7 @@
     <MAX_DIVISION>Max Division</MAX_DIVISION>
     <MAX_ITERATION_N>Max Iteration Number</MAX_ITERATION_N>
     <MAX_ITERATION_STEP>Maximum Iteration Step</MAX_ITERATION_STEP>
+    <MAX_SEARCHING_RADIUS>Maximum Searching Radius</MAX_SEARCHING_RADIUS>
     <MAX_Z_PROJECTION>Maximum Z Projection</MAX_Z_PROJECTION>
     <MAX_Z_SHIFT>Maximum Z Shift</MAX_Z_SHIFT>
     <MEAN>Mean</MEAN>
@@ -243,6 +245,7 @@
     <MIN>Min</MIN>
     <MIN_DIVISION>Min Division</MIN_DIVISION>
     <MIN_ITERATION_STEP>Minimum Iteration Step</MIN_ITERATION_STEP>
+    <MIN_SEARCHING_RADIUS>Minimum Searching Radius</MIN_SEARCHING_RADIUS>
     <MIN_Z_PROJECTION>Minimum Z Projection</MIN_Z_PROJECTION>
     <MISSING_HELP>help.html file is missing</MISSING_HELP>
     <MISSING_PRIVACY>privacy html file is missing</MISSING_PRIVACY>

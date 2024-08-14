@@ -312,12 +312,14 @@ V2.1        Wuneng              悟能
   |     |- [Fix Bugs] fix BugReporter initialization exception
   |     |- [Fix Bugs] fix the long-term registration bug under 'exclusive' mode
   |     |- [Fix Bugs] fix R2024a tiff fast loading bug
-  |- V2.1.5     2024/07/28
+  |- V2.1.5     2024/08/
+  |     |- [Update] Optimize multimodal registration configuration
+  |     |- [Update] TODO: add one channel registration support to low autofluorescence
   |     |- [Update] TODO: add hdf5 file support for ImageJ(Fiji), etc.
   |     |- [Update] TODO: improve TUE object of local TCREG and LTREG
   |     |- [Update] TODO: new task manager function introduced
   |- V2.1.6     2024/
-  |     |- [Update] TODO: improve TUE object of OCREG 
+  |     |- [Update] TODO: improve TUE object of OCREG
   |     |- [Update] TODO: multiply connected region generator combination in Register App
   |     |- [Update] TODO: replace MaskMovie with regmask member function: maskby
   |- V2.1.7     2024/
@@ -344,19 +346,6 @@ V2.3        Xuanzang            玄奘
   |     |- [Update] TODO: task batch mode, multi-movies registration 
 
 
-V2.4        Guanyin             观音
-  |- V2.4.0     2024/
-  |     |
-
-
-V2.6        Laojun              老君
-  |- V2.6.0     2024/
-  |     |
-
-
-V2.7        Rulai               如来
-  |- V2.7.0     2024/
-  |     |
 
 
 
