@@ -315,9 +315,10 @@ V2.1        Wuneng              悟能
   |- V2.1.5     2024/09/
   |     |- [Update] Optimize multimodal registration configuration
   |     |- [Update] TODO: add one channel registration support to low autofluorescence
-  |     |- [Update] TODO: add hdf5 file support for ImageJ(Fiji), etc.
+  |     |- [Update] TODO: add 'urgent call back channel' for avoid some long-term bugs cause big trouble
   |     |- [Update] TODO: improve TUE object of local TCREG and LTREG
   |     |- [Update] TODO: new task manager function introduced
+  |     |- [Fix Bugs] fix the python environment conflit on server if MATLAB Version >= 2023b
   |- V2.1.6     2024/
   |     |- [Update] TODO: improve TUE object of OCREG
   |     |- [Update] TODO: multiply connected region generator combination in Register App
@@ -329,6 +330,8 @@ V2.1        Wuneng              悟能
 V2.2        Wujing              悟净             
   |- V2.2.0     2024/
   |     |- [Update] TODO: registration history manager
+  |     |- [Update] TODO: add hdf5 file support for ImageJ(Fiji), etc.
+  |     |- [Update] TODO: simplify the distributed task manager logic
   |- V2.2.1     2024/
   |     |- [Update] TODO: new task manager function introduced
 
