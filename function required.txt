@@ -314,8 +314,8 @@ V2.1        Wuneng              悟能
   |     |- [Fix Bugs] fix R2024a tiff fast loading bug
   |- V2.1.5     2024/09/
   |     |- [Update] Optimize multimodal registration configuration
+  |     |- [Update] add key word "urgent" in update information for avoid some long-term bugs
   |     |- [Update] TODO: add one channel registration support to low autofluorescence
-  |     |- [Update] TODO: add 'urgent call back channel' for avoid some long-term bugs cause big trouble
   |     |- [Update] TODO: improve TUE object of local TCREG and LTREG
   |     |- [Update] TODO: new task manager function introduced
   |     |- [Fix Bugs] fix the python environment conflit on server if MATLAB Version >= 2023b
@@ -334,6 +334,7 @@ V2.2        Wujing              悟净
   |     |- [Update] TODO: simplify the distributed task manager logic
   |- V2.2.1     2024/
   |     |- [Update] TODO: new task manager function introduced
+  |     |- [Update] TODO: nd2 file fast loading
 
 
 V2.3        Xuanzang            玄奘
