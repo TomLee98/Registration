@@ -104,7 +104,7 @@ iter_coeff = regopt.IterCoeff;
 max_itern = regopt.MaxIterN;
 max_shift_z = regopt.MaxZOptShift;
 zopt_tol = regopt.TolZOpt;
-vpl = regopt.VPL;
+vpl = regopt.glVPL;
 itpalg = regopt.Interp;
 
 parfor m = 1:numel(regfrs)
@@ -189,7 +189,11 @@ max_itern = regopt.MaxIterN;
 afs = regopt.AFS;
 gr = regopt.GR;
 gs = regopt.GS;
-vpl = regopt.VPL;
+if subalg == "usual"
+    vpl = regopt.dfVPL;
+elseif subalg == "advanced"
+    vpl = regopt.dmVPL;
+end
 itpalg = regopt.Interp;
 img_rehist = regopt.ImageRehist;
 repacc = regopt.RepAcc;
@@ -325,16 +329,16 @@ if ~ismember("Mode", fieldnames(A))
 end
 
 VALID_FIELD_PUBLIC = ["Mode", "SubAlgorithm", "SC", "FC", "Hardware", ...
-    "MaxIterN", "VPL", "Interp"];
+    "MaxIterN", "Interp"];
 
 switch A.Mode
     case "global"
         VALID_FIELD_PRIVATE = ["RegModal", "AreaMask", "MedianFilter", "GaussianFilter", ...
             "DilateFilter", "MaxZOptShift", "TolZOpt", "Gamma", "TformType", ...
             "MaxStep", "MinStep",  "IterCoeff", "DS", "CoarseAlg", "CoarseArgs",...
-            "DilateFilterEnh"];
+            "DilateFilterEnh", "glVPL"];
     case "local"
-        VALID_FIELD_PRIVATE = ["AFS", "GR", "GS", "ImageRehist", "RepAcc"];
+        VALID_FIELD_PRIVATE = ["dmVPL", "dfVPL", "AFS", "GR", "GS", "ImageRehist", "RepAcc"];
     otherwise
 end
 

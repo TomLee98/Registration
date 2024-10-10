@@ -221,6 +221,15 @@ classdef ImageReader < handle
                         catch
                             tf = false;
                         end
+                    elseif isunix()
+                        try
+                            if ~libisloaded('libNd2ReadSdk')
+                                [~, ~] = loadlibrary('libNd2ReadSdk', 'Nd2ReadSdk.h');
+                            end
+                            tf = true;
+                        catch
+                            tf = false;
+                        end
                     else
                         tf = false;
                     end

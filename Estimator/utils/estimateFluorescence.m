@@ -81,6 +81,10 @@ parfor n = 1:numel(comps)
     stats = regionprops3(bw_mask, "BoundingBox");
     % generate kernel which shape as BoundingBox
     bdbox = stats.BoundingBox; % (y,x,z)
+    if size(bdbox, 1)~=1
+        throw(MException("estimateFluorescence:invalidROIs", ...
+            "There are disconnected Domain ROIs with one label[%d].", n));
+    end
 
     switch kernel
         case "uniform"

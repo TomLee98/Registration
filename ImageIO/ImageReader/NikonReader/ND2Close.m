@@ -1,8 +1,14 @@
 function [] = ND2Close(FilePointer)
 
-    if exist('FilePointer','var')
-        calllib('Nd2ReadSdk', 'Lim_FileClose', FilePointer);
-    else
-    end
+if ispc()
+    libname = 'Nd2ReadSdk';
+elseif isunix()
+    libname = 'libNd2ReadSdk';
+end
+
+if exist('FilePointer','var')
+    calllib(libname, 'Lim_FileClose', FilePointer);
+end
+
 end
 
