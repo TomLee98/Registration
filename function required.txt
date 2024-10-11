@@ -312,7 +312,7 @@ V2.1        Wuneng              悟能
   |     |- [Fix Bugs] fix BugReporter initialization exception
   |     |- [Fix Bugs] fix the long-term registration bug under 'exclusive' mode
   |     |- [Fix Bugs] fix R2024a tiff fast loading bug
-  |- V2.1.5     2024/10/11
+  |- V2.1.5     2024/10/11      9:30
   |     |- [Update] Optimize multimodal registration configuration
   |     |- [Update] add key word "urgent" in update information for avoid some long-term bugs
   |     |- [Update] introduce advanced 'update information' display logic
