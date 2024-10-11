@@ -39,6 +39,8 @@ classdef ImageReader < handle
             end
             this.caller = caller_;
             this.mapflag = mapflag_;
+
+            warning('off', 'MATLAB:loadlibrary:cppoutput');
         end
 
         function r = get.Data(this)
@@ -61,6 +63,11 @@ classdef ImageReader < handle
             r = this.state;
         end
 
+        function delete(this)
+            warning('on', 'MATLAB:loadlibrary:cppoutput');
+
+            delete(this)
+        end
     end
 
     methods(Access=public)
