@@ -264,7 +264,11 @@ max_itern = regopt.MaxIterN;
 afs = regopt.AFS;
 gr = regopt.GR;
 gs = regopt.GS;
-vpl = regopt.VPL;
+if subalg == "usual"
+    vpl = regopt.dfVPL;
+elseif subalg == "advanced"
+    vpl = regopt.dmVPL;
+end
 itpalg = regopt.Interp;
 img_rehist = regopt.ImageRehist;
 repacc = regopt.RepAcc;
