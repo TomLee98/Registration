@@ -207,6 +207,8 @@ classdef regopt
                             addParameter(p, 'RepAcc',       this.repacc);
                             addParameter(p, 'GR',           this.grid_regulation);
                             addParameter(p, 'GS',           this.grid_spacing);
+                            addParameter(p, 'dmVPL',        this.dm_vpl);
+                            addParameter(p, 'dfVPL',        this.df_vpl);
                         otherwise
                     end
                 case "MANREG"
