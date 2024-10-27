@@ -319,34 +319,36 @@ V2.1        Wuneng              悟能
   |     |- [Update] add linux nd2 fast loading support
   |     |- [Update] optimize local registration parameters for imregdeform
   |     |- [Fix Bugs] fix the python environment conflit on server if MATLAB Version >= 2023b
-  |- V2.1.6     2024/09/
-  |     |- [Update] TODO: multiply connected region generator combination in Register App
+  |- V2.1.6     2024/11/03
+  |     |- [Update] TODO: introduce cellpose/morphology/manual segmentation (MCR Generator)
   |     |- [Update] TODO: replace MaskMovie with regmask member function: maskby
-  |- V2.1.7     2024/10/
+  |     |- [Fix Bugs] TODO: B&C intensity limit bug when Z-Projection on >=MATLAB R2023b
+  |     |- [Fix Bugs] TODO: RangeSlider no property 'Step' <= MATLAB R2023b
+  |- V2.1.7     2024/11/10
+  |     |- [Update] TODO: add point-cloud non-rigid registration based on CPD
   |     |- [Update] TODO: add <local tracking> to signal estimator for better estimation
   |     |- [Update] TODO: add English help
 
 
 V2.2        Wujing              悟净             
-  |- V2.2.0     2024/10/
+  |- V2.2.0     2024/11/24
   |     |- [Update] TODO: registration history manager
-  |     |- [Update] TODO: add hdf5 file support for ImageJ(Fiji), etc.
+  |- V2.2.1     2024/12/08
+  |     |- [Update] TODO: add hdf5 file support for ImageJ(Fiji).
+  |     |- [Update] TODO: add hdf5 file support for Dragonfly(LABVIEW format by RC Zhang).
+  |- V2.1.2     2024/12/22
   |     |- [Update] TODO: simplify the distributed task manager logic
-  |- V2.2.1     2024/11
   |     |- [Update] TODO: new task manager function introduced
-  |     |- [Update] TODO: nd2 file fast loading
+  |     |- [Update] 
 
 
 V2.3        Xuanzang            玄奘
-  |- V2.3.0     2024/11
+  |- V2.3.0     2024/12
   |     |- [Update] TODO: memory mapping low level optimal(mpimgs class design)
   |     |- [Update] TODO: new movie exporter object for better movie export operation(parpool)
   |     |- [Update] TODO: registration temporary saving
   |     |- [Update] TODO: inregdemons run in thread parpool
   |- V2.3.1     2024/12
-  |     |- [Update] TODO: add block tracking for multi-objects motion correction
-  |     |- 
-  |- V2.3.2     2024/12
   |     |- [Update] TODO: task batch mode, multi-movies registration 
 
 
@@ -362,7 +364,7 @@ V3.0        Archimedes          阿基米德
 
 V3.1        Galileo             伽利略
   |- V3.1.0     2025/
-  |     |- [Update] TODO: external hardware accelerate support
+  |     |- [Update] TODO: portable hardware accelerate support
   |     |- [Update] TODO: registration by using deep learning algorithm
 
 
