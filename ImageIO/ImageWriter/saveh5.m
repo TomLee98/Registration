@@ -11,7 +11,16 @@ function [status, path] = saveh5(file, mov, ch, tspan, metadata, turbo)
 %   - status: the return status, SAVE_SUCCESS = 0; SAVE_FAILED = -1;
 %   - path: the file saving folder
 %
-%   see also: bfsave
+%   see also: h5write
+
+arguments
+    file        (1,1)   string
+    mov         (1,1)   regmov
+    ch          (1,1)   string  {mustBeMember(ch, ["r","g","b"])}
+    tspan       (1,2)   double  {mustBePositive, mustBeInteger} %#ok<INUSA> fully save
+    metadata    (1,1)   struct
+    turbo       (1,1)   logical = true
+end
 
 status = 0;
 path = "";

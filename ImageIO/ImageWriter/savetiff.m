@@ -17,7 +17,7 @@ arguments
     file        (1,1)   string
     mov         (1,1)   regmov
     ch          (1,1)   string  {mustBeMember(ch, ["r","g","b"])}
-    tspan       (1,2)   double  {mustBePositive, mustBeInteger}
+    tspan       (1,2)   double  {mustBePositive, mustBeInteger} %#ok<INUSA> fully save
     metadata    (1,1)   struct
     turbo       (1,1)   logical = false
 end

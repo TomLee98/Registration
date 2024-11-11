@@ -319,7 +319,9 @@ V2.1        Wuneng              悟能
   |     |- [Update] add linux nd2 fast loading support
   |     |- [Update] optimize local registration parameters for imregdeform
   |     |- [Fix Bugs] fix the python environment conflit on server if MATLAB Version >= 2023b
-  |- V2.1.6     2024/11/03
+  |- V2.1.6     2024/11/04
+  |     |- [Update] h5 file read support (from Labview, ZhangRenchang)
+  |     |- [Update] TODO: use bandpass filter in expansion operator
   |     |- [Update] TODO: introduce cellpose/morphology/manual segmentation (MCR Generator)
   |     |- [Update] TODO: replace MaskMovie with regmask member function: maskby
   |     |- [Fix Bugs] TODO: B&C intensity limit bug when Z-Projection on >=MATLAB R2023b
@@ -358,9 +360,9 @@ V2.3        Xuanzang            玄奘
 ====================Important Architecture Update =========================
 V3.0        Archimedes          阿基米德
   |- V3.0.0     2025/
-  |
-  |
-
+  |     |- [Update] TODO: rename as NCIP (Neuron Calcium Imaging Processing)
+  |     |- [Update] TODO: refactor software, balance 'registration', 'segmentation'
+  |     |           and 'extraction' to the same position
 
 V3.1        Galileo             伽利略
   |- V3.1.0     2025/

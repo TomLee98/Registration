@@ -14,11 +14,28 @@ arguments
     file    (1,1)   string
     opts    (1,12)  table
     tspan   (1,2)   double  {mustBePositive, mustBeInteger}
-    turbo   (1,1)   logical = false
+    turbo   (1,1)   logical = true %#ok<INUSA>     % use built in support
 end
 
 file = char(file);
 
+% transform to slices span
+sspan = [(tspan(1)-1)*opts.slices, tspan(2)*opts.slices-1]; % start from 0
+tsspan = sspan + 1;     % start from 1
+tsspan = ceil((tsspan(1):tsspan(2))./opts.slices);
+csspan = ["/Data/Channel1/", "/Data/Channel2/"] + string((sspan(1):sspan(2))');
+
+% data shape as ["X","Y","Z","T","C"]
+data = zeros([opts.height, opts.width, opts.slices, diff(tspan)+1, 2], opts.dataType);
+
+% read channe1
+for c = 1:2
+    % read slices
+    for n = 1:size(csspan, 1)
+        %    X  Y        Z          T       C
+        data(:, :, sspan(1)+n, tsspan(n), c) = h5read(file, csspan(n,c));
+    end
+end
 
 end
 

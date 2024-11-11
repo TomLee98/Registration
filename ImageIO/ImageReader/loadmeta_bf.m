@@ -12,74 +12,98 @@ end
 
 [~, ~, ext] = fileparts(file);
 
-status = bfCheckJavaPath(1);
-assert(status, ['Missing Bio-Formats library. Either add bioformats_package.jar '...
-    'to the static Java path or add it to the Matlab path.']);
-bfInitLogging();
-r = bfGetReader(char(file), 0);
+if isequal(".hdf5", ext)
+    % the protocal by ZRC-LWH
+    % see also: h5 defination.txt
+    width = h5read(file, '/Metadata/ROIWidth');
+    height = h5read(file, '/Metadata/ROIHeight');
+    channels = 2;   % must be 2 in protocal
+    slices = h5read(file, '/Metadata/Slices');
+    frames = h5read(file, '/Metadata/Frames');
+    images = h5read(file, '/Metadata/Images');
+    xRes = h5read(file, '/Metadata/XResolution');
+    yRes = h5read(file, '/Metadata/YResolution');
+    zRes = h5read(file, '/Metadata/ZResolution');
+    dataType = sprintf("uint%d", h5read(file, 'Metadata/BitDepth'));    % only uint
+    dimOrder = ["X","Y","Z","T","C"];   % protocal independent, [sub - root]
+    cOrder = ["r", "g"];  % order must be "r","g"
 
-info_bf = r.getMetadataStore();
+    rt = get_h5real_time(file);
+else
+    % bfmatlab (bioformats) takes over
+    status = bfCheckJavaPath(1);
+    assert(status, ['Missing Bio-Formats library. Either add bioformats_package.jar '...
+        'to the static Java path or add it to the Matlab path.']);
+    bfInitLogging();
+    r = bfGetReader(char(file), 0);
 
-% extract the information
-width = info_bf.getPixelsSizeX(0).getValue();
-height = info_bf.getPixelsSizeY(0).getValue();
-channels = info_bf.getPixelsSizeC(0).getValue();
-slices = info_bf.getPixelsSizeZ(0).getValue();
-frames = info_bf.getPixelsSizeT(0).getValue();
-images = channels*slices*frames;
-dimOrder = string(split(info_bf.getPixelsDimensionOrder(0).getValue(),""));
-dimOrder = dimOrder(strlength(dimOrder)>0)';
-cOrder = get_channel_order(info_bf, ext);
-dataType = string(info_bf.getPixelsType(0).getValue());
-if dataType == "float"
-    dataType = "single";
+    info_bf = r.getMetadataStore();
+
+    % extract the information
+    width = info_bf.getPixelsSizeX(0).getValue();
+    height = info_bf.getPixelsSizeY(0).getValue();
+    channels = info_bf.getPixelsSizeC(0).getValue();
+    slices = info_bf.getPixelsSizeZ(0).getValue();
+    frames = info_bf.getPixelsSizeT(0).getValue();
+    images = channels*slices*frames;
+    dimOrder = string(split(info_bf.getPixelsDimensionOrder(0).getValue(),""));
+    dimOrder = dimOrder(strlength(dimOrder)>0)';
+    cOrder = get_channel_order(info_bf, ext);
+    dataType = string(info_bf.getPixelsType(0).getValue());
+    if dataType == "float"
+        dataType = "single";
+    end
+
+    switch lower(ext)
+        case ".tif"
+            % Ask the user to input necessary information
+            prompt = {'Enter the z scan thickness(\mum):',...
+                'Enter the binning size:',...
+                'Enter total optical magnification:',...
+                'Enter the camera pixel size(\mum):'};
+            dlgtitle = 'Microscope parameters setting';
+            dims = [1 40];
+            definput = {'1.5';'2';'60';'6.5'};
+            dlgopts.Interpreter = 'tex';
+            dlgout = inputdlg(prompt,dlgtitle,dims,definput,dlgopts);
+            if isempty(dlgout), dlgout = definput; end
+
+            % extract and calculate the X,Y resolution
+            zRes = str2double(dlgout{1});
+            binsz = str2double(dlgout{2});
+            tcom = str2double(dlgout{3});
+            cps = str2double(dlgout{4});
+
+            % since the camera physical pixel is square,
+            % and the binning size is also square
+            xRes = cps/tcom*binsz;
+            yRes = xRes;
+        case ".ims"
+            xRes = double(info_bf.getPixelsPhysicalSizeX(0).value);
+            yRes = double(info_bf.getPixelsPhysicalSizeY(0).value);
+            if slices ~= 1
+                zRes = double(info_bf.getPixelsPhysicalSizeZ(0).value) ...
+                    *(slices/(slices-1));
+            else
+                zRes = 0;   % only one plane, no resolution at z direction
+            end
+        case ".nd2"
+            xRes = double(info_bf.getPixelsPhysicalSizeX(0).value);
+            yRes = double(info_bf.getPixelsPhysicalSizeY(0).value);
+            if slices ~= 1
+                zRes = double(info_bf.getPixelsPhysicalSizeZ(0).value);
+            else
+                zRes = 0;   % only one plane, no resolution at z direction
+            end
+        otherwise
+    end
+
+    rt = get_real_time(r, ext);
+
+    r.close();
 end
 
-switch lower(ext)
-    case ".tif"
-        % Ask the user to input necessary information
-        prompt = {'Enter the z scan thickness(\mum):',...
-            'Enter the binning size:',...
-            'Enter total optical magnification:',...
-            'Enter the camera pixel size(\mum):'};
-        dlgtitle = 'Microscope parameters setting';
-        dims = [1 40];
-        definput = {'1.5';'2';'60';'6.5'};
-        dlgopts.Interpreter = 'tex';
-        dlgout = inputdlg(prompt,dlgtitle,dims,definput,dlgopts);
-        if isempty(dlgout), dlgout = definput; end
-
-        % extract and calculate the X,Y resolution
-        zRes = str2double(dlgout{1});
-        binsz = str2double(dlgout{2});
-        tcom = str2double(dlgout{3});
-        cps = str2double(dlgout{4});
-
-        % since the camera physical pixel is square,
-        % and the binning size is also square
-        xRes = cps/tcom*binsz;
-        yRes = xRes;
-    case ".ims"
-        xRes = double(info_bf.getPixelsPhysicalSizeX(0).value);
-        yRes = double(info_bf.getPixelsPhysicalSizeY(0).value);
-        if slices ~= 1
-            zRes = double(info_bf.getPixelsPhysicalSizeZ(0).value) ...
-                *(slices/(slices-1));
-        else
-            zRes = 0;   % only one plane, no resolution at z direction
-        end
-    case ".nd2"
-        xRes = double(info_bf.getPixelsPhysicalSizeX(0).value);
-        yRes = double(info_bf.getPixelsPhysicalSizeY(0).value);
-        if slices ~= 1
-            zRes = double(info_bf.getPixelsPhysicalSizeZ(0).value);
-        else
-            zRes = 0;   % only one plane, no resolution at z direction
-        end
-    otherwise
-
-end
-
+% options summary
 opts = table(width,...          % #pixel
             height,...          % #pixel
             channels,...        % #channels
@@ -92,10 +116,6 @@ opts = table(width,...          % #pixel
             dataType,...        % uint8, uint16, single
             dimOrder,...        % dimension order array
             cOrder);            % color channel order
-
-rt = get_real_time(r, ext);
-
-r.close();
 
 info = struct("opts", opts, "rt", rt);
 end
@@ -239,3 +259,26 @@ switch lower(ext)
     otherwise
 end
 end
+
+
+function t = get_h5real_time(file)
+% the protocal by ZRC-LWH
+% see also: h5 defination.txt
+
+% note: # time points = images
+time = h5read(file, '/Metadata/Time');
+
+% use median of each volume as time point
+frames = h5read(file, '/Meatadata/Frames');
+slices = h5read(file, '/Metadata/Slices');
+
+t = zeros(frames, 1);
+
+for n = 1:frames
+    t(n) = median(time((n-1)*slices+1:n*slices));
+end
+
+end
+
+
+

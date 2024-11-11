@@ -82,7 +82,8 @@ classdef ImageReader < handle
             if ~isfile(fname)
                 % uigetfile seletion
                 [dstfile, path] = uigetfile(...
-                    {'*.ims;*.nd2;*.tif','microscope volume files(*.ims,*.tif,*.nd2)'},...
+                    {'*.ims;*.nd2;*.tif;*.hdf5', ...
+                    'microscope volume files(*.ims,*.tif,*.nd2,*.hdf5)'},...
                     'volumes series selector');
                 if isequal(dstfile,0) || isequal(path,0)
                     this.state = "off";
@@ -241,9 +242,11 @@ classdef ImageReader < handle
                         tf = false;
                     end
                 case ".ims"
-                    tf = true;
+                    tf = true;  % ims library with builtin function
                 case ".tif"
                     tf = isPyReady();
+                case ".hdf5"
+                    tf = true;  % builtin h5 function
                 otherwise
             end
         end
