@@ -226,7 +226,8 @@ classdef ImageReader < handle
                                 [~, ~] = loadlibrary('Nd2ReadSdk', 'Nd2ReadSdk.h');
                             end
                             tf = true;
-                        catch
+                        catch ME
+                            warning("ImageLoader:libLoadFailed", "%s", ME.message);
                             tf = false;
                         end
                     elseif isunix()
