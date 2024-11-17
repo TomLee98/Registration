@@ -3,8 +3,9 @@ function [vs, rois] = preproc_tc(vs, dfsize, mfsize, gfsize, gamma, roiref)
 % Input:
 %   - vs: m-by-n-by-p array, the image volume
 %   - mfsize: 1-by-3 positive odd integer array, median filter size
-%   - dfsize: 1-by-3 array, the dilate filter size, with [radius(pix), 
-%             intensity threshold, volume size(pix) threshold]
+%   - dfsize: 1-by-4 array, the dilate filter size, with [radius(pix), ...
+%             lower intensity threshold, higher intenbsity threshold, ...
+%             volume size(pix) threshold]
 %   - gfsize: 1-by-3 positive odd integer array, gaussian filter size
 %   - gamma: 1-by-1 nonnegtive double, 0 - 2, 1 as default, gamma
 %         transformation coefficient(typical power transformation)
@@ -15,7 +16,7 @@ function [vs, rois] = preproc_tc(vs, dfsize, mfsize, gfsize, gamma, roiref)
 
 arguments
     vs 
-    dfsize  (1,3)   double {mustBeInteger} = [3,100,1000]                   % [r,iTh,vTh]
+    dfsize  (1,4)   double {mustBeInteger} = [3,100,65535,1000]             % [r,ilTh,iuTh,vTh]
     mfsize  (1,3)   double {mustBeInteger, mustBeNonnegative} = [3,3,3]     % [x,y,z]
     gfsize  (1,3)   double {mustBeInteger, mustBeNonnegative} = [3,3,1]     % [x,y,z]
     gamma   (1,1)   double {mustBeInRange(gamma, 0, 2)} = 1
@@ -45,13 +46,13 @@ if ~isempty(roiref)
     opf = @(x)whdist(x, roiref, vm);
     opts = optimoptions("ga", "PopulationSize",20, "MaxGenerations",5);
     dfsize = ga(opf, 2, [],[],[],[], lb,ub, [], [1,2], opts);
-    dfsize = double([dfsize(1), T*(vs_max-vs_min)+vs_min, dfsize(2)]);
+    dfsize = double([dfsize(1), T*(vs_max-vs_min)+vs_min, vs_max, dfsize(2)]);
 end
 
 if dfsize(1) > 0
     % create a mask with hard threshold
     if dfsize(2) >= 0
-        vs_mask = (vs >= dfsize(2));
+        vs_mask = (vs >= dfsize(2))&(vs <= dfsize(3));
     else
         vs_u8 = Remap(vs, "uint8");
         T = graythresh(vs_u8);
@@ -60,9 +61,9 @@ if dfsize(1) > 0
     % dilate the image s.t. finely chopped connected
     vs_mask = imdilate(vs_mask, strel("sphere", dfsize(1)));
 
-    if dfsize(3) >= 0
+    if dfsize(4) >= 0
         % remove connected domains whose volume are lower than vTh
-        vs_mask = bwareaopen(vs_mask, dfsize(3), 18);
+        vs_mask = bwareaopen(vs_mask, dfsize(4), 18);
     else
         % only keep the maximum volume object
         CC = bwconncomp(vs_mask, 18);

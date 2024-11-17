@@ -22,7 +22,7 @@ classdef regopt
         func_chl        (1,1) string {mustBeMember(func_chl, ["r","g","b",""])} = ""
 
         % ================== one channel unique properties ================
-        % for global:
+        % [global]:
         oc_tform_type   (1,1) string {mustBeMember(oc_tform_type, ["translation","rigid","affine"])} = "translation"
         oc_coarse_alg   (1,1) string {mustBeMember(oc_coarse_alg, ["mmt","pcorr","none"])} = "mmt"
         oc_coarse_args  (1,1) struct = struct("Filter", "median", "VT", 1000, "Radius", 3)
@@ -34,16 +34,16 @@ classdef regopt
         tc_tform_type   (1,1) string {mustBeMember(tc_tform_type, ["translation","rigid","affine"])} = "translation"
         tc_coarse_alg   (1,1) string {mustBeMember(tc_coarse_alg, ["mmt","pcorr","fpp","none"])} = "mmt"
         tc_coarse_args  (1,1) struct = struct("Operator", "SIFT", "QT", 0.0133, "NumOctave", 3)
-        tc_mfilter         (1,3) double {mustBeNonnegative, mustBeInteger} = [3,3,3]
-        tc_gfilter         (1,3) double {mustBeNonnegative, mustBeInteger} = [3,3,3]
-        dfilter         (1,3) double {mustBeInteger} = [3,115,1000]
+        tc_mfilter      (1,3) double {mustBeNonnegative, mustBeInteger} = [3,3,3]
+        tc_gfilter      (1,3) double {mustBeNonnegative, mustBeInteger} = [3,3,3]
+        dfilter         (1,4) double {mustBeInteger} = [3,115,65535,1000]
         dfilter_enh     (1,1) logical = false
         area_mask       (1,1) logical = false
         gamma           (1,1) double {mustBeInRange(gamma, 0, 4)} = 1.0
         ds              (1,1) string {mustBeMember(ds, ["auto","1X1","2X2","3X3"])} = "auto"
         % [local]:
         lo_itn_max      (1,:) double {mustBePositive, mustBeInteger} = 100
-        lo_afs             (1,1) double {mustBeInRange(lo_afs, 0.5, 3)} = 1.0
+        lo_afs          (1,1) double {mustBeInRange(lo_afs, 0.5, 3)} = 1.0
         lo_interp       (1,1) string {mustBeMember(lo_interp, ["linear","cubic"])} = "linear"
         img_rehist      (1,1) logical = false
         dm_vpl          (1,1) double {mustBePositive, mustBeInteger} = 3    % vpl for imregdemons

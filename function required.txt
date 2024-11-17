@@ -319,15 +319,16 @@ V2.1        Wuneng              悟能
   |     |- [Update] add linux nd2 fast loading support
   |     |- [Update] optimize local registration parameters for imregdeform
   |     |- [Fix Bugs] fix the python environment conflit on server if MATLAB Version >= 2023b
-  |- V2.1.6     2024/11/04
+  |- V2.1.6     2024/11/17
   |     |- [Update] h5 file read support (from Labview, ZhangRenchang)
   |     |- [Update] TODO: use bandpass filter in expansion operator
-  |     |- [Update] TODO: introduce cellpose/morphology/manual segmentation (MCR Generator)
-  |     |- [Update] TODO: replace MaskMovie with regmask member function: maskby
   |     |- [Fix Bugs] TODO: B&C intensity limit bug when Z-Projection on >=MATLAB R2023b
-  |     |- [Fix Bugs] TODO: RangeSlider no property 'Step' <= MATLAB R2023b
-  |- V2.1.7     2024/11/10
+  |- V2.1.7     2024/11/
+  |     |- [Update] TODO: introduce cellpose/morphology/manual segmentation (MCR Generator)
   |     |- [Update] TODO: add point-cloud non-rigid registration based on CPD
+  |     |- [Fix Bugs] TODO: RangeSlider no property 'Step' <= MATLAB R2023b
+  |- V2.1.8     2024/12/
+  |     |- [Update] TODO: replace MaskMovie with regmask member function: maskby
   |     |- [Update] TODO: add <local tracking> to signal estimator for better estimation
   |     |- [Update] TODO: add English help
 
