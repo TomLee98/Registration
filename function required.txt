@@ -327,6 +327,7 @@ V2.1        Wuneng              悟能
   |- V2.1.7     2024/11/
   |     |- [Update] TODO: introduce cellpose/morphology/manual segmentation (MCR Generator)
   |     |- [Update] TODO: add point-cloud non-rigid registration based on CPD
+  |     |- [Fix Bugs] fix regmov class destructor lost
   |- V2.1.8     2024/12/
   |     |- [Update] TODO: replace MaskMovie with regmask member function: maskby
   |     |- [Update] TODO: add <local tracking> to signal estimator for better estimation

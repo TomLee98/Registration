@@ -426,6 +426,7 @@ classdef regmov < matlab.mixin.Copyable
             end
 
             % ~
+            clear("this");
         end
 
         function r = isempty(this)
