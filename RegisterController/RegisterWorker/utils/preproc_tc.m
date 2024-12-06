@@ -18,7 +18,7 @@ arguments
     vs 
     dfsize  (1,4)   double {mustBeInteger} = [3,100,65535,1000]             % [r,ilTh,iuTh,vTh]
     mfsize  (1,3)   double {mustBeInteger, mustBeNonnegative} = [3,3,3]     % [x,y,z]
-    gfsize  (1,3)   double {mustBeInteger, mustBeNonnegative} = [3,3,1]     % [x,y,z]
+    gfsize  (1,3)   double {mustBeInteger, mustBeNonnegative} = [3,3,3]     % [x,y,z]
     gamma   (1,1)   double {mustBeInRange(gamma, 0, 2)} = 1
     roiref  (:,3)   double {mustBePositive, mustBeInteger} = double.empty(0,3)
 end

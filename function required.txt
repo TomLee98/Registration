@@ -324,23 +324,24 @@ V2.1        Wuneng              悟能
   |     |- [Update] use bandpass filter in expansion operator
   |     |- [Fix Bugs] B&C intensity limit bug when Z-Projection on >=MATLAB R2023b
   |     |- [Fix Bugs] RangeSlider no property 'Step' <= MATLAB R2023b
-  |- V2.1.7     2024/11/
+  |- V2.1.7     2024/12/
+  |     |- [Update] optimize coarse registration Z profile appearance
   |     |- [Update] TODO: introduce cellpose/morphology/manual segmentation (MCR Generator)
-  |     |- [Update] TODO: add point-cloud non-rigid registration based on CPD
+  |     |- [Update] TODO: validate one channel registration on neural process
   |     |- [Fix Bugs] fix regmov class destructor lost
+  |     |- [Fix Bugs] TCREG gaussian filter parameters bug
+  |     |- [Fix Bugs] Z Crop but TCREG Pyrimid level limits error
   |- V2.1.8     2024/12/
   |     |- [Update] TODO: replace MaskMovie with regmask member function: maskby
+  |     |- [Update] TODO: add point-cloud non-rigid registration based on CPD
   |     |- [Update] TODO: add <local tracking> to signal estimator for better estimation
   |     |- [Update] TODO: add English help
 
 
 V2.2        Wujing              悟净             
-  |- V2.2.0     2024/11/24
+  |- V2.2.0     2025/01/
   |     |- [Update] TODO: registration history manager
-  |- V2.2.1     2024/12/08
-  |     |- [Update] TODO: add hdf5 file support for ImageJ(Fiji).
-  |     |- [Update] TODO: add hdf5 file support for Dragonfly(LABVIEW format by RC Zhang).
-  |- V2.1.2     2024/12/22
+  |- V2.1.2     2025/01/
   |     |- [Update] TODO: simplify the distributed task manager logic
   |     |- [Update] TODO: new task manager function introduced
   |     |- [Update] 
