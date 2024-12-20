@@ -60,6 +60,7 @@ classdef ImageWriter < handle
                     '*.mat', 'MATLAB File Format(*.mat)'},...
                     'volumes series selector', fname);
                 if isequal(dstfile,0) || isequal(path,0)
+                    this.status = -1;       % break mark
                     this.state = "off";
                     return;
                 else
