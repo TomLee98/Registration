@@ -266,7 +266,7 @@ function t = get_h5real_time(file)
 % see also: h5 defination.txt
 
 % note: # time points = images
-time = h5read(file, '/Metadata/Time');
+time = h5read(file, '/Metadata/TimeStamp');
 
 % use median of each volume as time point
 frames = h5read(file, '/Meatadata/Frames');
@@ -279,6 +279,3 @@ for n = 1:frames
 end
 
 end
-
-
-
