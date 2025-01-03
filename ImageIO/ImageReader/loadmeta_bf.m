@@ -12,23 +12,23 @@ end
 
 [~, ~, ext] = fileparts(file);
 
-if isequal(".hdf5", ext)
+if isequal(".h5", ext)
     % the protocal by ZRC-LWH
     % see also: h5 defination.txt
-    width = h5read(file, '/Metadata/ROIWidth');
-    height = h5read(file, '/Metadata/ROIHeight');
+    width = str2double(h5read(file, '/Metadata/ROIWidth'));
+    height = str2double(h5read(file, '/Metadata/ROIHeight'));
     channels = 2;   % must be 2 in protocal
-    slices = h5read(file, '/Metadata/Slices');
-    frames = h5read(file, '/Metadata/Frames');
-    images = h5read(file, '/Metadata/Images');
-    xRes = h5read(file, '/Metadata/XResolution');
-    yRes = h5read(file, '/Metadata/YResolution');
-    zRes = h5read(file, '/Metadata/ZResolution');
-    dataType = sprintf("uint%d", h5read(file, 'Metadata/BitDepth'));    % only uint
+    slices = str2double(h5read(file, '/Metadata/Slices'));
+    frames = str2double(h5read(file, '/Metadata/Frames'));
+    images = str2double(h5read(file, '/Metadata/Images'));
+    xRes = str2double(h5read(file, '/Metadata/XResolution'));
+    yRes = str2double(h5read(file, '/Metadata/YResolution'));
+    zRes = str2double(h5read(file, '/Metadata/ZResolution'));
+    dataType = sprintf("uint%s", h5read(file, '/Metadata/BitDepth'));    % only uint
     dimOrder = ["X","Y","Z","T","C"];   % protocal independent, [sub - root]
     cOrder = ["r", "g"];  % order must be "r","g"
 
-    rt = get_h5real_time(file);
+    rt = str2double(h5read(file, '/Metadata/TimeStamp'));
 else
     % bfmatlab (bioformats) takes over
     status = bfCheckJavaPath(1);
@@ -266,16 +266,5 @@ function t = get_h5real_time(file)
 % see also: h5 defination.txt
 
 % note: # time points = images
-time = h5read(file, '/Metadata/TimeStamp');
-
-% use median of each volume as time point
-frames = h5read(file, '/Meatadata/Frames');
-slices = h5read(file, '/Metadata/Slices');
-
-t = zeros(frames, 1);
-
-for n = 1:frames
-    t(n) = median(time((n-1)*slices+1:n*slices));
-end
-
+t = h5read(file, '/Metadata/TimeStamp');
 end

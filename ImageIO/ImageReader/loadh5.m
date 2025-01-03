@@ -21,21 +21,29 @@ file = char(file);
 
 % transform to slices span
 sspan = [(tspan(1)-1)*opts.slices, tspan(2)*opts.slices-1]; % start from 0
-tsspan = sspan + 1;     % start from 1
-tsspan = ceil((tsspan(1):tsspan(2))./opts.slices);
 csspan = ["/Data/Channel1/", "/Data/Channel2/"] + string((sspan(1):sspan(2))');
+csspan = cellstr(csspan);
 
 % data shape as ["X","Y","Z","T","C"]
 data = zeros([opts.height, opts.width, opts.slices, diff(tspan)+1, 2], opts.dataType);
 
+file_id = H5F.open(file);
+
 % read channe1
-for c = 1:2
+for cid = 1:2
     % read slices
     for n = 1:size(csspan, 1)
-        %    X  Y        Z          T       C
-        data(:, :, sspan(1)+n, tsspan(n), c) = h5read(file, csspan(n,c));
+        dataset_id = H5D.open(file_id, csspan{n,cid});
+        zid = mod(n-1, opts.slices)+1;
+        tid = ceil(n/opts.slices);
+        %    X  Y   Z    T    C
+        data(:, :, zid, tid, cid) = ...
+            H5D.read(dataset_id, 'H5ML_DEFAULT', 'H5S_ALL', 'H5S_ALL', 'H5P_DEFAULT');
+        H5D.close(dataset_id);
     end
 end
+
+H5F.close(file_id);
 
 end
 

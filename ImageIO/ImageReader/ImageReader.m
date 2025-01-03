@@ -82,8 +82,8 @@ classdef ImageReader < handle
             if ~isfile(fname)
                 % uigetfile seletion
                 [dstfile, path] = uigetfile(...
-                    {'*.ims;*.nd2;*.tif;*.hdf5', ...
-                    'microscope volume files(*.ims,*.tif,*.nd2,*.hdf5)'},...
+                    {'*.ims;*.nd2;*.tif;*.h5', ...
+                    'microscope volume files(*.ims,*.tif,*.nd2,*.h5)'},...
                     'volumes series selector');
                 if isequal(dstfile,0) || isequal(path,0)
                     this.state = "off";
@@ -247,7 +247,7 @@ classdef ImageReader < handle
                     tf = true;  % ims library with builtin function
                 case ".tif"
                     tf = isPyReady();
-                case ".hdf5"
+                case ".h5"
                     tf = true;  % builtin h5 function
                 otherwise
             end
@@ -270,7 +270,7 @@ classdef ImageReader < handle
             img = reshape(img, ss);
 
             % permute as "X","Y","C","Z","T"
-            [~, new_order] = ismember(opts.dimOrder, dord);
+            [~, new_order] = ismember(dord, opts.dimOrder);
             img = permute(img, new_order);
         end
     end
