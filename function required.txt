@@ -324,7 +324,7 @@ V2.1        Wuneng              悟能
   |     |- [Update] use bandpass filter in expansion operator
   |     |- [Fix Bugs] B&C intensity limit bug when Z-Projection on >=MATLAB R2023b
   |     |- [Fix Bugs] RangeSlider no property 'Step' <= MATLAB R2023b
-  |- V2.1.7     2024/12/31
+  |- V2.1.7     2025/01/
   |     |- [Update] optimize coarse registration Z profile appearance
   |     |- [Update] modify h5 file defination (from Labview, by ZhangRenchang)
   |     |- [Update] TODO: introduce cellpose/morphology/manual segmentation (MCR Generator)
@@ -333,7 +333,8 @@ V2.1        Wuneng              悟能
   |     |- [Fix Bugs] fix regmov class destructor lost
   |     |- [Fix Bugs] TCREG gaussian filter parameters bug
   |     |- [Fix Bugs] Z Crop but TCREG Pyrimid level limits error
-  |- V2.1.8     2024/12/
+  |     |- [Fix Bugs] TCREG bug when tab changing
+  |- V2.1.8     2025/01/
   |     |- [Update] TODO: replace MaskMovie with regmask member function: maskby
   |     |- [Update] TODO: add point-cloud non-rigid registration based on CPD
   |     |- [Update] TODO: add <local tracking> to signal estimator for better estimation
