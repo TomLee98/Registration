@@ -161,6 +161,8 @@ classdef regopt
             addParameter(p, 'MaxZOptShift', this.zopt_shift_max);
             addParameter(p, 'TolZOpt',      this.zopt_tol);
             addParameter(p, 'glVPL',        this.gl_vpl);
+            addParameter(p, 'dmVPL',        this.dm_vpl);
+            addParameter(p, 'dfVPL',        this.df_vpl);
             addParameter(p, 'DS',           this.ds);
             addParameter(p, 'SC',           this.strc_chl);
             addParameter(p, 'FC',           this.func_chl);
@@ -207,8 +209,6 @@ classdef regopt
                             addParameter(p, 'RepAcc',       this.repacc);
                             addParameter(p, 'GR',           this.grid_regulation);
                             addParameter(p, 'GS',           this.grid_spacing);
-                            addParameter(p, 'dmVPL',        this.dm_vpl);
-                            addParameter(p, 'dfVPL',        this.df_vpl);
                         otherwise
                     end
                 case "MANREG"
