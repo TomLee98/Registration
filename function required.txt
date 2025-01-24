@@ -324,9 +324,10 @@ V2.1        Wuneng              悟能
   |     |- [Update] use bandpass filter in expansion operator
   |     |- [Fix Bugs] B&C intensity limit bug when Z-Projection on >=MATLAB R2023b
   |     |- [Fix Bugs] RangeSlider no property 'Step' <= MATLAB R2023b
-  |- V2.1.7     2025/01/
+  |- V2.1.7     2025/01/25      20:00
   |     |- [Update] optimize coarse registration Z profile appearance
   |     |- [Update] modify h5 file defination (from Labview, by ZhangRenchang)
+  |     |- [Update] TODO: limit "expansion filter" on XY plane, omit slice expansion
   |     |- [Update] TODO: introduce cellpose/morphology/manual segmentation (MCR Generator)
   |     |- [Fix Bugs] fix bug if BC Adjuster lightness min and max are too close
   |     |- [Fix Bugs] patch image export canceled with 'export successfully' report
@@ -334,16 +335,16 @@ V2.1        Wuneng              悟能
   |     |- [Fix Bugs] TCREG gaussian filter parameters bug
   |     |- [Fix Bugs] Z Crop but TCREG Pyrimid level limits error
   |     |- [Fix Bugs] TCREG bug when tab changing
-  |- V2.1.8     2025/01/
-  |     |- [Update] TODO: replace MaskMovie with regmask member function: maskby
-  |     |- [Update] TODO: add point-cloud non-rigid registration based on CPD
-  |     |- [Update] TODO: add <local tracking> to signal estimator for better estimation
-  |     |- [Update] TODO: add English help
-
+  #     #
 
 V2.2        Wujing              悟净             
   |- V2.2.0     2025/01/
   |     |- [Update] TODO: registration history manager
+  |     |- [Update] TODO: replace MaskMovie with regmask member function: maskby
+  |     |- [Update] TODO: add point-cloud non-rigid registration based on CPD
+  |     |- [Update] TODO: add <local tracking> to signal estimator for better estimation
+  |     |- [Update] TODO: add English help
+  |     |- [Fix Bugs] TODO: fix TCREG->manual correction bug
   |- V2.1.2     2025/01/
   |     |- [Update] TODO: simplify the distributed task manager logic
   |     |- [Update] TODO: new task manager function introduced

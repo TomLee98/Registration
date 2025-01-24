@@ -1,0 +1,30 @@
+--|
+   | - Data
+          | - Channel1
+                    |- 0
+                    |- 1
+                    |- ...
+           
+          | - Channel2
+                  |- ...
+   | - Metadata
+         |- Operator
+         |- ExposureTime
+         |- Channel1_WaveLength
+         |- Channel2_WaveLength
+         |- Channel1_Status
+         |- Channel2_Status
+         |- Channel1_LaserIntensity
+         |- Channel2_LaserIntensity
+         |- LensMagnification
+         |- Binning
+         |- XResolution
+         |- YResolution
+         |- ZResolution
+         |- ROIWidth
+         |- ROIHeight
+         |- Slices
+         |- Frames
+         |- Images
+         |- BitDepth
+         |- Time
