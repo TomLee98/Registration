@@ -20,17 +20,21 @@
     <AUTO>Auto</AUTO>
     <AUTO_CLEAR>Auto Clear</AUTO_CLEAR>
     <BASELINE_MODEL>Baseline Model</BASELINE_MODEL>
+    <BATCH_SIZE>Batch Size</BATCH_SIZE>
     <BEGIN>begin</BEGIN>
     <BICUBIC>Bicubic</BICUBIC>
     <BILINEAR>Bilinear</BILINEAR>
     <BLACK>Black</BLACK>
     <BLUE>Blue</BLUE>
+    <BOTH_SIDE>Both</BOTH_SIDE>
     <BREAK>Break</BREAK>
     <BUG_TYPE>Bug Type</BUG_TYPE>
     <CALCULATING_GOODNESS>Calculating goodness of registration...</CALCULATING_GOODNESS>
+    <CAMERA_BACKGROUND>Camera Background</CAMERA_BACKGROUND>
     <CAMERA_TIME>Camera Time</CAMERA_TIME>
     <CANCEL>Cancel</CANCEL>
     <CELL_MANAGEMENT>Cell Management</CELL_MANAGEMENT>
+    <CELL_SEGMENTOR>Cell Segmentor</CELL_SEGMENTOR>
     <CENTROID>Centroid</CENTROID>
     <CHANNEL_ALIGNMENT>Channel Alignment</CHANNEL_ALIGNMENT>
     <CHANNEL_ALIGNING>Aligning channels...</CHANNEL_ALIGNING>
@@ -48,6 +52,7 @@
     <COLOR_MAPPING>Color Mapping</COLOR_MAPPING>
     <COMMA_SEPARATED>Comma Separated</COMMA_SEPARATED>
     <COMMON>Common</COMMON>
+    <COMMON_PARAMETERS>Common Parameters</COMMON_PARAMETERS>
     <COMMON_PROBLEM>Common Problem</COMMON_PROBLEM>
     <COMPLETE>Complete</COMPLETE>
     <COMPONENT_DESCRIPTION>Problem Description</COMPONENT_DESCRIPTION>
@@ -72,6 +77,7 @@
     <CROP_Z>Thickness Cropping</CROP_Z>
     <CUBIC_HIGH_QUALITY>Cubic(High Quality)</CUBIC_HIGH_QUALITY>
     <CYAN>Cyan</CYAN>
+    <DELINEATION>Delineation</DELINEATION>
     <DEVELOPING>Developing…</DEVELOPING>
     <DIAMOND_HAT>Diamond Hat</DIAMOND_HAT>
     <DILATE_FILTER>Dilate Filter</DILATE_FILTER>
@@ -82,6 +88,7 @@
     <DISPLACEMENT_NOT_EXIST>(non-rigid) displacement field data does not exist</DISPLACEMENT_NOT_EXIST>
     <DISPLACEMENT_REGULATION>Displacement Regulation</DISPLACEMENT_REGULATION>
     <DISPLACEMENT_VOXEL>Displacement(Voxel)</DISPLACEMENT_VOXEL>
+    <DISPLAY>Display</DISPLAY>
     <DISPLAY_AREA>Display Area</DISPLAY_AREA>
     <DISPLAY_MODE>Display Mode</DISPLAY_MODE>
     <DISTRIBUTED>Distributed</DISTRIBUTED>
@@ -194,6 +201,8 @@
     <KEY_FRAME>Key Frame</KEY_FRAME>
     <LANGUAGE>Language</LANGUAGE>
     <LATEST_VERSION>The current program is the latest version</LATEST_VERSION>
+    <LEARN_RATE>Learn Rate</LEARN_RATE>
+    <LEFT_SIDE>Left</LEFT_SIDE>
     <LIGHT>Light</LIGHT>
     <LIGHT_CONTRAST>Light/Contrast</LIGHT_CONTRAST>
     <LINEAR_FAST>Linear(Fast)</LINEAR_FAST>
@@ -218,6 +227,7 @@
     <LOW_MEMORY_WARNING>The available memory is too small and the exclusive mode cannot be enabled.</LOW_MEMORY_WARNING>
     <LTGLOBAL>Global(Long-Term)</LTGLOBAL>
     <MAGENTA>Magenta</MAGENTA>
+    <MACHINE_LEARNING>Machine Learning</MACHINE_LEARNING>
     <MAIN_APP>Main Application</MAIN_APP>
     <MASK_COMPONENTS>Mask Components</MASK_COMPONENTS>
     <MASK_LOADED>Mask loaded</MASK_LOADED>
@@ -228,6 +238,7 @@
     <MASS_CENTER_ESTIMATION>Mass Center Estimation</MASS_CENTER_ESTIMATION>
     <MAX>Max</MAX>
     <MAX_DIVISION>Max Division</MAX_DIVISION>
+    <MAX_EPOCHS>Max Epochs</MAX_EPOCHS>
     <MAX_ITERATION_N>Max Iteration Number</MAX_ITERATION_N>
     <MAX_ITERATION_STEP>Maximum Iteration Step</MAX_ITERATION_STEP>
     <MAX_SEARCHING_RADIUS>Maximum Searching Radius</MAX_SEARCHING_RADIUS>
@@ -254,8 +265,10 @@
     <MIX_CHANNEL>Mix Channel</MIX_CHANNEL>
     <MIXED_EXPONENTIAL>Mixed Exponential</MIXED_EXPONENTIAL>
     <MODAL>Modal</MODAL>
+    <MODEL>Model</MODEL>
     <MODEL_PARAMETERS>Model Parameters</MODEL_PARAMETERS>
     <MONOMODAL>Monomodal</MONOMODAL>
+    <MORPHOLOGY>Morphology</MORPHOLOGY>
     <MOVIE_EXPORTED_SUCCESS>Video exported successfully</MOVIE_EXPORTED_SUCCESS>
     <MOVIE_EXPORT_INTERRUPTED>Movie export interrupted</MOVIE_EXPORT_INTERRUPTED>
     <MOVIE_FORMAT>Movie Format</MOVIE_FORMAT>
@@ -271,6 +284,7 @@
     <NPC_GPU>Protected #cores(GPU)</NPC_GPU>
     <NUM_MAX>Maximum</NUM_MAX>
     <OBJECTS_FOUND>Objects number after segmentation:</OBJECTS_FOUND>
+    <OBJECTS_NUMBER>Objects Number</OBJECTS_NUMBER>
     <OCTAVE>Octave</OCTAVE>
     <OFF>Off</OFF>
     <OFFLINE>Offline</OFFLINE>
@@ -282,6 +296,7 @@
     <OPTION>Options</OPTION>
     <ORDINARY>Ordinary</ORDINARY>
     <OTHER>Other</OTHER>
+    <OUTLIER_DIRECTION>Outlier Direction</OUTLIER_DIRECTION>
     <OUTLIER_RATIO>Outlier Ratio</OUTLIER_RATIO>
     <PARAMETER>Parameter</PARAMETER>
     <PASSWORD>Password</PASSWORD>
@@ -311,6 +326,9 @@
     <PYTHON_INTERPRETER_SELECTION>Select a Python Interpreter</PYTHON_INTERPRETER_SELECTION>
     <QUALITY>Quality</QUALITY>
     <QUANTILE>Quantile</QUANTILE>
+    <RADIUS_MEAN>Mean Radius</RADIUS_MEAN>
+    <RADIUS_MIN>STD. Radius</RADIUS_MIN>
+    <RADIUS_STD>Min Radius</RADIUS_STD>
     <RANDOM_UNIFORM>Random(uniform)</RANDOM_UNIFORM>
     <RATIO>Ratio</RATIO>
     <RAW>Raw</RAW>
@@ -357,6 +375,7 @@
     <REPORT_BUG_DETAIL>Please describe the problem in the program in detail (&gt;10 characters)</REPORT_BUG_DETAIL>
     <RESAMPLING_RATIO>Resampling Ratio</RESAMPLING_RATIO>
     <RESET_REGISTRATION_FRAMES>Reset registration frame</RESET_REGISTRATION_FRAMES>
+    <RIGHT_SIDE>Right</RIGHT_SIDE>
     <RIGID>Rigid</RIGID>
     <RIGID_TOOLTIP>translation and rotation</RIGID_TOOLTIP>
     <ROI_SETTING>ROI Setting</ROI_SETTING>
@@ -371,8 +390,11 @@
     <SCALE_RATIO>Ratio/Scale</SCALE_RATIO>
     <SCALE_THRESHOLD>Scale Threshold(um)</SCALE_THRESHOLD>
     <SCALE_UNIT>Scale Unit</SCALE_UNIT>
+    <SEGMENT>Segment</SEGMENT>
+    <SEGMENTATION_ALGORITHM>Segmentation Algorithm</SEGMENTATION_ALGORITHM>
     <SEGMENTATION_AREA>Segmentation Area</SEGMENTATION_AREA>
     <SEGMENTATION_AREA_LOCK>Segmentation Area (lock)</SEGMENTATION_AREA_LOCK>
+    <SERMENTATION_LOST_WARNING>The program will disable the segmentation in 3D view, continue?</SERMENTATION_LOST_WARNING>
     <SELECTION_SAVING_FOLDER>Select Saving Folder</SELECTION_SAVING_FOLDER>
     <SELF_DEFINITION>Self Definition</SELF_DEFINITION>
     <SETTING_PANEL>Setting Panel</SETTING_PANEL>
@@ -390,10 +412,13 @@
     <SOURCE>Source</SOURCE>
     <SPACE>Space</SPACE>
     <SPHERICITY>Sphericity</SPHERICITY>
+    <SPHERICITY_THRESHOLD>Sphericity Threshold</SPHERICITY_THRESHOLD>
     <SQUARE_HAT>Square Hat</SQUARE_HAT>
+    <STAGE>Stage</STAGE>
     <STATUS>Status</STATUS>
     <STRUCTURED_BACKGROUND>Please enter the background on the location channel:</STRUCTURED_BACKGROUND>
     <SUB_APP>Sub Application</SUB_APP>
+    <SUB_AREA_NUMBER>Sub Area Number</SUB_AREA_NUMBER>
     <SUBMIT>Submit</SUBMIT>
     <SUBMIT_BUG>Report Bugs</SUBMIT_BUG>
     <SUGGESTION>Suggestion</SUGGESTION>
@@ -437,6 +462,8 @@
     <TIP_TAB_LTGLOBAL>The automatic global geometric transformation based on keyframes</TIP_TAB_LTGLOBAL>
     <TIP_TAB_MGLOBAL>The regional deformation based on control points</TIP_TAB_MGLOBAL>
     <TOO_MUCH_ROI>There are too many ROIs, please redraw and try to add them.</TOO_MUCH_ROI>
+    <TRAINING>Training</TRAINING>
+    <TRAINING_SAMPLES>Training Samples</TRAINING_SAMPLES>
     <TRANSFORMATION_MATRIX>Transformation Matrix</TRANSFORMATION_MATRIX>
     <TRANSLATION>Translation</TRANSLATION>
     <TRANSPARENT_MAPPING>Transparent Mapping</TRANSPARENT_MAPPING>
@@ -467,6 +494,9 @@
     <VOLUMETRIC_THRESHOLD>Volumetric Threshold</VOLUMETRIC_THRESHOLD>
     <WAITING>waiting</WAITING>
     <WARNING>Warning</WARNING>
+    <WATERSHED>Watershed</WATERSHED>
+    <WATERSHED_OLD>Watershed (old)</WATERSHED_OLD>
+    <WEIGHT_DECAY>Weight Decay</WEIGHT_DECAY>
     <WELCOME>Welcome to Reg3D App</WELCOME>
     <WHITE>White</WHITE>
     <WIDTH>Width</WIDTH>

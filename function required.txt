@@ -324,10 +324,10 @@ V2.1        Wuneng              悟能
   |     |- [Update] use bandpass filter in expansion operator
   |     |- [Fix Bugs] B&C intensity limit bug when Z-Projection on >=MATLAB R2023b
   |     |- [Fix Bugs] RangeSlider no property 'Step' <= MATLAB R2023b
-  |- V2.1.7     2025/02/
+  |- V2.1.7     2025/02/11      21:30
   |     |- [Update] optimize coarse registration Z profile appearance
   |     |- [Update] modify h5 file defination (from Labview, by ZhangRenchang)
-  |     |- [Update] TODO: introduce cellpose/morphology/manual segmentation (MCR Generator)
+  |     |- [Update] introduce cellpose/morphology segmentation basic function (MCR Generator)
   |     |- [Fix Bugs] fix bug if BC Adjuster lightness min and max are too close
   |     |- [Fix Bugs] patch image export canceled with 'export successfully' report
   |     |- [Fix Bugs] fix regmov class destructor lost
