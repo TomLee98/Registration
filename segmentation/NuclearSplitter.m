@@ -8,14 +8,12 @@ classdef NuclearSplitter < handle
         MAX_SIZE_ALLDIM = 128;
     end
 
-    properties(SetAccess=private, GetAccess=private)
-        % input data
+    properties(Access=private)
+        %% input data
         segopts         % segment options
         caller          % the caller, must with SetProgressBar method
-    end
 
-    properties(SetAccess=private, GetAccess=private)
-        % results
+        %% output data
         center
         radius
         nid
@@ -52,8 +50,8 @@ classdef NuclearSplitter < handle
         function this = NuclearSplitter(seg_opts, caller)
             %COUNTER A constructor
             arguments
-                seg_opts  (1,1) struct {mustBeSegmentOptions}
-                caller    (1,1) ReTiNA
+                seg_opts  (1,1)     segopt
+                caller    (1,1)     Register
             end
 
             this.segopts = seg_opts;
@@ -83,7 +81,6 @@ classdef NuclearSplitter < handle
         function [center,radius,id] = split_morphlogy(this, vol, volopts)
             % This function uses morphology method to extract nuclears
             % preprocess the volume
-            % profile on;
             this.caller.SetProgressBar(0);
 
             bdbox = this.segopts.bdbox;
@@ -266,8 +263,6 @@ classdef NuclearSplitter < handle
 
                 this.caller.SetProgressBar(0.9+0.1*k/numel(id));
             end
-
-            % profile viewer
         end
 
         function [center, radius, id] = split_cellpose(this, vol, volopts)
@@ -398,7 +393,7 @@ classdef NuclearSplitter < handle
                 % for loop is faster because pyenv takes over CPU parallel
                 for n = 1:numel(bdvol)
                     switch model
-                        case {'cyto', 'CP'}
+                        case {'cyto', 'CP', 'nuclei'}
                             cp = cellpose("Model", model, ...
                                 "Acceleration", accalg);
                             labels{n} = segmentCells3D(cp, bdvol{n}, ...
@@ -407,7 +402,7 @@ classdef NuclearSplitter < handle
                                 "ImageCellDiameter", round(2*r_mean), ...
                                 "MinVolume",round(4/3*pi*r_min.^3), ...
                                 "TileAndAugment", enh);
-                        case {'LarORN', 'LarKC'}
+                        case "KC"
                             [mpath, ~, ~] = fileparts(mfilename("fullpath"));
                             mpath = [mpath, filesep, 'custom_models']; %#ok<AGROW>
                             cp = cellpose("Model", mpath + filesep + model + "_" + stage, ...
@@ -467,16 +462,6 @@ classdef NuclearSplitter < handle
             pvol = imresize3(pvol, "Scale", ...
                 [volopts.xRes, volopts.yRes, volopts.zRes]/opts.vr, ...
                 "Method", "linear");
-
-            % optional: foreground enhancement
-            if segopts.enhance_mp == true
-                % use gamma transform for contrast enhancement
-                hval = ((segopts.bkg + segopts.dh)^segopts.gamma ...
-                    - segopts.bkg^segopts.gamma)/double(H_MAX-H_MIN)*255;
-
-                % h-minimum transformation for better watershed performance
-                pvol = imhmax(pvol, hval);
-            end
 
             % binarize foreground
             if segopts.auto_fg

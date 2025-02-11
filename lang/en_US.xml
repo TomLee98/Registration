@@ -2,6 +2,7 @@
 <struct>
     <ABOUT>About</ABOUT>
     <ACCUMULATIVE_FIELD_SMOOTHING>Accumulative Field Smoothing</ACCUMULATIVE_FIELD_SMOOTHING>
+    <ADD_CELL>Add Cell</ADD_CELL>
     <ADVANCED>Advanced</ADVANCED>
     <AFFINE>Affine</AFFINE>
     <AFFINE_TOOLTIP>translation, rotation, anisotropic scaling, reflection, and shearing</AFFINE_TOOLTIP>
@@ -29,6 +30,7 @@
     <CALCULATING_GOODNESS>Calculating goodness of registration...</CALCULATING_GOODNESS>
     <CAMERA_TIME>Camera Time</CAMERA_TIME>
     <CANCEL>Cancel</CANCEL>
+    <CELL_MANAGEMENT>Cell Management</CELL_MANAGEMENT>
     <CENTROID>Centroid</CENTROID>
     <CHANNEL_ALIGNMENT>Channel Alignment</CHANNEL_ALIGNMENT>
     <CHANNEL_ALIGNING>Aligning channels...</CHANNEL_ALIGNING>
@@ -268,6 +270,7 @@
     <NPC_CPU>Protected #cores(CPU)</NPC_CPU>
     <NPC_GPU>Protected #cores(GPU)</NPC_GPU>
     <NUM_MAX>Maximum</NUM_MAX>
+    <OBJECTS_FOUND>Objects number after segmentation:</OBJECTS_FOUND>
     <OCTAVE>Octave</OCTAVE>
     <OFF>Off</OFF>
     <OFFLINE>Offline</OFFLINE>
@@ -320,6 +323,7 @@
     <RED>Red</RED>
     <RED_CHANNEL>Red Channel</RED_CHANNEL>
     <RED_CYAN>Red-Cyan</RED_CYAN>
+    <REFRESH_LABEL>Refresh Label</REFRESH_LABEL>
     <REFRESH_REGISTRATION_GOODNESS>Refresh Registration Goodness</REFRESH_REGISTRATION_GOODNESS>
     <REG3D_CONFIGURATION>Reg3D configuration file</REG3D_CONFIGURATION>
     <REGION_FREE>Region Free</REGION_FREE>
@@ -335,7 +339,6 @@
     <REGISTRATION_SETTING>Parameters Setting</REGISTRATION_SETTING>
     <REGISTRATION_SOLUTION_ERROR>No registration solution set up</REGISTRATION_SOLUTION_ERROR>
     <REGRESSION_ORDER>Regression Order</REGRESSION_ORDER>
-    <TEMPLATE>Template</TEMPLATE>
     <REGISTRATOR>Register</REGISTRATOR>
     <REGMODE_CURRENT_GLOBAL>Current Registration Mode: Global</REGMODE_CURRENT_GLOBAL>
     <REGMODE_CURRENT_LOCAL>Current Registration Mode: Local</REGMODE_CURRENT_LOCAL>
@@ -357,6 +360,7 @@
     <RIGID>Rigid</RIGID>
     <RIGID_TOOLTIP>translation and rotation</RIGID_TOOLTIP>
     <ROI_SETTING>ROI Setting</ROI_SETTING>
+    <ROI_ENABLE_WARNING>It is highly recommended to use ROI to speed up segmentation. Continue without ROI?</ROI_ENABLE_WARNING>
     <ROTATE>Rotate</ROTATE>
     <RUN>Run</RUN>
     <RUN_MODAL>Run Modal</RUN_MODAL>
@@ -367,6 +371,8 @@
     <SCALE_RATIO>Ratio/Scale</SCALE_RATIO>
     <SCALE_THRESHOLD>Scale Threshold(um)</SCALE_THRESHOLD>
     <SCALE_UNIT>Scale Unit</SCALE_UNIT>
+    <SEGMENTATION_AREA>Segmentation Area</SEGMENTATION_AREA>
+    <SEGMENTATION_AREA_LOCK>Segmentation Area (lock)</SEGMENTATION_AREA_LOCK>
     <SELECTION_SAVING_FOLDER>Select Saving Folder</SELECTION_SAVING_FOLDER>
     <SELF_DEFINITION>Self Definition</SELF_DEFINITION>
     <SETTING_PANEL>Setting Panel</SETTING_PANEL>
@@ -397,6 +403,7 @@
     <TASK_VIEWER>Task Viewer</TASK_VIEWER>
     <TARGET_BITRATE>Target Bitrate</TARGET_BITRATE>
     <T_CROPPED>T cropped</T_CROPPED>
+    <TEMPLATE>Template</TEMPLATE>
     <TEMPLATE_AUTO_UPDATE>Auto Update</TEMPLATE_AUTO_UPDATE>
     <TERMINATE_REGISTRATION>Forced termination of registration</TERMINATE_REGISTRATION>
     <TEXT_FILE>Text file</TEXT_FILE>

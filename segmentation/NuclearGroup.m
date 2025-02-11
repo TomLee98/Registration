@@ -54,11 +54,15 @@ classdef NuclearGroup < handle
             idtable_c1 = unique(idtable_);
             idtable_c1(isnan(idtable_c1)) = [];
 
-            idtable_c2 = histcounts(cell2mat(idset),"BinWidth",1, ...
-                "BinLimits",[1, max(idtable_c1,[],"all","omitmissing")+1]);
-            idtable_c2(idtable_c2==0) = [];
+            if ~isempty(idtable_c1)
+                idtable_c2 = histcounts(cell2mat(idset),"BinWidth",1, ...
+                    "BinLimits",[1, max(idtable_c1,[],"all","omitmissing")+1]);
+                idtable_c2(idtable_c2==0) = [];
 
-            this.id_table = [idtable_c1, idtable_c2'];
+                this.id_table = [idtable_c1, idtable_c2'];
+            else
+                this.id_table = zeros(0, 2);
+            end
         end
         
         function status = DelObj(this, id)
@@ -152,9 +156,15 @@ classdef NuclearGroup < handle
                 % remove objects
                 obj_loc_del = (id{zidx}==this.REMOVED_OBJ);
                 if any(obj_loc_del)
-                    id{zidx}(obj_loc_del) = [];
-                    c{zidx}(obj_loc_del, :) = [];
-                    r{zidx}(obj_loc_del) = [];
+                    if ~all(obj_loc_del)
+                        id{zidx}(obj_loc_del) = [];
+                        c{zidx}(obj_loc_del, :) = [];
+                        r{zidx}(obj_loc_del) = [];
+                    else
+                        id{zidx} = zeros(0, 1);
+                        c{zidx} = zeros(0, 2);
+                        r{zidx} = zeros(0, 1);
+                    end
                 end
 
                 % remap label

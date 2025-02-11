@@ -324,10 +324,9 @@ V2.1        Wuneng              悟能
   |     |- [Update] use bandpass filter in expansion operator
   |     |- [Fix Bugs] B&C intensity limit bug when Z-Projection on >=MATLAB R2023b
   |     |- [Fix Bugs] RangeSlider no property 'Step' <= MATLAB R2023b
-  |- V2.1.7     2025/01/25      20:00
+  |- V2.1.7     2025/02/
   |     |- [Update] optimize coarse registration Z profile appearance
   |     |- [Update] modify h5 file defination (from Labview, by ZhangRenchang)
-  |     |- [Update] TODO: limit "expansion filter" on XY plane, omit slice expansion
   |     |- [Update] TODO: introduce cellpose/morphology/manual segmentation (MCR Generator)
   |     |- [Fix Bugs] fix bug if BC Adjuster lightness min and max are too close
   |     |- [Fix Bugs] patch image export canceled with 'export successfully' report
@@ -338,14 +337,14 @@ V2.1        Wuneng              悟能
   #     #
 
 V2.2        Wujing              悟净             
-  |- V2.2.0     2025/01/
+  |- V2.2.0     2025/02/
   |     |- [Update] TODO: registration history manager
   |     |- [Update] TODO: replace MaskMovie with regmask member function: maskby
   |     |- [Update] TODO: add point-cloud non-rigid registration based on CPD
   |     |- [Update] TODO: add <local tracking> to signal estimator for better estimation
   |     |- [Update] TODO: add English help
   |     |- [Fix Bugs] TODO: fix TCREG->manual correction bug
-  |- V2.1.2     2025/01/
+  |- V2.1.2     2025/03/
   |     |- [Update] TODO: simplify the distributed task manager logic
   |     |- [Update] TODO: new task manager function introduced
   |     |- [Update] TODO: validate one channel registration on neural process
@@ -361,98 +360,3 @@ V2.3        Xuanzang            玄奘
   |- V2.3.1     2024/12
   |     |- [Update] TODO: task batch mode, multi-movies registration 
 
-
-
-
-
-====================Important Architecture Update =========================
-V3.0        Archimedes          阿基米德
-  |- V3.0.0     2025/
-  |     |- [Update] TODO: rename as NCIP (Neuron Calcium Imaging Processing)
-  |     |- [Update] TODO: refactor software, balance 'registration', 'segmentation'
-  |     |           and 'extraction' to the same position
-
-V3.1        Galileo             伽利略
-  |- V3.1.0     2025/
-  |     |- [Update] TODO: portable hardware accelerate support
-  |     |- [Update] TODO: registration by using deep learning algorithm
-
-
-V3.2        Descartes           笛卡尔
-  |- V3.2.0     2025/
-  |
-  |
-
-
-V3.3        Newton              牛顿
-  |- V3.3.0     2025/
-  |
-  |
-
-
-V3.4        Watt                瓦特
-  |- V3.4.0     2025/
-  |
-  |
-
-
-V3.5        Maxwell             麦克斯韦
-  |- V3.5.0     2025/
-  |
-  |
-
-
-V3.6        Tesla               特斯拉
-  |- V3.6.0     2025/
-  |
-  |
-
-
-V3.7        Einstein            爱因斯坦
-  |- V3.7.0     2025/
-  |
-  |
-
-
-V3.8        Planck              普朗克
-  |- V3.8.0     2025/
-  |
-  |
-
-
-V3.9        Feynman             费曼
-  |- V3.9.0    2025/
-  |
-  |
-
-
-V3.10       Witten              威腾
-  |- V3.10.0    2025/
-  |
-  |
-
-
-====================Important Architecture Update =========================
-V4.0        Darwin              达尔文
-  |- V4.0.0     2026/
-  |
-  |
-
-
-V4.1        Morgan              摩尔根
-  |- 4.1.0      2026/
-  |
-  |
-
-
-V4.2        Crick               克里克
-  |- V4.2.0     2026/
-  |
-  |
-
-
-V4.3        Huxley              赫胥黎
-  |- V4.3.0     2026/
-  |
-  |
-  #

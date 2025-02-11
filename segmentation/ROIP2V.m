@@ -11,8 +11,8 @@ function vroi = ROIP2V(rois, vsize)
 %   - vroi:
 
 arguments
-    rois (:,1) cell
-    vsize (1,3) double {mustBeInteger, mustBePositive}
+    rois    (:,1)   cell
+    vsize   (1,3)   double {mustBeInteger, mustBePositive}
 end
 
 % transform xyz position to linear indices

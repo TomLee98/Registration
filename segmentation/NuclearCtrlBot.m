@@ -7,7 +7,8 @@ classdef NuclearCtrlBot < handle
         REMOVED_OBJ         =   -1
         STATUS_DUPLICATE_OBJ=   -2
         
-        VALID_FONT_COLOR         =   [1, 1, 1]   % valid object font color
+        VALID_FONT_COLOR    =   [1, 1, 1]       % valid object font color
+        NORMAL_CIRCLE_COLOR =   [.5, .5, .5]
     end
 
     properties(SetAccess=private, GetAccess=private, Hidden)
@@ -16,11 +17,13 @@ classdef NuclearCtrlBot < handle
         nuclears        % NuclearGroup object, for objects record
         hobj            % handle of circle objects
         cmap            % string, indicate the color map
+        dispflag        % string, indicate ROIs display state, "on"/"off"
     end
 
     properties(SetAccess=private, GetAccess=private)
         nuid            % nuclear indicator definition(identity)
         nlbl            % nuclear labels
+        hlid            % 1-by-s double, the highlight id array
         volopts         % the image options of vol
         center          % nuclear indicator center
         radius          % nuclear indicator radius
@@ -29,13 +32,50 @@ classdef NuclearCtrlBot < handle
     end
 
     properties(Access=public, Dependent)
+        DispFlag
+        HighlightID
         MaxN
+        Parent
         ROIsInfo
         ROIsLabel
-        Parent
     end
 
     methods
+        function r = get.DispFlag(this)
+            r = this.dispflag;
+        end
+
+        function set.DispFlag(this, df)
+            arguments
+                this 
+                df      (1,1)   string  {mustBeMember(df, ["on","off"])}
+            end
+
+            this.dispflag = df;
+        end
+
+        function r = get.HighlightID(this)
+            r = this.hlid;
+        end
+
+        function set.HighlightID(this, r)
+            arguments
+                this 
+                r   (1,:)   double  {mustBePositive, mustBeInteger}
+            end
+            
+            if ~isempty(r)
+                if max(r) <= this.nuclears.obj_max_exist
+                    this.hlid = r;
+                else
+                    throw(MException("NuclearCtrlBot:invalidID", ...
+                        "The given id out of boundary."));
+                end
+            else
+                this.hlid = r;
+            end
+        end
+
         function r = get.Parent(this)
             r = this.caller;
         end
@@ -45,7 +85,11 @@ classdef NuclearCtrlBot < handle
         end
 
         function r= get.MaxN(this)
-            r = this.nuclears.obj_max_exist;
+            if ~isempty(this.nuclears.obj_max_exist)
+                r = this.nuclears.obj_max_exist;
+            else
+                r = zeros(1, size(this.nuclears.obj_max_exist, 2));
+            end
         end
 
         function r = get.ROIsLabel(this)
@@ -65,7 +109,7 @@ classdef NuclearCtrlBot < handle
             %NUVIEWER A Constructor
             arguments
                 nsper   (1,1)   NuclearSplitter
-                vopt    (1,10)  table
+                vopt    (1,6)   table
                 cmap    (1,1)   string {mustBeMember(cmap, ...
                     ["default","hsv","jet","parula","turbo"])} = "default"
             end
@@ -74,11 +118,13 @@ classdef NuclearCtrlBot < handle
             this.radius = nsper.Radius;
             this.nuid = nsper.Nid;
             this.nlbl = cellfun(@(x)string(x),this.nuid,"UniformOutput",false);
+            this.hlid = zeros(1, 0);
             this.rois = GenROI(this.nuid, this.center, this.radius);
             this.caller = nsper.Parent;
-            this.ax_caller = this.caller.UIAxes_Viewer;
+            this.ax_caller = this.caller.UIAxes_Slice;
             this.volopts = vopt;
             this.cmap = cmap;
+            this.dispflag = "on";
             this.nuclears = NuclearGroup(this.nuid);
             this.gen_colormap();
         end
@@ -106,14 +152,20 @@ classdef NuclearCtrlBot < handle
                     if cir_id == this.REMOVED_OBJ, continue; end
 
                     if ~isnan(cir_id)
+                        if ismember(cir_id, this.hlid)
+                            cc = this.color{zidx}(cir_index,:);
+                        else
+                            cc = this.NORMAL_CIRCLE_COLOR;   % deep gray
+                        end
                         self = images.roi.Circle(this.ax_caller,...
                             "Center",this.center{zidx}(cir_index,:),...
                             "Radius",this.radius{zidx}(cir_index), ...
-                            "Color",this.color{zidx}(cir_index,:), ...
+                            "Color",cc, ...
                             "LabelTextColor", this.VALID_FONT_COLOR, ...
-                            "LineWidth",2,"MarkerSize",0.1,"Label",this.nlbl{zidx}(cir_index),...
-                            "LabelVisible","on","FaceAlpha",0,"LabelAlpha",0,...
-                            "Deletable",true,"UserData",[cir_index, zidx]);
+                            "Visible", this.dispflag, ...
+                            "LineWidth",1.5, "MarkerSize",1, "Label",this.nlbl{zidx}(cir_index),...
+                            "LabelVisible","on", "FaceAlpha",0, "LabelAlpha",0,...
+                            "Deletable",true, "UserData",[cir_index, zidx]);
 
                         % binding listener(will be auto removed if the roi was deleted)
                         addlistener(self, ...
@@ -144,6 +196,35 @@ classdef NuclearCtrlBot < handle
 
             this.hobj = h_obj;
             status = this.STATUS_SUCCESS;
+        end
+
+        function mask = GenMaskVol(this)
+            % This function uses rois to create volume mask
+            vsize = [this.volopts.height, this.volopts.width, this.volopts.slices];
+            vroi = ROIP2V(this.rois, vsize);
+
+            % transform as volume coding
+            Vm = zeros(vsize, "uint16");
+            for k = 1:numel(vroi), Vm(vroi{k}) = k; end
+
+            % transform to sparse coding
+            row_mask = [];
+            col_mask = [];
+            % transform the format: [comp1, comp2, ..., comp_n]
+            % where comp_k is colume array with 1 indicate voxels
+            d = unique(Vm);
+            d(d==0) = [];
+            d(isnan(d)) = [];
+
+            for k = 1:numel(d)
+                vd_loc = find(Vm == d(k));   % F order, linear sub index
+                row_mask = [row_mask; vd_loc]; %#ok<AGROW>
+                col_mask = [col_mask; k*ones(size(vd_loc))]; %#ok<AGROW>
+            end
+            vol_mask = ones(size(row_mask));
+
+            % generate sparse matrix
+            mask = sparse(row_mask, col_mask, vol_mask, numel(Vm), numel(d));
         end
 
         function status = Clear(this)
@@ -208,9 +289,7 @@ classdef NuclearCtrlBot < handle
             % apply the refreshed identity
             [this.nuid, this.center, this.radius] ...
                 = this.nuclears.ApplyRefreshTo(this.nuid, ...
-                this.center, ...
-                this.radius, ...
-                true);
+                this.center, this.radius, true);
 
             % cover old names
             this.nlbl = cellfun(@(x)string(x),this.nuid,"UniformOutput",false);
