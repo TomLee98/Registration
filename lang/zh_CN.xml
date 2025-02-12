@@ -129,6 +129,7 @@
     <FILTER>滤子</FILTER>
     <FINISH_UPDATE>下载完成，请重启程序以完成更新</FINISH_UPDATE>
     <FIT>拟合</FIT>
+    <FITTING_ACTIVITY>正在拟合神经活动模型…</FITTING_ACTIVITY>
     <FIXED>固定</FIXED>
     <FIXED_BACKGROUND>固有强度</FIXED_BACKGROUND>
     <FLAT_HAT>平帽</FLAT_HAT>

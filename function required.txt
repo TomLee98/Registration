@@ -324,7 +324,7 @@ V2.1        Wuneng              悟能
   |     |- [Update] use bandpass filter in expansion operator
   |     |- [Fix Bugs] B&C intensity limit bug when Z-Projection on >=MATLAB R2023b
   |     |- [Fix Bugs] RangeSlider no property 'Step' <= MATLAB R2023b
-  |- V2.1.7     2025/02/11      22:00
+  |- V2.1.7     2025/02/12      22:00
   |     |- [Update] optimize coarse registration Z profile appearance
   |     |- [Update] modify h5 file defination (from Labview, by ZhangRenchang)
   |     |- [Update] introduce cellpose/morphology segmentation basic function (MCR Generator)
