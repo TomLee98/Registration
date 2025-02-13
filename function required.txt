@@ -342,8 +342,9 @@ V2.2        Wujing              悟净
   |     |- [Update] TODO: replace MaskMovie with regmask member function: maskby
   |     |- [Update] TODO: add point-cloud non-rigid registration based on CPD
   |     |- [Update] TODO: add <local tracking> to signal estimator for better estimation
-  |     |- [Update] TODO: add English help
+  |     |- [Update] TODO: add English help & update help
   |     |- [Fix Bugs] TODO: fix TCREG->manual correction bug
+  |     |- [Fix Bugs] TODO: solve the ROI rename bug
   |- V2.1.2     2025/03/
   |     |- [Update] TODO: simplify the distributed task manager logic
   |     |- [Update] TODO: new task manager function introduced
