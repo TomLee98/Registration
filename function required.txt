@@ -332,24 +332,26 @@ V2.1        Wuneng              悟能
   |     |- [Fix Bugs] patch image export canceled with 'export successfully' report
   |     |- [Fix Bugs] fix regmov class destructor lost
   |     |- [Fix Bugs] TCREG gaussian filter parameters bug
-  |     |- [Fix Bugs] Z Crop but TCREG Pyrimid level limits error
+  |     |- [Fix Bugs] Z Crop but TCREG pyrimid level limits error
   |     |- [Fix Bugs] TCREG bug when tab changing
   #     #
 
-V2.2        Wujing              悟净             
+V2.2        Wujing              悟净
   |- V2.2.0     2025/02/
-  |     |- [Update] TODO: registration history manager
-  |     |- [Update] TODO: replace MaskMovie with regmask member function: maskby
   |     |- [Update] TODO: add point-cloud non-rigid registration based on CPD
-  |     |- [Update] TODO: add <local tracking> to signal estimator for better estimation
-  |     |- [Update] TODO: add English help & update help
+  |     |- [Update] TODO: replace MaskMovie with regmask member function: maskby
   |     |- [Fix Bugs] TODO: fix TCREG->manual correction bug
   |     |- [Fix Bugs] TODO: solve the ROI rename bug
-  |- V2.1.2     2025/03/
+  |     |- [Fix Bugs] fix TCREG->local correction bug->Register:line->3939
+  |- V2.2.1     2025/03/
   |     |- [Update] TODO: simplify the distributed task manager logic
-  |     |- [Update] TODO: new task manager function introduced
   |     |- [Update] TODO: validate one channel registration on neural process
-  |     |- [Update] 
+  |     |- [Update] TODO: add English help & update help
+  |     |- [Update] TODO: registration history manager
+  |     |- [Fiz Bugs] TODO:
+  |- V2.2.2     2025/04/
+  |     |- [Update] TODO: add <local tracking> to signal estimator for better estimation
+  |     |- [Update] TODO: new task manager function introduced
 
 
 V2.3        Xuanzang            玄奘
