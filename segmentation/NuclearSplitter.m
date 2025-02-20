@@ -450,7 +450,7 @@ classdef NuclearSplitter < handle
             opts.vr = opts.vr*max(rs/opts.vr.*size(vol))/NuclearSplitter.MAX_SIZE_ALLDIM;
 
             % remap to 0-255 as uint8
-            H_MAX = max(vol, [], "all"); H_MIN = min(vol, [], "all");
+            H_MIN = min(vol, [], "all");
             vol = vol - H_MIN;
             pvol = uint8(rescale(single(vol).^segopts.gamma, 0, 255));
 
@@ -473,7 +473,7 @@ classdef NuclearSplitter < handle
 
         function label = cellpose_on_each_gpu(model, bdvol, cth, stage, batch, r_mean, r_min, enh)
             switch model
-                case {'cyto', 'CP'}
+                case {'cyto', 'CP', 'nuclei'}
                     cp = cellpose("Model", model);
                     label = segmentCells3D(cp, bdvol, ...
                         "CellThreshold", cth, ...
@@ -481,7 +481,7 @@ classdef NuclearSplitter < handle
                         "ImageCellDiameter", round(2*r_mean), ...
                         "MinVolume",round(4/3*pi*r_min.^3), ...
                         "TileAndAugment", enh);
-                case {'LarORN', 'LarKC'}
+                case "KC"
                     [mpath, ~, ~] = fileparts(mfilename("fullpath"));
                     mpath = [mpath, filesep, 'custom_models'];
                     cp = cellpose("Model", mpath + filesep + model + "_" + stage);
@@ -497,17 +497,4 @@ classdef NuclearSplitter < handle
             terminate(pyenv);
         end
     end
-end
-
-function mustBeSegmentOptions(opts)
-
-VALID_FIELDS = ["r_u","r_s","n_max","rm_outlier","gamma","enhance_mp","fg_th", ...
-    "auto_fg", "sph_th", "bkg", "dh", "model", "stage", "r_mean", "r_min", "cell_th", ...
-    "bdbox", "enhance_ml", "batch_size", "acceleration", "method"];
-
-if ~all(ismember(VALID_FIELDS, fieldnames(opts)))
-    throw(MException("NuclearSplitter:invalidSegmentOption", ...
-        "Segment option is invalid. Fieldnames support: %s", VALID_FIELDS.join(", ")));
-end
-
 end
