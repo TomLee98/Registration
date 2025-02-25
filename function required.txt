@@ -342,6 +342,7 @@ V2.2        Wujing              悟净
   |     |- [Update] TODO: replace MaskMovie with regmask member function: maskby
   |     |- [Fix Bugs] TODO: fix TCREG->manual correction bug
   |     |- [Fix Bugs] TODO: solve the ROI rename bug
+  |     |- [Fix Bugs] TODO: fix .nd2 file fast loading bug
   |     |- [Fix Bugs] fix TCREG->local correction bug->Register:line->3939
   |     |- [Fix Bugs] fix cellpose bug on machine with GPU
   |- V2.2.1     2025/03/
