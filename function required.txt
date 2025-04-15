@@ -338,12 +338,11 @@ V2.1        Wuneng              悟能
 
 V2.2        Wujing              悟净
   |- V2.2.0     2025/04/
-  |     |- [Update] TODO: simplify the distributed task manager, Prioritizing fairness over efficiency
+  |     |- [Update] simplify the distributed task manager, Prioritizing fairness over efficiency
   |     |- [Update] TODO: replace MaskMovie with regmask member function: maskby
-  |     |- [Update] TODO: modify the cursor position getter, enable the toolbar
   |     |- [Update] TODO: update bug reporter-> 'Cell Segmentator' and 'Signal Extractor' support
   |     |- [Fix Bugs] TODO: fix .nd2 file fast loading bug
-  |     |- [Fix Bugs] TODO: fix the bug when A waiting for B source, but B finished caused infinity waiting 
+  |     |- [Fix Bugs] fix the bug when A waiting for B source, but B finished caused infinity waiting 
   |     |- [Fix Bugs] fix the python environment error if some pyhton exception caused
   |     |- [Fix Bugs] fix TCREG->local correction bug->Register:line->3939
   |     |- [Fix Bugs] fix cellpose bug on local machine with GPU
@@ -352,16 +351,8 @@ V2.2        Wujing              悟净
   |     |- [Update] TODO: registration history manager
   |     |- [Fix Bugs] TODO: solve the ROI rename bug
   |- V2.2.2     2025/06/
+  |     |- [Update] TODO: modify the cursor position getter, enable the toolbar
   |     |- [Update] TODO: add <local tracking> to signal estimator for better estimation
   |     |- [Update] TODO: new task manager function introduced
-
-
-V2.3        Xuanzang            玄奘
-  |- V2.3.0     2024/12
-  |     |- [Update] TODO: memory mapping low level optimal(mpimgs class design)
-  |     |- [Update] TODO: new movie exporter object for better movie export operation(parpool)
-  |     |- [Update] TODO: registration temporary saving
-  |     |- [Update] TODO: inregdemons run in thread parpool
-  |- V2.3.1     2024/12
-  |     |- [Update] TODO: task batch mode, multi-movies registration 
+  #
 

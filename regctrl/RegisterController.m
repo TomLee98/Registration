@@ -129,7 +129,7 @@ classdef RegisterController < handle
 
             % setup the task manager
             this.taskmgr.setup(this.regopts, movraw_, movtmpl_, regfr_, ...
-                this.nw_protected, this.distrib, this.caller, true);
+                this.nw_protected, this.distrib, this.caller);
 
             % initialize register worker
             this.regworker = RegisterWorker(movraw_, movaligned_);
