@@ -8,6 +8,7 @@ classdef regrcf < handle
                                 "counts_rec", "status", "resource", "progress"];
 
         RECYCLE_REJECT_PROGRESS_THRESHOLD = 0.9
+        SPEED_UP_THRESHOLD = 0.25
     end
 
     properties(SetAccess=immutable, Hidden)
@@ -15,7 +16,6 @@ classdef regrcf < handle
         volopt
         regopt
         distrib
-        tueobj
     end
 
     properties(Access=private)
@@ -34,7 +34,7 @@ classdef regrcf < handle
                                         "status",           "Await", ...    % "Await", "Run", "Ready"
                                         "resource",         "", ...         % could be "cpu", "cpu|gpu"
                                         "progress",         0)              % progress for current process
-        nmax   (1,1)  double  {mustBeNonnegative, mustBeInteger} = 512
+        nmax    (1,1)  double  {mustBeNonnegative, mustBeInteger} = 512
         fname
     end
 
@@ -54,13 +54,12 @@ classdef regrcf < handle
     end
     
     methods
-        function this = regrcf(sfolder_, volopt_, regopt_, regfrs_, distrib_)
+        function this = regrcf(sfolder_, volopt_, regopt_, distrib_)
             %REGRCF A Constructor
             arguments
                 sfolder_    (1,1)   string
                 volopt_     (1,12)  table
                 regopt_     (1,1)   regopt
-                regfrs_     (1,:)   double {mustBePositive, mustBeInteger}
                 distrib_    (1,1)   logical
             end
             
@@ -86,7 +85,6 @@ classdef regrcf < handle
             this.data.user_id = uid;
             this.data.submit_time = string(datetime("now"));
             [this.data.resource, this.nmax] = GetTaskWorkersMaxN(volopt_, regopt_);
-            this.tueobj = TUE(volopt_, regopt_, regfrs_, this.nmax);
         end
 
         function r = get.UserId(this)
@@ -326,29 +324,19 @@ classdef regrcf < handle
                 uid = this.data.user_id;
                 switch this.data.status
                     case "Await"
-                        nprocgs = 0;       %number of processors that gpu shared
+                        nprocgs = 0;                %number of processors that gpu shared
                         running_proc = false(numel(rcfpool), 1); % only acquired to running user
-                        % compare the resource needed and require linearly
-                        t = this.tueobj.estimate(this.distrib);
+
                         % generate task table:
                         % user  num_processor  t_estimate  resource  run_flag
-                        tasks_ = table('Size', [numel(rcfpool), 5], ...
-                            'VariableTypes', {'string','double','double','string','logical'},...
-                            'VariableNames', {'user', 'nproc', 't', 'resrc', 'run'});
+                        tasks_ = table('Size', [numel(rcfpool), 4], ...
+                            'VariableTypes', {'string','double','string','logical'},...
+                            'VariableNames', {'user', 'nproc', 'resrc', 'run'});
 
                         for k = 1:numel(rcfpool)
                             rcf_k = rcfpool(k);
                             tasks_.user(k) = rcf_k.user_id;
                             tasks_.nproc(k) = rcf_k.nworkers;
-                            t_est = seconds(datetime("now")-datetime(rcf_k.submit_time))...
-                                / (rcf_k.progress + eps);   % avoid devided by 0
-                            % uniform capture assumption -> modified factor
-                            if rcf_k.nbatches > 2
-                                tasks_.t(k) = t_est / (1+1/(rcf_k.nbatches-2)*...
-                                    log(rcf_k.nbatches-1));
-                            else
-                                tasks_.t(k) = t_est / 2;
-                            end
                             running_proc(k) = (rcf_k.progress > 0 && ...
                                 rcf_k.progress < this.RECYCLE_REJECT_PROGRESS_THRESHOLD);
                             tasks_.resrc(k) = rcf_k.resource;
@@ -366,7 +354,6 @@ classdef regrcf < handle
                         %                [=====================|#############]
                         %                |<------------limit max------------>|
                         %                                      |<-limit max->|
-                        t_other = eps;
                         req_user = [];
                         for k = 1:numel(rcfpool)
                             % require from the running user
@@ -375,16 +362,15 @@ classdef regrcf < handle
                                     case "cpu"
                                         % cpu can only extension from cpu user
                                         if tasks_.resrc(k) == "cpu"
-                                            t_other = t_other + tasks_.nproc(k)*tasks_.t(k);
                                             req_user = [req_user; tasks_.user(k)]; %#ok<AGROW>
                                         else
-                                            % protect gpu user
+                                            % protect gpu user, do not 
+                                            % append them to required list
                                             nprocgs = nprocgs + tasks_.nproc(k);
                                         end
                                     case "cpu|gpu"
                                         % gpu user has higher extension
                                         % priority, no matter other users
-                                        t_other = t_other + tasks_.nproc(k)*tasks_.t(k);
                                         req_user = [req_user; tasks_.user(k)]; %#ok<AGROW>
                                     otherwise
                                 end
@@ -392,22 +378,20 @@ classdef regrcf < handle
                         end
 
                         % useful only at first requirement
-                        nproc_atot_req = fix(t/(t+t_other)*(this.nmax-nprocgs));
-                        nproc_atot_req = max(2, nproc_atot_req);    % require 2 workers at least
+                        % estimate average workers number
+                        nproc_atot_req = ...
+                            max(2, floor((this.nmax-nprocgs) / numel(rcfpool)));
 
                         % required workers spread to running users
+                        nruns = sum(tasks_.run);
                         for k = 1:numel(rcfpool)
                             if tasks_.run(k) == true
                                 this.data.nworkers_req.(tasks_.user(k)) ...
-                                    = [round((1-tasks_.t(k)/(t+t_other))*nproc_atot_req), 0];
+                                    = [ceil(nproc_atot_req / nruns), 0];
                             end
                         end
 
                         % check if the release sources are satisfied
-                        reqsrc_ = table('Size', [numel(req_user), 1], ...
-                            'VariableTypes', {'logical'}, ...
-                            'VariableNames', {'is_alloc'}, ...
-                            'RowNames', req_user);
                         nproc_atot_rel = 0;
 
                         for k = 1:numel(rcfpool)
@@ -426,15 +410,17 @@ classdef regrcf < handle
                                         this.data.nworkers_req.(rcfpool(k).user_id) ...
                                             = nproc_rel;
                                         nproc_atot_rel = nproc_atot_rel + nproc_rel(1);
-                                        reqsrc_(rcfpool(k).user_id, :).is_alloc = true;
                                     end
                                 end
                             end
                         end
 
-                        if all(reqsrc_.is_alloc)
+                        % validate the sum of released resources and left 
+                        % resource is enough
+                        nlt = this.get_sys_nworkers_left();
+                        if nlt + nproc_atot_rel > nproc_atot_req
                             % resource is satisfied, update allocated workers, change status
-                            this.data.nworkers = nproc_atot_rel;
+                            this.data.nworkers = nproc_atot_req;
                             this.data.status = "Ready";     % ready for requirement
                         else
                             % await until resource is ready
@@ -513,34 +499,20 @@ classdef regrcf < handle
             % this function recycle resource from system
             rcfpool = this.readall();
 
+            % if and only if all users are running and system has left
+            % resoureces, allocate new workers
             switch this.data.status
                 case "Run"
-                    if isscalar(rcfpool)
-                        % must be current user
-                        nproc_tot = this.data.nworkers;
-                    else
-                        nproc_tot = 0;
-                        for k = 1:numel(rcfpool)
-                            rcf_k = rcfpool(k);
-                            if (rcf_k.status == "Run") && ...
-                                    (rcf_k.resource == this.data.resource)
-                                nproc_tot = nproc_tot + rcf_k.nworkers;
-                            end
-                        end
+                    running_all = true;
+                    nlt = this.get_sys_nworkers_left();
+                    for k = 1:numel(rcfpool)
+                        running_all = running_all & (rcfpool(k).status == "Run");
                     end
 
-                    switch this.data.resource
-                        case "cpu"
-                            nproc_new = round(this.data.nworkers / nproc_tot ...
-                                *(this.nmax - GetGPUWorkersMaxN()));
-                        case "cpu|gpu"
-                            nproc_new = round(this.data.nworkers / nproc_tot ...
-                                *GetGPUWorkersMaxN());
-                        otherwise
-                    end
-
-                    if nproc_new > this.data.nworkers
-                        this.data.nworkers = nproc_new;
+                    % average spread workers
+                    if (floor(nlt / numel(rcfpool)) > ceil(this.SPEED_UP_THRESHOLD*this.data.nworkers)) ...
+                            && (running_all == true)
+                        this.data.nworkers = this.data.nworkers + floor(nlt / numel(rcfpool));
                         this.data.status = "Ready";
                     else
                         this.data.status = "Run";
@@ -551,6 +523,26 @@ classdef regrcf < handle
                     %
                 otherwise
                     %
+            end
+        end
+
+        function nlt = get_sys_nworkers_left(this)
+            % This function reads pools and calculate left valid workers
+            [~, n_max] = GetTaskWorkersMaxN(this.volopt, this.regopt);
+
+            rcfpool = this.readall();
+
+            if isempty(rcfpool)
+                nlt = n_max;
+            else
+                nsp = 0;
+                for k = 1:numel(rcfpool)
+                    rcf_k = rcfpool(k);
+                    if rcf_k.status == "Run"
+                        nsp = nsp + rcf_k.nworkers;
+                    end
+                end
+                nlt = n_max - nsp;
             end
         end
     end

@@ -5,7 +5,6 @@ classdef taskParser < handle
     % will generate the pipeline automatically
 
     properties(Constant, Hidden)
-        % shared with TUE
         C_DISTRIBUTION = 2;
         C_EXCLUSIVE = 4;
     end

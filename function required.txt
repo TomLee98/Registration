@@ -337,21 +337,21 @@ V2.1        Wuneng              悟能
   #     #
 
 V2.2        Wujing              悟净
-  |- V2.2.0     2025/02/
-  |     |- [Update] TODO: add point-cloud non-rigid registration based on CPD
+  |- V2.2.0     2025/04/
+  |     |- [Update] TODO: simplify the distributed task manager, Prioritizing fairness over efficiency
   |     |- [Update] TODO: replace MaskMovie with regmask member function: maskby
-  |     |- [Fix Bugs] TODO: fix TCREG->manual correction bug
-  |     |- [Fix Bugs] TODO: solve the ROI rename bug
+  |     |- [Update] TODO: modify the cursor position getter, enable the toolbar
+  |     |- [Update] TODO: update bug reporter-> 'Cell Segmentator' and 'Signal Extractor' support
   |     |- [Fix Bugs] TODO: fix .nd2 file fast loading bug
+  |     |- [Fix Bugs] TODO: fix the bug when A waiting for B source, but B finished caused infinity waiting 
+  |     |- [Fix Bugs] fix the python environment error if some pyhton exception caused
   |     |- [Fix Bugs] fix TCREG->local correction bug->Register:line->3939
-  |     |- [Fix Bugs] fix cellpose bug on machine with GPU
-  |- V2.2.1     2025/03/
-  |     |- [Update] TODO: simplify the distributed task manager logic
-  |     |- [Update] TODO: validate one channel registration on neural process
-  |     |- [Update] TODO: add English help & update help
+  |     |- [Fix Bugs] fix cellpose bug on local machine with GPU
+  |- V2.2.1     2025/05/
+  |     |- [Update] TODO: add point-cloud non-rigid registration based on CPD
   |     |- [Update] TODO: registration history manager
-  |     |- [Fiz Bugs] TODO:
-  |- V2.2.2     2025/04/
+  |     |- [Fix Bugs] TODO: solve the ROI rename bug
+  |- V2.2.2     2025/06/
   |     |- [Update] TODO: add <local tracking> to signal estimator for better estimation
   |     |- [Update] TODO: new task manager function introduced
 
