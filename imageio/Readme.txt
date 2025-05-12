@@ -12,6 +12,8 @@ Try your best! You can do it.
 
 ================================================================================
 You can use Nikon SDK for fast reading *.nd2 file. Note that the support is enabled as default.
+
+[For Linux/Unix OS User]:
 If you open .nd2 file with MATLAB warning in computing server(Ubuntu)@silab: 
 'Warning: There was an error loading the library "/home/<youe account>/MATLAB
 Add-Ons/Apps/Reg3D<Version>/imgio/ImageReader/NikonReader/bin/linux/libNd2ReadSdk.so"
@@ -30,3 +32,10 @@ libicutu.so.52
 
 Note that these files will be found in folder '/home/<youe account>/MATLAB
 Add-Ons/Apps/Reg3D<Version>/imgio/ImageReader/NikonReader/extern/linux/'
+
+[For Windows User]:
+If you open.nd2 file with compiler or linker error, try to fix your MSVC, Windows SDK 
+or other environemntal bug.
+
+Note that temporary compiled .dll may be treated as virus because Kaspersky 
+false positives detection.
