@@ -347,15 +347,20 @@ V2.2        Wujing              悟净
   |     |- [Fix Bugs] fix TCREG->local correction bug->Register:line->3939
   |     |- [Fix Bugs] fix cellpose bug on local machine with GPU
   |- V2.2.1     2025/05/
-  |     |- [Update] TODO: add anomaly detection for cell segmentor
+  |     |- [Update] TODO: add anomaly detection and "detecting report" for cell segmentor
   |     |- [Update] TODO: add point-cloud non-rigid registration based on CPD
   |     |- [Update] TODO: modify the cursor position getter, enable the toolbar
   |     |- [Update] TODO: replace MaskMovie with regmask member function: maskby
+  |     |- [Fix Bugs] fix bug in "TCREG" if "mmt" selected but z shift locked
   |     |- [Fix Bugs] TODO: solve the ROI rename problem
-  |- V2.2.2     2025/06/
-  |     |- [Update] TODO: update bug reporter-> 'Cell Segmentator' and 'Signal Extractor' support
-  |     |- [Update] TODO: registration history manager
-  |     |- [Update] TODO: add <local tracking> to signal estimator for better estimation
-  |     |- [Update] TODO: new task manager function introduced
+  |     |- [Fix Bugs] ROIP2V->line 46: out of range subscript (out of boundary)
+  #     #
   
 
+====================Important Architecture Update =========================
+
+V3.0        Galileo          伽利略
+  |- V3.0.0     
+  |     |- [Update] TODO: remove bug reporter sub component
+  |     |- [Update] TODO: registration history manager
+  |     |- [Fix Bugs] TODO:

@@ -42,6 +42,12 @@ for n = 1:numel(rois)
             % combine x,y,z
             xyz_pts = [xyz_pts; [xy_pts, z0*ones(size(xy_pts, 1), 1)]];
         end
+        % remove any points out of boundary
+        rmpts = (xyz_pts(:,1) <= 0 | xyz_pts(:,1) > vsize(2)) ...
+            | (xyz_pts(:,2) <= 0 | xyz_pts(:,2) > vsize(1)) ...
+            | (xyz_pts(:,3) <= 0 | xyz_pts(:,3) > vsize(3));
+        xyz_pts(rmpts, :) = [];
+        
         % transform to linear indices
         vroi{n} = sub2ind(vsize, xyz_pts(:,2), xyz_pts(:,1), xyz_pts(:,3));
     end

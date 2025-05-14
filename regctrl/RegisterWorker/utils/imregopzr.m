@@ -23,8 +23,8 @@ function tf_est = imregopzr(moving, fixed, rsFixed, sc_flag, shift_max, tol, cal
 arguments
     moving      (:,:,:) uint16
     fixed       (:,:,:) uint16
-    rsFixed     (1,3)   double      % [x,y,z] coordinate resolution, unit as um/pix
-    sc_flag     (1,1)   logical = true
+    rsFixed     (1,3)   double              % [x,y,z] coordinate resolution, unit as um/pix
+    sc_flag     (1,1)   logical = true      % structured channel flag, true for exist
     shift_max   (1,1)   double {mustBeNonnegative} = 2
     tol         (1,1)   double {mustBeInRange(tol, 0, 1)} = 1e-3
     calg        (1,1)   string {mustBeMember(calg, ["mmt","pcorr","fpp"])} = "mmt"

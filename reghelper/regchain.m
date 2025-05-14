@@ -265,7 +265,7 @@ classdef regchain < handle
 
     methods(Access = private)
         function [tf, kv] = align_chain_node(this, kfidx)
-            % This function use 'phase correlation' registration as coarse
+            % This function use 'mmt' registration as coarse
             % registration and affine registration as fine tuning
             tf = cell(numel(kfidx), 1);
             kv = cell(numel(kfidx), 1);
