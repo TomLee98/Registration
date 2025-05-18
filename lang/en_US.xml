@@ -15,6 +15,8 @@
     <APPLY>Apply</APPLY>
     <AREA>Area</AREA>
     <AREA_MASK>Area Mask</AREA_MASK>
+    <AREA_PERIMETER>Area Perimeter</AREA_PERIMETER>
+    <AREA_SIZE>Area Size</AREA_SIZE>
     <ASK_FOR_UPDATE>There is an updated version, is it updated?</ASK_FOR_UPDATE>
     <ATTACH_FILE_HERE>Additional files to reproduce the issue are included here</ATTACH_FILE_HERE>
     <ATTACH_FOLDER>Attach Folder</ATTACH_FOLDER>
@@ -179,6 +181,12 @@
     <INFORMATION>Information</INFORMATION>
     <IN_PROGRESS>In progress</IN_PROGRESS>
     <INPUT>input</INPUT>
+    <INTENSITY_MIN>Intensity Minima</INTENSITY_MIN>
+    <INTENSITY_MAX>Intensity Maxima</INTENSITY_MAX>
+    <INTENSITY_MEAN>Intensity Mean</INTENSITY_MEAN>
+    <INTENSITY_MEDIAN>Intensity Median</INTENSITY_MEDIAN>
+    <INTENSITY_MODE>Intensity Mode</INTENSITY_MODE>
+    <INTENSITY_STD>Intensity Standard Deviation</INTENSITY_STD>
     <INTENSITY_THRESHOLD>Intensity Threshold</INTENSITY_THRESHOLD>
     <INTERFACE_CONTROL>Interface Control</INTERFACE_CONTROL>
     <INTERPOLATION>Interpolation</INTERPOLATION>
@@ -376,6 +384,7 @@
     <REPORT_BUG_DETAIL>Please describe the problem in the program in detail (&gt;10 characters)</REPORT_BUG_DETAIL>
     <RESAMPLING_RATIO>Resampling Ratio</RESAMPLING_RATIO>
     <RESET_REGISTRATION_FRAMES>Reset registration frame</RESET_REGISTRATION_FRAMES>
+    <RESTORE_VIEW>Restore View</RESTORE_VIEW>
     <RIGHT_SIDE>Right</RIGHT_SIDE>
     <RIGID>Rigid</RIGID>
     <RIGID_TOOLTIP>translation and rotation</RIGID_TOOLTIP>
@@ -402,6 +411,7 @@
     <SETTING_PREFERENCE>Settings and Preferences</SETTING_PREFERENCE>
     <SIGNAL>Signal</SIGNAL>
     <SIGNAL_EXTRACTOR>Signal Extractor</SIGNAL_EXTRACTOR>
+    <SIMPLE_STAT>Simple Stat</SIMPLE_STAT>
     <SINGLE_CHANNEL>Single Channel</SINGLE_CHANNEL>
     <SLICE>Slice</SLICE>
     <SLICE_FEW>Please select at least two slices</SLICE_FEW>

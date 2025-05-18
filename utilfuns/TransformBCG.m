@@ -21,10 +21,12 @@ end
 A = max(min(A, param.r(2)), param.r(1));
 
 % rescale the pixel intensity
-A = rescale(A,0,intmax("uint16"));
+A = matlab.internal.math.rescaleKernel(A, 0, 65535, param.r(1), param.r(2));
 
 % linear model
 C = imlincomb(param.c, uint16(single(A).^param.ga), param.b);
-C = uint8(rescale(C, 0, intmax("uint8")));
+iminc = double(min(C,[],"all")); 
+imaxc = double(max(C, [], "all"));
+C = cast(matlab.internal.math.rescaleKernel(C, 0, 255, iminc, imaxc), "uint8"); 
 end
 

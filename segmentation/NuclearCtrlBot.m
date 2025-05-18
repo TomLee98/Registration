@@ -22,7 +22,6 @@ classdef NuclearCtrlBot < handle
 
     properties(SetAccess=private, GetAccess=private)
         nuid            % nuclear indicator definition(identity)
-        nlbl            % nuclear labels
         hlid            % 1-by-s double, the highlight id array
         volopts         % the image options of vol
         center          % nuclear indicator center
@@ -37,7 +36,6 @@ classdef NuclearCtrlBot < handle
         MaxN
         Parent
         ROIsInfo
-        ROIsLabel
     end
 
     methods
@@ -91,17 +89,6 @@ classdef NuclearCtrlBot < handle
                 r = zeros(1, size(this.nuclears.obj_max_exist, 2));
             end
         end
-
-        function r = get.ROIsLabel(this)
-            ids = reshape(unique(cell2mat(this.nuid), "rows", "sorted"),1,[]);
-            ids(isnan(ids)) = [];
-            ids(ids==this.REMOVED_OBJ) = [];
-
-            r = strings(size(ids));
-            for k = 1:numel(ids)
-                r(k) = this.getLabel(ids(k));
-            end
-        end
     end
     
     methods(Access = public)
@@ -117,7 +104,6 @@ classdef NuclearCtrlBot < handle
             this.center = nsper.Center;
             this.radius = nsper.Radius;
             this.nuid = nsper.Nid;
-            this.nlbl = cellfun(@(x)string(x),this.nuid,"UniformOutput",false);
             this.hlid = zeros(1, 0);
             this.rois = GenROI(this.nuid, this.center, this.radius);
             this.caller = nsper.Parent;
@@ -163,7 +149,7 @@ classdef NuclearCtrlBot < handle
                             "Color",cc, ...
                             "LabelTextColor", this.VALID_FONT_COLOR, ...
                             "Visible", this.dispflag, ...
-                            "LineWidth",1.5, "MarkerSize",1, "Label",this.nlbl{zidx}(cir_index),...
+                            "LineWidth",1.5, "MarkerSize",1, "Label",string(cir_id),...
                             "LabelVisible","on", "FaceAlpha",0, "LabelAlpha",0,...
                             "Deletable",true, "UserData",[cir_index, zidx]);
 
@@ -176,12 +162,6 @@ classdef NuclearCtrlBot < handle
                             "Text","修改ID",...
                             "MenuSelectedFcn",@(~,~)this.roi_modify_id([],[],self), ...
                             "Tag","IDROIContextMenuModify");
-
-                        % binding menu: 修改标签
-                        uimenu(self.ContextMenu, ...
-                            "Text","修改标签",...
-                            "MenuSelectedFcn",@(~,~)this.roi_modify_label([],[],self), ...
-                            "Tag","LBLROIContextMenuModify");
 
                         % changed the default context menu: delete
                         self.ContextMenu.Children(end).MenuSelectedFcn ...
@@ -262,7 +242,6 @@ classdef NuclearCtrlBot < handle
 
             cir_index = numel(this.nuid{zidx});
             this.nuid{zidx}(cir_index+1,1) = cir_id;
-            this.nlbl{zidx}(cir_index+1,1) = string(cir_id);
             this.center{zidx}(cir_index+1, :) = cir_info(1:2);
             this.radius{zidx}(cir_index+1,1) = cir_info(3);
 
@@ -273,15 +252,6 @@ classdef NuclearCtrlBot < handle
             status = this.STATUS_SUCCESS;
         end
 
-        function lbl = getLabel(this, id)
-            loc = cellfun(@(x)any(x==id), this.nuid, "UniformOutput",true);
-            subid = this.nuid(loc);
-            zidx = find(loc);
-            cidx = cellfun(@(x)find(x==id), subid, "UniformOutput",true);
-
-            lbl = this.nlbl{zidx(1)}(cidx(1));
-        end
-
         function status = Refresh(this)
             % this function reorder objects identities
             % access each object and modify the identities
@@ -290,9 +260,6 @@ classdef NuclearCtrlBot < handle
             [this.nuid, this.center, this.radius] ...
                 = this.nuclears.ApplyRefreshTo(this.nuid, ...
                 this.center, this.radius, true);
-
-            % cover old names
-            this.nlbl = cellfun(@(x)string(x),this.nuid,"UniformOutput",false);
 
             % refresh ROIs
             this.rois = GenROI(this.nuid, this.center, this.radius);
@@ -366,7 +333,7 @@ classdef NuclearCtrlBot < handle
             status = this.STATUS_SUCCESS;
         end
 
-        function status = recall_object(this, zidx, cir_index, cir_id_old, cir_id_new, cir_lbl_new)
+        function status = recall_object(this, zidx, cir_index, cir_id_old, cir_id_new)
             % this function rename an object in data already
             arguments
                 this
@@ -374,7 +341,6 @@ classdef NuclearCtrlBot < handle
                 cir_index   (1,1) double  {mustBeNonNan} % empty for not needed: cir_id_old is not nan
                 cir_id_old  (1,1) double
                 cir_id_new  (1,1) double
-                cir_lbl_new (1,1) string = ""
             end
             if zidx > this.volopts.slices
                 throw(MException("NuViewer:invalidSliceIndex", ...
@@ -404,7 +370,6 @@ classdef NuclearCtrlBot < handle
                             "Identity not found."));
                     else
                         this.nuid{zidx}(cir_index) = cir_id_new;
-                        this.modify_label(cir_id_new, cir_lbl_new);
                         status = this.nuclears.Val2Val(cir_id_old, cir_id_new);
                         return;
                     end
@@ -416,7 +381,6 @@ classdef NuclearCtrlBot < handle
                 end
                 cir_id_old = this.nuid{zidx}(cir_index);
                 this.nuid{zidx}(cir_index,1) = cir_id_new;
-                this.modify_label(cir_id_new, cir_lbl_new);
                 status = this.nuclears.Val2Val(cir_id_old, cir_id_new);
                 return;
             end
@@ -478,34 +442,12 @@ classdef NuclearCtrlBot < handle
                 this.recall_object(zidx, cidx, id_cur, id_new);
                 % update this color
                 this.gen_colormap();
-                self.Label =  this.nlbl{zidx}(cidx);
+                self.Label =  string(id_new);
                 self.Color = this.color{zidx}(cidx, :);
             else
                 warning("NuclearCtrlBot:invalidIdentity", ...
                     "Identity must be a positive integer.");
             end
-        end
-
-        function roi_modify_label(this, ~, ~, self)
-            % generate a message box for new label acquirement
-            cidx = self.UserData(1);
-            zidx = self.UserData(2);    % [circle_index, z_index]
-            id_cur = this.nuid{zidx}(cidx);
-            lbl_cur = this.nlbl{zidx}(cidx);
-
-            prompt = {'Enter new label:'};
-            dlgtitle = 'remark';
-            fieldsize = [1 45];
-            definput = {lbl_cur};
-
-            answer = inputdlg(prompt,dlgtitle,fieldsize,definput);
-            if isempty(answer), return; end
-
-            lbl_new = string(answer{1});
-
-            this.recall_object(zidx, cidx, id_cur, id_cur, lbl_new);
-
-            self.Label = lbl_new;
         end
 
         function roi_delete(this, ~, ~, self)
@@ -524,20 +466,6 @@ classdef NuclearCtrlBot < handle
             this.center = this.center(roi_z);
             this.radius = this.radius(roi_z);
             this.color = this.color(roi_z);
-        end
-
-        function modify_label(this, id, lbl)
-            % find all identity equals to unid{zidx}(cidx), change the ulbl
-            % as lbl, otherwise lbl is ""
-            if lbl == ""
-                return;
-            else
-                % modify all labels
-                loc = cellfun(@(x)(id==x), this.nuid, "UniformOutput",false);
-                for n = 1:numel(loc)
-                    this.nlbl{n}(loc{n}) = lbl;
-                end
-            end
         end
     end
 end

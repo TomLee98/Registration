@@ -203,8 +203,14 @@ parfor m = 1:numel(regfrs)
     avol_sc_m = avol_sc(:,:,:,m);
     avol_fc_m = avol_fc(:,:,:,m);
 
-    if img_rehist == true
-        avol_sc_m = imhistmatchn(avol_sc_m, refvol_ds, repacc);
+    % note that may cause "memory overflow" here
+    try
+        if img_rehist == true
+            avol_sc_m = imhistmatchn(avol_sc_m, refvol_ds, repacc);
+        end
+    catch ME
+        % warning and continue
+        warning("tcreg:badFluoscrenceCorrection", "%s", ME.message);
     end
 
     if subalg == "usual"
@@ -279,7 +285,14 @@ parfor m = 1:numel(regfrs)
     avol_fc_m = avol_fc(:,:,:,m);
 
     if img_rehist == true
-        avol_sc_m = imhistmatchn(avol_sc_m, refvol_ds, repacc);
+        % rehist
+        refvol_ds_rs = cast(rescale(refvol_ds, 0, 255), "uint8");
+        avol_sc_m_rs = cast(rescale(avol_fc_m, 0, 255), "uint8");
+        lb = min(refvol_ds, [], "all"); rb = max(refvol_ds, [], "all");
+        avol_sc_m_rs = imhistmatchn(avol_sc_m_rs, refvol_ds_rs, repacc);
+
+        % recovery
+        avol_sc_m = cast(rescale(avol_sc_m_rs, lb, rb), "like", avol_fc_m);
     end
 
     if subalg == "usual"

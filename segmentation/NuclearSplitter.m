@@ -63,7 +63,7 @@ classdef NuclearSplitter < handle
             % do calculation on vol-volopts dataset
             switch this.segopts.method
                 case "morphology"
-                    [center_,radius_,id_] = split_morphlogy(this, vol, volopts);
+                    [center_,radius_,id_] = split_morphology(this, vol, volopts);
                 case "cellpose"
                     [center_,radius_,id_] = split_cellpose(this, vol, volopts);
                 otherwise
@@ -78,7 +78,7 @@ classdef NuclearSplitter < handle
     end
 
     methods(Access=private)
-        function [center,radius,id] = split_morphlogy(this, vol, volopts)
+        function [center,radius,id] = split_morphology(this, vol, volopts)
             % This function uses morphology method to extract nuclears
             % preprocess the volume
             this.caller.SetProgressBar(0);
@@ -191,7 +191,7 @@ classdef NuclearSplitter < handle
             % re-sample (most down sampling as raw)
             L = imresize3(L, size(vol), "Method","nearest");
 
-            % allocate new label
+            % remap labels
             oldlbl = unique(L);
             newlbl = 0:numel(oldlbl)-1;
             for k = 1:numel(newlbl)
@@ -217,7 +217,6 @@ classdef NuclearSplitter < handle
                 oldlbl = unique(Ln);
                 newlbl = min(oldlbl):min(oldlbl)+numel(unique(Ln))-1;
                 for k = 1:numel(newlbl)
-                    % remap old label to new label
                     rLn(Ln==oldlbl(k)) = newlbl(k);
                 end
 
@@ -324,7 +323,12 @@ classdef NuclearSplitter < handle
             enh = this.segopts.enhance_ml;
             stage = this.segopts.stage;
 
-            if gpuDeviceCount > 0, cellpose_on_gpu(); else, cellpose_on_cpu(); end
+            % run cellpose on CPU or GPU
+            if gpuDeviceCount > 0
+                cellpose_on_gpu();
+            else
+                cellpose_on_cpu();
+            end
 
             for k = 1:numel(bdvol)
                 % mass center reconstruction for better nuclear segmentation
@@ -367,6 +371,12 @@ classdef NuclearSplitter < handle
                     % remove padding slices
                     labels{k} = labels{k}(dh(k,1)+1:end-dh(k,2), dw(k,1)+1:end-dw(k,2), ...
                         ds(k,1)+1:end-ds(k,2));
+                end
+
+                % remap labels after volume resizing
+                old_label = unique(labels{k}); old_label(old_label==0) = [];
+                for m = 1:numel(old_label)
+                    labels{k}(labels{k}==old_label(m)) = m;
                 end
 
                 % extract objects on each plane
