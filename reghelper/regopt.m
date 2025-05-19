@@ -48,7 +48,7 @@ classdef regopt
         img_rehist      (1,1) logical = false
         dm_vpl          (1,1) double {mustBePositive, mustBeInteger} = 3    % vpl for imregdemons
         df_vpl          (1,1) double {mustBePositive, mustBeInteger} = 3    % vpl for imregdeform
-        repacc          (1,1) double {mustBeMember(repacc, [2048, 4096, 8192])} = 2048
+        repacc          (1,1) double {mustBeMember(repacc, [64, 128, 256])} = 64
         grid_regulation (1,1) double {mustBeInRange(grid_regulation, 0, 5)} = 0.11
         grid_spacing    (1,3) double {mustBePositive} = [4,4,4]
 

@@ -354,20 +354,22 @@ V2.2        Wujing              悟净
   |     |- [Fix Bugs] fix bug on segmentation with cellpose: object lost
   |     |- [Fix Bugs] ROIP2V->line 46: out of range subscript (out of boundary)
   |     |- [Fix Bugs] fix "signal extractor" invalid enable if "display view" changed
-  |- V2.2.2     2025/5/25
-  |     |- [Update] TODO: add anomaly detection and "detecting report" for cell segmentor
-  |     |- [Update] TODO: replace MaskMovie with regmask member function: maskby
-  |     |- [Fix Bugs] TODO: 
   #     #
   
 
 ====================Important Architecture Update =========================
 
-V3.0        Galileo          伽利略
-  |- V3.0.0     2025/06/
-  |     |- [Update] TODO: remove bug reporter sub component
+V3.x        Galileo          伽利略
+  |- V3.0.0     2025/05/25
+  |     |- [Update] TODO: aligned results reloading support
+  |     |- [Update] TODO: add anomaly detection and "detecting report" for cell segmentor
   |     |- [Update] TODO: add point-cloud non-rigid registration based on CPD
-  |     |- [Update] TODO: registration history manager
   |     |- [Fix Bugs] TODO: 
-  |- V3.0.1
-  |     |- 
+  |- V3.1.0
+  |     |- [Update] TODO: replace MaskMovie with regmask member function: maskby
+  |     |- [Update] TODO: remove bug reporter sub component
+  |     |- [Update] TODO: registration history manager
+  |     |- [Fix Bugs]
+
+
+
