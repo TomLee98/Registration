@@ -22,6 +22,7 @@
     <ATTACH_FOLDER>Attach Folder</ATTACH_FOLDER>
     <AUTO>Auto</AUTO>
     <AUTO_CLEAR>Auto Clear</AUTO_CLEAR>
+    <AUTO_TEMPLATE>Auto Template</AUTO_TEMPLATE>
     <BASELINE_MODEL>Baseline Model</BASELINE_MODEL>
     <BATCH_SIZE>Batch Size</BATCH_SIZE>
     <BEGIN>begin</BEGIN>
@@ -128,7 +129,6 @@
     <FEATURE_POINT_MATCHING>Feature Point Matching</FEATURE_POINT_MATCHING>
     <FEEDBACK_SUCCESS>Problem feedback successfully!</FEEDBACK_SUCCESS>
     <FILE>Files</FILE>
-    <FILE_LOADING_COMPLETE>File loading completed:</FILE_LOADING_COMPLETE>
     <FILTER>Filter</FILTER>
     <FINISH_UPDATE>The download is complete, please restart the Reg3D app to complete the update</FINISH_UPDATE>
     <FIT>Fit</FIT>
@@ -175,6 +175,7 @@
     <IMAGE_ANNOTATION>Image and Annotation</IMAGE_ANNOTATION>
     <IMAGE_EXPORT_SUCCESS>Images exported successfully</IMAGE_EXPORT_SUCCESS>
     <IMAGE_INTENSITY>image intensity</IMAGE_INTENSITY>
+    <IMAGE_LOADING_COMPLETE>Image loading completed:</IMAGE_LOADING_COMPLETE>
     <IMAGE_PARAMETER>Image Parameters</IMAGE_PARAMETER>
     <IMPORT_EXPORT>Import and Export</IMPORT_EXPORT>
     <IMPORT_MASK>Import mask</IMPORT_MASK>
@@ -219,7 +220,8 @@
     <LINE_HAT>Line Hat</LINE_HAT>
     <LINE_WIDTH>Line Width</LINE_WIDTH>
     <LOAD_CONFIGURATION>Load Configuration</LOAD_CONFIGURATION>
-    <LOAD_FILE>Load Files</LOAD_FILE>
+    <LOAD_IMAGE>Load Image</LOAD_IMAGE>
+    <LOAD_TIME>Load Time</LOAD_TIME>
     <LOCAL>Local</LOCAL>
     <LOCAL_REGISTRATION>Local Registration</LOCAL_REGISTRATION>
     <LOCAL_REGISTRATION_AUTO>Local Registration(Auto)</LOCAL_REGISTRATION_AUTO>
@@ -449,6 +451,7 @@
     <TIME_COST_SEC>Time cost(Seconds):</TIME_COST_SEC>
     <TIME_EXPORT_SUCCESS>Time export successful</TIME_EXPORT_SUCCESS>
     <TIME_FRAME>Time(Frame)</TIME_FRAME>
+    <TIME_LOADING_COMPLETE>Time loading completed:</TIME_LOADING_COMPLETE>
     <TIME_MISSING>Missing time series data</TIME_MISSING>
     <TIME_RANGE>Please enter a time range (frames):</TIME_RANGE>
     <TIME_SERIES_FILE>Time series file</TIME_SERIES_FILE>

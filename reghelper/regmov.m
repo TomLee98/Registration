@@ -26,15 +26,16 @@ classdef regmov < matlab.mixin.Copyable
         Movie           % variable, get/set, stored
         MetaData        % variable, get/set, stored
         Time            % variable, get/set, stored
-        MovieZProj      % variable,     get, not stored
+        MovieZProj      % variable, get/___, not stored
         ZProjMethod     % variable, get/set, stored
         Transformation  % variable, get/set, stored
-        Bytes           % variable,     get, not stored
-        Background      % variable,     get, stored
-        EMin            % variable,     get, not stored
-        EMax            % variable,     get, not stored
-        EMedian         % variable,     get, not stored
-        MC              % variable,     get, not stored
+        Bytes           % variable, get/___, not stored
+        Background      % variable, get/___, stored
+        EMin            % variable, get/___, not stored
+        EMax            % variable, get/___, not stored
+        EMedian         % variable, get/___, not stored
+        ETmplIdx        % variable, get/___, not stored
+        MC              % variable, get/___, not stored
     end
 
     methods
@@ -305,6 +306,41 @@ classdef regmov < matlab.mixin.Copyable
             % modify the color channel indices
             for k = 1:numel(r)
                 r(k) = median(this.Movie(:,:,k,:,floc),"all");      % dimensionality unsafe
+            end
+        end
+
+        function r = get.ETmplIdx(this)
+            % use summed gradient on median plane
+            % note that aligned volume must be imwarped, interpolation 
+            % caused blur so that the gradient sum should be smaller 
+            % than template volume
+
+            % sobel operator
+            sobel_x = [-1 0 1; -2 0 2; -1 0 1];
+            sobel_y = [-1 -2 -1; 0 0 0; 1 2 1];
+
+            % only use the red channel
+            cidx = (this.mopt.cOrder == "r");
+            if any(cidx)
+                % select median plane
+                sidx = ceil(this.mopt.slices/2);
+                imgs = im2double(squeeze(this.Movie(:,:,cidx,sidx,:)));
+                
+                % calculate the sum of intensity gradient
+                Gx = imfilter(imgs, sobel_x, "replicate");
+                Gy = imfilter(imgs, sobel_y, "replicate");
+                sumGrads = squeeze(sum(sqrt(Gx.^2 + Gy.^2), [1,2]));
+
+                % return the maxima location of summed gradient
+                [~, r] = max(sumGrads);
+
+                % maxima should also be an outlier
+                if ~ismember(r, find(isoutlier(sumGrads)))
+                    warning("regmov:badEstimation", "The estimated template index " + ...
+                        "may be not good.");
+                end
+            else
+                r = 0;
             end
         end
 
