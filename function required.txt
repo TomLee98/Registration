@@ -363,14 +363,15 @@ V3.x        Galileo          伽利略
   |- V3.0.0     2025/05/25
   |     |- [Update] aligned image reloading support (you must combine two channels if needed before loading)
   |     |- [Update] add "auto template" for aligned image reloading then auto find template volume
-  |     |- [Update] TODO: add anomaly detection and "detecting report" for cell segmentor
+  |     |- [Update] add anomaly detection and "detecting report" for cell segmentor
+  |     |- [Update] remove "bug reporter" component
   |     |- [Fix Bugs] fix the ROI size not display bug
-  |     |- [Fix Bugs] TODO: fix the "bug reporter" initializing bug
-  |- V3.1.0
+  |     |- [Fix Bugs] 
+  |- V3.1.0     2025/06/
   |     |- [Update] TODO: add point-cloud non-rigid registration based on CPD
   |     |- [Update] TODO: replace MaskMovie with regmask member function: maskby
   |     |- [Update] TODO: registration history manager
-  |     |- [Fix Bugs]
+  |     |- [Fix Bugs] TODO: 
 
 
 
