@@ -9,6 +9,7 @@ classdef regrcf < handle
 
         RECYCLE_REJECT_PROGRESS_THRESHOLD = 0.9
         SPEED_UP_THRESHOLD = 0.25
+        USERS_NUMBER_MAX = 4
     end
 
     properties(SetAccess=immutable, Hidden)
@@ -36,6 +37,7 @@ classdef regrcf < handle
                                         "progress",         0)              % progress for current process
         nmax    (1,1)  double  {mustBeNonnegative, mustBeInteger} = 512
         fname
+        await_counter   (1,1)   double  = 0
     end
 
     properties(GetAccess=public, Dependent)
@@ -185,6 +187,16 @@ classdef regrcf < handle
 
                 try
                     writestruct(this.data, this.fname, "FileType","xml");
+                    if isfile(this.fname)
+                        % set property
+                        if isunix()
+                            prop_cmd = ['chmod 644 ', char(this.fname)];
+                            unix(prop_cmd);
+                        elseif ispc()
+                            % Windows permission control is just shit, do
+                            % nothing
+                        end
+                    end
                 catch ME
                     throwAsCaller(ME);
                 end
@@ -206,6 +218,7 @@ classdef regrcf < handle
         end
 
         function rcfpool = readall(this)
+            % This function read all rcf files in pool
             if isfolder(this.sfolder)
                 % read all *.xml files in sfolder
                 xml_files = struct2table(dir(this.sfolder));
@@ -232,6 +245,7 @@ classdef regrcf < handle
         end
 
         function tf = is_pool_empty(this)
+            % This function determines if current rcf pool is empty
             if isfolder(this.sfolder)
                 % read all *.xml files in sfolder
                 xml_files = struct2table(dir(this.sfolder));
@@ -245,6 +259,8 @@ classdef regrcf < handle
         end
 
         function tf = any_other_await(this)
+            % This function determines if any other user is await, no
+            % matter current user status
             rcfpool = this.readall();
             tf = false;
             if isempty(rcfpool), return; end
@@ -267,6 +283,8 @@ classdef regrcf < handle
         end
 
         function tf = current_await_only(this)
+            % This function determines if and only if current user await only,
+            % which means the first user join the multi-user scheduling network
             rcfpool = this.readall();
             tf = false;
             if isempty(rcfpool), return; end
@@ -276,6 +294,27 @@ classdef regrcf < handle
                         && (rcfpool.user_id == this.data.user_id)
                     tf = true;
                     return;
+                end
+            end
+        end
+
+        function tf = current_await_with_rcf(this)
+            % This function deterimines current user status is await, 
+            % if current user already have rcf file in pool
+            rcfpool = this.readall();
+            tf = false;
+            if isempty(rcfpool), return; end
+
+            if this.current_await_only()
+                tf = true;
+                return;
+            else
+                for k = 1:numel(rcfpool)
+                    if (rcfpool.status == "Await") ...
+                        && (rcfpool.user_id == this.data.user_id)
+                        tf = true;
+                        return;
+                    end
                 end
             end
         end
@@ -329,9 +368,9 @@ classdef regrcf < handle
 
                         % generate task table:
                         % user  num_processor  t_estimate  resource  run_flag
-                        tasks_ = table('Size', [numel(rcfpool), 4], ...
+                        tasks_ = table('Size', [numel(rcfpool), 5], ...
                             'VariableTypes', {'string','double','string','logical'},...
-                            'VariableNames', {'user', 'nproc', 'resrc', 'run'});
+                            'VariableNames', {'user', 'nproc', 'resrc', 'run', 'await'});
 
                         for k = 1:numel(rcfpool)
                             rcf_k = rcfpool(k);
@@ -341,8 +380,10 @@ classdef regrcf < handle
                                 rcf_k.progress < this.RECYCLE_REJECT_PROGRESS_THRESHOLD);
                             tasks_.resrc(k) = rcf_k.resource;
                             tasks_.run(k) = (rcf_k.status == "Run");
+                            tasks_.await(k) = (rcf_k.status == "Await");
                         end
 
+                        % which could cause a deadlock, todo
                         if all(~running_proc)
                             % until there exist a running user
                             % keep status: 'Await'
@@ -377,17 +418,37 @@ classdef regrcf < handle
                             end
                         end
 
+                        % sum current user status for simple required
+                        nruns = sum(tasks_.run);
+                        nawaits = sum(tasks_.await);
+
+                        % return if too many user is running
+                        if nruns >= this.USERS_NUMBER_MAX
+                            this.await_counter = mod(this.await_counter+1, 5);
+                            if this.await_counter == 1
+                                waring("regrcf:tooManyUsersRunning", ...
+                                    "Registration pool is busy, await for other tasks done...");
+                            end
+
+                            return;
+                        end
+
                         % useful only at first requirement
                         % estimate average workers number
-                        nproc_atot_req = ...
-                            max(2, floor((this.nmax-nprocgs) / numel(rcfpool)));
-
+                        if current_await_with_rcf(this)
+                            nproc_atot_req = ...
+                                max(nruns, (this.nmax-nprocgs) /(nruns + nawaits));
+                        else
+                            % plus 1  for current user first join
+                            nproc_atot_req = ...
+                                max(nruns, (this.nmax-nprocgs) /(nruns + nawaits + 1));
+                        end
+                        
                         % required workers spread to running users
-                        nruns = sum(tasks_.run);
                         for k = 1:numel(rcfpool)
-                            if tasks_.run(k) == true
+                            if tasks_.run(k) == true && tasks_.resrc(k) == "cpu"
                                 this.data.nworkers_req.(tasks_.user(k)) ...
-                                    = [ceil(nproc_atot_req / nruns), 0];
+                                    = [floor(nproc_atot_req / nruns), 0];
                             end
                         end
 
@@ -418,10 +479,13 @@ classdef regrcf < handle
                         % validate the sum of released resources and left 
                         % resource is enough
                         nlt = this.get_sys_nworkers_left();
-                        if nlt + nproc_atot_rel > nproc_atot_req
+                        if nlt + nproc_atot_rel >= floor(nproc_atot_req)
                             % resource is satisfied, update allocated workers, change status
-                            this.data.nworkers = nproc_atot_req;
+                            this.data.nworkers = floor(nproc_atot_req);
                             this.data.status = "Ready";     % ready for requirement
+
+                            % update required record
+                            this.data.nworkers_req = struct("null", 0);
                         else
                             % await until resource is ready
                             this.data.status = "Await";
@@ -476,6 +540,9 @@ classdef regrcf < handle
                         if relsrc_ > 0
                             % change status
                             this.data.status = "Ready";     % ready for release
+
+                            % update released status
+                            this.data.nworkers_rel = struct("null", 0);
                         else
                             % keep run until some users required resource
                             this.data.status = "Run";
@@ -509,10 +576,11 @@ classdef regrcf < handle
                         running_all = running_all & (rcfpool(k).status == "Run");
                     end
 
-                    % average spread workers
-                    if (floor(nlt / numel(rcfpool)) > ceil(this.SPEED_UP_THRESHOLD*this.data.nworkers)) ...
+                    % average spread workers only if all users are running
+                    dworkers = floor(nlt / numel(rcfpool));
+                    if (dworkers > ceil(this.SPEED_UP_THRESHOLD*this.data.nworkers)) ...
                             && (running_all == true)
-                        this.data.nworkers = this.data.nworkers + floor(nlt / numel(rcfpool));
+                        this.data.nworkers = this.data.nworkers + dworkers;
                         this.data.status = "Ready";
                     else
                         this.data.status = "Run";
@@ -528,6 +596,8 @@ classdef regrcf < handle
 
         function nlt = get_sys_nworkers_left(this)
             % This function reads pools and calculate left valid workers
+            % note that n_max should be smaller than hardware supported maxima
+            % for any user
             [~, n_max] = GetTaskWorkersMaxN(this.volopt, this.regopt);
 
             rcfpool = this.readall();

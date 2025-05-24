@@ -206,7 +206,14 @@ parfor m = 1:numel(regfrs)
     % note that may cause "memory overflow" here
     try
         if img_rehist == true
-            avol_sc_m = imhistmatchn(avol_sc_m, refvol_ds, repacc);
+            % rehist
+            refvol_ds_rs = cast(rescale(refvol_ds, 0, 255), "uint8");
+            avol_sc_m_rs = cast(rescale(avol_sc_m, 0, 255), "uint8");
+            lb = min(refvol_ds, [], "all"); rb = max(refvol_ds, [], "all");
+            avol_sc_m_rs = imhistmatchn(avol_sc_m_rs, refvol_ds_rs, repacc);
+
+            % recovery
+            avol_sc_m = cast(rescale(avol_sc_m_rs, lb, rb), "like", avol_fc_m);
         end
     catch ME
         % warning and continue
@@ -250,8 +257,8 @@ end
 %=======================================================================
 
 %======================= LOCAL ALGORITHM (GPU)=========================
-% This function use fast robust coarse registration pipeline
-% for global motion estimation by using gpu
+% This function use fast robust fine registration pipeline
+% for local motion estimation by using gpu
 function status = tcreg_local_gpu(movsrc, movdst, refvol, regfrs, regopt)
 DF = cell(numel(regfrs), 1);
 fmode = ["none", string(regfrs).join(",")];
@@ -287,7 +294,7 @@ parfor m = 1:numel(regfrs)
     if img_rehist == true
         % rehist
         refvol_ds_rs = cast(rescale(refvol_ds, 0, 255), "uint8");
-        avol_sc_m_rs = cast(rescale(avol_fc_m, 0, 255), "uint8");
+        avol_sc_m_rs = cast(rescale(avol_sc_m, 0, 255), "uint8");
         lb = min(refvol_ds, [], "all"); rb = max(refvol_ds, [], "all");
         avol_sc_m_rs = imhistmatchn(avol_sc_m_rs, refvol_ds_rs, repacc);
 

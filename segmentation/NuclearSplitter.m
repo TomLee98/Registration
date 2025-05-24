@@ -426,6 +426,8 @@ classdef NuclearSplitter < handle
                         otherwise
                     end
 
+                    terminate(pyenv);
+
                     this.caller.SetProgressBar(0.1+n/numel(bdvol)*0.7);
                 end
             end

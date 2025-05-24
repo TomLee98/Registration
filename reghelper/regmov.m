@@ -322,14 +322,22 @@ classdef regmov < matlab.mixin.Copyable
             % only use the red channel
             cidx = (this.mopt.cOrder == "r");
             if any(cidx)
-                % select median plane
-                sidx = ceil(this.mopt.slices/2);
-                imgs = im2double(squeeze(this.Movie(:,:,cidx,sidx,:)));
-                
-                % calculate the sum of intensity gradient
-                Gx = imfilter(imgs, sobel_x, "replicate");
-                Gy = imfilter(imgs, sobel_y, "replicate");
-                sumGrads = squeeze(sum(sqrt(Gx.^2 + Gy.^2), [1,2]));
+                sidies = ceil(linspace(1, this.mopt.slices, min(this.mopt.slices, 7)));
+                % throw first and last slice, keep 5 slices at most
+                sidies = sidies(2:end-1);
+                sumGrads = zeros(this.mopt.frames, 1);
+
+                % for loop is faster than 4D operation because memory
+                % reallocating, speed up about 40%
+                for sidx = sidies
+                    % resample some planes
+                    imgs = im2double(squeeze(this.Movie(:,:,cidx,sidx,:)));     % dimensionality unsafe
+
+                    % calculate the sum of intensity gradient
+                    Gx = imfilter(imgs, sobel_x, "replicate");
+                    Gy = imfilter(imgs, sobel_y, "replicate");
+                    sumGrads = sumGrads + squeeze(sum(sqrt(Gx.^2 + Gy.^2), [1,2]));  % keep time dimensionality
+                end
 
                 % return the maxima location of summed gradient
                 [~, r] = max(sumGrads);

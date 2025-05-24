@@ -63,7 +63,7 @@ else
                 'Enter the camera pixel size(\mum):'};
             dlgtitle = 'Microscope parameters setting';
             dims = [1 40];
-            definput = {'1.5';'2';'60';'6.5'};
+            definput = {'1.5';'1';'40';'11'};
             dlgopts.Interpreter = 'tex';
             dlgout = inputdlg(prompt,dlgtitle,dims,definput,dlgopts);
             if isempty(dlgout), dlgout = definput; end
@@ -198,7 +198,7 @@ switch lower(ext)
             dt = seconds(diff([datetime(gmd.get("AcquisitionStart")),...
                 datetime(gmd.get("RecordingDate"))]));
         else
-            warning("The acquire time not found. Frame Indices replaced.");
+            warning("The camera timestamps are not found. Frame indices are replaced with.");
             t = [];
             return;
         end
@@ -258,13 +258,4 @@ switch lower(ext)
         t = round(t, 3);
     otherwise
 end
-end
-
-
-function t = get_h5real_time(file)
-% the protocal by ZRC-LWH
-% see also: h5 defination.txt
-
-% note: # time points = images
-t = h5read(file, '/Metadata/TimeStamp');
 end

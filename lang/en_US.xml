@@ -450,6 +450,7 @@
     <T_CROPPED>T cropped</T_CROPPED>
     <TEMPLATE>Template</TEMPLATE>
     <TEMPLATE_AUTO_UPDATE>Auto Update</TEMPLATE_AUTO_UPDATE>
+    <TEMPLATE_VOLUME_SEARCHING>Searching for template frames…</TEMPLATE_VOLUME_SEARCHING>
     <TERMINATE_REGISTRATION>Forced termination of registration</TERMINATE_REGISTRATION>
     <TEXT_FILE>Text file</TEXT_FILE>
     <THICKNESS_RANGE>Please enter the thickness range (layer):</THICKNESS_RANGE>
