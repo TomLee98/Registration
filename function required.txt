@@ -360,23 +360,23 @@ V2.2        Wujing              悟净
 ====================Important Architecture Update =========================
 
 V3.x        Galileo          伽利略
-  |- V3.0.0     2025/05/25
-  |     |- [Key Note] please logout and login your account if running on computing server for initialization only once
-  |     |- [Key Note] if the app throw "permission denied" error, try to connect to the administrator
+  |- V3.0.0     2025/05/24
+  |     |- [Key Note] please logout and login your account (delay more than 30s) if running on computing server
+  |     |- [Key Note] do not protect more than 1 worker in "task viewer", which may cause bug. It will be removed soon.
   |     |- [Update] aligned image reloading support (you must combine two channels if needed before loading)
   |     |- [Update] add "auto template" for aligned image reloading then auto find template volume
   |     |- [Update] add anomaly detection and "detecting report" for cell segmentor
-  |     |- [Update] TODO: add "dirtribute mode" fine control menu
   |     |- [Fix Bugs] fix the ROI size not display bug
   |     |- [Fix Bugs] fix the "fluoscrence compensation" caused bad correction in "TCREG"->local
   |     |- [Fix Bugs] fix the bug if push update button after data loading
-  |     |- [Fix Bugs] TODO: fix the new "resource allocator" bug if multi-user running
-  |     |- [Fix Bugs] TODO: fix the bug when .tif saving after cellpose running (because python environment changed)
-  |     |- [Fix Bugs] TODO: fix "bug reporter" component bug
+  |     |- [Fix Bugs] fix the new "resource allocator" bug if multi-user running
   |- V3.1.0     2025/06/
   |     |- [Update] TODO: add point-cloud non-rigid registration based on CPD
   |     |- [Update] TODO: replace MaskMovie with regmask member function: maskby
   |     |- [Update] TODO: registration history manager
+  |     |- [Update] TODO: add "dirtribute mode" fine control menu
+  |     |- [Fix Bugs] TODO: fix the bug when .tif saving after cellpose running (because python environment changed)
+  |     |- [Fix Bugs] TODO: fix "bug reporter" component bug
   |     |- [Fix Bugs] TODO: 
 
 

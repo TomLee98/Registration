@@ -388,7 +388,7 @@ classdef regrcf < handle
                         %                [=====================|#############]
                         %                |<------------limit max------------>|
                         %                                      |<-limit max->|
-                        req_user = [];
+                        req_user = string([]);
                         for k = 1:numel(rcfpool)
                             % require from the running user
                             if tasks_.run(k) == true
@@ -595,7 +595,9 @@ classdef regrcf < handle
                 nsp = 0;
                 for k = 1:numel(rcfpool)
                     rcf_k = rcfpool(k);
-                    if rcf_k.status == "Run"
+                    % locked workers number: include running and ready
+                    % note that 'ready' for allocating almost immediately
+                    if rcf_k.status == "Run" || rcf_k.status == "Ready"
                         nsp = nsp + rcf_k.nworkers;
                     end
                 end

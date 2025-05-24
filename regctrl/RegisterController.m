@@ -134,8 +134,6 @@ classdef RegisterController < handle
             % initialize register worker
             this.regworker = RegisterWorker(movraw_, movaligned_);
 
-            % mpiprofile on
-
             % turn on engine
             this.state = this.KERNEL_ON;
             tic;
@@ -152,8 +150,6 @@ classdef RegisterController < handle
             end
 
             this.runtime = toc;
-
-            % mpiprofile viewer
 
             this.clear_after_running(movraw_, regfr_);
         end
