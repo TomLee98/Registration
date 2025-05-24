@@ -180,23 +180,16 @@ classdef regrcf < handle
                 % generate file name
                 if isempty(this.fname) || ~isfile(this.fname)
                     % first write
+                    rng('shuffle');     % make sure a random generation
                     fname_ = [randi(26,1,6)+64, randi(26,1,6)+96, randi(10,1,6)+47];
                     fname_ = [char(fname_(randperm(18))), '.xml'];
                     this.fname = string([this.sfolder.char(), filesep, fname_]);
                 end
 
                 try
+                    % note that file permission binding on pool folder (groups)
+                    % if user without permission, add to group 'regusers'
                     writestruct(this.data, this.fname, "FileType","xml");
-                    if isfile(this.fname)
-                        % set property
-                        if isunix()
-                            prop_cmd = ['chmod 644 ', char(this.fname)];
-                            unix(prop_cmd);
-                        elseif ispc()
-                            % Windows permission control is just shit, do
-                            % nothing
-                        end
-                    end
                 catch ME
                     throwAsCaller(ME);
                 end
@@ -310,8 +303,8 @@ classdef regrcf < handle
                 return;
             else
                 for k = 1:numel(rcfpool)
-                    if (rcfpool.status == "Await") ...
-                        && (rcfpool.user_id == this.data.user_id)
+                    if (rcfpool(k).status == "Await") ...
+                        && (rcfpool(k).user_id == this.data.user_id)
                         tf = true;
                         return;
                     end
@@ -369,7 +362,7 @@ classdef regrcf < handle
                         % generate task table:
                         % user  num_processor  t_estimate  resource  run_flag
                         tasks_ = table('Size', [numel(rcfpool), 5], ...
-                            'VariableTypes', {'string','double','string','logical'},...
+                            'VariableTypes', {'string','double','string','logical','logical'},...
                             'VariableNames', {'user', 'nproc', 'resrc', 'run', 'await'});
 
                         for k = 1:numel(rcfpool)
@@ -420,8 +413,13 @@ classdef regrcf < handle
 
                         % sum current user status for simple required
                         nruns = sum(tasks_.run);
-                        nawaits = sum(tasks_.await);
-
+                        if current_await_with_rcf(this)
+                            nawaits = sum(tasks_.await);
+                        else
+                            % plus 1  for current user first join
+                            nawaits = sum(tasks_.await) + 1;
+                        end
+                        
                         % return if too many user is running
                         if nruns >= this.USERS_NUMBER_MAX
                             this.await_counter = mod(this.await_counter+1, 5);
@@ -431,25 +429,20 @@ classdef regrcf < handle
                             end
 
                             return;
+                        else
+                            this.await_counter = 0; % reset counter
                         end
 
                         % useful only at first requirement
                         % estimate average workers number
-                        if current_await_with_rcf(this)
-                            nproc_atot_req = ...
-                                max(nruns, (this.nmax-nprocgs) /(nruns + nawaits));
-                        else
-                            % plus 1  for current user first join
-                            nproc_atot_req = ...
-                                max(nruns, (this.nmax-nprocgs) /(nruns + nawaits + 1));
-                        end
+                        nproc_atot_req = max(nruns, ...
+                            (this.nmax-nprocgs)/(nruns + nawaits));
                         
                         % required workers spread to running users
-                        for k = 1:numel(rcfpool)
-                            if tasks_.run(k) == true && tasks_.resrc(k) == "cpu"
-                                this.data.nworkers_req.(tasks_.user(k)) ...
-                                    = [floor(nproc_atot_req / nruns), 0];
-                            end
+                        for k = 1:numel(req_user)
+                            % even distribution resources
+                            this.data.nworkers_req.(req_user(k)) ...
+                                = [floor(nproc_atot_req / nruns), 0];
                         end
 
                         % check if the release sources are satisfied
@@ -483,9 +476,6 @@ classdef regrcf < handle
                             % resource is satisfied, update allocated workers, change status
                             this.data.nworkers = floor(nproc_atot_req);
                             this.data.status = "Ready";     % ready for requirement
-
-                            % update required record
-                            this.data.nworkers_req = struct("null", 0);
                         else
                             % await until resource is ready
                             this.data.status = "Await";
@@ -531,7 +521,7 @@ classdef regrcf < handle
                                         % let some people get rich first
                                         this.data.nworkers = ...
                                             this.data.nworkers - nproc_req(1);
-                                        relsrc_ = relsrc_ + nproc_req;
+                                        relsrc_ = relsrc_ + nproc_req(1);
                                     end
                                 end
                             end
@@ -540,9 +530,6 @@ classdef regrcf < handle
                         if relsrc_ > 0
                             % change status
                             this.data.status = "Ready";     % ready for release
-
-                            % update released status
-                            this.data.nworkers_rel = struct("null", 0);
                         else
                             % keep run until some users required resource
                             this.data.status = "Run";

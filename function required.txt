@@ -361,10 +361,12 @@ V2.2        Wujing              悟净
 
 V3.x        Galileo          伽利略
   |- V3.0.0     2025/05/25
+  |     |- [Key Note] please logout and login your account if running on computing server for initialization only once
+  |     |- [Key Note] if the app throw "permission denied" error, try to connect to the administrator
   |     |- [Update] aligned image reloading support (you must combine two channels if needed before loading)
   |     |- [Update] add "auto template" for aligned image reloading then auto find template volume
   |     |- [Update] add anomaly detection and "detecting report" for cell segmentor
-  |     |- [Update] TODO: add "buffer clear" in options, support auto clean after registration
+  |     |- [Update] TODO: add "dirtribute mode" fine control menu
   |     |- [Fix Bugs] fix the ROI size not display bug
   |     |- [Fix Bugs] fix the "fluoscrence compensation" caused bad correction in "TCREG"->local
   |     |- [Fix Bugs] fix the bug if push update button after data loading
