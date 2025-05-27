@@ -371,7 +371,7 @@ V3.x        Galileo          伽利略
   |     |- [Fix Bugs] fix the bug if push update button after data loading
   |     |- [Fix Bugs] fix the new "resource allocator" bug if multi-user running
   |- V3.1.0     2025/06/01
-  |     |- [Update] TODO: remove bug reporter sub function
+  |     |- [Update] remove bug reporter sub function
   |     |- [Update] TODO: add "dirtribute mode" fine control menu
   |     |- [Update] TODO: add point-cloud non-rigid registration based on CPD
   |     |- [Fix Bugs] fix the bug for "auto template" support raw image channel only

@@ -37,7 +37,7 @@ if any(ispng)
         img = imread(img_files(k));
         h = imshow(uint8(rescale(img, 0, 255)));
 
-        SetFigure(fig, [0,0,0.5,0.8]);
+        setFigure(fig, [0,0,0.5,0.8]);
 
         title(sprintf("Name:%s     Progress:%d/%d", name+ext, k, numel(img_files)), ...
             "FontSize",16, "Interpreter","none");

@@ -424,7 +424,7 @@ classdef regrcf < handle
                         if nruns >= this.USERS_NUMBER_MAX
                             this.await_counter = mod(this.await_counter+1, 5);
                             if this.await_counter == 1
-                                waring("regrcf:tooManyUsersRunning", ...
+                                warning("regrcf:tooManyUsersRunning", ...
                                     "Registration pool is busy, await for other tasks done...");
                             end
 

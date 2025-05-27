@@ -216,7 +216,7 @@ classdef ImageReader < handle
         end
     end
 
-    methods(Static)
+    methods (Static)
         function tf = fast_loading(ext)
             switch lower(ext)
                 case ".nd2"
@@ -274,5 +274,6 @@ classdef ImageReader < handle
             img = permute(img, new_order);
         end
     end
+    
 end
 
