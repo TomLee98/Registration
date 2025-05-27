@@ -370,14 +370,20 @@ V3.x        Galileo          伽利略
   |     |- [Fix Bugs] fix the "fluoscrence compensation" caused bad correction in "TCREG"->local
   |     |- [Fix Bugs] fix the bug if push update button after data loading
   |     |- [Fix Bugs] fix the new "resource allocator" bug if multi-user running
-  |- V3.1.0     2025/06/
-  |     |- [Update] TODO: add point-cloud non-rigid registration based on CPD
-  |     |- [Update] TODO: replace MaskMovie with regmask member function: maskby
-  |     |- [Update] TODO: registration history manager
+  |- V3.1.0     2025/06/01
+  |     |- [Update] TODO: remove bug reporter sub function
   |     |- [Update] TODO: add "dirtribute mode" fine control menu
-  |     |- [Fix Bugs] TODO: fix the bug when .tif saving after cellpose running (because python environment changed)
+  |     |- [Update] TODO: add point-cloud non-rigid registration based on CPD
+  |     |- [Fix Bugs] fix the bug for "auto template" support raw image channel only
+  |     |- [Fix Bugs] fix the "usual" local registration use cpu but Reg3D inner representation as gpu
+  |     |- [Fix Bugs] fix the bug in "TaskViewer": gpus using without cpu cores occupation
+  |     |- [Fix Bugs] fix the bug when .tif saving after cellpose running when using cpu
   |     |- [Fix Bugs] TODO: fix "bug reporter" component bug
   |     |- [Fix Bugs] TODO: 
+  |- V3.2.0     2025/06/
+  |     |- [Update] TODO: registration history manager
+  |     |- [Update] TODO: replace MaskMovie with regmask member function: maskby
+  |     |- [Update] TODO: transform some key files to p code
 
 
 

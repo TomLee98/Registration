@@ -611,19 +611,28 @@ end
 
 % This function estimate the max workers in the situation with volume and
 % registration options
-function [r, n] = GetTaskWorkersMaxN(volopt_, regopt_)
+function [resrc, nw] = GetTaskWorkersMaxN(volopt_, regopt_)
 switch regopt_.Mode
     case "global"
-        r = "cpu";
-        n = GetCPUWorkersMaxN(volopt_, regopt_);
+        resrc = "cpu";
+        nw = GetCPUWorkersMaxN(volopt_, regopt_);
     case "local"
-        r = regopt_.Options.Hardware;
-        switch r
+        hw = regopt_.Options.Hardware;
+        switch hw
             case "cpu"
-                n = GetCPUWorkersMaxN(volopt_, regopt_);
+                resrc = "cpu";
+                nw = GetCPUWorkersMaxN(volopt_, regopt_);
             case "cpu|gpu"
-                n = GetGPUWorkersMaxN();
+                % determine sub algorithm
+                switch regopt_.SubAlgorithm
+                    case "advanced"
+                        resrc = "cpu|gpu";
+                    otherwise
+                        resrc = "cpu";
+                end
+                nw = GetGPUWorkersMaxN();
             otherwise
+                % 
         end
     otherwise
 end

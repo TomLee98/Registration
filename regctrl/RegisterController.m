@@ -136,9 +136,9 @@ classdef RegisterController < handle
 
             % turn on engine
             this.state = this.KERNEL_ON;
-            tic;
+            st = tic;
 
-            % endless loop
+            % loop until no valid task
             task = this.taskmgr.Task;
             while ~isempty(task)
                 if this.state == this.KERNEL_OFF
@@ -149,7 +149,7 @@ classdef RegisterController < handle
                 task = this.taskmgr.Task;
             end
 
-            this.runtime = toc;
+            this.runtime = toc(st);
 
             this.clear_after_running(movraw_, regfr_);
         end

@@ -60,7 +60,7 @@ classdef TaskManager < handle
             % before setup:
             if isempty(this.rcfobj) || ~isvalid(this.rcfobj)
                 % return empty table
-                r = CreateTaskTable();
+                r = TaskManager.CreateTaskTable();
                 return;
             end
 
@@ -68,7 +68,7 @@ classdef TaskManager < handle
             if this.distrib == true
                 rcfpool = this.rcfobj.readall();
 
-                r = CreateTaskTable(numel(rcfpool));
+                r = TaskManager.CreateTaskTable(numel(rcfpool));
 
                 if numel(rcfpool) == 0
                     return;
@@ -91,11 +91,11 @@ classdef TaskManager < handle
                     elseif rcfpool(m).resource == "cpu|gpu"
                         r(n,:) = {rcfpool(m).user_id, rcfpool(m).status, ...
                             sprintf("%.2f %%", rcfpool(m).progress*100), ...
-                            time_used, 0, rcfpool(m).nworkers};
+                            time_used, rcfpool(m).nworkers, rcfpool(m).nworkers};
                     end
                 end
             else
-                r = CreateTaskTable(1);
+                r = TaskManager.CreateTaskTable(1);
                 r.user = this.rcfobj.UserId;
                 r.status = this.rcfobj.Status;
                 r.progress = sprintf("%.2f %%", this.rcfobj.Progress*100);
@@ -105,7 +105,7 @@ classdef TaskManager < handle
                     r.n_cpu = this.rcfobj.NWorkers;
                     r.n_gpu = 0;
                 elseif this.rcfobj.Resource == "cpu|gpu"
-                    r.n_cpu = 0;
+                    r.n_cpu = this.rcfobj.NWorkers;
                     r.n_gpu = this.rcfobj.NWorkers;
                 end
             end
@@ -420,6 +420,25 @@ classdef TaskManager < handle
                 % update workers number
                 this.nworker_old = this.nworker_cur;
             end
+        end
+    end
+
+    methods (Static)
+        function T = CreateTaskTable(n)
+            %CREATETASKTABLE This function help to create a task table
+            % Input:
+            %   - n: 1-by-1 nonnegtive integer, rows of task table
+            % Output:
+            %   - T: n-by-6 table, with field {user, status, progress, time_used, n_cpu, n_gpu}
+            % see also: TaskManager
+
+            arguments
+                n   (1,1)   double {mustBeNonnegative, mustBeInteger} = 0
+            end
+
+            T = table('Size', [n, 6], ...
+                'VariableTypes', {'string','string','string','string','double','double'}, ...
+                'VariableNames',{'user','status','progress','time_used','n_cpu','n_gpu'});
         end
     end
 end
