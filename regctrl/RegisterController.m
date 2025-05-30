@@ -110,7 +110,7 @@ classdef RegisterController < handle
         end
 
         function r = get.SysInfo(this)
-            r = struct("T", this.taskmgr.SysInfo, ...
+            r = struct("T",     this.taskmgr.SysInfo, ...
                        "NWP",   this.nw_protected);
         end
 

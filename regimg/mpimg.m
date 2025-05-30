@@ -744,6 +744,7 @@ classdef mpimg < matlab.mixin.Copyable
 
             if ispc()
                 files_ = File.listRoots();
+                % use user name as temporary files sub folder name
                 user_name = string(System.getProperty("user.name"));
                 disk_table = table('Size',[numel(files_), 5], ...
                     'VariableTypes',{'string','double','logical','logical','logical'}, ...

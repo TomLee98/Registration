@@ -20,6 +20,7 @@ classdef regmov < matlab.mixin.Copyable
 
     properties(Access=private, Hidden, NonCopyable)
         mptr            % 1-by-1 mpimg/mpimgs object or numeric array
+        
     end
 
     properties(Access=public, Dependent)

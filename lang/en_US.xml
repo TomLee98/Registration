@@ -7,6 +7,7 @@
     <AFFINE>Affine</AFFINE>
     <AFFINE_TOOLTIP>translation, rotation, anisotropic scaling, reflection, and shearing</AFFINE_TOOLTIP>
     <ALIGNED>Aligned</ALIGNED>
+    <ALL_CHANNEL>All Channels</ALL_CHANNEL>
     <ANGULAR_DISPLACEMENT_RADIAN>Angular displacement (Radian)</ANGULAR_DISPLACEMENT_RADIAN>
     <ANIMATION>Animation</ANIMATION>
     <ANOMALY_DETECTION>Anomaly Detection</ANOMALY_DETECTION>
@@ -17,6 +18,7 @@
     <ANOMALY_CONNECT_OUTLIER_BRIGHTNESS>Brightness of connected domain is outlier</ANOMALY_CONNECT_OUTLIER_BRIGHTNESS>
     <ANOMALY_CONNECT_OUTLIER_SLICES>Slices of connected domain is outlier</ANOMALY_CONNECT_OUTLIER_SLICES>
     <ANOMALY_CONNECT_OUTLIER_VOLUME>Volume of connected domain is outlier</ANOMALY_CONNECT_OUTLIER_VOLUME>
+    <APPEARANCE>Appearance</APPEARANCE>
     <APPEND>Append</APPEND>
     <APPEND_COMMENTS>Append Comments</APPEND_COMMENTS>
     <APPLY>Apply</APPLY>
@@ -25,13 +27,16 @@
     <AREA_PERIMETER>Area Perimeter</AREA_PERIMETER>
     <AREA_SIZE>Area Size</AREA_SIZE>
     <ASK_FOR_UPDATE>There is an updated version, is it updated?</ASK_FOR_UPDATE>
-    <ATTACH_FILE_HERE>Additional files to reproduce the issue are included here</ATTACH_FILE_HERE>
-    <ATTACH_FOLDER>Attach Folder</ATTACH_FOLDER>
     <AUTO>Auto</AUTO>
     <AUTO_CLEAR>Auto Clear</AUTO_CLEAR>
     <AUTO_TEMPLATE>Auto Template</AUTO_TEMPLATE>
+    <AUTO_UPDATE>Auto Update</AUTO_UPDATE>
     <BASELINE_MODEL>Baseline Model</BASELINE_MODEL>
     <BATCH_SIZE>Batch Size</BATCH_SIZE>
+    <BCS_EXIT>Exit (auto)</BCS_EXIT>
+    <BCS_SIZE>By size (auto)</BCS_SIZE>
+    <BCS_TIME>By time (auto)</BCS_TIME>
+    <BCS_OFF>Never (not recommended)</BCS_OFF>
     <BEGIN>begin</BEGIN>
     <BICUBIC>Bicubic</BICUBIC>
     <BILINEAR>Bilinear</BILINEAR>
@@ -39,21 +44,26 @@
     <BLUE>Blue</BLUE>
     <BOTH_SIDE>Both</BOTH_SIDE>
     <BREAK>Break</BREAK>
-    <BUG_TYPE>Bug Type</BUG_TYPE>
     <CALCULATING_GOODNESS>Calculating goodness of registration...</CALCULATING_GOODNESS>
     <CAMERA_BACKGROUND>Camera Background</CAMERA_BACKGROUND>
     <CAMERA_TIME>Camera Time</CAMERA_TIME>
     <CANCEL>Cancel</CANCEL>
+    <CAPACITY_MAX>Maximum Capacitry</CAPACITY_MAX>
+    <CCS_EVERYDAY>Every day</CCS_EVERYDAY>
+    <CCS_MONDAY>Every week (Monday)</CCS_MONDAY>
+    <CCS_FIRSTDAY>Every month (1st)</CCS_FIRSTDAY>
     <CELL_MANAGEMENT>Cell Management</CELL_MANAGEMENT>
     <CELL_SEGMENTOR>Cell Segmentor</CELL_SEGMENTOR>
     <CENTROID>Centroid</CENTROID>
     <CHANNEL_ALIGNMENT>Channel Alignment</CHANNEL_ALIGNMENT>
     <CHANNEL_ALIGNING>Aligning channels...</CHANNEL_ALIGNING>
+    <CHANNEL_UPDATE>Updating Channel</CHANNEL_UPDATE>
     <CHECK_ALL>Check All</CHECK_ALL>
-    <CHECK_COMPONENT_BUG>Please check the components with bugs</CHECK_COMPONENT_BUG>
     <CHECK_UPDATE>Check Update</CHECK_UPDATE>
     <CIRCLE>Circle</CIRCLE>
     <CIRCLE_HAT>Circle Hat</CIRCLE_HAT>
+    <CLEAN_BUFFER>Clean Buffer</CLEAN_BUFFER>
+    <CLEAN_CYCLE>Clean Cycle</CLEAN_CYCLE>
     <CLEAR>Clear</CLEAR>
     <CLOCKWISE_90>Clockwise 90°</CLOCKWISE_90>
     <CLOSE>Close</CLOSE>
@@ -64,10 +74,9 @@
     <COMMA_SEPARATED>Comma Separated</COMMA_SEPARATED>
     <COMMON>Common</COMMON>
     <COMMON_PARAMETERS>Common Parameters</COMMON_PARAMETERS>
-    <COMMON_PROBLEM>Common Problem</COMMON_PROBLEM>
     <COMPLETE>Complete</COMPLETE>
-    <COMPONENT_DESCRIPTION>Problem Description</COMPONENT_DESCRIPTION>
-    <COMPONENT_PROBLEM>Components with Problems</COMPONENT_PROBLEM>
+    <CONFIGURATE_CPU>Configurate CPU</CONFIGURATE_CPU>
+    <CONFIGURATE_GPU>Configurate GPU</CONFIGURATE_GPU>
     <CONFIGURATION_CORRUPTED>The configuration file is corrupted</CONFIGURATION_CORRUPTED>
     <CONFIGURATION_EXPORTED>The configuration is exported</CONFIGURATION_EXPORTED>
     <CONFGURATION_LOADED>The configuration is loaded</CONFGURATION_LOADED>
@@ -88,11 +97,15 @@
     <CROP_Z>Thickness Cropping</CROP_Z>
     <CUBIC_HIGH_QUALITY>Cubic(High Quality)</CUBIC_HIGH_QUALITY>
     <CYAN>Cyan</CYAN>
+    <DATA_MANAGEMENT>Data Management</DATA_MANAGEMENT>
+    <DATA_PROTECTED>Data Protected</DATA_PROTECTED>
+    <DATA_SECURITY>Data Security</DATA_SECURITY>
     <DELINEATION>Delineation</DELINEATION>
     <DEVELOPING>Developing…</DEVELOPING>
     <DIAMOND_HAT>Diamond Hat</DIAMOND_HAT>
     <DILATE_FILTER>Dilate Filter</DILATE_FILTER>
     <DIRECT>Direct</DIRECT>
+    <DISABLE>Off</DISABLE>
     <DISCARD_RATIO>Discard Ratio</DISCARD_RATIO>
     <DISPLACEMENT_FIELD_ESTIMATION>Displacement Field Estimation</DISPLACEMENT_FIELD_ESTIMATION>
     <DISPLACEMENT_FIELD>Displacement Field</DISPLACEMENT_FIELD>
@@ -112,19 +125,19 @@
     <DVIEW_XY>XY Plane(Z)</DVIEW_XY>
     <DVIEW_YZ>YZ Plane(X)</DVIEW_YZ>
     <DVIEW_ZX>ZX Plane(Y)</DVIEW_ZX>
-    <EMAIL_FAILED>Email sending failed</EMAIL_FAILED>
-    <EMAIL_SUCCESS>Mail sent successfully!</EMAIL_SUCCESS>
+    <ENABLE>On</ENABLE>
     <END>End</END>
     <ENHANCEMENT>Enhancement</ENHANCEMENT>
     <EQUIVALENT_RADIUS>Equivalent Radius</EQUIVALENT_RADIUS>
     <ERODE_RADIUS>Erode Radius</ERODE_RADIUS>
     <ERROR>Error</ERROR>
+    <EVERYDAY>Every Day</EVERYDAY>
     <EXCLUSIVE>Exclusive</EXCLUSIVE>
     <EXCLUSIVE_WARNING>You are currently running in distributed mode. Exclusive mode may cause MATLAB to crash. Continue?</EXCLUSIVE_WARNING>
     <EXIT>Exit</EXIT>
     <EXPORT>Export</EXPORT>
     <EXPORT_AS>Export as</EXPORT_AS>
-    <EXPORT_CONFIGURATION>Export Configuration</EXPORT_CONFIGURATION>
+    <EXPORT_PARAMETERS>Export Parameters</EXPORT_PARAMETERS>
     <EXPORT_IMAGES>Export Images Stack</EXPORT_IMAGES>
     <EXPORTING_IMAGE>Exporting images...</EXPORTING_IMAGE>
     <EXPORTING_MOVIE>Exporting movie…</EXPORTING_MOVIE>
@@ -133,8 +146,9 @@
     <EXPORT_MOVIE>Export Movie</EXPORT_MOVIE>
     <EXPORT_TEMPLATE>Export Template</EXPORT_TEMPLATE>
     <EXPORT_TIME>Export Time</EXPORT_TIME>
+    <EXPERIMENTAL_FEATURE>Experimental Features</EXPERIMENTAL_FEATURE>
+    <EXTERNAL_PATH>External Path</EXTERNAL_PATH>
     <FEATURE_POINT_MATCHING>Feature Point Matching</FEATURE_POINT_MATCHING>
-    <FEEDBACK_SUCCESS>Problem feedback successfully!</FEEDBACK_SUCCESS>
     <FILE>Files</FILE>
     <FILTER>Filter</FILTER>
     <FINISH_UPDATE>The download is complete, please restart the Reg3D app to complete the update</FINISH_UPDATE>
@@ -146,6 +160,7 @@
     <FLIP>Flip</FLIP>
     <FLUORESCENCE_MODEL>Fluorescence Model</FLUORESCENCE_MODEL>
     <FLUORESCENCE_ONLY>Fluorescence Only</FLUORESCENCE_ONLY>
+    <FOLLOW_SYSTEM>Follow System</FOLLOW_SYSTEM>
     <FONT>Font</FONT>
     <FRAME_FEW>Please select at least two frames</FRAME_FEW>
     <FRAME_OVERFLOW>Frames count overflow</FRAME_OVERFLOW>
@@ -172,19 +187,17 @@
     <HAT_SIZE>Hat Size</HAT_SIZE>
     <HEIGHT>Height</HEIGHT>
     <HELP>Help</HELP>
-    <HELP_UPDATE>Help and Updates</HELP_UPDATE>
     <HIGH>High</HIGH>
     <HISTORY_MANAGER>History Manager</HISTORY_MANAGER>
-    <HISTORY_RECORD>History Record</HISTORY_RECORD>
+    <HISTORY>History</HISTORY>
     <HORIZONTAL>Horizontal</HORIZONTAL>
     <IGNORE_UNFIT_ITEMS>Automatically ignore unfitted components</IGNORE_UNFIT_ITEMS>
     <IMAGE>Images</IMAGE>
-    <IMAGE_ANNOTATION>Image and Annotation</IMAGE_ANNOTATION>
     <IMAGE_EXPORT_SUCCESS>Images exported successfully</IMAGE_EXPORT_SUCCESS>
     <IMAGE_INTENSITY>image intensity</IMAGE_INTENSITY>
     <IMAGE_LOADING_COMPLETE>Image loading completed:</IMAGE_LOADING_COMPLETE>
     <IMAGE_PARAMETER>Image Parameters</IMAGE_PARAMETER>
-    <IMPORT_EXPORT>Import and Export</IMPORT_EXPORT>
+    <IMAGE_TOOLBAR>Image Toolbar</IMAGE_TOOLBAR>
     <IMPORT_MASK>Import mask</IMPORT_MASK>
     <INFORMATION>Information</INFORMATION>
     <IN_PROGRESS>In progress</IN_PROGRESS>
@@ -202,6 +215,7 @@
     <INVALID_FRAME_ORDER>Invalid frames order</INVALID_FRAME_ORDER>
     <INVALID_MASK_FILE>Invalid Mask File: invalid variable exists</INVALID_MASK_FILE>
     <INVALID_PATH>Invalid path</INVALID_PATH>
+    <INVALID_PROFILE>Invalid profile</INVALID_PROFILE>
     <INVALID_RULER>Invalid ruler: try resizing the ruler</INVALID_RULER>
     <INVALID_UPDATE_REPOSITORY>Checking for updates: Illegal repository path. Please check update_setting.ini</INVALID_UPDATE_REPOSITORY>
     <INVERSE>Inverse</INVERSE>
@@ -226,7 +240,7 @@
     <LINEARITY>Linear</LINEARITY>
     <LINE_HAT>Line Hat</LINE_HAT>
     <LINE_WIDTH>Line Width</LINE_WIDTH>
-    <LOAD_CONFIGURATION>Load Configuration</LOAD_CONFIGURATION>
+    <LOAD_PARAMETERS>Load Parameters</LOAD_PARAMETERS>
     <LOAD_IMAGE>Load Image</LOAD_IMAGE>
     <LOAD_TIME>Load Time</LOAD_TIME>
     <LOCAL>Local</LOCAL>
@@ -237,8 +251,6 @@
     <LOCK>Lock</LOCK>
     <LOG>Log</LOG>
     <LOGFILE_EXPORT_TO>Export log files to</LOGFILE_EXPORT_TO>
-    <LOGIN>Login</LOGIN>
-    <LOGIN_LABNAS>Login - LabNas</LOGIN_LABNAS>
     <LONG_TERM_ONCE_ONLY>Long-term mode only supports single registration</LONG_TERM_ONCE_ONLY>
     <LOSSLESS>Lossless</LOSSLESS>
     <LOW>Low</LOW>
@@ -271,6 +283,7 @@
     <MEMORY>Memory</MEMORY>
     <MEMORY_TIME>Memory Time</MEMORY_TIME>
     <MERGE_SOURCE>Merge Sources(R-S)</MERGE_SOURCE>
+    <MESSAGE_LEVEL>Message Level</MESSAGE_LEVEL>
     <METADATA>Metadata</METADATA>
     <MGLOBAL>Global(Manually)</MGLOBAL>
     <MIN>Min</MIN>
@@ -293,29 +306,31 @@
     <MOVING_QUANTILE>Moving Quantile</MOVING_QUANTILE>
     <MULTI_CONNECTION>Multi-connected regions are found, and the largest singly connected subset has been selected</MULTI_CONNECTION>
     <MULTIMODAL>Multimodal</MULTIMODAL>
+    <NETWORK_TOPOLOGY>Network Topology</NETWORK_TOPOLOGY>
     <NO>No</NO>
     <NOISE_MODEL>Noise Model</NOISE_MODEL>
     <NONE>None</NONE>
     <NONUNIFORM>Nonuniform</NONUNIFORM>
     <NORMAL_DISTRIBUTION>Normal</NORMAL_DISTRIBUTION>
-    <NPC_CPU>Protected #cores(CPU)</NPC_CPU>
-    <NPC_GPU>Protected #cores(GPU)</NPC_GPU>
     <NUM_MAX>Maximum</NUM_MAX>
     <OBJECTS_FOUND>Objects number after segmentation:</OBJECTS_FOUND>
     <OBJECTS_NUMBER>Objects Number</OBJECTS_NUMBER>
     <OCTAVE>Octave</OCTAVE>
     <OFF>Off</OFF>
-    <OFFLINE>Offline</OFFLINE>
     <OK>OK</OK>
     <ON>On</ON>
-    <ONLINE>Online</ONLINE>
     <OPACITY>Opacity</OPACITY>
+    <OPERATION_TREE_DEPTH>Operation Tree (Depth)</OPERATION_TREE_DEPTH>
     <OPERATOR>Operator</OPERATOR>
     <OPTION>Options</OPTION>
-    <ORDINARY>Ordinary</ORDINARY>
-    <OTHER>Other</OTHER>
+    <OTHER_SETTINGS>Other Settings</OTHER_SETTINGS>
+    <OTO_OP_ONE>1 action</OTO_OP_ONE>
+    <OTO_OP_THREE>3 actions</OTO_OP_THREE>
+    <OTO_OP_INF>As many as possible</OTO_OP_INF>
+    <OTO_OP_ZERO>No retention</OTO_OP_ZERO>
     <OUTLIER_DIRECTION>Outlier Direction</OUTLIER_DIRECTION>
     <OUTLIER_RATIO>Outlier Ratio</OUTLIER_RATIO>
+    <PARALLEL_COMPUTING>Parallel Computing</PARALLEL_COMPUTING>
     <PARAMETER>Parameter</PARAMETER>
     <PASSWORD>Password</PASSWORD>
     <PERCENTILE>Percentile</PERCENTILE>
@@ -323,6 +338,7 @@
     <PERFORM_AUTO_REGISTRATION>Perform automatic registration</PERFORM_AUTO_REGISTRATION>
     <PERFORM_LONGTERM_REGISTRATION>Perform long-term registration</PERFORM_LONGTERM_REGISTRATION>
     <PERIMETER>Perimeter</PERIMETER>
+    <PERMISSION_DENIED>Permission denied, please contact the administrator</PERMISSION_DENIED>
     <PHASE_CORRELATION>Phase Correlation</PHASE_CORRELATION>
     <PIECEWISE_LINEAR>Piecewise linear</PIECEWISE_LINEAR>
     <PIXEL_HISTOGRAM>Pixel Histogram</PIXEL_HISTOGRAM>
@@ -332,13 +348,15 @@
     <POLYNOMIAL>Polynomial</POLYNOMIAL>
     <POLYNOMIAL_ORDER>Polynomial Order</POLYNOMIAL_ORDER>
     <PRECISION>Precision</PRECISION>
+    <PREFERENCE>Preferences</PREFERENCE>
     <PREPROCESSING>Preprocessing</PREPROCESSING>
     <PREVIEW>Preview</PREVIEW>
-    <PRIVACY>privacy</PRIVACY>
+    <PREVIEW_CHANNEL>Preview Channel</PREVIEW_CHANNEL>
     <PROGRESS>Progress</PROGRESS>
+    <PROGRESSBAR_COLOR>Progressbar Color</PROGRESSBAR_COLOR>
     <PROJECTION>Projection</PROJECTION>
-    <PRP>Problem reporting procedure:</PRP>
-    <PRP_PRIVACY_FRIENDLY>The problem reporting process does not collect your</PRP_PRIVACY_FRIENDLY>
+    <PROTECTED_NUMBER_CPU>Protected Number (CPU)</PROTECTED_NUMBER_CPU>
+    <PROTECTED_NUMBER_GPU>Protected Number (GPU)</PROTECTED_NUMBER_GPU>
     <PYRAMID_COEFFICIENT>Pyramid Coefficient</PYRAMID_COEFFICIENT>
     <PYTHON_INTERPRETER>Python Interpreter</PYTHON_INTERPRETER>
     <PYTHON_INTERPRETER_SELECTION>Select a Python Interpreter</PYTHON_INTERPRETER_SELECTION>
@@ -351,6 +369,7 @@
     <RATIO>Ratio</RATIO>
     <RAW>Raw</RAW>
     <READ_CONFIGURATION_FILE>Read configuration file</READ_CONFIGURATION_FILE>
+    <REAL_TIME>Real Time</REAL_TIME>
     <REAL_TIME_OVERVIEW>Real Time Overview</REAL_TIME_OVERVIEW>
     <RECOVERED_BACKGROUND>Background recovered.</RECOVERED_BACKGROUND>
     <RECOVERY>Recover</RECOVERY>
@@ -380,6 +399,7 @@
     <REGMODE_CURRENT_LOCAL>Current Registration Mode: Local</REGMODE_CURRENT_LOCAL>
     <REGMODE_CURRENT_LTGLOBAL>Current Registration Mode: Global(Long-Term)</REGMODE_CURRENT_LTGLOBAL>
     <REGMODE_CURRENT_MGLOBAL>Current Registration Mode: Global(Manually)</REGMODE_CURRENT_MGLOBAL>
+    <RELEASE_CHANNEL>Release Channel</RELEASE_CHANNEL>
     <REMOVE>Remove</REMOVE>
     <REMOVE_BACKGROUND>Remove Background</REMOVE_BACKGROUND>
     <REMOVED_BACKGROUND>Background removed.</REMOVED_BACKGROUND>
@@ -390,9 +410,10 @@
     <RENDER_PRECISION>Render Precision</RENDER_PRECISION>
     <RENDER_QUALITY>Render Quality</RENDER_QUALITY>
     <REPLENISH_PHOTOBLEACHING>Replenish Photobleaching</REPLENISH_PHOTOBLEACHING>
-    <REPORT_BUG_DETAIL>Please describe the problem in the program in detail (&gt;10 characters)</REPORT_BUG_DETAIL>
+    <REQUIRE_CAPACITY>Please contact the administrator to negotiate for a larger buffer</REQUIRE_CAPACITY>
     <RESAMPLING_RATIO>Resampling Ratio</RESAMPLING_RATIO>
     <RESET_REGISTRATION_FRAMES>Reset registration frame</RESET_REGISTRATION_FRAMES>
+    <RESOURCE_MANAGER>Resource Manager</RESOURCE_MANAGER>
     <RESTORE_VIEW>Restore View</RESTORE_VIEW>
     <RIGHT_SIDE>Right</RIGHT_SIDE>
     <RIGID>Rigid</RIGID>
@@ -417,10 +438,9 @@
     <SELECTION_SAVING_FOLDER>Select Saving Folder</SELECTION_SAVING_FOLDER>
     <SELF_DEFINITION>Self Definition</SELF_DEFINITION>
     <SETTING_PANEL>Setting Panel</SETTING_PANEL>
-    <SETTING_PREFERENCE>Settings and Preferences</SETTING_PREFERENCE>
     <SIGNAL>Signal</SIGNAL>
     <SIGNAL_EXTRACTOR>Signal Extractor</SIGNAL_EXTRACTOR>
-    <SIMPLE_STAT>Simple Stat</SIMPLE_STAT>
+    <SIMPLE_STAT>Simple Statistics</SIMPLE_STAT>
     <SINGLE_CHANNEL>Single Channel</SINGLE_CHANNEL>
     <SLICE>Slice</SLICE>
     <SLICE_FEW>Please select at least two slices</SLICE_FEW>
@@ -435,22 +455,27 @@
     <SPHERICITY_THRESHOLD>Sphericity Threshold</SPHERICITY_THRESHOLD>
     <SQUARE_HAT>Square Hat</SQUARE_HAT>
     <STAGE>Stage</STAGE>
+    <STARTUP>Start up</STARTUP>
     <STATUS>Status</STATUS>
     <STRUCTURED_BACKGROUND>Please enter the background on the location channel:</STRUCTURED_BACKGROUND>
+    <STYLE>Style</STYLE>
+    <STYLE_LIGHT>Light</STYLE_LIGHT>
+    <STYLE_DARK>Dark</STYLE_DARK>
     <SUB_APP>Sub Application</SUB_APP>
     <SUB_AREA_NUMBER>Sub Area Number</SUB_AREA_NUMBER>
     <SUBMIT>Submit</SUBMIT>
-    <SUBMIT_BUG>Report Bugs</SUBMIT_BUG>
-    <SUGGESTION>Suggestion</SUGGESTION>
     <SURFACE_AREA>Surface Area</SURFACE_AREA>
     <SYS_INITIALIZE_SUCCESS>System initialized completely</SYS_INITIALIZE_SUCCESS>
     <SYS_INITIALIZING>System Initializing</SYS_INITIALIZING>
-    <TASK_VIEWER>Task Viewer</TASK_VIEWER>
+    <SYS_UPDATE>System Update</SYS_UPDATE>
+    <TASK_NETWORK>Task Network</TASK_NETWORK>
+    <TASK_TABLE>Task Table</TASK_TABLE>
     <TARGET_BITRATE>Target Bitrate</TARGET_BITRATE>
     <T_CROPPED>T cropped</T_CROPPED>
     <TEMPLATE>Template</TEMPLATE>
     <TEMPLATE_AUTO_UPDATE>Auto Update</TEMPLATE_AUTO_UPDATE>
     <TEMPLATE_VOLUME_SEARCHING>Searching for template frames…</TEMPLATE_VOLUME_SEARCHING>
+    <TEMPORARY_FILE>Temporary File</TEMPORARY_FILE>
     <TERMINATE_REGISTRATION>Forced termination of registration</TERMINATE_REGISTRATION>
     <TEXT_FILE>Text file</TEXT_FILE>
     <THICKNESS_RANGE>Please enter the thickness range (layer):</THICKNESS_RANGE>
@@ -492,7 +517,6 @@
     <TRANSLATION_TOOLTIP>translation</TRANSLATION_TOOLTIP>
     <UI_INITIALIZE_SUCCESS>Interface initialized completely</UI_INITIALIZE_SUCCESS>
     <ULTIMATE_EROSION_PT>Ultimate Erosion Point Cloud</ULTIMATE_EROSION_PT>
-    <UNABLE_ACCESS_SERVER>Unable to access the remote server, please check the permissions</UNABLE_ACCESS_SERVER>
     <UNABLE_ACCESS_UPDATE_SETTING>Unable to open update_setting.ini. Insufficient permissions</UNABLE_ACCESS_UPDATE_SETTING>
     <UNRECOGNIZED_UPDATE_IDENTIFIER>Checking for updates: Unrecognized identifier. Please check update_setting.ini</UNRECOGNIZED_UPDATE_IDENTIFIER>
     <UNREGISTRATERED_FRAMES>Frames to be registered</UNREGISTRATERED_FRAMES>
@@ -502,11 +526,7 @@
     <UNSUPPORTED_FILE_FORMAT>unsupported file format</UNSUPPORTED_FILE_FORMAT>
     <UNSUPPORTED_OS>Unsupported OS type</UNSUPPORTED_OS>
     <UPDATE_SCRIPT_FAILED>Update script generation failed, please check the write permissions</UPDATE_SCRIPT_FAILED>
-    <URGENT>Urgent</URGENT>
-    <URGENT_EMAIL>Urgent questions will be sent to the maintainer's email. Continue?</URGENT_EMAIL>
-    <URGENT_SUBJECT>Urgent exception: Reg3D App@SiLab, IBP, China</URGENT_SUBJECT>
     <USER>User</USER>
-    <USERNAME>User Name</USERNAME>
     <USUAL>Usual</USUAL>
     <VALIDATE_UPDATE>Validate update…</VALIDATE_UPDATE>
     <VARIABLE_LOADED>Variable loaded</VARIABLE_LOADED>
