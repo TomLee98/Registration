@@ -375,13 +375,13 @@ V3.x        Galileo          伽利略
   |     |- [Update] remove Task Viewer sub function
   |     |- [Update] remove "python interpreter" menu and "language" menu
   |     |- [Update] add "Resource Manager" for task viewing and resource management
-  |     |- [Update] optimize the registor options
-  |     |- [Update] TODO: generate standalone package which could run without MATLAB (need runtime only)
+  |     |- [Update] increase task view refresh fluency and realtime response
   |     |- [Fix Bugs] fix the bug for "auto template" support raw image channel only
   |     |- [Fix Bugs] fix the "usual" local registration use cpu but Reg3D inner representation as gpu
   |     |- [Fix Bugs] fix the bug in "TaskViewer": gpus using without cpu cores occupation
   |     |- [Fix Bugs] fix the bug when .tif saving after cellpose running when using cpu
   |     |- [Fix Bugs] fix the bug if user use "English" and drop some frames cause "drop ratio" out of chars number limit
+  |     |- [Note] there are some options in preference is disabled at backend
   |- V3.2.0     2025/06/
   |     |- [Update] TODO: add advanced "Resource Manager" functions
   |     |- [Update] TODO: add point-cloud non-rigid registration based on CPD
