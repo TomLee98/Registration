@@ -707,13 +707,14 @@ classdef mpimg < matlab.mixin.Copyable
 
     methods(Static, Hidden)
         function file_ = genfilename(folder_)
+            rng('shuffle');     % make sure a random generation
+
             % generate file name code: 18 chars
             code_idx = [randi(26,1,6)+64, randi(26,1,6)+96, randi(10,1,6)+47];
-            code_idx = code_idx(randperm(18));
 
             % random suffix for avoiding same filename
             % and hidden the file information
-            filename_ = char(code_idx);
+            filename_ = char(code_idx(randperm(18)));
 
             if isstring(folder_), folder_ = folder_.char(); end
 
