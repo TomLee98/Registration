@@ -10,24 +10,21 @@ classdef clmhpr < handle
 
     properties(Access = public, Dependent)
         Capacity
-        Cycle
         Trigger
     end
     
     methods
-        function this = clmhpr(folder, capacity, cycle, trigger)
+        function this = clmhpr(folder, capacity, trigger)
             %CLMHPR A Constructor
             arguments
                 folder      (1,1)   string  {mustBeFolder}
                 capacity    (1,1)   double  {mustBeInRange(capacity, 1, 1024)} = 128
-                cycle       (1,1)   string  {mustBeMember(cycle, ["EVERYDAY", "MONDAY", "FIRSTDAY"])} = "EVERYDAY"
                 trigger     (1,1)   string  {mustBeMember(trigger, ["EXIT", "SIZE", "TIME", "OFF"])} = "EXIT"
             end
 
             this.folder = folder;
 
             this.strategy = struct("Capacity",  capacity, ...
-                                   "Cycle",     cycle, ...
                                    "Trigger",   trigger);
 
             this.cldaemon = timer("Period",60, "BusyMode","drop", ...
@@ -46,19 +43,6 @@ classdef clmhpr < handle
             end
 
             this.strategy.Capacity = r;
-        end
-
-        function r = get.Cycle(this)
-            r = this.strategy.Cycle;
-        end
-
-        function set.Cycle(this, r)
-            arguments
-                this
-                r   (1,1)   string  {mustBeMember(r, ["EVERYDAY", "MONDAY", "FIRSTDAY"])} = "EVERYDAY"
-            end
-
-            this.strategy.Cycle = r;
         end
 
         function r = get.Trigger(this)
