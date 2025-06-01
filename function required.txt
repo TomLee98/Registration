@@ -370,7 +370,7 @@ V3.x        Galileo          伽利略
   |     |- [Fix Bugs] fix the "fluoscrence compensation" caused bad correction in "TCREG"->local
   |     |- [Fix Bugs] fix the bug if push update button after data loading
   |     |- [Fix Bugs] fix the new "resource allocator" bug if multi-user running
-  |- V3.1.0     2025/05/30
+  |- V3.1.0     2025/06/01
   |     |- [Update] remove "Bug Reporter" sub app
   |     |- [Update] remove Task Viewer sub function
   |     |- [Update] remove "python interpreter" menu and "language" menu
