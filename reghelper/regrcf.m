@@ -625,8 +625,12 @@ switch regopt_.Mode
             case "cpu|gpu"
                 % determine sub algorithm
                 switch regopt_.SubAlgorithm
-                    case "advanced"
+                    case "demons"
                         resrc = "cpu|gpu";
+                    case "deform"
+                        resrc = "cpu";
+                    case "cpd"
+                        resrc = "cpu";
                     otherwise
                         resrc = "cpu";
                 end
