@@ -13,5 +13,15 @@ classdef mpimgs < handle
         end
         
     end
+
+    methods (Static)
+        function status = clean_temporary_folder(capacity)
+            arguments
+                capacity    (1,1)   double  = nan
+            end
+
+            status = 0;
+        end
+    end
 end
 

@@ -206,6 +206,12 @@ classdef ImageReader < handle
             % normalized dimention order
             this.metadata.dimOrder = this.INNER_DIM_ORDER;
 
+            % !! terminate python environment, otherwise cellpose etc based
+            % on python environment will break down
+            if (ft==true)&&(lower(ext)==".tif")
+                try terminate(pyenv); catch, end
+            end
+
             % turn off loader
             this.state = "off";
         end

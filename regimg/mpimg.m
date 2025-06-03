@@ -48,7 +48,7 @@ classdef mpimg < matlab.mixin.Copyable
                 file_
                 data_
                 dimorder_  (1,:)    string = ["X","Y","C","Z","T"]
-                autoclear_ (1,1)    logical = true
+                autoclear_ (1,1)    logical = false
                 const_     (1,1)    logical = false
                 display_   (1,1)    logical = false     % for debugging
             end
@@ -417,15 +417,8 @@ classdef mpimg < matlab.mixin.Copyable
             file_ = this.memptr.Filename;
 
             if isfile(file_)
-                if this.isautoclear
-                    this.memptr = [];
-                    delete(file_);
-                else
-                    throw(MException("mpimg:invalidFileName", ...
-                        "Can not create a file has the same name with " + ...
-                        "an already existed file when auto clear is " + ...
-                        "not working."));
-                end
+                this.memptr = [];
+                delete(file_);
             end
 
             % memmapping
@@ -746,7 +739,7 @@ classdef mpimg < matlab.mixin.Copyable
             if ispc()
                 files_ = File.listRoots();
                 % use user name as temporary files sub folder name
-                user_name = string(System.getProperty("user.name"));
+                user_name = string(System.getProperty("user.name")).char();
                 disk_table = table('Size',[numel(files_), 5], ...
                     'VariableTypes',{'string','double','logical','logical','logical'}, ...
                     'VariableNames',{'letter','free_size','readable','writable','is_local'});
@@ -774,7 +767,7 @@ classdef mpimg < matlab.mixin.Copyable
                 try
                     mkdir(folder_);
                     fileattrib(folder_, '+h', '', 's');
-                    folder_ = [folder_, filesep, user_name.char()];
+                    folder_ = [folder_, '\', user_name];
                     mkdir(folder_);
                 catch ME
                     switch ME.identifier
@@ -786,15 +779,15 @@ classdef mpimg < matlab.mixin.Copyable
             elseif isunix()
                 if isfolder('/data/.Reg3DCache')
                     % create user folder on /data/Reg3DCache
-                    user_name = string(System.getProperty("user.name"));
-                    folder_ = ['/data/.Reg3DCache/', char(user_name)];
+                    user_name = string(System.getProperty("user.name")).char();
+                    folder_ = ['/data/.Reg3DCache/', user_name];
                     try
                         mkdir(folder_);
                     catch ME
                         throwAsCaller(ME);
                     end
                 else
-                    throw(MException("Cache folder lost. " + ...
+                    throw(MException("Cache folder '/data/.Reg3DCache' lost. " + ...
                         "Please connect to the administrator."));
                 end
             end
@@ -831,6 +824,84 @@ classdef mpimg < matlab.mixin.Copyable
                 end
                 diskType = fileSystemView.getSystemTypeDescription(file_);
                 tf_ = (string(diskType) == marker);
+            end
+        end
+
+        function status = clean_temporary_folder(capacity)
+            arguments
+                capacity    (1,1)   double  {mustBeInRange(capacity, 1, 128)} = 128
+            end
+
+            import java.io.*;
+            import javax.swing.filechooser.*;
+            import java.lang.*;
+
+            warning('off', 'MATLAB:MKDIR:DirectoryExists');
+
+            if ispc()
+                if capacity < 1 || capacity > 128
+                    warning("mpimg:invalidCapacity", "Capacity should be between " + ...
+                        "1(GB) and 128(GB).");
+                    status = -1;
+                    return;
+                else
+                    % check the temporary folder
+                    files_ = File.listRoots();
+                    % use user name as temporary files sub folder name
+                    user_name = string(System.getProperty("user.name")).char();
+                    for p = 1:numel(files_)
+                        folder_ = [string(files_(p).getPath()).char(), 'Reg3DCache\', user_name];
+                        if isfolder(folder_)
+                            d = struct2table(dir([folder_, '\', '*.dat']));
+                            if ~isempty(d) && sum(d.bytes) >= capacity*2^30
+                                % clean older files as little as possible
+                                [~, date_idx] = sort(d.datenum, "descend");
+                                locptt = find(cumsum(d.bytes(date_idx)) ...
+                                    < capacity*2^30, 1, "last");
+                                for idx = date_idx(locptt+1:end)'
+                                    try
+                                        delete(fullfile(d.folder{idx}, d.name{idx}));
+                                    catch
+                                    end
+                                end
+                            end
+                        end
+                    end
+
+                    status = 0;
+                end
+            elseif isunix()
+                if isfolder('/data/.Reg3DCache')
+                    if capacity < 1 || capacity > 128
+                        warning("mpimg:invalidCapacity", "Capacity should be between " + ...
+                            "1(GB) and 128(GB).");
+                        status = -1;
+                        return;
+                    else
+                        user_name = string(System.getProperty("user.name")).char();
+                        folder_ = ['/data/.Reg3DCache/', user_name];
+                        if isfolder(folder_)
+                            d = struct2table(dir([folder_, '\', '*.dat']));
+                            if ~isempty(d) && sum(d.bytes) >= capacity*2^30
+                                % clean older files as little as possible
+                                [~, date_idx] = sort(d.datenum, "descend");
+                                locptt = find(cumsum(d.bytes(date_idx)) ...
+                                    < capacity*2^30, 1, "last");
+                                for idx = date_idx(locptt+1:end)'
+                                    try
+                                        delete(fullfile(d.folder{idx}, d.name{idx}));
+                                    catch
+                                    end
+                                end
+                            end
+                        end
+
+                        status = 0;
+                    end
+                else
+                    throw(MException("Cache folder '/data/.Reg3DCache' lost. " + ...
+                        "Please connect to the administrator."));
+                end
             end
         end
     end

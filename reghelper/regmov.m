@@ -753,7 +753,8 @@ classdef regmov < matlab.mixin.Copyable
         end
     end
 
-    methods(Static, Hidden)
+    methods(Static)
+        % This function create an empty regmov object
         function mov = empty()
             mopt_ = table('Size',[1,12], 'VariableTypes',{'double','double',...
                 'double','double','double','double','double','double','double',...

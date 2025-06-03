@@ -33,8 +33,8 @@
     <AUTO_UPDATE>自动更新</AUTO_UPDATE>
     <BASELINE_MODEL>基线模型</BASELINE_MODEL>
     <BATCH_SIZE>批处理大小</BATCH_SIZE>
-    <BCS_EXIT>退出(自动)</BCS_EXIT>
-    <BCS_SIZE>按大小(自动)</BCS_SIZE>
+    <BCS_EXIT>退出时</BCS_EXIT>
+    <BCS_RT>实时</BCS_RT>
     <BCS_OFF>从不(不推荐)</BCS_OFF>
     <BEGIN>开始</BEGIN>
     <BICUBIC>双立方</BICUBIC>
