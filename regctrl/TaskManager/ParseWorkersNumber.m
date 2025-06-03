@@ -24,11 +24,14 @@ else
             n = GetCPUWorkersMaxN([], []);
             src = "cpu";
         case "local"
-            if regopt_.SubAlgorithm == "usual"
-                % local & usual only support cpu current version(R2023b)
+            if regopt_.SubAlgorithm == "deform" ...
+                    || regopt_.SubAlgorithm == "cpd"
+                % local & usual only support cpu current version(R2024b)
                 n = GetCPUWorkersMaxN([], []);
                 src = "cpu";
             else
+                % demons can run on both cpu and gpu,
+                % but gpu memory is limited
                 switch regopt_.Options.Hardware
                     case "cpu"
                         n = GetCPUWorkersMaxN([], []);

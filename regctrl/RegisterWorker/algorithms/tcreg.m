@@ -189,9 +189,12 @@ max_itern = regopt.MaxIterN;
 afs = regopt.AFS;
 gr = regopt.GR;
 gs = regopt.GS;
-if subalg == "usual"
+gst = regopt.gStep;
+fls = regopt.flnss;
+mmtol = regopt.mmtol;
+if subalg == "deform"
     vpl = regopt.dfVPL;
-elseif subalg == "advanced"
+elseif subalg == "demons"
     vpl = regopt.dmVPL;
 end
 itpalg = regopt.Interp;
@@ -220,15 +223,19 @@ parfor m = 1:numel(regfrs)
         warning("tcreg:badFluoscrenceCorrection", "%s", ME.message);
     end
 
-    if subalg == "usual"
+    if subalg == "deform"
         % parameters: GR, GL, VPL are useful
         [df, ~] = imregdeform(avol_sc_m, refvol, "GridSpacing",gs, ...
             "GridRegularization",gr,"NumPyramidLevels",vpl, ...
             "PixelResolution",pr,"DisplayProgress",false);
-    elseif subalg == "advanced"
-        [df, ~] = imregdemons(avol_fc_m, refvol,...
+    elseif subalg == "demons"
+        [df, ~] = imregdemons(avol_sc_m, refvol,...
         max_itern, "AccumulatedFieldSmoothing", afs,...
         "PyramidLevels", vpl, "DisplayWaitbar",false);
+    elseif subalg == "cpd"
+        [df, ~] = imregcpd(avol_sc_m, refvol, "GridSpacing",gst, ...
+            "GridRegularization",fls, "MaxIterations",max_itern, ...
+            "OutlierRatio",mmtol, "InterpMethod","linear", "Verbose",false);
     else
         df = []; %#ok<NASGU>
         throw(MException("tcreg:local:invalidSubAlgorithm", ...
@@ -277,9 +284,12 @@ max_itern = regopt.MaxIterN;
 afs = regopt.AFS;
 gr = regopt.GR;
 gs = regopt.GS;
-if subalg == "usual"
+gst = regopt.gStep;
+fls = regopt.flnss;
+mmtol = regopt.mmtol;
+if subalg == "deform"
     vpl = regopt.dfVPL;
-elseif subalg == "advanced"
+elseif subalg == "demons"
     vpl = regopt.dmVPL;
 end
 itpalg = regopt.Interp;
@@ -302,13 +312,13 @@ parfor m = 1:numel(regfrs)
         avol_sc_m = cast(rescale(avol_sc_m_rs, lb, rb), "like", avol_fc_m);
     end
 
-    if subalg == "usual"
+    if subalg == "deform"
         % imregdeform only supports cpu calculation
         % parameters: GR, GL, VPL are useful
         [df, ~] = imregdeform(avol_sc_m, refvol, "GridSpacing",gs, ...
             "GridRegularization",gr,"NumPyramidLevels",vpl, ...
             "PixelResolution",pr,"DisplayProgress",false);
-    elseif subalg == "advanced"
+    elseif subalg == "demons"
         % spread memory variable to GPU memory
         refvol_ga = gpuArray(refvol);
         avol_sc_m_ga = gpuArray(avol_sc_m);
@@ -317,6 +327,12 @@ parfor m = 1:numel(regfrs)
         max_itern, "AccumulatedFieldSmoothing", afs,...
         "PyramidLevels", vpl, "DisplayWaitbar",false);
         df = gather(df_ga);
+    elseif subalg == "cpd"
+        % pcregistercpd only supports cpu calculation
+        % parameters: flnss, itern, gStep, mmtol are useful
+        [df, ~] = imregcpd(avol_sc_m, refvol, "GridSpacing",gst, ...
+            "GridRegularization",fls, "MaxIterations",max_itern, ...
+            "OutlierRatio",mmtol, "InterpMethod","linear", "Verbose",false);
     else
         df = []; %#ok<NASGU>
         throw(MException("tcreg:localgpu:invalidSubAlgorithm", ...
@@ -362,7 +378,8 @@ switch A.Mode
             "MaxStep", "MinStep",  "IterCoeff", "DS", "CoarseAlg", "CoarseArgs",...
             "DilateFilterEnh", "glVPL"];
     case "local"
-        VALID_FIELD_PRIVATE = ["dmVPL", "dfVPL", "AFS", "GR", "GS", "ImageRehist", "RepAcc"];
+        VALID_FIELD_PRIVATE = ["dmVPL", "dfVPL", "AFS", "GR", "GS", ...
+            "ImageRehist", "RepAcc", "flnss", "gStep", "mmtol"];
     otherwise
 end
 

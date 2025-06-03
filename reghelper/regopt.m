@@ -6,7 +6,7 @@ classdef regopt
         % ================ all options common properties =================
         reg_alg         (1,1) string {mustBeMember(reg_alg, ["OCREG","TCREG","MANREG","LTREG"])} = "TCREG"
         reg_mode        (1,1) string {mustBeMember(reg_mode, ["global","local"])} = "global"
-        sub_reg_alg     (1,1) string {mustBeMember(sub_reg_alg, ["usual","advanced"])} = "usual"
+        sub_reg_alg     (1,1) string {mustBeMember(sub_reg_alg, ["deform","cpd","demons"])} = "deform"
 
         % ============= one/two channel(s) common properties ==============
         reg_modal       (1,1) string {mustBeMember(reg_modal, ["multimodal", "monomodal"])} = "monomodal"
@@ -51,6 +51,9 @@ classdef regopt
         repacc          (1,1) double {mustBeMember(repacc, [64, 128, 256])} = 64
         grid_regulation (1,1) double {mustBeInRange(grid_regulation, 0, 5)} = 0.11
         grid_spacing    (1,3) double {mustBePositive} = [4,4,4]
+        grid_step       (1,1) double {mustBeInRange(grid_step, 0, 5), mustBePositive} = 2.0
+        flatness        (1,1) double {mustBeInRange(flatness, 0, 5), mustBePositive} = 2.0
+        mismatch_tol    (1,1) double {mustBeInRange(mismatch_tol, 0, 1)} = 0.1
 
         % ==================== longterm properties ======================
         lt_keyframes    (:,1) double {mustBePositive, mustBeInteger} = 1
@@ -143,8 +146,8 @@ classdef regopt
         function this = set.SubAlgorithm(this, r_)
             arguments
                 this
-                r_  (1,1)   string {mustBeMember(r_, ["usual","advanced"])} ...
-                    = "usual"
+                r_  (1,1)   string {mustBeMember(r_, ["deform","cpd","demons"])} ...
+                    = "deform"
             end
 
             this.sub_reg_alg = r_;
@@ -163,6 +166,9 @@ classdef regopt
             addParameter(p, 'glVPL',        this.gl_vpl);
             addParameter(p, 'dmVPL',        this.dm_vpl);
             addParameter(p, 'dfVPL',        this.df_vpl);
+            addParameter(p, 'gStep',        this.grid_step);
+            addParameter(p, 'flnss',        this.flatness);
+            addParameter(p, 'mmtol',        this.mismatch_tol);
             addParameter(p, 'DS',           this.ds);
             addParameter(p, 'SC',           this.strc_chl);
             addParameter(p, 'FC',           this.func_chl);
@@ -302,6 +308,9 @@ classdef regopt
                                        "GS",            this.grid_spacing, ...
                                        "dmVPL",         this.dm_vpl, ...
                                        "dfVPL",         this.df_vpl, ...
+                                       "gStep",         this.grid_step, ...
+                                       "flnss",         this.flatness, ...
+                                       "mmtol",         this.mismatch_tol, ...
                                        "Interp",        this.lo_interp, ...
                                        "ImageRehist",   this.img_rehist, ...
                                        "RepAcc",        this.repacc, ...
@@ -400,6 +409,9 @@ classdef regopt
                             this.grid_spacing = r_.GS;
                             this.dm_vpl = r_.dmVPL;
                             this.df_vpl = r_.dfVPL;
+                            this.grid_step = r_.gStep;
+                            this.flatness = r_.flnss;
+                            this.mismatch_tol = r_.mmtol;
                             this.lo_interp = r_.Interp;
                             this.img_rehist = r_.ImageRehist;
                             this.repacc = r_.RepAcc;

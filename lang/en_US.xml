@@ -35,7 +35,6 @@
     <BATCH_SIZE>Batch Size</BATCH_SIZE>
     <BCS_EXIT>Exit (auto)</BCS_EXIT>
     <BCS_SIZE>By size (auto)</BCS_SIZE>
-    <BCS_TIME>By time (auto)</BCS_TIME>
     <BCS_OFF>Never (not recommended)</BCS_OFF>
     <BEGIN>begin</BEGIN>
     <BICUBIC>Bicubic</BICUBIC>
@@ -49,9 +48,6 @@
     <CAMERA_TIME>Camera Time</CAMERA_TIME>
     <CANCEL>Cancel</CANCEL>
     <CAPACITY_MAX>Maximum Capacitry</CAPACITY_MAX>
-    <CCS_EVERYDAY>Every day</CCS_EVERYDAY>
-    <CCS_MONDAY>Every week (Monday)</CCS_MONDAY>
-    <CCS_FIRSTDAY>Every month (1st)</CCS_FIRSTDAY>
     <CELL_MANAGEMENT>Cell Management</CELL_MANAGEMENT>
     <CELL_SEGMENTOR>Cell Segmentor</CELL_SEGMENTOR>
     <CENTROID>Centroid</CENTROID>
@@ -157,6 +153,7 @@
     <FIXED>Fixed</FIXED>
     <FIXED_BACKGROUND>Fixed Background</FIXED_BACKGROUND>
     <FLAT_HAT>Flat Hat</FLAT_HAT>
+    <FLATNESS>Flatness</FLATNESS>
     <FLIP>Flip</FLIP>
     <FLUORESCENCE_MODEL>Fluorescence Model</FLUORESCENCE_MODEL>
     <FLUORESCENCE_ONLY>Fluorescence Only</FLUORESCENCE_ONLY>
@@ -291,6 +288,7 @@
     <MIN_ITERATION_STEP>Minimum Iteration Step</MIN_ITERATION_STEP>
     <MIN_SEARCHING_RADIUS>Minimum Searching Radius</MIN_SEARCHING_RADIUS>
     <MIN_Z_PROJECTION>Minimum Z Projection</MIN_Z_PROJECTION>
+    <MISMATCH_TOLERANCE>Mismatch Tolerance</MISMATCH_TOLERANCE>
     <MISSING_HELP>help.html file is missing</MISSING_HELP>
     <MISSING_PRIVACY>privacy html file is missing</MISSING_PRIVACY>
     <MIX_CHANNEL>Mix Channel</MIX_CHANNEL>
@@ -395,6 +393,9 @@
     <REGISTRATION_SOLUTION_ERROR>No registration solution set up</REGISTRATION_SOLUTION_ERROR>
     <REGRESSION_ORDER>Regression Order</REGRESSION_ORDER>
     <REGISTRATOR>Register</REGISTRATOR>
+    <REG_LOCAL_CPD>Coherent Point Drift</REG_LOCAL_CPD>
+    <REG_LOCAL_DEMONS>Diffeomorphic Demons</REG_LOCAL_DEMONS>
+    <REG_LOCAL_DEFORM>Isotropic Total Variation</REG_LOCAL_DEFORM>
     <REGMODE_CURRENT_GLOBAL>Current Registration Mode: Global</REGMODE_CURRENT_GLOBAL>
     <REGMODE_CURRENT_LOCAL>Current Registration Mode: Local</REGMODE_CURRENT_LOCAL>
     <REGMODE_CURRENT_LTGLOBAL>Current Registration Mode: Global(Long-Term)</REGMODE_CURRENT_LTGLOBAL>
