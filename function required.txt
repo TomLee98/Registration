@@ -388,6 +388,7 @@ V3.x        Galileo          伽利略
   |     |- [Update] TODO: registration history manager
   |     |- [Update] TODO: replace MaskMovie with regmask member function: maskby
   |     |- [Update] TODO: transform some key files to p code
+  |     |- [Fix Bugs] TODO: terminate pyenv after loading .tif file if use python tifffile
 
 
 
