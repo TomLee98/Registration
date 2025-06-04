@@ -439,6 +439,23 @@ classdef regmov < matlab.mixin.Copyable
         end
     end
 
+    methods(Access = public)
+        function delete(this)
+            if ismember(class(this.mptr), ["mpimg", "mpimgs"])
+                delete(this.mptr);
+            else
+                this.mptr = [];
+            end
+
+            % ~
+            clear this
+        end
+
+        function r = isempty(this)
+            r = isempty(this.Movie);
+        end
+    end
+
     methods(Access=public, Hidden)
         function gather(this)
             % this function gathers data from disk file to memory
@@ -463,19 +480,6 @@ classdef regmov < matlab.mixin.Copyable
                 this.mptr = [];     % free variable
                 this.mptr = mpimg(tmpfolder, [], D, this.mopt.dimOrder);
             end
-        end
-
-        function delete(this)
-            if ismember(class(this.mptr), ["mpimg", "mpimgs"])
-                delete(this.mptr);
-            end
-
-            % ~
-            clear("this");
-        end
-
-        function r = isempty(this)
-            r = isempty(this.Movie);
         end
     end
 
