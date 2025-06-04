@@ -382,16 +382,17 @@ V3.x        Galileo          伽利略
   |     |- [Fix Bugs] fix the bug when .tif saving after cellpose running when using cpu
   |     |- [Fix Bugs] fix the bug if user use "English" and drop some frames cause "drop ratio" out of chars number limit
   |     |- [Note] there are some options in preference is disabled at backend
-  |- V3.2.0     2025/06/
+  |- V3.2.0     2025/06/04
   |     |- [Update] add some advanced "Resource Manager" functions
   |     |- [Update] add point-cloud non-rigid registration based on CPD
-  |     |- [Update] TODO: registration history manager
-  |     |- [Update] TODO(Hidden): replace MaskMovie with regmask member function: maskby
+  |     |- [Update] (Hidden): replace MaskMovie with regmask member function: maskby
   |     |- [Update] (Hidden): transform some key files to p code
   |     |- [Fix Bugs] fix the "distributed mode" temporary file name bug
   |     |- [Fix Bugs] fix the disp bug in "Resource Manager" -> "Network Topology" Panel
   |     |- [Fix Bugs] fix unexpexted "Signal Extractor" menu enable
   |     |- [Fix Bugs] terminate pyenv after loading .tif file if use python tifffile
-
+  |- V3.3.0     2025/06/
+  |     |- [Update] TODO: registration history manager
+  |     |- [Fix Bugs] TODO: fix "single ROI" may cause memory overflow with big file
 
 

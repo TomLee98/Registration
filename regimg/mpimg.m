@@ -373,6 +373,40 @@ classdef mpimg < matlab.mixin.Copyable
             this = this.plus(-r_);
         end
 
+        function maskby(this, mskv)
+            arguments
+                this
+                mskv    (:,:,:) double  {mustBeNonnegative}
+            end
+
+            [~, vloc] = ismember(["X","Y","Z"], this.INNER_DIMENSION_ORDER);
+            if any(size(mskv) ~= this.DataSize(vloc))
+                throw(MException("mping:invalidDimensionSize", ...
+                    "Mask dimensions do not match images."));
+            end
+
+            nc = this.DataSize("C"==this.DimOrder);
+            
+            % range splitter for blocked data saving
+            nt = this.DataSize("T"==this.DimOrder);
+            t_range_ = range_splitter(sprintf("1:%d", nt), this.INNER_BLOCK_SIZE);
+
+            sz_ = repmat({':'}, 1, numel(this.INNER_DIMENSION_ORDER));
+
+            for c = 1:nc
+                sz_{"C"==this.dimorder} = c;
+
+                for t = 1:numel(t_range_)
+                    sz_{"T"==this.dimorder} = t_range_(t);
+
+                    expr = "this.memptr.Data.mov("+string(sz_).join(",")+")";
+                    expr = sprintf("%s=%s.*(mskv>0);", expr, expr);
+
+                    eval(expr);
+                end
+            end
+        end
+
         function r = isempty(this)
             r = isempty(this.memptr);
         end

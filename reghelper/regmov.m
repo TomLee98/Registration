@@ -701,7 +701,13 @@ classdef regmov < matlab.mixin.Copyable
                 mask    (1,1)   regmask
             end
 
-            % TODO: 
+            mkvol = mask.MaskVol;
+
+            if ismember(class(this.mptr), ["mpimg", "mpimgs"])
+                this.mptr.maskby(mkvol);
+            else
+                this.mptr = MaskMovie(this.mptr, mkvol);
+            end
 
             movobj = this;
         end
