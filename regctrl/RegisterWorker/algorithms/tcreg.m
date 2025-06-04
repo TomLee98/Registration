@@ -196,6 +196,8 @@ if subalg == "deform"
     vpl = regopt.dfVPL;
 elseif subalg == "demons"
     vpl = regopt.dmVPL;
+else
+    vpl = [];
 end
 itpalg = regopt.Interp;
 img_rehist = regopt.ImageRehist;
@@ -291,6 +293,8 @@ if subalg == "deform"
     vpl = regopt.dfVPL;
 elseif subalg == "demons"
     vpl = regopt.dmVPL;
+else
+    vpl = [];
 end
 itpalg = regopt.Interp;
 img_rehist = regopt.ImageRehist;

@@ -40,7 +40,7 @@ classdef RegisterController < handle
             arguments
                 caller_     (1,1)  Register
                 regopt_     (1,1)  regopt
-                nwproctect_ (1,2)  double {mustBeNonnegative, mustBeInteger}
+                nwproctect_ (1,2)  double {mustBeNonnegative, mustBeInteger} = [0, 0]
                 distrib_    (1,1)  logical = false
             end
 
@@ -144,8 +144,11 @@ classdef RegisterController < handle
                 if this.state == this.KERNEL_OFF
                     break;
                 end
+
                 status = this.regworker.correct(task);
+
                 this.taskmgr.update(status);    % could hang out for resources
+                
                 task = this.taskmgr.Task;
             end
 

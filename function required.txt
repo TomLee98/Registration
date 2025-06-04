@@ -383,11 +383,11 @@ V3.x        Galileo          伽利略
   |     |- [Fix Bugs] fix the bug if user use "English" and drop some frames cause "drop ratio" out of chars number limit
   |     |- [Note] there are some options in preference is disabled at backend
   |- V3.2.0     2025/06/
-  |     |- [Update] TODO: add advanced "Resource Manager" functions
-  |     |- [Update] TODO: add point-cloud non-rigid registration based on CPD
+  |     |- [Update] add some advanced "Resource Manager" functions
+  |     |- [Update] add point-cloud non-rigid registration based on CPD
   |     |- [Update] TODO: registration history manager
   |     |- [Update] TODO(Hidden): replace MaskMovie with regmask member function: maskby
-  |     |- [Update] TODO(Hidden): transform some key files to p code
+  |     |- [Update] (Hidden): transform some key files to p code
   |     |- [Fix Bugs] fix the "distributed mode" temporary file name bug
   |     |- [Fix Bugs] fix the disp bug in "Resource Manager" -> "Network Topology" Panel
   |     |- [Fix Bugs] fix unexpexted "Signal Extractor" menu enable

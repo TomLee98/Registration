@@ -829,7 +829,7 @@ classdef mpimg < matlab.mixin.Copyable
 
         function status = clean_temporary_folder(capacity)
             arguments
-                capacity    (1,1)   double  {mustBeInRange(capacity, 1, 128)} = 128
+                capacity    (1,1)   double  {mustBeInRange(capacity, 1, 1024)} = 64
             end
 
             import java.io.*;
@@ -838,10 +838,19 @@ classdef mpimg < matlab.mixin.Copyable
 
             warning('off', 'MATLAB:MKDIR:DirectoryExists');
 
+            BUFFER_SIZE_MAX = 0;
+            locker = aesobj();
+            code = locker.decrypt(constdef.BUFFER_KEY); eval(code);
+            if capacity > BUFFER_SIZE_MAX
+                throw(MException("mpimg:hackedBufferSize", ...
+                    "Your buffer size shouldn't be larger than %d GBytes.", ...
+                    BUFFER_SIZE_MAX));
+            end
+
             if ispc()
-                if capacity < 1 || capacity > 128
+                if capacity < 1 || capacity > 1024
                     warning("mpimg:invalidCapacity", "Capacity should be between " + ...
-                        "1(GB) and 128(GB).");
+                        "1(GB) and 1024(GB).");
                     status = -1;
                     return;
                 else
@@ -872,9 +881,9 @@ classdef mpimg < matlab.mixin.Copyable
                 end
             elseif isunix()
                 if isfolder('/data/.Reg3DCache')
-                    if capacity < 1 || capacity > 128
+                    if capacity < 1 || capacity > 1024
                         warning("mpimg:invalidCapacity", "Capacity should be between " + ...
-                            "1(GB) and 128(GB).");
+                            "1(GB) and 1024(GB).");
                         status = -1;
                         return;
                     else
