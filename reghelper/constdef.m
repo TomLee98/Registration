@@ -9,9 +9,15 @@ classdef constdef
         GRAYSCALE_AXES_DARK = [0.80, 0.80, 0.80]
     end
 
-    properties (Access = {?mpimg, ?mpimgs, ?ResourceManager}, Constant, Hidden)
+    properties (Access = {?mpimg, ?mpimgs}, Constant, Hidden)
         % code as: BUFFER_SIZE_MAX = 128
         BUFFER_KEY = "VsPkzE1Oc/bWrOEaYsjTaf8u6fpaRmKoGnbElf+MZX4="
+    end
+
+    methods(Static, Access = ?ResourceManager, Hidden)
+        function r = GetBufferKey()
+            r = constdef.BUFFER_KEY;
+        end
     end
     
 end
