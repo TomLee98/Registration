@@ -9,7 +9,7 @@ classdef constdef
         GRAYSCALE_AXES_DARK = [0.80, 0.80, 0.80]
     end
 
-    properties (Access = {?mpimg, ?mpimgs, ?GetBufferSizeLimits}, Constant, Hidden)
+    properties (Access = {?mpimg, ?mpimgs, ?ResourceManager}, Constant, Hidden)
         % code as: BUFFER_SIZE_MAX = 128
         BUFFER_KEY = "VsPkzE1Oc/bWrOEaYsjTaf8u6fpaRmKoGnbElf+MZX4="
     end
