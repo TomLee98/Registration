@@ -872,9 +872,8 @@ classdef mpimg < matlab.mixin.Copyable
 
             warning('off', 'MATLAB:MKDIR:DirectoryExists');
 
-            BUFFER_SIZE_MAX = 0;
-            locker = aesobj();
-            code = locker.decrypt(constdef.BUFFER_KEY); eval(code);
+            BUFFER_SIZE_MAX = mpimg.GetBufferSizeMax();
+
             if capacity > BUFFER_SIZE_MAX
                 throw(MException("mpimg:hackedBufferSize", ...
                     "Your buffer size shouldn't be larger than %d GBytes.", ...
@@ -946,6 +945,16 @@ classdef mpimg < matlab.mixin.Copyable
                         "Please connect to the administrator."));
                 end
             end
+        end
+    end
+
+    % hidden to avoid user hacked by app designer
+    methods (Static, Access = ?ResourceManager, Hidden)
+        function r = GetBufferSizeMax()
+            locker = aesobj();
+            code = locker.decrypt(constdef.BUFFER_KEY);
+            eval(code);
+            r = BUFFER_SIZE_MAX;
         end
     end
 end

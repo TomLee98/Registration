@@ -13,11 +13,5 @@ classdef constdef
         % code as: BUFFER_SIZE_MAX = 128
         BUFFER_KEY = "VsPkzE1Oc/bWrOEaYsjTaf8u6fpaRmKoGnbElf+MZX4="
     end
-
-    methods(Static, Access = ?ResourceManager, Hidden)
-        function r = GetBufferKey()
-            r = constdef.BUFFER_KEY;
-        end
-    end
     
 end

@@ -23,5 +23,15 @@ classdef mpimgs < handle
             status = 0;
         end
     end
+
+    % hidden to avoid user hacked by app designer
+    methods (Static, Access = ?ResourceManager, Hidden)
+        function r = GetBufferSizeMax()
+            locker = aesobj();
+            code = locker.decrypt(constdef.BUFFER_KEY);
+            eval(code);
+            r = BUFFER_SIZE_MAX;
+        end
+    end
 end
 
