@@ -390,6 +390,7 @@ V3.x        Galileo          伽利略
   |     |- [Fix Bugs] fix the disp bug in "Resource Manager" -> "Network Topology" Panel
   |     |- [Fix Bugs] fix unexpexted "Signal Extractor" menu enable
   |     |- [Fix Bugs] terminate pyenv after loading .tif file if use python tifffile
+  |     |- [Fix Bugs] TODO: fix the bug if user calls "detection report"
   |- V3.3.0     2025/06/
   |     |- [Update] TODO: registration history manager
   |     |- [Fix Bugs] TODO: fix "single ROI" may cause memory overflow with big file
