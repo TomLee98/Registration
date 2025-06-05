@@ -318,7 +318,9 @@
     <OK>OK</OK>
     <ON>On</ON>
     <OPACITY>Opacity</OPACITY>
+    <OPERATION_SNAPSHOT>Operation Snapshot</OPERATION_SNAPSHOT>
     <OPERATION_TREE_DEPTH>Operation Tree (Depth)</OPERATION_TREE_DEPTH>
+    <OPERATION_VIEWER>Operation Viewer</OPERATION_VIEWER>
     <OPERATOR>Operator</OPERATOR>
     <OPTION>Options</OPTION>
     <OTHER_SETTINGS>Other Settings</OTHER_SETTINGS>
