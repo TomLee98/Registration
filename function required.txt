@@ -395,5 +395,5 @@ V3.x        Galileo          伽利略
   |     |- [Update] Append "pan" funciton for image tool bar
   |     |- [Update] TODO: registration history manager
   |     |- [Fix Bugs] TODO: fix "single ROI" may cause memory overflow with big file
-
+  |     |- [Fix Bugs] TODO: fix "channel alignment" may cause memory overflow with big file
 

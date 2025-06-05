@@ -2,6 +2,7 @@
 <struct>
     <ABOUT>About</ABOUT>
     <ACCUMULATIVE_FIELD_SMOOTHING>Accumulative Field Smoothing</ACCUMULATIVE_FIELD_SMOOTHING>
+    <ACTIVATE_NODE>Activate Node</ACTIVATE_NODE>
     <ADD_CELL>Add Cell</ADD_CELL>
     <ADVANCED>Advanced</ADVANCED>
     <AFFINE>Affine</AFFINE>
@@ -97,6 +98,8 @@
     <DATA_MANAGEMENT>Data Management</DATA_MANAGEMENT>
     <DATA_PROTECTED>Data Protected</DATA_PROTECTED>
     <DATA_SECURITY>Data Security</DATA_SECURITY>
+    <DEACTIVATE_NODE>Deactivate Node</DEACTIVATE_NODE>
+    <DELETE_BRANCH>Delete Branch</DELETE_BRANCH>
     <DELINEATION>Delineation</DELINEATION>
     <DEVELOPING>Developing…</DEVELOPING>
     <DIAMOND_HAT>Diamond Hat</DIAMOND_HAT>
@@ -418,7 +421,9 @@
     <REQUIRE_CAPACITY>Please contact the administrator to negotiate for a larger buffer</REQUIRE_CAPACITY>
     <RESAMPLING_RATIO>Resampling Ratio</RESAMPLING_RATIO>
     <RESET_REGISTRATION_FRAMES>Reset registration frame</RESET_REGISTRATION_FRAMES>
+    <RESOURCES>Resources</RESOURCES>
     <RESOURCE_MANAGER>Resource Manager</RESOURCE_MANAGER>
+    <RESTORE_BRANCH>Restore Branch</RESTORE_BRANCH>
     <RESTORE_VIEW>Restore View</RESTORE_VIEW>
     <RIGHT_SIDE>Right</RIGHT_SIDE>
     <RIGID>Rigid</RIGID>
