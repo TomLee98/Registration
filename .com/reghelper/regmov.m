@@ -30,6 +30,7 @@ classdef regmov < matlab.mixin.Copyable
         MovieZProj      % variable, get/___, not stored
         ZProjMethod     % variable, get/set, stored
         Transformation  % variable, get/set, stored
+        Location        % variable, get/___, not stored
         Bytes           % variable, get/___, not stored
         Background      % variable, get/___, stored
         EMin            % variable, get/___, not stored
@@ -225,6 +226,14 @@ classdef regmov < matlab.mixin.Copyable
             end
 
             this.tform = r_;
+        end
+
+        function r = get.Location(this)
+            if ~ismember(class(this.mptr), ["mpimg", "mpimgs"])
+                r = "Memory";
+            else
+                r = string(this.mptr.FileName);
+            end
         end
 
         function r = get.Bytes(this)
@@ -703,6 +712,7 @@ classdef regmov < matlab.mixin.Copyable
             if ismember(class(this.mptr), ["mpimg", "mpimgs"])
                 delete(this.mptr);
             else
+                % free memory
                 this.mptr = [];
             end
 

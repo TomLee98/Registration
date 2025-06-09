@@ -98,8 +98,7 @@
     <DATA_MANAGEMENT>Data Management</DATA_MANAGEMENT>
     <DATA_PROTECTED>Data Protected</DATA_PROTECTED>
     <DATA_SECURITY>Data Security</DATA_SECURITY>
-    <DEACTIVATE_NODE>Deactivate Node</DEACTIVATE_NODE>
-    <DELETE_BRANCH>Delete Branch</DELETE_BRANCH>
+    <DELETE_NODE>Delete Node</DELETE_NODE>
     <DELINEATION>Delineation</DELINEATION>
     <DEVELOPING>Developing…</DEVELOPING>
     <DIAMOND_HAT>Diamond Hat</DIAMOND_HAT>
@@ -265,6 +264,7 @@
     <MASK_MISMATCH>Mask size mismatch</MASK_MISMATCH>
     <MASK_MULTIPLY>Multiply Connected Mask</MASK_MULTIPLY>
     <MASK_REMOVED>Mask removed</MASK_REMOVED>
+    <MASK_SAVED>Mask saved</MASK_SAVED>
     <MASK_SIMPLY>Simply Connected Mask</MASK_SIMPLY>
     <MASS_CENTER_ESTIMATION>Mass Center Estimation</MASS_CENTER_ESTIMATION>
     <MAX>Max</MAX>
@@ -316,6 +316,7 @@
     <NORMAL_DISTRIBUTION>Normal</NORMAL_DISTRIBUTION>
     <NUM_MAX>Maximum</NUM_MAX>
     <OBJECTS_FOUND>Objects number after segmentation:</OBJECTS_FOUND>
+    <OBJECTS_LOAD>Objecs number after loading:</OBJECTS_LOAD>
     <OBJECTS_NUMBER>Objects Number</OBJECTS_NUMBER>
     <OCTAVE>Octave</OCTAVE>
     <OFF>Off</OFF>
@@ -374,6 +375,7 @@
     <RATIO>Ratio</RATIO>
     <RAW>Raw</RAW>
     <READ_CONFIGURATION_FILE>Read configuration file</READ_CONFIGURATION_FILE>
+    <READ_MASK_FILE>Read mask file</READ_MASK_FILE>
     <REAL_TIME>Real Time</REAL_TIME>
     <REAL_TIME_OVERVIEW>Real Time Overview</REAL_TIME_OVERVIEW>
     <RECOVERED_BACKGROUND>Background recovered.</RECOVERED_BACKGROUND>
@@ -386,6 +388,7 @@
     <REFRESH_LABEL>Refresh Label</REFRESH_LABEL>
     <REFRESH_REGISTRATION_GOODNESS>Refresh Registration Goodness</REFRESH_REGISTRATION_GOODNESS>
     <REG3D_CONFIGURATION>Reg3D configuration file</REG3D_CONFIGURATION>
+    <REG3D_MASK>Reg3D mask file</REG3D_MASK>
     <REGION_FREE>Region Free</REGION_FREE>
     <REGION_LABEL>Region Label</REGION_LABEL>
     <REGION_PROPERTY_SLICE>Region Property(Slice)</REGION_PROPERTY_SLICE>
@@ -423,7 +426,6 @@
     <RESET_REGISTRATION_FRAMES>Reset registration frame</RESET_REGISTRATION_FRAMES>
     <RESOURCES>Resources</RESOURCES>
     <RESOURCE_MANAGER>Resource Manager</RESOURCE_MANAGER>
-    <RESTORE_BRANCH>Restore Branch</RESTORE_BRANCH>
     <RESTORE_VIEW>Restore View</RESTORE_VIEW>
     <RIGHT_SIDE>Right</RIGHT_SIDE>
     <RIGID>Rigid</RIGID>
@@ -436,6 +438,7 @@
     <SAMPLING>Sampling</SAMPLING>
     <SAVE>Save</SAVE>
     <SAVE_CONFIGURATION_FILE>Save configuration file</SAVE_CONFIGURATION_FILE>
+    <SAVE_MASK_FILE>Save mask file</SAVE_MASK_FILE>
     <SCALE>Scale</SCALE>
     <SCALE_RATIO>Ratio/Scale</SCALE_RATIO>
     <SCALE_THRESHOLD>Scale Threshold(um)</SCALE_THRESHOLD>

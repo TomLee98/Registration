@@ -393,7 +393,11 @@ V3.x        Galileo          伽利略
   |     |- [Fix Bugs] fix the bug if user calls "detection report"
   |- V3.3.0     2025/06/15
   |     |- [Update] Append "pan" funciton for image tool bar
+  |     |- [Update] support cell segmentor "load/export" results
+  |     |- [Update] TODO: remove "single ROI" function
   |     |- [Update] TODO: registration history manager
-  |     |- [Fix Bugs] TODO: fix "single ROI" may cause memory overflow with big file
+  |     |- [Fix Bugs] fix "auto clean" not work on ubuntu server
+  |- V3.4.0     2025/06/
+  |     |- [Update] 
   |     |- [Fix Bugs] TODO: fix "channel alignment" may cause memory overflow with big file
 

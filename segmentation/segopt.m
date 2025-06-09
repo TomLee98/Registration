@@ -37,6 +37,7 @@ classdef segopt < handle
         function this = segopt()
             %SEGOPT A constructor
         end
+
     end
 end
 

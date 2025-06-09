@@ -92,6 +92,7 @@ classdef mpimg < matlab.mixin.Copyable
                     this.memptr.Data.mov = r;
                 else
                     % remapping a new file, but keep the name
+                    % and this file will be removed from disk
                     this.remaptr(r);
                 end
             else
@@ -922,7 +923,7 @@ classdef mpimg < matlab.mixin.Copyable
                         user_name = string(System.getProperty("user.name")).char();
                         folder_ = ['/data/.Reg3DCache/', user_name];
                         if isfolder(folder_)
-                            d = struct2table(dir([folder_, '\', '*.dat']));
+                            d = struct2table(dir([folder_, '/', '*.dat']));
                             if ~isempty(d) && sum(d.bytes) >= capacity*2^30
                                 % clean older files as little as possible
                                 [~, date_idx] = sort(d.datenum, "descend");

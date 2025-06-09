@@ -92,29 +92,27 @@ classdef NuclearCtrlBot < handle
     end
     
     methods(Access = public)
-        function this = NuclearCtrlBot(nsper, vopt, cmap)
+        function this = NuclearCtrlBot(res, vopt, cmap)
             %NUVIEWER A Constructor
             arguments
-                nsper   (1,1)   NuclearSplitter
+                res     (1,1)   struct
                 vopt    (1,6)   table
                 cmap    (1,1)   string {mustBeMember(cmap, ...
                     ["default","hsv","jet","parula","turbo"])} = "default"
             end
 
-            this.center = nsper.Center;
-            this.radius = nsper.Radius;
-            this.nuid = nsper.Nid;
+            this.center = res.Center;
+            this.radius = res.Radius;
+            this.nuid = res.Nid;
             this.hlid = zeros(1, 0);
             this.rois = GenROI(this.nuid, this.center, this.radius);
-            this.caller = nsper.Parent;
-            this.ax_caller = this.caller.UIAxes_Slice;
             this.volopts = vopt;
             this.cmap = cmap;
             this.dispflag = "on";
             this.nuclears = NuclearGroup(this.nuid);
             this.gen_colormap();
         end
-        
+
         function status = Display(this, zidx)
             arguments
                 this
@@ -178,6 +176,56 @@ classdef NuclearCtrlBot < handle
             status = this.STATUS_SUCCESS;
         end
 
+        function LoadMaskFrom(this, file)
+            % This function loads mask from file
+            arguments
+                this 
+                file    (1,1)   string  {mustBeFile}
+            end
+
+            try
+                % load mat file
+                load(file, "-mat", "Center", "Radius", "Nid", "VolOpts", "CMap");
+            catch ME
+                throw(ME);
+            end
+
+            % update
+            this.center = Center;
+            this.radius = Radius;
+            this.nuid = Nid;
+            this.hlid = zeros(1, 0);
+            this.rois = GenROI(this.nuid, this.center, this.radius);
+            
+            this.volopts = VolOpts;
+            this.cmap = CMap;
+
+            this.dispflag = "on";
+            this.nuclears = NuclearGroup(this.nuid);
+            this.gen_colormap();
+        end
+
+        function SaveMaskTo(this, file)
+            % This function saves mask to file
+            arguments
+                this 
+                file (1,1)  string
+            end
+
+            Center = this.center;
+            Radius = this.radius;
+            Nid = this.nuid;
+            VolOpts = this.volopts;
+            CMap = this.cmap;
+
+            try
+                % save as mat file
+                save(file, "Center","Radius","Nid","VolOpts","CMap","-mat");
+            catch ME
+                throw(ME);
+            end
+        end
+
         function mask = GenMaskVol(this)
             % This function uses rois to create volume mask
             vsize = [this.volopts.height, this.volopts.width, this.volopts.slices];
@@ -191,7 +239,7 @@ classdef NuclearCtrlBot < handle
             row_mask = [];
             col_mask = [];
             % transform the format: [comp1, comp2, ..., comp_n]
-            % where comp_k is colume array with 1 indicate voxels
+            % where comp_k is column array with 1 indicate voxels
             d = unique(Vm);
             d(d==0) = [];
             d(isnan(d)) = [];
@@ -274,6 +322,18 @@ classdef NuclearCtrlBot < handle
             Clear(this);
 
             % delete(this);
+        end
+    end
+
+    methods(Access = ?CellSegmentor, Hidden)
+        function SetHandle(this, caller)
+            arguments
+                this
+                caller  (1,1)   Register
+            end
+
+            this.caller = caller;
+            this.ax_caller = caller.UIAxes_Slice;
         end
     end
 

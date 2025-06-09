@@ -14,35 +14,20 @@ classdef NuclearSplitter < handle
         caller          % the caller, must with SetProgressBar method
 
         %% output data
-        center
-        radius
-        nid
-        nuclears        % NuclearGroup object
-        volume
+        center          % n-by-1 cell
+        radius          % n-by-1 cell
+        nid             % n-by-1 cell
     end
 
     properties(GetAccess=public, Dependent)
-        Parent
-        Center
-        Radius
-        Nid
+        Results
     end
 
     methods
-        function r = get.Parent(this)
-            r = this.caller;
-        end
-
-        function r = get.Center(this)
-            r = this.center;
-        end
-
-        function r = get.Radius(this)
-            r = this.radius;
-        end
-
-        function r = get.Nid(this)
-            r = this.nid;
+        function r = get.Results(this)
+            r = struct("Center",    {this.center}, ...
+                       "Radius",    {this.radius}, ...
+                       "Nid",       {this.nid});
         end
     end
 
@@ -72,8 +57,6 @@ classdef NuclearSplitter < handle
             this.center = center_;
             this.radius = radius_;
             this.nid = id_;
-            this.volume = vol;
-            this.nuclears = NuclearGroup(id_);
         end
     end
 
