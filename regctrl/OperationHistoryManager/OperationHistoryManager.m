@@ -5,9 +5,10 @@ classdef OperationHistoryManager < handle
 
     properties(Access = public, Dependent)
         Strategy        % ___/get, 1-by-1 string, could be "PERFORMANCE"/"RESOURCE"/"BALANCE"
+        IsDistributed   % set/get, 1-by-1 logical, indicates if data spread on disk
         MemoryUsed      % ___/get, 1-by-1 double, unit as GBytes
         DiskUsed        % ___/get, 1-by-1 double, unit as GBytes
-        CurrentData     % ___/get, 1-by-1 regmov, indicating current activated node data
+        CurrentData     % ___/get, 1-by-1 regrspt, indicating current activated restored node
     end
 
     properties(SetAccess = immutable, GetAccess = private)
@@ -22,16 +23,41 @@ classdef OperationHistoryManager < handle
     end
 
     properties(Access = private, Hidden)
-        branch_cur                          % current operated branch
-        node_active      (1,1)              % current active node
+        branch_cur                              % current operated branch
+        node_active     (1,1)                   % current active node
+        is_distrib      (1,1)   logical = false % data distributed flag 
     end
     
     methods
         function r = get.CurrentData(this)
             if this.isempty()
-                r = regmov.empty();
+                r = [];
             else
-                r = getData(this.node_active.RSPoint);
+                r = this.node_active.RSPoint;
+            end
+        end
+
+        function r = get.IsDistributed(this)
+            r = this.is_distrib;
+        end
+
+        function set.IsDistributed(this, r)
+            arguments
+                this 
+                r       (1,1)   logical
+            end
+
+            % try to spread or gather all data
+            if r == true && this.is_distrib == false
+                % spread data to disk
+                this.spread_all();
+
+                this.is_distrib = true;
+            elseif r == false && this.is_distrib == true
+                % gather data to memory
+                this.gather_all();
+
+                this.is_distrib = false;
             end
         end
 
@@ -50,7 +76,7 @@ classdef OperationHistoryManager < handle
     end
 
     methods (Access = public)
-        function this = OperationHistoryManager(op_tree, op_txt, ctxt_menu, strategy)
+        function this = OperationHistoryManager(op_tree, op_txt, ctxt_menu, strategy, dbflag)
             %REGHIMGR A Constructor
             % Input:
             %   - op_tree: 1-by-1 matlab.ui.container.Tree as nodes container
@@ -65,6 +91,7 @@ classdef OperationHistoryManager < handle
                 ctxt_menu   (1,1)   matlab.ui.container.ContextMenu
                 strategy    (1,1)   string  {mustBeMember(strategy, ...
                                     ["PERFORMANCE", "RESOURCE", "BALANCE"])} = "PERFORMANCE"
+                dbflag      (1,1)   logical = false
             end
 
             this.optree = op_tree;
@@ -72,6 +99,7 @@ classdef OperationHistoryManager < handle
             this.optxt = op_txt;
             this.ctmenu = ctxt_menu;
             this.strategy = strategy;
+            this.is_distrib = dbflag;
 
             this.branch_cur = mStack();
 
@@ -220,7 +248,41 @@ classdef OperationHistoryManager < handle
             end
             
         end
-        
+
+        % This function gets one previous node before given node, if given
+        % node is empty, active node replaced
+        function node = GetPreviousNodeBefore(this, node)
+            arguments
+                this 
+                node (1,:)  matlab.ui.container.TreeNode = []
+            end
+
+            if isempty(node)
+                % return node before active node
+                if isa(this.node_active.Parent, "matlab.ui.container.TreeNode")
+                    node = this.node_active.Parent;
+                else
+                    node = [];
+                end
+            else
+                if isa(node.Parent, "matlab.ui.container.TreeNode")
+                    node =  node.Parent;
+                else
+                    node = [];
+                end
+            end
+        end
+
+        % This function gets all operations at given node
+        function optrs = GetAllPreviousOperatorsAt(this, node)
+            arguments
+                this 
+                node (1,:)  matlab.ui.container.TreeNode = []
+            end
+
+            
+        end
+
     end
 
     methods (Access = private)
@@ -249,6 +311,14 @@ classdef OperationHistoryManager < handle
 
                 this.node_active = this.optree;
             end
+
+        end
+
+        function spread_all(this)
+
+        end
+
+        function gather_all(this)
 
         end
 

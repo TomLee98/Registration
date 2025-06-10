@@ -94,7 +94,20 @@ classdef regrspt < handle
 
             this.dptr = p.Results.Data;
             this.cdim = p.Results.CropDim;
-            this.tfs = p.Results.Transform;
+            switch this.optr
+                case constdef.OP_REGISTER
+                    switch this.arg.Mode
+                        case "Global"
+                            this.tfs = p.Results.Transform(:,1);
+                        case "Local"
+                            this.tfs = p.Results.Transform(:,2);
+                        case "Manual"
+                            this.tfs = p.Results.Transform(:,3);
+                        otherwise
+                    end
+                otherwise
+            end
+
             this.ncbptr = p.Results.Segmenter;
         end
         
@@ -118,6 +131,11 @@ classdef regrspt < handle
                     throw(MException("regrspt:invalidOperator", ...
                         "RestorePoint object only support <CROP>, <REGISTER>, <SEGMENT>"));
             end
+        end
+
+        % invoke this to free related data
+        function delete(this)
+            % 
         end
     end
 
