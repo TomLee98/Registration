@@ -502,9 +502,6 @@
     <TIME_RANGE>Please enter a time range (frames):</TIME_RANGE>
     <TIME_SERIES_FILE>Time series file</TIME_SERIES_FILE>
     <TIME_STAMP>Time Stamp</TIME_STAMP>
-    <TIP_BTN_ORDINARY>Program exceptions that may hinder processing such as registration</TIP_BTN_ORDINARY>
-    <TIP_BTN_SUGGESTION>Suggestions that may improve the utility, ease of use, or security of the program</TIP_BTN_SUGGESTION>
-    <TIP_BTN_URGENT>Serious anomalies that may induce qualitative misjudgments of data</TIP_BTN_URGENT>
     <TIP_CBX_APPLY_TMAT>Specify transformation and skip control point registration</TIP_CBX_APPLY_TMAT>
     <TIP_CBX_AUTO_KEYFRAME>Automatically select keyframes to balance motion intensity</TIP_CBX_AUTO_KEYFRAME>
     <TIP_CBX_ENHANCE>Enhanced algorithm automatically adjusts filter parameters to synchronize template frame foreground</TIP_CBX_ENHANCE>
@@ -521,6 +518,7 @@
     <TIP_TAB_LOCAL>The automatic local deformation based on displacement field estimation</TIP_TAB_LOCAL>
     <TIP_TAB_LTGLOBAL>The automatic global geometric transformation based on keyframes</TIP_TAB_LTGLOBAL>
     <TIP_TAB_MGLOBAL>The regional deformation based on control points</TIP_TAB_MGLOBAL>
+    <TIP_TRANSFORM_OPTIMIZATION>Load new file to take effect</TIP_TRANSFORM_OPTIMIZATION>
     <TOO_MUCH_ROI>There are too many ROIs, please redraw and try to add them.</TOO_MUCH_ROI>
     <TRAINING>Training</TRAINING>
     <TRAINING_SAMPLES>Training Samples</TRAINING_SAMPLES>

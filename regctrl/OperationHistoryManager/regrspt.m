@@ -25,13 +25,11 @@ classdef regrspt < handle
         CellsCount      % ___/get, 1-by-1 nonnegative integer indicates cells count
         File            % ___/get, 1-by-1 string indicate inner data file
         ImageDim        % ___/get, 1-by-5 positive integer as [X,Y,C,Z,T] dimensions
+        IsDistributed   % set/get, 1-by-1 logical, indicate the storaged data location
         Operator        % ___/get, 1-by-1 string, operator indicator
     end
 
     methods
-        function r = get.Operator(this)
-            r = this.optr;
-        end
 
         function r = get.Arguments(this)
             r = this.arg;
@@ -65,6 +63,27 @@ classdef regrspt < handle
         function r = get.ImageDim(this)
             md = this.dptr.MetaData;
             r = [md.width, md.height, md.channels, md.slices, md.frames];
+        end
+
+        function r = get.IsDistributed(this)
+            r = isfile(this.dptr.Location);
+        end
+
+        function set.IsDistributed(this, r)
+            arguments
+                this
+                r       (1,1)   logical
+            end
+
+            if r == true
+                if ~isempty(this.dptr), this.dptr.spread(); end
+            else
+                if ~isempty(this.dptr), this.dptr.gather(); end
+            end
+        end
+
+        function r = get.Operator(this)
+            r = this.optr;
         end
     end
     
@@ -135,7 +154,10 @@ classdef regrspt < handle
 
         % invoke this to free related data
         function delete(this)
-            % 
+            % ~
+            delete(this.dptr);
+
+            delete(this.ncbptr);
         end
     end
 

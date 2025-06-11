@@ -56,12 +56,12 @@ classdef OperationHistoryManager < handle
             % try to spread or gather all data
             if r == true && this.is_distrib == false
                 % spread data to disk
-                this.spread_all();
+                this.move_storage("spread");
 
                 this.is_distrib = true;
             elseif r == false && this.is_distrib == true
                 % gather data to memory
-                this.gather_all();
+                this.move_storage("gather");
 
                 this.is_distrib = false;
             end
@@ -150,7 +150,7 @@ classdef OperationHistoryManager < handle
                 case constdef.OP_LOAD
                     node_text = "load";
                     file_dp = rs_node.File;
-                    node_data.Properties.Location = file_dp.File;
+                    % node_data.Properties.Location = file_dp.File;
                     node_data.Properties.Dims = rs_node.ImageDim;
                     switch file_dp.File
                         case "Memory"
@@ -196,7 +196,10 @@ classdef OperationHistoryManager < handle
             % modify: Text, Icon, NodeData, ContextMenu
             node_new = uitreenode(this.node_active, "Text",node_text, ...
                 "NodeData",node_data, "ContextMenu",this.ctmenu);
-            ActivateNode(this, node_new);
+
+            if ~this.isempty(), this.node_active.expand(); end % expand
+
+            ActivateNode(this, node_new);                       % activate new node
 
             this.n_nodes = this.n_nodes + 1;
             this.node_active.Tag = string(this.n_nodes);
@@ -247,20 +250,27 @@ classdef OperationHistoryManager < handle
                 node (1,1)  matlab.ui.container.TreeNode
             end
 
-            if isequal(this.node_active, this.optree.SelectedNodes)
+            if isequal(this.node_active, node)
                 disp("Node is already activated!");
             else
-               %% Deactivated current active node
+               % Deactivated current active node
                this.deactivate();
 
-               %% Activate selected node
+               % select the node
+               this.optree.SelectedNodes = node;
+
+               % activate selected node
                this.activate(node);
+
+               % refresh snapshot appearance
+               this.refresh_snapshot();
             end
             
         end
 
         % This function selects next node after current selection
         function SelectNextNode(this)
+            % find the node with tag is the next tag
 
         end
 
@@ -298,6 +308,16 @@ classdef OperationHistoryManager < handle
             
         end
 
+        function PackageProjectTo(this, folder)
+            % This function package all data as project to given folder
+
+        end
+
+        function LoadProjectFrom(this, folder)
+            % This function load data from given project folder
+
+        end
+
     end
 
     methods (Access = private)
@@ -328,70 +348,110 @@ classdef OperationHistoryManager < handle
 
         end
 
-        function spread_all(this)
+        % This function moves the data storage between memory and disk
+        function move_storage(this, optr)
+            arguments
+                this
+                optr    (1,1)   string  {mustBeMember(optr, ["spread", "gather"])}
+            end
 
-        end
+            % use depth-first traversal to spread data onto disk
+            st = mStack();
+            st.push(this.optree);   % push the tree root
+            while ~isempty(st)
+                % pop the node
+                node = st.pop();
 
-        function gather_all(this)
+                % visit node
+                if isa(node, "matlab.ui.container.TreeNode")
+                    nd = node.NodeData;
+                    switch optr
+                        case "spread"
+                            nd.RSPoint.IsDistributed = true;    % spread data
+                        case "gather"
+                            nd.RSPoint.IsDistributed = false;    % spread data
+                        otherwise
+                    end
+                end
 
+                nodes = node.Children;     % nodes
+                for k = 1:numel(nodes), st.push(nodes(k)); end
+            end
         end
 
         % This is select changed callback binding on tree
         function sltchg_callback(this, event)
-            nd = event.SelectedNodes.NodeData;
+            % get node data
+            node = event.SelectedNodes;
 
-            if ~isempty(nd)
-                %% parse node data and generate formatted text
-                txt = sprintf("[Time] %s\n[Operation] %s\n[Properties]{\n%%s}\n", ...
-                    string(nd.Time), nd.Operation);
-                txt_prop = "";
-                props = fieldnames(nd.Properties);
-                switch nd.Operation
-                    case constdef.OP_LOAD
-                        for k = 1:numel(props)
-                            % key-value as props{k}-nd.Properties.(props{k})
-                            switch props{k}
-                                case "Dims"
+            % refresh snapshot appearance
+            this.refresh_snapshot(node);
+        end
+
+        function refresh_snapshot(this, node)
+            arguments
+                this
+                node    (1,:)   = []
+            end
+
+            % set default node as active node
+            if isempty(node), node = this.node_active; end
+            nd = node.NodeData;
+
+            %% parse node data and generate formatted text
+            txt = sprintf("[Tag] %s\n[Time] %s\n[Operation] %s\n[Properties]{\n%%s}\n", ...
+                node.Tag, string(nd.Time), nd.Operation);
+            txt_prop = "";
+            props = fieldnames(nd.Properties);
+            switch nd.Operation
+                case constdef.OP_LOAD
+                    for k = 1:numel(props)
+                        % key-value as props{k}-nd.Properties.(props{k})
+                        switch props{k}
+                            case "Dims"
+                                txt_prop = txt_prop + sprintf("\t[%s] (%s)\n", string(props{k}), ...
+                                    string(nd.Properties.(props{k})).join(","));
+                            case "Size"
+                                txt_prop = txt_prop + sprintf("\t[%s] %s GBytes\n", string(props{k}), ...
+                                    string(nd.Properties.(props{k})));
+                            otherwise
+                                txt_prop = txt_prop + sprintf("\t[%s] %s\n", string(props{k}), ...
+                                    string(nd.Properties.(props{k})));
+                        end
+                    end
+                case {constdef.OP_REGISTER, constdef.OP_SEGMENT}
+                    for k = 1:numel(props)
+                        % key-value as props{k}-nd.Properties.(props{k})
+                        txt_prop = txt_prop + sprintf("\t[%s] %s\n", string(props{k}), ...
+                            string(nd.Properties.(props{k})));
+                    end
+                case constdef.OP_CROP
+                    for k = 1:numel(props)
+                        % key-value as props{k}-nd.Properties.(props{k})
+                        switch props{k}
+                            case "Origin"
+                                if isequal("XY", nd.RSPoint.CropDim)
                                     txt_prop = txt_prop + sprintf("\t[%s] (%s)\n", string(props{k}), ...
                                         string(nd.Properties.(props{k})).join(","));
-                                case "Size"
-                                    txt_prop = txt_prop + sprintf("\t[%s] %s GBytes\n", string(props{k}), ...
-                                        string(nd.Properties.(props{k})));
-                                otherwise
+                                else
                                     txt_prop = txt_prop + sprintf("\t[%s] %s\n", string(props{k}), ...
                                         string(nd.Properties.(props{k})));
-                            end
+                                end
+                            case "Frames"
+                                txt_prop = txt_prop + sprintf("\t[%s] %s\n", string(props{k}), ...
+                                    string(nd.Properties.(props{k})).join(":").join(","));
+                            otherwise
+                                txt_prop = txt_prop + sprintf("\t[%s] %s\n", string(props{k}), ...
+                                    string(nd.Properties.(props{k})));
                         end
-                    case {constdef.OP_REGISTER, constdef.OP_SEGMENT}
-                        for k = 1:numel(props)
-                            % key-value as props{k}-nd.Properties.(props{k})
-                            txt_prop = txt_prop + sprintf("\t[%s] %s\n", string(props{k}), ...
-                                string(nd.Properties.(props{k})));
-                        end
-                    case constdef.OP_CROP
-                        for k = 1:numel(props)
-                            % key-value as props{k}-nd.Properties.(props{k})
-                            switch props{k}
-                                case "Origin"
-                                    if isequal("XY", nd.RSPoint.CropDim)
-                                        txt_prop = txt_prop + sprintf("\t[%s] (%s)\n", string(props{k}), ...
-                                            string(nd.Properties.(props{k})).join(","));
-                                    end
-                                case "Frames"
-                                    txt_prop = txt_prop + sprintf("\t[%s] %s\n", string(props{k}), ...
-                                            string(nd.Properties.(props{k})).join(":").join(","));
-                                otherwise
-                            end
-                        end
-                    otherwise
-                end
-
-                txt = sprintf(txt, txt_prop);   % nested generation
-
-                %% update text field to display the snapshot
-                this.optxt.Value = txt;
-
+                    end
+                otherwise
             end
+
+            txt = sprintf(txt, txt_prop);   % nested generation
+
+            %% update text field to display the snapshot
+            this.optxt.Value = txt;
         end
     end
 end

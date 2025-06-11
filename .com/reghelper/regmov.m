@@ -453,7 +453,7 @@ classdef regmov < matlab.mixin.Copyable
         function spread(this)
             % this function spreads data from memory to disk file
             if ismember(class(this.mptr), ["mpimg", "mpimgs"])
-                % already in memory
+                % already on disk
                 return;
             else
                 tmpfolder = mpimg.findtmpfolder(this.mopt); % mpimgs ?
