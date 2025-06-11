@@ -9,6 +9,7 @@ classdef OperationHistoryManager < handle
         MemoryUsed      % ___/get, 1-by-1 double, unit as GBytes
         DiskUsed        % ___/get, 1-by-1 double, unit as GBytes
         CurrentData     % ___/get, 1-by-1 regrspt, indicating current activated restored node
+        CurrentNodeTag  % ___/get, 1-by-1 string, could be empty
     end
 
     properties(SetAccess = immutable, GetAccess = private)
@@ -26,6 +27,7 @@ classdef OperationHistoryManager < handle
         branch_cur                              % current operated branch
         node_active     (1,1)                   % current active node
         is_distrib      (1,1)   logical = false % data distributed flag 
+        n_nodes         (1,1)   double  = 0     % number of nodes in a tree
     end
     
     methods
@@ -35,6 +37,10 @@ classdef OperationHistoryManager < handle
             else
                 r = this.node_active.RSPoint;
             end
+        end
+
+        function r = get.CurrentNodeTag(this)
+            r = string(this.node_active.Tag);
         end
 
         function r = get.IsDistributed(this)
@@ -191,6 +197,10 @@ classdef OperationHistoryManager < handle
             node_new = uitreenode(this.node_active, "Text",node_text, ...
                 "NodeData",node_data, "ContextMenu",this.ctmenu);
             ActivateNode(this, node_new);
+
+            this.n_nodes = this.n_nodes + 1;
+            this.node_active.Tag = string(this.n_nodes);
+
             %% 
 
             function r = calc_blocked_t(arg)
@@ -249,6 +259,11 @@ classdef OperationHistoryManager < handle
             
         end
 
+        % This function selects next node after current selection
+        function SelectNextNode(this)
+
+        end
+
         % This function gets one previous node before given node, if given
         % node is empty, active node replaced
         function node = GetPreviousNodeBefore(this, node)
@@ -292,7 +307,6 @@ classdef OperationHistoryManager < handle
             % node: 1-by-1 matlab.ui.container.TreeNode
 
             this.node_active = node;
-
             this.node_active.Icon = this.flagsrc;
         end
 

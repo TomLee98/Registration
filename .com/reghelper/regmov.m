@@ -15,7 +15,6 @@ classdef regmov < matlab.mixin.Copyable
         t               % t-by-1 double, camera time
         zprojalg        % 1-by-1 string, method of z-projection
         tform           % t-by-3 cell, with {global, local, manual} transformation unit
-        bkg             % c-by-1 double, c for color channel number
     end
 
     properties(Access=private, Hidden, NonCopyable)
@@ -32,7 +31,6 @@ classdef regmov < matlab.mixin.Copyable
         Transformation  % variable, get/set, stored
         Location        % variable, get/___, not stored
         Bytes           % variable, get/___, not stored
-        Background      % variable, get/___, stored
         EMin            % variable, get/___, not stored
         EMax            % variable, get/___, not stored
         EMedian         % variable, get/___, not stored
@@ -41,13 +39,12 @@ classdef regmov < matlab.mixin.Copyable
     end
 
     methods
-        function this = regmov(mptr_, mopt_, t_, bkg_)
+        function this = regmov(mptr_, mopt_, t_)
             %REGMOV A constructor
             arguments
                 mptr_   
                 mopt_   (1,12)  table  {mustBeMovieOptions}
                 t_      (:,1)   double {mustBeNonnegative}
-                bkg_            double {mustBeNonnegative}
             end
             if ~ismember(class(mptr_), ["mpimg", "mpimgs"]) ...
                     && ~isnumeric(mptr_)
@@ -64,17 +61,12 @@ classdef regmov < matlab.mixin.Copyable
                 throw(MException("regmov:badTime", ...
                     "Number of Timesteps not match."));
             end
-            if numel(bkg_) ~= numel(mopt_.cOrder)
-                throw(MException("regmov:badTime", ...
-                    "Number of color channels not match."));
-            end
 
             this.mptr = mptr_;
             this.mopt = mopt_;
             this.t = t_;
             this.zprojalg = "max";
             this.tform = cell(mopt_.frames, 3);
-            this.bkg = bkg_;
         end
 
         function r = get.Movie(this)
@@ -241,8 +233,7 @@ classdef regmov < matlab.mixin.Copyable
             t_ = this.t; %#ok<NASGU>
             zprojalg_ = this.zprojalg; %#ok<NASGU>
             tform_ = this.tform; %#ok<NASGU>
-            bkg_ = this.bkg; %#ok<NASGU>
-            prop_ = struct2table(whos("mopt_","t_","zprojalg_","tform_","bkg_"));
+            prop_ = struct2table(whos("mopt_","t_","zprojalg_","tform_"));
             r.mem = sum(prop_.bytes);
 
             if ismember(class(this.mptr), ["mpimg", "mpimgs"])
@@ -261,10 +252,6 @@ classdef regmov < matlab.mixin.Copyable
                 end
                 r.mem = r.mem + numel(this.mptr)*bytes_per_elem;
             end
-        end
-
-        function r = get.Background(this)
-            r = this.bkg;
         end
 
         function r = get.EMin(this)
@@ -386,7 +373,8 @@ classdef regmov < matlab.mixin.Copyable
                 
                 cloc = ctloc(1); tloc = ctloc(2);
                 rsp_t = repmat({':'}, 1, this.mptr.DataDims);
-                rsp_c = rsp; rsp_c{cloc} = []; cgrid = uint16(reshape(this.Background, rsp_c{:}));
+                rsp_c = rsp; rsp_c{cloc} = []; 
+                cgrid = uint16(reshape(numel(this.mopt.cOrder)*constdef.CAMERA_BACKGROUND, rsp_c{:}));
 
                 % partial loading and calculating
                 block_n = ceil(this.mopt.frames/this.INNER_BLOCK_SIZE);
@@ -416,7 +404,8 @@ classdef regmov < matlab.mixin.Copyable
                 rsp_x = rsp; rsp_x{yloc} = [];  xgrid = reshape(1:nx, rsp_x{:});
                 rsp_y = rsp; rsp_y{xloc} = [];  ygrid = reshape(1:ny, rsp_y{:});
                 rsp_z = rsp; rsp_z{zloc} = [];  zgrid = reshape(1:nz, rsp_z{:});
-                rsp_c = rsp; rsp_c{ctloc(1)} = []; cgrid = uint16(reshape(this.Background, rsp_c{:}));
+                rsp_c = rsp; rsp_c{ctloc(1)} = []; 
+                cgrid = uint16(reshape(numel(this.mopt.cOrder)*constdef.CAMERA_BACKGROUND, rsp_c{:}));
                 pixval_tot = double(squeeze(sum(this.mptr-cgrid, dimsum)));
                 pixval_tot = reshape(pixval_tot, numel(cgrid), []);
 
@@ -488,7 +477,6 @@ classdef regmov < matlab.mixin.Copyable
             mopt_ = this.mopt;
             t_ = this.t;
             tf_ = this.tform;
-            bkg_ = this.bkg;
 
             if ismember(class(this.mptr), ["mpimg", "mpimgs"])
                 switch dim_
@@ -514,7 +502,7 @@ classdef regmov < matlab.mixin.Copyable
                 mopt_.images = mopt_.slices*mopt_.channels*mopt_.frames;
 
                 % generate a regmov obj
-                movobj = regmov(mptr_, mopt_, t_, bkg_);
+                movobj = regmov(mptr_, mopt_, t_);
                 movobj.Transformation = tf_;
             elseif isnumeric(this.mptr)
                 switch dim_
@@ -533,7 +521,7 @@ classdef regmov < matlab.mixin.Copyable
                 end
                 mopt_.images = mopt_.slices*mopt_.channels*mopt_.frames;
 
-                movobj = regmov(mov, mopt_, t_, this.bkg);
+                movobj = regmov(mov, mopt_, t_);
                 movobj.Transformation = tf_;
             end
 
@@ -569,60 +557,13 @@ classdef regmov < matlab.mixin.Copyable
 
             if ismember(class(this.mptr), ["mpimg", "mpimgs"])
                 mptr_ = this.mptr.tcrop(r_);
-                movobj = regmov(mptr_, mopt_, t_, this.bkg);
+                movobj = regmov(mptr_, mopt_, t_);
             else
                 mov = CropT(this.mptr, r_);
-                movobj = regmov(mov, mopt_, t_, this.bkg);
+                movobj = regmov(mov, mopt_, t_);
             end
 
             movobj.Transformation = tf_;
-        end
-
-        function rmbkg(this, r_)
-            % This function remove the background and store it
-            arguments
-                this
-                r_  double  {mustBeNonnegative, mustBeVector}
-            end
-
-            if numel(r_) ~= this.MetaData.channels
-                throw(MException("regmov:rmbkg:invalidChannelsNumber", ...
-                    "Channels number not match."));
-            end
-
-            this.bkg = r_;
-
-            if ismember(class(this.mptr), ["mpimg", "mpimgs"])
-                % mpimg overloading 'minus' operator
-                this.mptr = this.mptr - r_;
-            else
-                % remove on each channel
-                locstr = repmat(":", 1, 5);
-                for k = 1:numel(r_)
-                    locstr("C"==this.MetaData.dimOrder) = string(k);
-                    d_expstr = "this.mptr(" + locstr.join(",") + ")";
-                    sub_str = sprintf("-this.bkg(%d);", k);
-                    eval(d_expstr + "=" + d_expstr + sub_str);
-                end
-            end
-        end
-
-        function rcbkg(this)
-            % This function recover the background and reset it to zero
-            if ismember(class(this.mptr), ["mpimg", "mpimgs"])
-                this.mptr = this.mptr + this.bkg;
-            else
-                 % add on each channel
-                locstr = repmat(":", 1, 5);
-                for k = 1:numel(this.bkg)
-                    locstr("C"==this.MetaData.dimOrder) = string(k);
-                    d_expstr = "this.mptr(" + locstr.join(",") + ")";
-                    sub_str = sprintf("+this.bkg(%d);", k);
-                    eval(d_expstr + "=" + d_expstr + sub_str);
-                end
-            end
-
-            this.bkg = 0*this.bkg;
         end
 
         function ctset(this, v, cr, tr)

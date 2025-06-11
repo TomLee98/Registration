@@ -395,12 +395,14 @@ V3.x        Galileo          伽利略
   |     |- [Update] Append "pan" funciton for image tool bar
   |     |- [Update] support cell segmentor "load/export" results
   |     |- [Update] remove "single ROI" function
-  |     |- [Update] TODO: remove "remove background" function
+  |     |- [Update] TODO: registration history manager
+  |     |- [Update] remove "remove background" function
   |     |- [Update] TODO: change "cell segmentor" segment on current volume
   |     |- [Fix Bugs] fix "auto clean" not work on ubuntu server
   |- V3.4.0     2025/06/
-  |     |- [Update] TODO: registration history manager
   |     |- [Update] TODO: add "experimental feature": auto save for some results
+  |     |- [Update] TODO: add "Dual-Color" display feature
+  |     |- [Update] TODO: support "user's behaviour" collection: track user usage patterns for program features
   |     |- [Fix Bugs] TODO: fix "channel alignment" may cause memory overflow with big file
   #     #
 
