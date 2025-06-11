@@ -724,7 +724,7 @@ classdef regmov < matlab.mixin.Copyable
             mopt_.dimOrder = string.empty(1,0);
             mopt_.cOrder = string.empty(1,0);
 
-            mov = regmov(uint16.empty(), mopt_, [], []);
+            mov = regmov(uint16.empty(), mopt_, []);
         end
     end
 end
