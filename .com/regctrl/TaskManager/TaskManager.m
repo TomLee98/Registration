@@ -1,5 +1,5 @@
 classdef TaskManager < handle
-    %TASKMANAGER This class is task manager object defination
+    %TASKMANAGER This class is task manager object definition
     % 
     properties(Constant, Hidden)
         % ASK FOR REQUIRE DELAY
@@ -13,10 +13,10 @@ classdef TaskManager < handle
         volopts         % 1-by-12 table, the volume series options
         regfrs          % 1-by-t positive integer, registration frame indices
         regedfn         % 1-by-1 positive integer, registered frames number
-        movtmpl         % 1-by-1 regtmpl obejct, the registration template
+        movtmpl         % 1-by-1 regtmpl object, the registration template
         distrib         % 1-by-1 logical, distribution mode flag
         rcfobj          % 1-by-1 regrcf object, the content of resource communication file
-                        % note that RCF should be a public protocal, shared
+                        % note that RCF should be a public protocol, shared
         job             % 1-by-1 mQueue, queue with Task object
         task_cur        % 1-by-1 Task object, the current task
         nworker_old     % 1-by-1 positive integer, the old usable workers number
@@ -25,7 +25,7 @@ classdef TaskManager < handle
 
         sfolder         % 1-by-1 string, rcf pool folder
         nw_protected    % 1-by-1 double, the number of workers protected
-        caller          % 1-by-1 Register obejct
+        caller          % 1-by-1 Register object
 
         PSMWN           % platform supported maximum workers number
                         % each user will get the same number
@@ -155,7 +155,7 @@ classdef TaskManager < handle
             % and adjust the current parpool workers number
             this.update_parpool(debug_);
 
-            % take new task from taskqueue
+            % take new task from task queue
             this.take_new_task();
 
             % set the main panel progress bar at 0
@@ -180,7 +180,7 @@ classdef TaskManager < handle
                 % change the task running flag
                 this.task_cur.Status = "Done";
 
-                % push the task to the tail of taskqueue
+                % push the task to the tail of task queue
                 this.job.enqueue(this.task_cur);
 
                 % update registration progress
@@ -203,7 +203,7 @@ classdef TaskManager < handle
                     % ~
                 end
 
-                % take new task from taskqueue
+                % take new task from task queue
                 this.take_new_task();
             else
                 throw(MException("TaskManager:update:invalidWorkerStatus", ...
@@ -370,7 +370,7 @@ classdef TaskManager < handle
                     regframes = this.regfrs;
                 end
 
-                % use taskParser
+                % use task-Parser
                 p = TaskParser(this.movsrc, this.movtmpl, regframes, this.volopts, ...
                     this.regopts, this.nworker_cur, this.distrib);
                 p.parse();
@@ -411,7 +411,7 @@ classdef TaskManager < handle
                 % pcl.NumThreads = 2;
 
                 if this.nworker_cur > 1
-                    % debug_ need spmdEnabled is true for mpiprofile and
+                    % debug_ need spmd Enabled is true for mpiprofile and
                     % mpiviewer working
                     this.parobj = parpool(pcl, [1, this.nworker_cur], ...
                         'SpmdEnabled',debug_);
@@ -427,7 +427,7 @@ classdef TaskManager < handle
         function T = CreateTaskTable(n)
             %CREATETASKTABLE This function help to create a task table
             % Input:
-            %   - n: 1-by-1 nonnegtive integer, rows of task table
+            %   - n: 1-by-1 nonnegative integer, rows of task table
             % Output:
             %   - T: n-by-6 table, with field {user, status, progress, time_used, n_cpu, n_gpu}
             % see also: TaskManager
