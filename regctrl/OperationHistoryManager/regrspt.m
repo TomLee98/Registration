@@ -4,13 +4,17 @@ classdef regrspt < handle
 
     properties (Constant, Hidden)
         RESTORE_PARALLEL_POOL_SIZE = 24
+        VALID_FIELD_NAME = ["text_time", "text_meta", "fixdef", "mask_reg"]
+
     end
     
     properties (GetAccess = private, SetAccess = immutable)
-        arg     (1,:)                                                                       % argument, could be regopt object, segopt object, [] or struct(for crop)
+        args    (1,1)   struct                                                              % argument struct, with field {"REGISTER", "SEGMENT", "CROP", "LOAD"}  
+                                                                                            % value could be regopt object, segopt object, struct(for crop) or []
         cdim    (1,1)   string  {mustBeMember(cdim, ["XY","Z","T",""])}                     % crop dimension 
         dptr    (1,1)   regmov                                           = regmov.empty()   % regmov object as stored data
         optr    (1,1)   string                                                              % operator, could be "CROP"/"REGISTER"/"SEGMENT"
+        others  (1,1)   struct                                                              % other components binding on reg3d
         tfs     (:,1)   cell                                                                % additional parameter as transformation objects, if optr as "REGISTER"
         ncbptr  (1,:)                                                                       % NuclearCtrlBot object
     end
@@ -27,13 +31,14 @@ classdef regrspt < handle
         ImageDim        % ___/get, 1-by-5 positive integer as [X,Y,C,Z,T] dimensions
         IsDistributed   % set/get, 1-by-1 logical, indicate the storage data location
         Operator        % ___/get, 1-by-1 string, operator indicator
+        Others          % ___/get, 1-by-1 struct with binding data
         Segmentor       % ___/get, 1-by-1 NuclearCtrlBot or []
     end
 
     methods
 
         function r = get.Arguments(this)
-            r = this.arg;
+            r = this.args;
         end
 
         function r = get.CropDim(this)
@@ -87,6 +92,10 @@ classdef regrspt < handle
             r = this.optr;
         end
 
+        function r = get.Others(this)
+            r = this.others;
+        end
+
         function r = get.Segmentor(this)
             r = this.ncbptr;
         end
@@ -98,29 +107,30 @@ classdef regrspt < handle
             p = inputParser();
             p.StructExpand = false;
             addRequired(p, "optr", @(x)validateattributes(x, "string", "scalar"));
-            addRequired(p, "args");
-            addParameter(p, "Data", regmov.empty());
+            addRequired(p, "args", @(x)validateattributes(x, "struct", "scalar"));
             addParameter(p, "CropDim", "");
-            addParameter(p, "Transform", {});
+            addParameter(p, "Data", regmov.empty());
+            addParameter(p, "Others", struct("text_time",[], "text_meta",[], "fixdef",[], "mask_reg",[]));
             addParameter(p, "Segmentor", []);
+            addParameter(p, "Transform", {});
 
             p.parse(optr, args, varargin{:});
 
             if ~ismember(p.Results.optr, [constdef.OP_LOAD, constdef.OP_CROP, ...
-                    constdef.OP_REGISTER, constdef.OP_SEGMENT]) || ...
-                    ~ismember(class(p.Results.args), ["regopt", "segopt", "struct", "double"])
+                    constdef.OP_REGISTER, constdef.OP_SEGMENT])
                 throw(MException("regrspt:invalidOperator", ...
-                    "RestorePoint object only support <CROP>, <REGISTER>, <SEGMENT>"));
+                    "RestorePoint object only support <LOAD>, <CROP>, <REGISTER>, <SEGMENT>"));
             else
                 this.optr = p.Results.optr;
-                this.arg = p.Results.args;
+                this.args = p.Results.args;
             end
 
-            this.dptr = p.Results.Data;
             this.cdim = p.Results.CropDim;
+            this.dptr = p.Results.Data;
+            
             switch this.optr
                 case constdef.OP_REGISTER
-                    switch this.arg.Mode
+                    switch this.args.(constdef.OP_REGISTER).Mode
                         case "Global"
                             this.tfs = p.Results.Transform(:,1);
                         case "Local"
@@ -131,6 +141,13 @@ classdef regrspt < handle
                     end
                 otherwise
             end
+
+            if ~isempty(setdiff(string(fieldnames(p.Results.Others)), this.VALID_FIELD_NAME))
+                throw(MException("regrspt:invalidOthers", ...
+                    "Invalid field in struct 'Others'."));
+            end
+
+            this.others = p.Results.Others;
 
             this.ncbptr = p.Results.Segmentor;
         end
@@ -183,11 +200,11 @@ classdef regrspt < handle
                 % do crop on dpre
                 switch this.cdim
                     case "XY"
-                        dpost = dpre.vcrop("XY", this.arg.xy');
+                        dpost = dpre.vcrop("XY", this.args.(constdef.OP_CROP).xy');
                     case "Z"
-                        dpost = dpre.vcrop("Z", this.arg.z);
+                        dpost = dpre.vcrop("Z", this.args.(constdef.OP_CROP).z);
                     case "T"
-                        dpost = dpre.tcrop(this.arg.f);
+                        dpost = dpre.tcrop(this.args.(constdef.OP_CROP).f);
                     otherwise
                         throw(MException("regrspt:invalidCrop", ...
                             "No valid crop dimension."));
@@ -203,7 +220,7 @@ classdef regrspt < handle
                 dpost = dpre.copy();    % deep copy
                 rref = imref3d([dpre.MetaData.Height, dpre.MetaData.Width, dpre.MetaData.Slices], ...
                     movsrc.MetaData.xRes, movsrc.MetaData.yRes, movsrc.MetaData.zRes);
-                itpalg = this.arg.Interp;
+                itpalg = this.args.(constdef.OP_REGISTER).Interp;
                 frs = ceil(1:this.RESTORE_PARALLEL_POOL_SIZE:dpre.MetaData.Frames+1);
                 try
                     delete(gcp("nocreate"));
@@ -218,13 +235,13 @@ classdef regrspt < handle
                     % load data
                     regfrs = frs(r):frs(r+1)-1;
                     fmode = ["none", string(regfrs).join(",")];
-                    avol_sc = grv(dpre, fmode, this.arg.SC);
-                    avol_fc = grv(dpre, fmode, this.arg.FC);
+                    avol_sc = grv(dpre, fmode, this.args.(constdef.OP_REGISTER).SC);
+                    avol_fc = grv(dpre, fmode, this.args.(constdef.OP_REGISTER).FC);
                     tfss = this.tfs(regfrs);
 
-                    switch this.arg.Algorithm
+                    switch this.args.(constdef.OP_REGISTER).Algorithm
                         case "TCREG"
-                            switch this.arg.Mode
+                            switch this.args.(constdef.OP_REGISTER).Mode
                                 case "Global"
                                     parfor m = 1:this.RESTORE_PARALLEL_POOL_SIZE
                                         avol_sc_m = avol_sc(:,:,:,m);
@@ -253,10 +270,10 @@ classdef regrspt < handle
                             end
 
                             % save warped data
-                            srv(dpost, avol_sc, fmode, this.arg.SC);
-                            srv(dpost, avol_fc, fmode, this.arg.FC);
+                            srv(dpost, avol_sc, fmode, this.args.(constdef.OP_REGISTER).SC);
+                            srv(dpost, avol_fc, fmode, this.args.(constdef.OP_REGISTER).FC);
                         case "OCREG"
-                            switch this.arg.Mode
+                            switch this.args.(constdef.OP_REGISTER).Mode
                                 case "Global"
                                     parfor m = 1:this.RESTORE_PARALLEL_POOL_SIZE
                                         avol_fc_m = avol_fc(:,:,:,m);
@@ -269,7 +286,7 @@ classdef regrspt < handle
                             end
 
                             % save warped data
-                            srv(dpost, avol_fc, fmode, this.arg.FC);
+                            srv(dpost, avol_fc, fmode, this.args.(constdef.OP_REGISTER).FC);
 
                         case "MANREG"
                             % must be dual-color imaging
@@ -287,17 +304,17 @@ classdef regrspt < handle
                             end
 
                             % save warped data
-                            srv(dpost, avol_sc, fmode, this.arg.SC);
-                            srv(dpost, avol_fc, fmode, this.arg.FC);
+                            srv(dpost, avol_sc, fmode, this.args.(constdef.OP_REGISTER).SC);
+                            srv(dpost, avol_fc, fmode, this.args.(constdef.OP_REGISTER).FC);
                         otherwise
                     end
                 end
 
                 delete(pp);
 
-                switch this.arg.Algorithm
+                switch this.args.(constdef.OP_REGISTER).Algorithm
                     case "TCREG"
-                        switch this.arg.Mode
+                        switch this.args.(constdef.OP_REGISTER).Mode
                             case "Global"
                                 dpost.Transformation(:,1) = this.tfs;
                             case "Local"
