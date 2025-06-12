@@ -63,7 +63,7 @@ classdef TaskParser < handle
                 batch_sz = this.nworker*this.C_EXCLUSIVE;
             else
                 % distribution mode must keep busy index as 2~3 for better
-                % runnning efficiency and response sensitivity
+                % running efficiency and response sensitivity
                 batch_sz = this.nworker*this.C_DISTRIBUTION;
             end
 
