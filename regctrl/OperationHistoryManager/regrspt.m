@@ -24,7 +24,7 @@ classdef regrspt < handle
     end
 
     properties (Access = public, Dependent)
-        Arguments       % ___/get, 1-by-1 regopt, segopt, struct or []
+        Arguments       % ___/get, 1-by-1 struct with regopt, segopt, struct and []
         CropDim         % ___/get, 1-by-1 string indicate crop dimension
         CellsCount      % ___/get, 1-by-1 nonnegative integer indicates cells count
         File            % ___/get, 1-by-1 string indicate inner data file
