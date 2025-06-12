@@ -401,6 +401,7 @@ V3.x        Galileo          伽利略
   |     |- [Fix Bugs] fix "auto clean" not work on ubuntu server
   |- V3.4.0     2025/06/
   |     |- [Update] TODO: add "experimental feature": auto save for some results
+  |     |- [Update] TODO: "Resource Manager": file size limitation as percent of memory/disk size
   |     |- [Update] TODO: add "Dual-Color" display feature
   |     |- [Update] TODO: support "user's behaviour" collection: track user usage patterns for program features
   |     |- [Fix Bugs] TODO: fix "channel alignment" may cause memory overflow with big file
@@ -412,4 +413,5 @@ V3.x        Galileo          伽利略
 V4.x        da Vinci          达·芬奇
   |- V4.0.0     2025/
   |     |- [Update] TODO: introduce "registration project"
+  |     |- [Update] TODO: support file "drag" and "open"
   |     |- [Fix Bugs] TODO: 
