@@ -1,5 +1,5 @@
 classdef regmov < matlab.mixin.Copyable
-    %REGMOV This class is regmov defination, which construct the key data
+    %REGMOV This class is regmov definition, which construct the key data
     %struct for Register
 
     properties(Constant, Hidden)
@@ -288,7 +288,7 @@ classdef regmov < matlab.mixin.Copyable
 
             % modify the color channel indices
             for k = 1:numel(r)
-                r(k) = max(this.Movie(:,:,k,:,floc), [], "all");    % dimensionality unsafe
+                r(k) = max(this.Movie(:,:,k,:,floc), [], "all");    % dimensionalities unsafe
             end
         end
 
@@ -302,13 +302,13 @@ classdef regmov < matlab.mixin.Copyable
 
             % modify the color channel indices
             for k = 1:numel(r)
-                r(k) = median(this.Movie(:,:,k,:,floc),"all");      % dimensionality unsafe
+                r(k) = median(this.Movie(:,:,k,:,floc),"all");      % dimensionalities unsafe
             end
         end
 
         function r = get.ETmplIdx(this)
             % use summed gradient on median plane
-            % note that aligned volume must be imwarped, interpolation 
+            % note that aligned volume must be warped, interpolation 
             % caused blur so that the gradient sum should be smaller 
             % than template volume
 
@@ -324,16 +324,16 @@ classdef regmov < matlab.mixin.Copyable
                 sidies = sidies(2:end-1);
                 sumGrads = zeros(this.mopt.frames, 1);
 
-                % for loop is faster than 4D operation because memory
+                % for loop is faster than 4-D operation because memory
                 % reallocating, speed up about 40%
                 for sidx = sidies
                     % resample some planes
-                    imgs = im2double(squeeze(this.Movie(:,:,cidx,sidx,:)));     % dimensionality unsafe
+                    imgs = im2double(squeeze(this.Movie(:,:,cidx,sidx,:)));     % dimensionalities unsafe
 
                     % calculate the sum of intensity gradient
                     Gx = imfilter(imgs, sobel_x, "replicate");
                     Gy = imfilter(imgs, sobel_y, "replicate");
-                    sumGrads = sumGrads + squeeze(sum(sqrt(Gx.^2 + Gy.^2), [1,2]));  % keep time dimensionality
+                    sumGrads = sumGrads + squeeze(sum(sqrt(Gx.^2 + Gy.^2), [1,2]));  % keep time dimensionalities
                 end
 
                 % return the maxima location of summed gradient
@@ -429,9 +429,12 @@ classdef regmov < matlab.mixin.Copyable
             cpt = copyElement@matlab.mixin.Copyable(this);
 
             if isnumeric(this.mptr)
-                cpt.mptr = this.mptr;
+                % allocate after changing, MATLAB backend takes over,
+                % implicit controller
+                cpt.mptr = this.mptr;   
             elseif ismember(class(this.mptr), ["mpimg", "mpimgs"])
-                % Make a deep copy of the mpimg/mpimgs object
+                % allocate right now, programming takes over manually
+                % explicit controller
                 cpt.mptr = this.mptr.copy();
             end
         end
@@ -706,7 +709,7 @@ classdef regmov < matlab.mixin.Copyable
                     % generate the crop expression
                     expr = this.gen_expstr(cr, tr, "v");
 
-                    % simple modifing
+                    % simple modifying
                     eval(expr);
             end
         end
