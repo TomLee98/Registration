@@ -341,8 +341,7 @@ classdef regmov < matlab.mixin.Copyable
 
                 % maxima should also be an outlier
                 if ~ismember(r, find(isoutlier(sumGrads)))
-                    warning("regmov:badEstimation", "The estimated template index " + ...
-                        "may be not good.");
+                    disp("The estimated template index may be not good.");
                 end
             else
                 r = 0;

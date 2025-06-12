@@ -20,13 +20,14 @@ classdef regrspt < handle
     end
 
     properties (Access = public, Dependent)
-        Arguments       % ___/get, 1-by-1 regopt, segopt or struct
+        Arguments       % ___/get, 1-by-1 regopt, segopt, struct or []
         CropDim         % ___/get, 1-by-1 string indicate crop dimension
         CellsCount      % ___/get, 1-by-1 nonnegative integer indicates cells count
         File            % ___/get, 1-by-1 string indicate inner data file
         ImageDim        % ___/get, 1-by-5 positive integer as [X,Y,C,Z,T] dimensions
-        IsDistributed   % set/get, 1-by-1 logical, indicate the storaged data location
+        IsDistributed   % set/get, 1-by-1 logical, indicate the storage data location
         Operator        % ___/get, 1-by-1 string, operator indicator
+        Segmentor       % ___/get, 1-by-1 NuclearCtrlBot or []
     end
 
     methods
@@ -84,6 +85,10 @@ classdef regrspt < handle
 
         function r = get.Operator(this)
             r = this.optr;
+        end
+
+        function r = get.Segmentor(this)
+            r = this.ncbptr;
         end
     end
     
@@ -309,6 +314,7 @@ classdef regrspt < handle
 
         function dpost = restore_segment(this, ~)
             % just load the bot at any situation
+            % ???
             dpost = get_storage_data(this);
         end
 

@@ -325,7 +325,7 @@
     <OPACITY>Opacity</OPACITY>
     <OPERATION_SNAPSHOT>Operation Snapshot</OPERATION_SNAPSHOT>
     <OPERATION_TREE_DEPTH>Operation Tree (Depth)</OPERATION_TREE_DEPTH>
-    <OPERATION_VIEWER>Operation Viewer</OPERATION_VIEWER>
+    <OPERATION_VIEW>Operation View</OPERATION_VIEW>
     <OPERATOR>Operator</OPERATOR>
     <OPTIMIZATION_PREFERENCE>Optimization Preference</OPTIMIZATION_PREFERENCE>
     <OPTION>Options</OPTION>
@@ -459,7 +459,7 @@
     <SLICE_FEW>Please select at least two slices</SLICE_FEW>
     <SLICES_FEW_FOR_NEXT_STEP>The number of layers is small, and registration will not be possible after cropping</SLICES_FEW_FOR_NEXT_STEP>
     <SLICES_OVERFLOW>Slices number overflow</SLICES_OVERFLOW>
-    <SLICE_VIEWER>Slice Viewer</SLICE_VIEWER>
+    <SLICE_VIEW>Slice View</SLICE_VIEW>
     <SOFT_TISSUE>Soft Tissue</SOFT_TISSUE>
     <SOLID>Solid</SOLID>
     <SOURCE>Source</SOURCE>
@@ -470,6 +470,7 @@
     <STAGE>Stage</STAGE>
     <STARTUP>Start up</STARTUP>
     <STATUS>Status</STATUS>
+    <STORAGE_VIEW>Storage View</STORAGE_VIEW>
     <STRUCTURED_BACKGROUND>Please enter the background on the location channel:</STRUCTURED_BACKGROUND>
     <STYLE>Style</STYLE>
     <STYLE_LIGHT>Light</STYLE_LIGHT>
@@ -544,7 +545,7 @@
     <VARIABLE_LOADED>Variable loaded</VARIABLE_LOADED>
     <VERTICAL>Vertical</VERTICAL>
     <VOLUME>Volume</VOLUME>
-    <VOLUME_VIEWER>Volume Viewer</VOLUME_VIEWER>
+    <VOLUME_VIEW>Volume View</VOLUME_VIEW>
     <VOLUMETRIC_THRESHOLD>Volumetric Threshold</VOLUMETRIC_THRESHOLD>
     <WAITING>waiting</WAITING>
     <WARNING>Warning</WARNING>

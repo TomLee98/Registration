@@ -3,43 +3,68 @@ classdef OperationHistoryManager < handle
     % which is the agent to handle image and operations resources
     % NOTE: change storage strategy need
 
+    properties(Constant, Hidden)
+        OP_SKIP_OUTPUT = {constdef.OP_LOAD, constdef.OP_SEGMENT}
+    end
+
     properties(Access = public, Dependent)
-        Strategy        % ___/get, 1-by-1 string, could be "PERFORMANCE"/"RESOURCE"/"BALANCE"
+        ActiveNodeData  % ___/get, 1-by-1 struct with field {arg, cbot, data, optr}
+        ActiveNodeTag   % ___/get, 1-by-1 string, could be empty
+        DiskUsed        % ___/get, 1-by-1 double, unit as GBytes
         IsDistributed   % set/get, 1-by-1 logical, indicates if data spread on disk
         MemoryUsed      % ___/get, 1-by-1 double, unit as GBytes
-        DiskUsed        % ___/get, 1-by-1 double, unit as GBytes
-        CurrentData     % ___/get, 1-by-1 regrspt, indicating current activated restored node
-        CurrentNodeTag  % ___/get, 1-by-1 string, could be empty
+        Strategy        % ___/get, 1-by-1 string, could be "PERFORMANCE"/"RESOURCE"/"BALANCE"
     end
 
     properties(SetAccess = immutable, GetAccess = private)
-        optree
-        optxt
-        ctmenu
-        strategy
+        ufig            % 1-by-1 matlab.ui.Figure
+        optree          % 1-by-1 matlab.ui.container.Tree
+        optxt           % 1-by-1 matlab.ui.controller.TextArea
+        ctmenu          % 1-by-1 matlab.ui.container.ContextMenu
+        strategy        % 1-by-1 string, indicate the manager running method
         flagsrc = string(fileparts(mfilename("fullpath"))).extractBefore(...
             "regctrl") + filesep + "sources" + filesep + "active.png"
         readysrc = string(fileparts(mfilename("fullpath"))).extractBefore(...
             "regctrl") + filesep + "sources" + filesep + "ready.png"
+        calcsrc = string(fileparts(mfilename("fullpath"))).extractBefore(...
+            "regctrl") + filesep + "sources" + filesep + "rtcalc.png"
     end
 
     properties(Access = private, Hidden)
-        branch_cur                              % current operated branch
-        node_active     (1,1)                   % current active node
+        % current operated branch
+        branch_cur               
+
+        % current node related data pointer
+        dptr            (1,1)   regmov = regmov.empty()
+
         is_distrib      (1,1)   logical = false % data distributed flag 
+
+        % current active node
+        node_active     (1,1)          
+
         n_nodes         (1,1)   double  = 0     % number of nodes in a tree
     end
     
     methods
-        function r = get.CurrentData(this)
+        function r = get.ActiveNodeData(this)
             if this.isempty()
-                r = [];
-            else
-                r = this.node_active.RSPoint;
+                r = struct("arg",   [], ...
+                           "cbot",  [], ...
+                           "data",  this.dptr, ...
+                           "optr",  "");
+                return;
             end
+
+            % load data in the current restore point
+            rsp = this.node_active.NodeData.RSPoint;
+
+            r = struct("arg",   rsp.Arguments, ...
+                       "cbot",  rsp.Segmentor, ...
+                       "data",  this.dptr, ...
+                       "optr",  rsp.Operator);
         end
 
-        function r = get.CurrentNodeTag(this)
+        function r = get.ActiveNodeTag(this)
             r = string(this.node_active.Tag);
         end
 
@@ -82,9 +107,10 @@ classdef OperationHistoryManager < handle
     end
 
     methods (Access = public)
-        function this = OperationHistoryManager(op_tree, op_txt, ctxt_menu, strategy, dbflag)
+        function this = OperationHistoryManager(ufig, op_tree, op_txt, ctxt_menu, strategy, dbflag)
             %REGHIMGR A Constructor
             % Input:
+            %   - ufig: 1-by-1 matlab.ui.Figure for progress bar display
             %   - op_tree: 1-by-1 matlab.ui.container.Tree as nodes container
             %   - op_txt: 1-by-1 matlab.ui.container.TextArea as
             %               information viewer
@@ -92,6 +118,7 @@ classdef OperationHistoryManager < handle
             %               interaction callback adapter
             %   - strategy: 1-by-1 string, could be "performance"/"resource"/"balance"
             arguments
+                ufig        (1,1)   matlab.ui.Figure
                 op_tree     (1,1)   matlab.ui.container.Tree
                 op_txt      (1,1)   matlab.ui.control.TextArea
                 ctxt_menu   (1,1)   matlab.ui.container.ContextMenu
@@ -100,6 +127,7 @@ classdef OperationHistoryManager < handle
                 dbflag      (1,1)   logical = false
             end
 
+            this.ufig = ufig;
             this.optree = op_tree;
             this.optree.SelectionChangedFcn = @(~, event)this.sltchg_callback(event);
             this.optxt = op_txt;
@@ -114,7 +142,6 @@ classdef OperationHistoryManager < handle
 
         function delete(this)
             % free all data
-
 
         end
 
@@ -263,8 +290,11 @@ classdef OperationHistoryManager < handle
                % activate selected node
                this.activate(node);
 
+               % refresh tree appearance
+               this.update_tree_appearance();
+
                % refresh snapshot appearance
-               this.refresh_snapshot();
+               this.update_snapshot_appearance();
             end
             
         end
@@ -280,7 +310,7 @@ classdef OperationHistoryManager < handle
         function node = GetPreviousNodeBefore(this, node)
             arguments
                 this 
-                node (1,:)  matlab.ui.container.TreeNode = []
+                node (1,:) = []
             end
 
             if isempty(node)
@@ -303,10 +333,42 @@ classdef OperationHistoryManager < handle
         function optrs = GetAllPreviousOperatorsAt(this, node)
             arguments
                 this 
-                node (1,:)  matlab.ui.container.TreeNode = []
+                node (1,:) = []
             end
 
-            
+            if this.isempty(), optrs = string([]); return; end
+
+            if isempty(node), node = this.node_active; end
+
+            optrs = strings([]);
+
+            % use stack for previous tracing
+            nodes = mStack();
+            nodes.push(node);   % push the first node
+            while ~isempty(this.GetPreviousNodeBefore(node))
+                node = this.GetPreviousNodeBefore(node);
+                nodes.push(node);
+            end
+
+            % pop node should be "append order"
+            while ~isempty(nodes)
+                node = nodes.pop();
+                switch node.NodeData.RSPoint.Operator
+                    case this.OP_SKIP_OUTPUT
+                        % omit the operation
+                    case constdef.OP_CROP
+                        switch node.NodeData.RSPoint.CropDim
+                            case {"XY", 'Z'}
+                                optrs = [optrs, "crop"]; %#ok<AGROW>
+                            case "T"
+                                optrs = [optrs, "cut"]; %#ok<AGROW>
+                            otherwise
+                        end
+                    case constdef.OP_REGISTER
+                        optrs = [optrs, "aligned"]; %#ok<AGROW>
+                    otherwise
+                end
+            end
         end
 
         function PackageProjectTo(this, folder)
@@ -327,7 +389,62 @@ classdef OperationHistoryManager < handle
         function activate(this, node)
             % node: 1-by-1 matlab.ui.container.TreeNode
 
+            % activate node (get data) by strategy
+            rpt = node.NodeData.RSPoint;
+
+            is_storage = constdef.TRANSMISSION_STORAGE_TABLE{this.strategy, rpt.Operator};
+
+            if is_storage == true
+                % just read from node
+                this.dptr = rpt.getData();
+            else
+                % find the shortest calculation path, equals to find the 
+                % nearest storage which is of a higher  seniority in the 
+                % family hierarchy
+
+                % use stack for previous tracing
+                nodes = mStack();
+                nodes.push(node);   % push the first node
+                while ~isempty(this.GetPreviousNodeBefore(node))
+                    % push node
+                    node = this.GetPreviousNodeBefore(node);
+                    nodes.push(node);
+
+                    % determine breaking if node strategy is storage
+                    rpt = node.NodeData.RSPoint;
+                    is_storage = constdef.TRANSMISSION_STORAGE_TABLE{this.strategy, rpt.Operator};
+                    if is_storage, break; end
+                end
+
+                % generate calculation waitbar
+                msg = sprintf("Calculating ...(0/%d)", node.size()-1);
+                udlg = uiprogressdlg(this.ufig, "Indeterminate","off", ...
+                    "Title","Calculation Progress", "Message",msg, ...
+                    "Value",0, "Icon", this.calcsrc);
+
+                % real time calculation chain
+                node = nodes.pop();
+                this.dptr = node.getData();     % get storage
+                n = 0; n0 = node.size();
+                while ~isempty(nodes)
+                    node = nodes.pop();
+
+                    % update current dptr
+                    this.dptr = node.getData(this.dptr);
+
+                    n = n + 1;
+                    udlg.Value = n / n0;
+                    udlg.Message = sprintf("Calculating ...(%d/%d)", n, n0);
+                    drawnow nocallbacks;
+                end
+
+                delete(udlg);
+            end
+
+            % update appearance
+
             this.node_active = node;
+
             this.node_active.Icon = this.flagsrc;
         end
 
@@ -336,10 +453,8 @@ classdef OperationHistoryManager < handle
         function deactivate(this)
             % deactivate node in nonempty tree
             if ~this.isempty()
-                % deactivate means
-                % [1] drop (all )branch related to active node accord to strategy
-                % [2] set the active node to tree (root)
-                % [3] update some flag
+                % remove branch highlight
+
 
                 % remove the older node active flag
                 this.node_active.Icon = this.readysrc;
@@ -386,10 +501,19 @@ classdef OperationHistoryManager < handle
             node = event.SelectedNodes;
 
             % refresh snapshot appearance
-            this.refresh_snapshot(node);
+            this.update_snapshot_appearance(node);
         end
 
-        function refresh_snapshot(this, node)
+        function update_tree_appearance(this)
+            % remove all style
+
+
+            % append bold style on current active branch
+
+            
+        end
+
+        function update_snapshot_appearance(this, node)
             arguments
                 this
                 node    (1,:)   = []

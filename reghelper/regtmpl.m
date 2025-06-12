@@ -1,5 +1,5 @@
 classdef regtmpl
-    %REGTMPL This class is registration template defination, which supports
+    %REGTMPL This class is registration template definition, which supports
 
     properties(SetAccess=immutable, GetAccess=private, Hidden)
         regdata
@@ -28,7 +28,7 @@ classdef regtmpl
             
             this.regdata = regmov_;         % shallow copy handle
             this.fixvdef = fixvdef_;
-            this.auto_update = auto_update_;% perfermance option
+            this.auto_update = auto_update_;% performance option
 
             if isemp_ == false
                 this = update_ref(this);    % update refvol at first
@@ -67,7 +67,7 @@ classdef regtmpl
 
     methods(Access=private, Hidden)
         function this = update_ref(this)
-            % Note that: dimension order standarded as XYZ
+            % Note that: dimension order standardized as XYZ
             this.refvol = grv(this.regdata, ...
                               this.fixvdef.Sampling, ...
                               this.fixvdef.Channel);
