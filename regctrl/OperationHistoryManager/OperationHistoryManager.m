@@ -178,9 +178,10 @@ classdef OperationHistoryManager < handle
                     end
 
                 case constdef.OP_REGISTER
-                    node_text = sprintf("register(%s)", args.Arguments.Mode);
-                    node_data.Properties = struct("Algorithm",      args.Arguments.Algorithm, ...
-                                                  "SubAlgorithm",   args.Arguments.SubAlgorithm);
+                    %TODO: add more descriptor
+                    node_text = sprintf("register(%s)", args.Mode);
+                    node_data.Properties = struct("GlobalAlgorithm",  args.Algorithm, ...
+                                                  "LocalAlgorithm",   args.SubAlgorithm);
 
                 case constdef.OP_SEGMENT
                     node_text = sprintf("segment(%d)", rs_node.CellsCount);
@@ -203,7 +204,7 @@ classdef OperationHistoryManager < handle
 
             this.n_nodes = this.n_nodes + 1;
             this.node_active.Tag = string(this.n_nodes);
-
+            
             %% 
 
             function r = calc_blocked_t(arg)

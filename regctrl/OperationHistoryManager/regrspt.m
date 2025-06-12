@@ -97,7 +97,7 @@ classdef regrspt < handle
             addParameter(p, "Data", regmov.empty());
             addParameter(p, "CropDim", "");
             addParameter(p, "Transform", {});
-            addParameter(p, "Segmenter", []);
+            addParameter(p, "Segmentor", []);
 
             p.parse(optr, args, varargin{:});
 
@@ -127,7 +127,7 @@ classdef regrspt < handle
                 otherwise
             end
 
-            this.ncbptr = p.Results.Segmenter;
+            this.ncbptr = p.Results.Segmentor;
         end
         
         function dpost = getData(this, dpre)
