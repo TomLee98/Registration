@@ -404,20 +404,22 @@ classdef regohm < handle
                 end
 
                 % generate calculation waitbar
-                msg = sprintf("Calculating ...(0/%d)", node.size()-1);
+                msg = sprintf("Calculating ...(0/%d)", nodes.size()-1);
                 udlg = uiprogressdlg(this.ufig, "Indeterminate","off", ...
                     "Title","Calculation Progress", "Message",msg, ...
                     "Value",0, "Icon", this.calcsrc);
 
                 % real time calculation chain
                 node = nodes.pop();
-                this.dptr = node.getData();     % get storage
-                n = 0; n0 = node.size();
+                rpt = node.NodeData.RSPoint;
+                this.dptr = rpt.getData();     % get storage
+                n = 0; n0 = nodes.size();
                 while ~isempty(nodes)
                     node = nodes.pop();
+                    rpt = node.NodeData.RSPoint;
 
                     % update current dptr
-                    this.dptr = node.getData(this.dptr);
+                    this.dptr = rpt.getData(this.dptr);
 
                     n = n + 1;
                     udlg.Value = n / n0;

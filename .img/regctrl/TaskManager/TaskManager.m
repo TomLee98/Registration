@@ -3,8 +3,7 @@ classdef TaskManager < handle
     % 
     properties(Constant, Hidden)
         % ASK FOR REQUIRE DELAY
-        REQUIRE_DELAY = 3;
-
+        REQUIRE_DELAY = 3
     end
 
     properties(Access=private, Hidden)

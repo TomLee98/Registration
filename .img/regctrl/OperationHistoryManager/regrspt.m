@@ -3,9 +3,8 @@ classdef regrspt < handle
     % reg3D processed data
 
     properties (Constant, Hidden)
-        RESTORE_PARALLEL_POOL_SIZE = 24
-        VALID_FIELD_NAME = ["text_time", "text_meta", "fixdef", "mask_reg"]
-
+        RESTORE_PARPOOL_SIZE = ceil(GetCPUWorkersMaxN([],[])/2);
+        VALID_FIELD_NAME = ["text_time", "text_meta", "fixdef", "frames_reg", "mask_reg"]
     end
     
     properties (GetAccess = private, SetAccess = immutable)
@@ -110,7 +109,8 @@ classdef regrspt < handle
             addRequired(p, "args", @(x)validateattributes(x, "struct", "scalar"));
             addParameter(p, "CropDim", "");
             addParameter(p, "Data", regmov.empty());
-            addParameter(p, "Others", struct("text_time",[], "text_meta",[], "fixdef",[], "mask_reg",[]));
+            addParameter(p, "Others", struct("text_time",[], "text_meta",[], ...
+                                             "fixdef",[], "frames_reg",[], "mask_reg",[]));
             addParameter(p, "Segmentor", []);
             addParameter(p, "Transform", {});
 
@@ -131,11 +131,11 @@ classdef regrspt < handle
             switch this.optr
                 case constdef.OP_REGISTER
                     switch this.args.(constdef.OP_REGISTER).Mode
-                        case "Global"
+                        case "global"
                             this.tfs = p.Results.Transform(:,1);
-                        case "Local"
+                        case "local"
                             this.tfs = p.Results.Transform(:,2);
-                        case "Manual"
+                        case "manual"
                             this.tfs = p.Results.Transform(:,3);
                         otherwise
                     end
@@ -170,7 +170,7 @@ classdef regrspt < handle
                     dpost = this.restore_segment(dpre);
                 otherwise
                     throw(MException("regrspt:invalidOperator", ...
-                        "RestorePoint object only support <CROP>, <REGISTER>, <SEGMENT>"));
+                        "RestorePoint object only support <LOAD>, <CROP>, <REGISTER>, <SEGMENT>."));
             end
         end
 
@@ -220,114 +220,178 @@ classdef regrspt < handle
             else
                 % do imwarp on dpre
                 dpost = dpre.copy();    % deep copy
-                rref = imref3d([dpre.MetaData.Height, dpre.MetaData.Width, dpre.MetaData.Slices], ...
-                    movsrc.MetaData.xRes, movsrc.MetaData.yRes, movsrc.MetaData.zRes);
-                itpalg = this.args.(constdef.OP_REGISTER).Interp;
-                frs = ceil(1:this.RESTORE_PARALLEL_POOL_SIZE:dpre.MetaData.Frames+1);
-                try
-                    delete(gcp("nocreate"));
-                    pp = parpool("Threads", this.RESTORE_PARALLEL_POOL_SIZE);
-                catch
-                    throw(MException("regrspt:invalidParallelToolboxState", ...
-                        "Can't reset parpool or change the workers number."));
-                end
-                
-                % blocked data loading 
-                for r = 1:numel(frs)-1
-                    % load data
-                    regfrs = frs(r):frs(r+1)-1;
-                    fmode = ["none", string(regfrs).join(",")];
-                    avol_sc = grv(dpre, fmode, this.args.(constdef.OP_REGISTER).SC);
-                    avol_fc = grv(dpre, fmode, this.args.(constdef.OP_REGISTER).FC);
-                    tfss = this.tfs(regfrs);
-
-                    switch this.args.(constdef.OP_REGISTER).Algorithm
-                        case "TCREG"
-                            switch this.args.(constdef.OP_REGISTER).Mode
-                                case "Global"
-                                    parfor m = 1:this.RESTORE_PARALLEL_POOL_SIZE
-                                        avol_sc_m = avol_sc(:,:,:,m);
-                                        avol_fc_m = avol_fc(:,:,:,m);
-                                        fival_sc = mean(avol_sc_m(:,[1,end],:),"all");
-                                        fival_fc =  mean(avol_fc_m(:,[1,end],:),"all");
-                                        avol_sc(:,:,:,m) = imwarp(avol_sc_m, ...
-                                            tfss{m}, itpalg,  "OutputView", rref, ...
-                                            "FillValues",fival_sc);
-                                        avol_fc(:,:,:,m) = imwarp(avol_fc_m, ...
-                                            tfss{m}, itpalg, "OutputView", rref, ...
-                                            "FillValues",fival_fc);
-                                    end
-                                case "Local"
-                                    parfor m = 1:this.RESTORE_PARALLEL_POOL_SIZE
-                                        avol_sc_m = avol_sc(:,:,:,m);
-                                        avol_fc_m = avol_fc(:,:,:,m);
-                                        fival_sc = mean(avol_sc_m(:,[1,end],:),"all");
-                                        fival_fc =  mean(avol_fc_m(:,[1,end],:),"all");
-                                        avol_sc(:,:,:,m) = imwarp(avol_sc_m, ...
-                                            tfss{m}, itpalg, "FillValues",fival_sc);
-                                        avol_fc(:,:,:,m) = imwarp(avol_fc_m, ...
-                                            tfss{m}, itpalg, "FillValues",fival_fc);
-                                    end
-                                otherwise
-                            end
-
-                            % save warped data
-                            srv(dpost, avol_sc, fmode, this.args.(constdef.OP_REGISTER).SC);
-                            srv(dpost, avol_fc, fmode, this.args.(constdef.OP_REGISTER).FC);
-                        case "OCREG"
-                            switch this.args.(constdef.OP_REGISTER).Mode
-                                case "Global"
-                                    parfor m = 1:this.RESTORE_PARALLEL_POOL_SIZE
-                                        avol_fc_m = avol_fc(:,:,:,m);
-                                        fival_fc =  mean(avol_fc_m(:,[1,end],:),"all");
-                                        avol_fc(:,:,:,m) = imwarp(avol_fc_m, ...
-                                            rref, tfss{m}, itpalg, "OutputView", rref, ...
-                                            "FillValues",fival_fc);
-                                    end
-                                otherwise
-                            end
-
-                            % save warped data
-                            srv(dpost, avol_fc, fmode, this.args.(constdef.OP_REGISTER).FC);
-
-                        case "MANREG"
-                            % must be dual-color imaging
-                            parfor m = 1:this.RESTORE_PARALLEL_POOL_SIZE
-                                avol_sc_m = avol_sc(:,:,:,m);
-                                avol_fc_m = avol_fc(:,:,:,m);
-                                fival_sc = mean(avol_sc_m(:,[1,end],:),"all");
-                                fival_fc =  mean(avol_fc_m(:,[1,end],:),"all");
-                                avol_sc(:,:,:,m) = imwarp(avol_sc_m, ...
-                                    tfss{m}, itpalg,  "OutputView", rref, ...
-                                    "FillValues",fival_sc);
-                                avol_fc(:,:,:,m) = imwarp(avol_fc_m, ...
-                                    tfss{m}, itpalg, "OutputView", rref, ...
-                                    "FillValues",fival_fc);
-                            end
-
-                            % save warped data
-                            srv(dpost, avol_sc, fmode, this.args.(constdef.OP_REGISTER).SC);
-                            srv(dpost, avol_fc, fmode, this.args.(constdef.OP_REGISTER).FC);
-                        otherwise
-                    end
-                end
-
-                delete(pp);
 
                 switch this.args.(constdef.OP_REGISTER).Algorithm
                     case "TCREG"
                         switch this.args.(constdef.OP_REGISTER).Mode
-                            case "Global"
+                            case "global"
+                                recover_reg_tc_global(this);
                                 dpost.Transformation(:,1) = this.tfs;
-                            case "Local"
+                            case "local"
+                                recover_reg_tc_local(this);
                                 dpost.Transformation(:,2) = this.tfs;
+                            otherwise
                         end
                     case "OCREG"
-                        dpost.Transformation(:,1) = this.tfs;
+                        switch this.args.(constdef.OP_REGISTER).Mode
+                            case "global"
+                                recover_reg_oc_global(this);
+                                dpost.Transformation(:,1) = this.tfs;
+                            otherwise
+                        end
                     case "MANREG"
+                        recover_reg_tc_manual(this);
                         dpost.Transformation(:,3) = this.tfs;
                     otherwise
                 end
+            end
+
+            %% NESTED HELPER FUNCTIONS
+            function recover_reg_tc_global(this)
+                % This function recover tcreg global registration results
+                rref = imref3d([dpre.MetaData.height, dpre.MetaData.width, dpre.MetaData.slices], ...
+                    dpre.MetaData.xRes, dpre.MetaData.yRes, dpre.MetaData.zRes);
+                itpalg = this.args.(constdef.OP_REGISTER).Options.Interp;
+
+                fridx = str2num(this.others.frames_reg(1).replace("end", ...
+                    string(dpre.MetaData.frames))); %#ok<ST2NM>
+
+                RPS = this.RESTORE_PARPOOL_SIZE;
+                if mod(numel(fridx), RPS) ~= 0
+                    frs = [1:RPS:RPS*floor(numel(fridx)/RPS)+1, numel(fridx)];
+                else
+                    frs = 1:RPS:RPS*floor(numel(fridx)/RPS)+1;
+                end
+
+                for r = 1:numel(frs)-1
+                    % load data
+                    regfrs = fridx(frs(r):frs(r+1)-1);
+                    fmode = ["none", string(regfrs).join(",")];
+                    avol_sc = grv(dpre, fmode, this.args.(constdef.OP_REGISTER).Options.SC);
+                    avol_fc = grv(dpre, fmode, this.args.(constdef.OP_REGISTER).Options.FC);
+                    tfss = this.tfs(regfrs);
+
+                    % imwarp
+                    parfor m = 1:numel(regfrs)
+                        avol_sc_m = avol_sc(:,:,:,m);
+                        avol_fc_m = avol_fc(:,:,:,m);
+                        fival_sc = mean(avol_sc_m(:,[1,end],:),"all");
+                        fival_fc =  mean(avol_fc_m(:,[1,end],:),"all");
+                        avol_sc(:,:,:,m) = imwarp(avol_sc_m, ...
+                            tfss{m}, itpalg,  "OutputView", rref, ...
+                            "FillValues",fival_sc);
+                        avol_fc(:,:,:,m) = imwarp(avol_fc_m, ...
+                            tfss{m}, itpalg, "OutputView", rref, ...
+                            "FillValues",fival_fc);
+                    end
+
+                    % save warped data
+                    srv(dpost, avol_sc, fmode, this.args.(constdef.OP_REGISTER).Options.SC);
+                    srv(dpost, avol_fc, fmode, this.args.(constdef.OP_REGISTER).Options.FC);
+                end
+            end
+
+            function recover_reg_tc_local(this)
+                % This function recover tcreg local registration results
+                itpalg = this.args.(constdef.OP_REGISTER).Options.Interp;
+
+                fridx = str2num(this.others.frames_reg(1).replace("end", ...
+                    string(dpre.MetaData.frames))); %#ok<ST2NM>
+                RPS = this.RESTORE_PARPOOL_SIZE;
+                if mod(numel(fridx), RPS) ~= 0
+                    frs = [1:RPS:RPS*floor(numel(fridx)/RPS)+1, numel(fridx)];
+                else
+                    frs = 1:RPS:RPS*floor(numel(fridx)/RPS)+1;
+                end
+
+                for r = 1:numel(frs)-1
+                    % load data
+                    regfrs = fridx(frs(r):frs(r+1)-1);
+                    fmode = ["none", string(regfrs).join(",")];
+                    avol_sc = grv(dpre, fmode, this.args.(constdef.OP_REGISTER).Options.SC);
+                    avol_fc = grv(dpre, fmode, this.args.(constdef.OP_REGISTER).Options.FC);
+                    tfss = this.tfs(regfrs);
+
+                    % imwarp
+                    parfor m = 1:numel(regfrs)
+                        if ~isempty(tfss{m})
+                            avol_sc_m = avol_sc(:,:,:,m);
+                            avol_fc_m = avol_fc(:,:,:,m);
+                            fival_sc = mean(avol_sc_m(:,[1,end],:),"all");
+                            fival_fc =  mean(avol_fc_m(:,[1,end],:),"all");
+                            avol_sc(:,:,:,m) = imwarp(avol_sc_m, ...
+                                tfss{m}, itpalg, "FillValues",fival_sc);
+                            avol_fc(:,:,:,m) = imwarp(avol_fc_m, ...
+                                tfss{m}, itpalg, "FillValues",fival_fc);
+                        end
+                    end
+
+                    % save warped data
+                    srv(dpost, avol_sc, fmode, this.args.(constdef.OP_REGISTER).Options.SC);
+                    srv(dpost, avol_fc, fmode, this.args.(constdef.OP_REGISTER).Options.FC);
+                end
+            end
+
+            function recover_reg_oc_global(this)
+                % This function recover ocreg global registration results
+                rref = imref3d([dpre.MetaData.height, dpre.MetaData.width, dpre.MetaData.slices], ...
+                    dpre.MetaData.xRes, dpre.MetaData.yRes, dpre.MetaData.zRes);
+                itpalg = this.args.(constdef.OP_REGISTER).Options.Interp;
+
+                fridx = str2num(this.others.frames_reg(1).replace("end", ...
+                    string(dpre.MetaData.frames))); %#ok<ST2NM>
+                RPS = this.RESTORE_PARPOOL_SIZE;
+                if mod(numel(fridx), RPS) ~= 0
+                    frs = [1:RPS:RPS*floor(numel(fridx)/RPS)+1, numel(fridx)];
+                else
+                    frs = 1:RPS:RPS*floor(numel(fridx)/RPS)+1;
+                end
+
+                for r = 1:numel(frs)-1
+                    % load data
+                    regfrs = fridx(frs(r):frs(r+1)-1);
+                    fmode = ["none", string(regfrs).join(",")];
+                    avol_fc = grv(dpre, fmode, this.args.(constdef.OP_REGISTER).Options.FC);
+                    tfss = this.tfs(regfrs);
+
+                    % imwarp
+                    parfor m = 1:numel(regfrs)
+                        avol_fc_m = avol_fc(:,:,:,m);
+                        fival_fc =  mean(avol_fc_m(:,[1,end],:),"all");
+                        avol_fc(:,:,:,m) = imwarp(avol_fc_m, ...
+                            tfss{m}, itpalg, "OutputView", rref, ...
+                            "FillValues",fival_fc);
+                    end
+
+                    % save warped data
+                    srv(dpost, avol_fc, fmode, this.args.(constdef.OP_REGISTER).Options.FC);
+                end
+            end
+
+            function recover_reg_tc_manual(this)
+                % This function recover manreg global registration results
+                rref = imref3d([dpre.MetaData.height, dpre.MetaData.width, dpre.MetaData.slices], ...
+                    dpre.MetaData.xRes, dpre.MetaData.yRes, dpre.MetaData.zRes);
+                itpalg = this.args.(constdef.OP_REGISTER).Options.Interp;
+
+                % load data
+                regfrs = str2double(this.others.frames_reg(2));
+                fmode = ["none", string(regfrs).join(",")];
+                avol_sc = grv(dpre, fmode, this.args.(constdef.OP_REGISTER).Options.SC);
+                avol_fc = grv(dpre, fmode, this.args.(constdef.OP_REGISTER).Options.FC);
+                tfss = this.tfs{regfrs};
+
+                % imwarp
+                fival_sc = mean(avol_sc(:,[1,end],:),"all");
+                fival_fc =  mean(avol_fc(:,[1,end],:),"all");
+                avol_sc = imwarp(avol_sc, tfss, itpalg,  "OutputView", rref, ...
+                    "FillValues",fival_sc);
+                avol_fc = imwarp(avol_fc, tfss, itpalg, "OutputView", rref, ...
+                    "FillValues",fival_fc);
+
+                % save warped data
+                srv(dpost, avol_sc, fmode, this.args.(constdef.OP_REGISTER).Options.SC);
+                srv(dpost, avol_fc, fmode, this.args.(constdef.OP_REGISTER).Options.FC);
             end
         end
 
