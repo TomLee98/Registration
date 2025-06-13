@@ -45,7 +45,7 @@ classdef constdef
                                  "CachePolicy",           "PERFORMANCE", ...        % "PERFORMANCE"/"RESOURCES"/"BALANCE" 
                                  "BufferCleanTrigger",    "EXIT", ...               % "EXIT"/"RT"/"OFF"
                                  "Capacity",              64, ...                   % positive double scalar, 1 ~ 128
-                                 "BranchDepth",           "OFF", ...                % "LAST"/"LAST3"/"INFINITY"/"OFF"
+                                 "BranchDepth",           "INFINITY", ...           % "AUTO"/"INFINITY"
                                  "NumProtectedCPU",       0, ...                    % nonnegative integer
                                  "NumProtectedGPU",       0, ...                    % nonnegative integer
                                  "MessageLevel",          "WARNING", ...            % "WARNING"/"INFO"
