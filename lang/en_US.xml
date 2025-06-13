@@ -330,10 +330,6 @@
     <OPERATOR>Operator</OPERATOR>
     <OPTION>Options</OPTION>
     <OTHER_SETTINGS>Other Settings</OTHER_SETTINGS>
-    <OTO_OP_ONE>1 action</OTO_OP_ONE>
-    <OTO_OP_THREE>3 actions</OTO_OP_THREE>
-    <OTO_OP_INF>As many as possible</OTO_OP_INF>
-    <OTO_OP_ZERO>No retention</OTO_OP_ZERO>
     <OUTLIER_DIRECTION>Outlier Direction</OUTLIER_DIRECTION>
     <OUTLIER_RATIO>Outlier Ratio</OUTLIER_RATIO>
     <PARALLEL_COMPUTING>Parallel Computing</PARALLEL_COMPUTING>
@@ -509,6 +505,7 @@
     <TIP_CBX_ISOMETRIC>Isometric resampling reconstructs volume cells into cubes</TIP_CBX_ISOMETRIC>
     <TIP_CBX_LOCK>Lock the registration solution</TIP_CBX_LOCK>
     <TIP_CBX_PHOTOBLEACHING>Compensating foreground photobleaching under constant background</TIP_CBX_PHOTOBLEACHING>
+    <TIP_EAPPRST>App takes effect after a restart.</TIP_EAPPRST>
     <TIP_SLR_PROGRESS>Progress bar</TIP_SLR_PROGRESS>
     <TIP_SLR_TIME>Time</TIP_SLR_TIME>
     <TIP_SPN_CPUS>It is recommended to retain 1~2 cores to maintain normal interaction</TIP_SPN_CPUS>
