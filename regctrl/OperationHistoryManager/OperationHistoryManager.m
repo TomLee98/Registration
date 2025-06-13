@@ -10,10 +10,8 @@ classdef OperationHistoryManager < handle
     properties(Access = public, Dependent)
         ActiveNodeData  % ___/get, 1-by-1 struct with field {arg, cbot, data, optr}
         ActiveNodeTag   % ___/get, 1-by-1 string, could be empty
-        DiskUsed        % ___/get, 1-by-1 double, unit as GBytes
         IsDistributed   % set/get, 1-by-1 logical, indicates if data spread on disk
-        MemoryUsed      % ___/get, 1-by-1 double, unit as GBytes
-        Strategy        % ___/get, 1-by-1 string, could be "PERFORMANCE"/"RESOURCE"/"BALANCE"
+        CachePolicy     % ___/get, 1-by-1 string, could be "PERFORMANCE"/"RESOURCE"/"BALANCE"
     end
 
     properties(SetAccess = immutable, GetAccess = private)
@@ -21,7 +19,7 @@ classdef OperationHistoryManager < handle
         optree          % 1-by-1 matlab.ui.container.Tree
         optxt           % 1-by-1 matlab.ui.controller.TextArea
         ctmenu          % 1-by-1 matlab.ui.container.ContextMenu
-        strategy        % 1-by-1 string, indicate the manager running method
+        optsty          % 1-by-1 string, indicate the manager running method
         flagsrc = string(fileparts(mfilename("fullpath"))).extractBefore(...
             "regctrl") + filesep + "sources" + filesep + "active.png"
         readysrc = string(fileparts(mfilename("fullpath"))).extractBefore(...
@@ -31,18 +29,15 @@ classdef OperationHistoryManager < handle
     end
 
     properties(Access = private, Hidden)
-        % current operated branch
-        branch_cur               
-
         % current node related data pointer
         dptr            (1,1)   regmov = regmov.empty()
 
         is_distrib      (1,1)   logical = false % data distributed flag 
 
         % current active node
-        node_active     (1,1)          
+        node_active     (1,1)                   % current active node (or tree)
 
-        n_nodes         (1,1)   double  = 0     % number of nodes in a tree
+        nodes_total_num (1,1)   double  = 0     % number of total generated nodes in the tree
     end
     
     methods
@@ -94,16 +89,8 @@ classdef OperationHistoryManager < handle
             end
         end
 
-        function r = get.Strategy(this)
-            r = this.strategy;
-        end
-
-        function r = get.MemoryUsed(this)
-            r = nan;
-        end
-
-        function r = get.DiskUsed(this)
-            r = nan;
+        function r = get.CachePolicy(this)
+            r = this.optsty;
         end
         
     end
@@ -134,17 +121,23 @@ classdef OperationHistoryManager < handle
             this.optree.SelectionChangedFcn = @(~, event)this.sltchg_callback(event);
             this.optxt = op_txt;
             this.ctmenu = ctxt_menu;
-            this.strategy = strategy;
+            this.optsty = strategy;
             this.is_distrib = dbflag;
-
-            this.branch_cur = mStack();
 
             this.node_active = this.optree;
         end
 
         function delete(this)
             % free all data
+            % from the newest node to oldest node
 
+            if ~isempty(this.optree) && isvalid(this.optree) ...
+                    && ~isempty(this.optree.Children)
+                nodes = this.optree.Children;
+                for k = 1:numel(nodes)
+                    this.remove(nodes(k));
+                end
+            end
         end
 
         function tf = isempty(this)
@@ -155,10 +148,142 @@ classdef OperationHistoryManager < handle
         function AddNode(this, optr, args, varargin)
             % This function create new node at optree and store a regrspt
             % object in the node
+
+            %% append node after active node
+            node_new = this.create_new_node(optr, args, varargin);
+
+            %% activate new node
+            this.ActivateNode(node_new);
+
+            %% update appearance
+            this.update_manage_view();
+        end
+
+        function DelNode(this, node)
+            arguments
+                this 
+                node (1,1)  matlab.ui.container.TreeNode
+            end
+
+            %% auto change the active node
+            this.automove_active_node(node);
+
+            %% free memory/disk
+            this.remove(node);
+
+            %% update appearance
+            this.update_manage_view();
+        end
+
+        function ActivateNode(this, node)
+            arguments
+                this 
+                node (1,1)  matlab.ui.container.TreeNode
+            end
+
+            if ~isequal(this.node_active, node)
+               %% deactivated current active node
+               this.deactivate();
+
+               %% activate given node
+               this.optree.SelectedNodes = node;
+               this.activate(node);
+
+               %% update appearance
+               this.update_manage_view();
+            end
+        end
+
+        % This function gets all operations at given node
+        function optrs = GetAllPreviousOperatorsAt(this, node)
+            arguments
+                this 
+                node (1,:) = []
+            end
+
+            if this.isempty(), optrs = string([]); return; end
+
+            if isempty(node), node = this.node_active; end
+
+            optrs = strings([]);
+
+            % use stack for previous tracing
+            nodes = mStack();
+            nodes.push(node);   % push the first node
+            while ~isempty(this.get_node_before(node))
+                node = this.get_node_before(node);
+                nodes.push(node);
+            end
+
+            % pop node should be "append order"
+            while ~isempty(nodes)
+                node = nodes.pop();
+                switch node.NodeData.RSPoint.Operator
+                    case this.OP_SKIP_OUTPUT
+                        % omit the operation
+                    case constdef.OP_CROP
+                        switch node.NodeData.RSPoint.CropDim
+                            case {"XY", 'Z'}
+                                optrs = [optrs, "crop"]; %#ok<AGROW>
+                            case "T"
+                                optrs = [optrs, "cut"]; %#ok<AGROW>
+                            otherwise
+                        end
+                    case constdef.OP_REGISTER
+                        optrs = [optrs, "aligned"]; %#ok<AGROW>
+                    otherwise
+                end
+            end
+        end
+
+        % This function selects next node after current selection
+        function SelectNextNode(this, loop)
+            arguments
+                this 
+                loop    (1,1)   logical  = false
+            end
+
+            %% take next node
+            node = this.optree.SelectedNodes;
+            node = this.get_node_after(node);
+            if ~isempty(node)
+                this.optree.SelectedNodes = node;
+            else
+                if loop == true
+                    % start at first
+                    this.optree.SelectedNodes = this.optree.Children(1);
+                else
+                    % skip, hold on
+                end
+            end
+
+            %% update appearance
+            this.update_snapshot_view();    % snap only for fast view
+        end
+
+        % This function packages all data as project to given folder
+        function PackageProjectTo(this, folder)
+            
+
+        end
+
+        % This function loads data from given project folder
+        function LoadProjectFrom(this, folder)
+            
+
+        end
+
+    end
+
+    methods (Access = private)
+
+        % This function creates a new node as children of active node
+        function node = create_new_node(this, optr, args, vars)
+
             %% create restore point object
-            switch this.Strategy
+            switch this.optsty
                 case "PERFORMANCE"
-                    rs_node = regrspt(optr, args, varargin{:});
+                    rs_node = regrspt(optr, args, vars{:});
                 case "RESOURCE"
                     warning("OperationHistoryManager:unfinishedItem", ...
                         "Developing...");
@@ -170,7 +295,6 @@ classdef OperationHistoryManager < handle
                         "Unsupported transmission optimization strategy."));
             end
 
-            %% create node on the op tree
             node_data = struct("Operation",  [], ...
                                "Properties", [], ...
                                "RSPoint",    rs_node, ...
@@ -187,7 +311,6 @@ classdef OperationHistoryManager < handle
                         otherwise
                             node_data.Properties.Size = round(file_dp.Size.map/2^30, 1);
                     end
-                    
                 case constdef.OP_CROP
                     node_text = sprintf("crop(%s)", rs_node.CropDim);
                     st = args.(constdef.OP_CROP);
@@ -196,17 +319,16 @@ classdef OperationHistoryManager < handle
                     switch rs_node.CropDim
                         case "XY"
                             node_data.Properties = struct("Origin", st.xy(1, 1:2), ...
-                                                          "Width",  st.xy(2, 1), ...
-                                                          "Height", st.xy(2, 2));
+                                                          "Width",  st.xy(2,1)-st.xy(1,1)+1, ...
+                                                          "Height", st.xy(2,2)-st.xy(1,2)+1);
                         case "Z"
                             node_data.Properties = struct("Origin", st.z(1), ...
                                                           "Slices", st.z(2)-st.z(1)+1);
                         case "T"
-                            frs = calc_blocked_t(st);
+                            frs = OperationHistoryManager.reformat_time(st);
                             node_data.Properties = struct("Frames", frs);
                         otherwise
                     end
-
                 case constdef.OP_REGISTER
                     st = args.(constdef.OP_REGISTER);
                     %TODO: add more descriptor
@@ -238,182 +360,21 @@ classdef OperationHistoryManager < handle
                                                           "MinStep",        string(st.Options.MaxStep));
                         otherwise
                     end
-
                 case constdef.OP_SEGMENT
                     st = args.(constdef.OP_SEGMENT);
                     node_text = sprintf("segment(%d)", rs_node.CellsCount);
                     node_data.Properties = struct("Method", st.method);
-
                 otherwise
             end
-            % append operation field
+
             node_data.Operation = optr;
 
-            %% activate new node
-            % change the current active node
-            % modify: Text, Icon, NodeData, ContextMenu
-            node_new = uitreenode(this.node_active, "Text",node_text, ...
+            %% add node to active node
+            node = uitreenode(this.node_active, "Text",node_text, ...
                 "NodeData",node_data, "ContextMenu",this.ctmenu);
-
-            if ~this.isempty(), this.node_active.expand(); end % expand
-
-            ActivateNode(this, node_new);                       % activate new node
-
-            this.n_nodes = this.n_nodes + 1;
-            this.node_active.Tag = string(this.n_nodes);
-            
-            %% 
-
-            function r = calc_blocked_t(arg)
-                frames = arg.f;
-                r = zeros(0, 2);
-                if isscalar(frames)
-                    r(1) = frames; r(2) = frames;
-                    return;
-                end
-
-                % multi frames selected
-                ps = 1;
-                pe = 2;
-                while pe <= numel(frames)
-                    if pe < numel(frames)
-                        if frames(pe) - frames(pe-1) == 1
-                            pe = pe + 1;
-                        else
-                            r = [r; frames(ps), frames(pe-1)]; %#ok<AGROW>
-                            ps = pe;
-                            pe = pe + 1;
-                        end
-                    else    % EOF
-                        r = [r; frames(ps), frames(pe)]; %#ok<AGROW>
-                        break;
-                    end
-                end
-            end
+            this.nodes_total_num = this.nodes_total_num + 1;
+            node.Tag = string(this.nodes_total_num);
         end
-
-        function DelNode(this, node)
-            arguments
-                this 
-                node (1,1)  matlab.ui.container.TreeNode
-            end
-
-            % 
-            disp("Delete Test!");
-        end
-
-        function ActivateNode(this, node)
-            arguments
-                this 
-                node (1,1)  matlab.ui.container.TreeNode
-            end
-
-            if isequal(this.node_active, node)
-                disp("Node is already activated!");
-            else
-               % Deactivated current active node
-               this.deactivate();
-
-               % select the node
-               this.optree.SelectedNodes = node;
-
-               % activate selected node
-               this.activate(node);
-
-               % refresh tree appearance
-               this.update_tree_appearance();
-
-               % refresh snapshot appearance
-               this.update_snapshot_appearance();
-            end
-            
-        end
-
-        % This function selects next node after current selection
-        function SelectNextNode(this)
-            % find the node with tag is the next tag
-
-        end
-
-        % This function gets one previous node before given node, if given
-        % node is empty, active node replaced
-        function node = GetPreviousNodeBefore(this, node)
-            arguments
-                this 
-                node (1,:) = []
-            end
-
-            if isempty(node)
-                % return node before active node
-                if isa(this.node_active.Parent, "matlab.ui.container.TreeNode")
-                    node = this.node_active.Parent;
-                else
-                    node = [];
-                end
-            else
-                if isa(node.Parent, "matlab.ui.container.TreeNode")
-                    node =  node.Parent;
-                else
-                    node = [];
-                end
-            end
-        end
-
-        % This function gets all operations at given node
-        function optrs = GetAllPreviousOperatorsAt(this, node)
-            arguments
-                this 
-                node (1,:) = []
-            end
-
-            if this.isempty(), optrs = string([]); return; end
-
-            if isempty(node), node = this.node_active; end
-
-            optrs = strings([]);
-
-            % use stack for previous tracing
-            nodes = mStack();
-            nodes.push(node);   % push the first node
-            while ~isempty(this.GetPreviousNodeBefore(node))
-                node = this.GetPreviousNodeBefore(node);
-                nodes.push(node);
-            end
-
-            % pop node should be "append order"
-            while ~isempty(nodes)
-                node = nodes.pop();
-                switch node.NodeData.RSPoint.Operator
-                    case this.OP_SKIP_OUTPUT
-                        % omit the operation
-                    case constdef.OP_CROP
-                        switch node.NodeData.RSPoint.CropDim
-                            case {"XY", 'Z'}
-                                optrs = [optrs, "crop"]; %#ok<AGROW>
-                            case "T"
-                                optrs = [optrs, "cut"]; %#ok<AGROW>
-                            otherwise
-                        end
-                    case constdef.OP_REGISTER
-                        optrs = [optrs, "aligned"]; %#ok<AGROW>
-                    otherwise
-                end
-            end
-        end
-
-        function PackageProjectTo(this, folder)
-            % This function package all data as project to given folder
-
-        end
-
-        function LoadProjectFrom(this, folder)
-            % This function load data from given project folder
-
-        end
-
-    end
-
-    methods (Access = private)
 
         % This function activates node
         function activate(this, node)
@@ -422,7 +383,7 @@ classdef OperationHistoryManager < handle
             % activate node (get data) by strategy
             rpt = node.NodeData.RSPoint;
 
-            is_storage = constdef.TRANSMISSION_STORAGE_TABLE{this.strategy, rpt.Operator};
+            is_storage = constdef.TRANSMISSION_STORAGE_TABLE{this.optsty, rpt.Operator};
 
             if is_storage == true
                 % just read from node
@@ -435,14 +396,14 @@ classdef OperationHistoryManager < handle
                 % use stack for previous tracing
                 nodes = mStack();
                 nodes.push(node);   % push the first node
-                while ~isempty(this.GetPreviousNodeBefore(node))
+                while ~isempty(this.get_node_before(node))
                     % push node
-                    node = this.GetPreviousNodeBefore(node);
+                    node = this.get_node_before(node);
                     nodes.push(node);
 
                     % determine breaking if node strategy is storage
                     rpt = node.NodeData.RSPoint;
-                    is_storage = constdef.TRANSMISSION_STORAGE_TABLE{this.strategy, rpt.Operator};
+                    is_storage = constdef.TRANSMISSION_STORAGE_TABLE{this.optsty, rpt.Operator};
                     if is_storage, break; end
                 end
 
@@ -471,27 +432,153 @@ classdef OperationHistoryManager < handle
                 delete(udlg);
             end
 
-            % update appearance
-
+            % update active node
             this.node_active = node;
-
-            this.node_active.Icon = this.flagsrc;
         end
-
 
         % This function deactivates current active node
         function deactivate(this)
             % deactivate node in nonempty tree
             if ~this.isempty()
-                % remove branch highlight
-
-
-                % remove the older node active flag
-                this.node_active.Icon = this.readysrc;
-
+                % change active node as tree
                 this.node_active = this.optree;
             end
 
+        end
+
+        % This function auto moves the active node if it is on the branch
+        % which will be deleted
+        function automove_active_node(this, node)
+            if this.is_posterity_of(node)
+                % priority: brother > parent
+                if nueml(node.Parent.Children) > 1
+                    brothers = setdiff(node.Parent.Children, node);
+                    this.ActivateNode(brothers(1));
+                else
+                    if isa(node.Parent, "matlab.ui.container.TreeNode")
+                        % activate the nearest
+                        this.ActivateNode(node.Parent);
+                    else
+                        % skip, tree only
+                    end
+                end
+            end
+        end
+
+        % This function update manager appearance accords to current 
+        % tree status
+        function update_manage_view(this)
+            % global control
+            this.update_operation_view();
+            this.update_source_view();
+
+            % local control
+            this.update_snapshot_view();
+
+            drawnow
+        end
+
+        function remove(this, node)
+            arguments
+                this %#ok<INUSA>
+                node (1,1)  matlab.ui.container.TreeNode
+            end
+
+            nodes_delete = mStack();
+            nodes_visit = mStack();
+
+            nodes_visit.push(node);
+
+            while ~isempty(nodes_visit)
+                % push to stack
+                node = nodes_visit.pop();
+                nodes_delete.push(node);
+
+                % en-queue children
+                nodes = node.Children;
+                for k = 1:numel(nodes), nodes_visit.push(nodes(k));end
+            end
+
+            % delete on each node
+            while ~isempty(nodes_delete)
+                node = nodes_delete.pop();
+
+                % invoke delete
+                delete(node.NodeData.RSPoint);
+            end
+
+            % remove node handle
+            delete(node);
+        end
+
+        % This function gets one previous node before given node, if given
+        % node is empty, active node replaced
+        function node = get_node_before(this, node)
+            arguments
+                this 
+                node (1,:) = []
+            end
+
+            if isempty(node)
+                % return node before active node
+                if isa(this.node_active.Parent, "matlab.ui.container.TreeNode")
+                    node = this.node_active.Parent;
+                else
+                    node = [];
+                end
+            else
+                if isa(node.Parent, "matlab.ui.container.TreeNode")
+                    node =  node.Parent;
+                else
+                    node = [];
+                end
+            end
+        end
+
+        function node = get_node_after(this, node, policy)
+            arguments
+                this 
+                node    (1,:) = []
+                policy  (1,1)   string  {mustBeMember(policy, ["Depth-First", "Width-First"])} = "Depth-First"
+            end
+
+            if this.isempty(), node = []; return; end
+
+            if isempty(node), node = this.node_active; end
+
+            switch policy
+                case "Depth-First"
+                    nodes = mStack();
+                    for k = 1:numel(node.Children)
+                        nodes.push(node.Children(k));
+                    end
+                    node = nodes.pop();
+                case "Width-First"
+                    nodes = mQueue();
+                    for k = 1:numel(node.Children)
+                        nodes.enqueue(node.Children(k));
+                    end
+                    node = nodes.dequeue();
+                otherwise
+                    node = [];
+            end
+        end
+
+        % This function return if the active node is posterity of given
+        % tree node
+        function tf = is_posterity_of(this, node)
+            arguments
+                this
+                node (1,1)  matlab.ui.container.TreeNode
+            end
+
+            tf = false;
+
+            node = node.Parent;
+            while ~isempty(node) && isa(node, "matlab.ui.container.TreeNode")
+                if node == this.node_active, tf = true; break; end
+                node = node.Parent;
+            end
         end
 
         % This function moves the data storage between memory and disk
@@ -530,27 +617,56 @@ classdef OperationHistoryManager < handle
             % get node data
             node = event.SelectedNodes;
 
-            % refresh snapshot appearance
-            this.update_snapshot_appearance(node);
+            % update snapshot only
+            this.update_snapshot_view(node);
         end
 
-        function update_tree_appearance(this)
-            % remove all style
+        % This function updates operation view
+        % [Group] global control
+        function update_operation_view(this)
+            %% remove all style
+            removeStyle(this.optree);
 
+            %% append bold style on current active branch
+            fontStyle = uistyle("FontWeight", 'bold');
+            iconStyle0 = uistyle("Icon",this.flagsrc, "IconAlignment",'leftmargin');
+            iconStyle = uistyle("Icon",this.readysrc, "IconAlignment",'leftmargin');
+            addStyle(this.optree, fontStyle, "node", this.node_active);
+            addStyle(this.optree, iconStyle0, "node", this.node_active);
+            ndptr = this.get_node_before();
+            while ~isempty(ndptr)
+                % add to previous node
+                addStyle(this.optree, fontStyle, "node", ndptr);
+                addStyle(this.optree, iconStyle, "node", ndptr);
 
-            % append bold style on current active branch
+                % update
+                ndptr = this.get_node_before(ndptr);
+            end
 
-            
+            %% expand older node
+            pnode = this.get_node_before();
+            if ~isempty(pnode), pnode.expand(); end
+
+            %% update current selected node
+            this.optree.SelectedNodes = this.node_active;
         end
 
-        function update_snapshot_appearance(this, node)
+        % This function updates source view
+        % [Group] global control
+        function update_source_view(this)
+
+        end
+
+        % This function updates snapshot view
+        % [Group] local control
+        function update_snapshot_view(this, node)
             arguments
                 this
                 node    (1,:)   = []
             end
 
-            % set default node as active node
-            if isempty(node), node = this.node_active; end
+            % set default node as selected node
+            if isempty(node), node = this.optree.SelectedNodes; end
             nd = node.NodeData;
 
             %% parse node data and generate formatted text
@@ -607,6 +723,35 @@ classdef OperationHistoryManager < handle
 
             %% update text field to display the snapshot
             this.optxt.Value = txt;
+        end
+    end
+
+    methods (Static)
+        function r = reformat_time(opt_crop)
+            frames = opt_crop.f;
+            r = zeros(0, 2);
+            if isscalar(frames)
+                r(1) = frames; r(2) = frames;
+                return;
+            end
+
+            % multi frames selected
+            ps = 1;
+            pe = 2;
+            while pe <= numel(frames)
+                if pe < numel(frames)
+                    if frames(pe) - frames(pe-1) == 1
+                        pe = pe + 1;
+                    else
+                        r = [r; frames(ps), frames(pe-1)]; %#ok<AGROW>
+                        ps = pe;
+                        pe = pe + 1;
+                    end
+                else    % EOF
+                    r = [r; frames(ps), frames(pe)]; %#ok<AGROW>
+                    break;
+                end
+            end
         end
     end
 end

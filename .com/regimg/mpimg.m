@@ -15,13 +15,13 @@ classdef mpimg < matlab.mixin.Copyable
     properties(Access=public, Dependent)
         Data            % variable, get/set, (can't set if isconst is true)
         DimOrder        % variable, get/set, (can't set if isconst is true)
-        IsAutoClear     % constant, get
-        IsConst         % constant, get
         DataType        % variable, get
         DataSize        % variable, get
         DataDims        % variable, get
         DataBytes       % variable, get
         FileName        % variable, get
+        IsConst         % constant, get
+        RetainCache     % variable, get/set
     end
 
     properties(Access = private, Hidden)
@@ -133,10 +133,6 @@ classdef mpimg < matlab.mixin.Copyable
             this.dimorder = upper(r);
         end
 
-        function r = get.IsAutoClear(this)
-            r = this.isautoclear;
-        end
-
         function r = get.IsConst(this)
             r = this.isconst;
         end
@@ -169,6 +165,19 @@ classdef mpimg < matlab.mixin.Copyable
 
         function r = get.FileName(this)
             r = this.memptr.Filename;
+        end
+
+        function r = get.RetainCache(this)
+            r = ~this.isautoclear;
+        end
+
+        function set.RetainCache(this, r)
+            arguments
+                this 
+                r       (1,1)   logical
+            end
+
+            this.isautoclear = ~r;
         end
     end
 
@@ -413,10 +422,24 @@ classdef mpimg < matlab.mixin.Copyable
 
         % destructor
         function delete(this)
-            free(this);
+            % this function will free the linked data
+            % if auto-clear is true, the disk file will be removed
+            if ~isempty(this.memptr)
+                file_ = this.memptr.Filename;
 
-            % calling default destructor
-            % ~
+                % auto free by memmapfile->cleanup
+                this.memptr = [];
+
+                if this.isautoclear == true
+                    if isfile(file_)
+                        try
+                            delete(file_);  % remove cache on disk
+                        catch ME
+                            throw(ME);
+                        end
+                    end
+                end
+            end
         end
     end
 
@@ -498,22 +521,6 @@ classdef mpimg < matlab.mixin.Copyable
             this.memptr = memmapfile(file_, ...
                 "Format", this.fmt, ...
                 "Writable", ~this.isconst);
-        end
-
-        function free(this)
-            % this function will free the linked data
-            % if autoclear is true, the disk file will be removed
-            if ~isempty(this.memptr)
-                file_ = this.memptr.Filename;
-
-                % auto free by memmapfile->cleanup
-                this.memptr = [];
-
-                if this.isautoclear == true
-                    % free disk file
-                    delete(file_);
-                end
-            end
         end
 
         % This function crop data and return another mpimg object, which

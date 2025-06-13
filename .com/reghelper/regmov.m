@@ -23,19 +23,20 @@ classdef regmov < matlab.mixin.Copyable
     end
 
     properties(Access=public, Dependent)
-        Movie           % variable, get/set, stored
-        MetaData        % variable, get/set, stored
-        Time            % variable, get/set, stored
-        MovieZProj      % variable, get/___, not stored
-        ZProjMethod     % variable, get/set, stored
-        Transformation  % variable, get/set, stored
-        Location        % variable, get/___, not stored
         Bytes           % variable, get/___, not stored
-        EMin            % variable, get/___, not stored
         EMax            % variable, get/___, not stored
         EMedian         % variable, get/___, not stored
+        EMin            % variable, get/___, not stored
         ETmplIdx        % variable, get/___, not stored
+        Location        % variable, get/___, not stored
         MC              % variable, get/___, not stored
+        MetaData        % variable, get/set, stored
+        Movie           % variable, get/set, stored
+        MovieZProj      % variable, get/___, not stored
+        RetainCache     % variable, get/set, not stored
+        Time            % variable, get/set, stored
+        Transformation  % variable, get/set, stored
+        ZProjMethod     % variable, get/set, stored
     end
 
     methods
@@ -418,6 +419,27 @@ classdef regmov < matlab.mixin.Copyable
             end
 
             r = permute(cat(3, mc_ref_x, mc_ref_y, mc_ref_z), [2,3,1]);
+        end
+
+        function r = get.RetainCache(this)
+            if ismember(class(this.mptr), ["mpimg", "mpimgs"])
+                r = this.mptr.RetainCache;
+            else
+                r = false;  % auto clean by MATLAB garbage collector
+            end
+        end
+
+        function set.RetainCache(this, r)
+            arguments
+                this 
+                r       (1,1)   logical
+            end
+
+            if ismember(class(this.mptr), ["mpimg", "mpimgs"])
+                this.mptr.RetainCache = r;
+            else
+                % do nothing
+            end
         end
     end
 
