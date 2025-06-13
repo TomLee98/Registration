@@ -361,8 +361,8 @@ V2.2        Wujing              悟净
 
 V3.x        Galileo          伽利略
   |- V3.0.0     2025/05/24
-  |     |- [Key Note] please logout and login your account (delay more than 30s) if running on computing server
-  |     |- [Key Note] do not protect more than 1 worker in "task viewer", which may cause bug. It will be removed soon.
+  |     |- [Urgent] please logout and login your account (delay more than 30s) if running on computing server
+  |     |- [Urgent] do not protect more than 1 worker in "task viewer", which may cause bug. It will be removed soon.
   |     |- [Update] aligned image reloading support (you must combine two channels if needed before loading)
   |     |- [Update] add "auto template" for aligned image reloading then auto find template volume
   |     |- [Update] add anomaly detection and "detecting report" for cell segmentor
@@ -409,7 +409,7 @@ V4.x        da Vinci          达·芬奇
   |     |- [Note] (hidden)introduce new update tag
   |- V4.1.0     2025/06/
   |     |- [Update] TODO: add "experimental feature": auto save for some results
-  |     |- [Update] TODO: "Resource Manager": file size limitation as percent of memory/disk size
+  |     |- [Update] TODO: add "History Manager" storage protection to avoid operations overflow
   |     |- [Update] TODO: support "user's behaviour" collection: track user usage patterns for program features
   |     |- [Fix Bugs] TODO: fix "channel alignment" may cause memory overflow with big file
   |     |- [Fix Bugs] TODO: fix the bug if user uses continues MANREG (too many copy)

@@ -167,7 +167,7 @@ classdef regrspt < handle
                 case constdef.OP_REGISTER
                     dpost = this.restore_register(dpre);
                 case constdef.OP_SEGMENT
-                    dpost = this.restore_segment();
+                    dpost = this.restore_segment(dpre);
                 otherwise
                     throw(MException("regrspt:invalidOperator", ...
                         "RestorePoint object only support <CROP>, <REGISTER>, <SEGMENT>"));
@@ -191,7 +191,7 @@ classdef regrspt < handle
                 throw(MException("regrspt:invalidInvoke", ...
                     "No stored data can be restored."));
             else
-                dpost = this.dptr;      % just copy
+                dpost = this.dptr;      % pass
             end
         end
 
@@ -331,10 +331,9 @@ classdef regrspt < handle
             end
         end
 
-        function dpost = restore_segment(this, ~)
-            % just load the bot at any situation
-            % ???
-            dpost = get_storage_data(this);
+        function dpost = restore_segment(this, dpre) %#ok<INUSD>
+            % pass
+            dpost = dpre;
         end
 
         function r = get_storage_data(this)

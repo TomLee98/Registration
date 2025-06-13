@@ -1,4 +1,4 @@
-classdef OperationHistoryManager < handle
+classdef regohm < handle
     %REGHIMGR This class defines OperationHistoryManager for reg3D app, 
     % which is the agent to handle image and operations resources
     % NOTE: change storage strategy need
@@ -29,15 +29,10 @@ classdef OperationHistoryManager < handle
     end
 
     properties(Access = private, Hidden)
-        % current node related data pointer
-        dptr            (1,1)   regmov = regmov.empty()
-
-        is_distrib      (1,1)   logical = false % data distributed flag 
-
-        % current active node
-        node_active     (1,1)                   % current active node (or tree)
-
-        nodes_total_num (1,1)   double  = 0     % number of total generated nodes in the tree
+        dptr            (1,1)   regmov = regmov.empty()     % current node related data pointer
+        is_distrib      (1,1)   logical = false             % data distributed flag 
+        node_active     (1,1)                               % current active node (or tree)
+        nodes_total_num (1,1)   double  = 0                 % number of total generated nodes in the tree
     end
     
     methods
@@ -96,7 +91,7 @@ classdef OperationHistoryManager < handle
     end
 
     methods (Access = public)
-        function this = OperationHistoryManager(ufig, op_tree, op_txt, ctxt_menu, strategy, dbflag)
+        function this = regohm(ufig, op_tree, op_txt, ctxt_menu, strategy, dbflag)
             %REGHIMGR A Constructor
             % Input:
             %   - ufig: 1-by-1 matlab.ui.Figure for progress bar display
@@ -123,7 +118,6 @@ classdef OperationHistoryManager < handle
             this.ctmenu = ctxt_menu;
             this.optsty = strategy;
             this.is_distrib = dbflag;
-
             this.node_active = this.optree;
         end
 
@@ -325,7 +319,7 @@ classdef OperationHistoryManager < handle
                             node_data.Properties = struct("Origin", st.z(1), ...
                                                           "Slices", st.z(2)-st.z(1)+1);
                         case "T"
-                            frs = OperationHistoryManager.reformat_time(st);
+                            frs = regohm.reformat_time(st);
                             node_data.Properties = struct("Frames", frs);
                         otherwise
                     end
@@ -654,7 +648,9 @@ classdef OperationHistoryManager < handle
         % This function updates source view
         % [Group] global control
         function update_source_view(this)
+            % invoke storage agent scan the project
 
+            % and repaint
         end
 
         % This function updates snapshot view

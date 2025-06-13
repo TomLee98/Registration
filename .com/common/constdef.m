@@ -40,8 +40,8 @@ classdef constdef
                                  "AutoTemplate",          "ON", ...                 % "ON"/"OFF"
                                  "Style",                 "FOLLOW", ...             % "LIGHT"/"DARK"/"FOLLOW"
                                  "ProgressBarColor",      [0.30, 0.75, 0.93], ...   % 0 ~ 1, 1-by-3 array
-                                 "PreferredOptimization", "PERFORMANCE", ...        % "PERFORMANCE"/"RESOURCES"/"BALANCE" 
-                                 "CleanBufferTrigger",    "RT", ...                 % "EXIT"/"RT"/"OFF"
+                                 "CachePolicy",           "PERFORMANCE", ...        % "PERFORMANCE"/"RESOURCES"/"BALANCE" 
+                                 "BufferCleanTrigger",    "EXIT", ...               % "EXIT"/"RT"/"OFF"
                                  "Capacity",              64, ...                   % positive double scalar, 1 ~ 128
                                  "BranchDepth",           "OFF", ...                % "LAST"/"LAST3"/"INFINITY"/"OFF"
                                  "NumProtectedCPU",       0, ...                    % nonnegative integer

@@ -45,6 +45,7 @@
     <BLUE>Blue</BLUE>
     <BOTH_SIDE>Both</BOTH_SIDE>
     <BREAK>Break</BREAK>
+    <CACHE_POLICY>Cache Policy</CACHE_POLICY>
     <CALCULATING_GOODNESS>Calculating goodness of registration...</CALCULATING_GOODNESS>
     <CAMERA_BACKGROUND>Camera Background</CAMERA_BACKGROUND>
     <CAMERA_TIME>Camera Time</CAMERA_TIME>
@@ -327,7 +328,6 @@
     <OPERATION_TREE_DEPTH>Operation Tree (Depth)</OPERATION_TREE_DEPTH>
     <OPERATION_VIEW>Operation View</OPERATION_VIEW>
     <OPERATOR>Operator</OPERATOR>
-    <OPTIMIZATION_PREFERENCE>Optimization Preference</OPTIMIZATION_PREFERENCE>
     <OPTION>Options</OPTION>
     <OTHER_SETTINGS>Other Settings</OTHER_SETTINGS>
     <OTO_OP_ONE>1 action</OTO_OP_ONE>
