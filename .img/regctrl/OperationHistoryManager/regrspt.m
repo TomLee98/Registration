@@ -260,6 +260,8 @@ classdef regrspt < handle
 
                 fridx = str2num(this.others.frames_reg(1).replace("end", ...
                     string(dpre.MetaData.frames))); %#ok<ST2NM>
+                fridxx = find(cellfun(@(x)~isempty(x), this.tfs, "UniformOutput",true));
+                fridx = intersect(fridx, fridxx);
 
                 RPS = this.RESTORE_PARPOOL_SIZE;
                 if mod(numel(fridx), RPS) ~= 0
@@ -302,6 +304,8 @@ classdef regrspt < handle
 
                 fridx = str2num(this.others.frames_reg(1).replace("end", ...
                     string(dpre.MetaData.frames))); %#ok<ST2NM>
+                fridxx = find(cellfun(@(x)~isempty(x), this.tfs, "UniformOutput",true));
+                fridx = intersect(fridx, fridxx);
                 RPS = this.RESTORE_PARPOOL_SIZE;
                 if mod(numel(fridx), RPS) ~= 0
                     frs = [1:RPS:RPS*floor(numel(fridx)/RPS)+1, numel(fridx)];
@@ -345,6 +349,8 @@ classdef regrspt < handle
 
                 fridx = str2num(this.others.frames_reg(1).replace("end", ...
                     string(dpre.MetaData.frames))); %#ok<ST2NM>
+                fridxx = find(cellfun(@(x)~isempty(x), this.tfs, "UniformOutput",true));
+                fridx = intersect(fridx, fridxx);
                 RPS = this.RESTORE_PARPOOL_SIZE;
                 if mod(numel(fridx), RPS) ~= 0
                     frs = [1:RPS:RPS*floor(numel(fridx)/RPS)+1, numel(fridx)];
