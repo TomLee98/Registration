@@ -1,7 +1,6 @@
 classdef regohm < handle
-    %REGHIMGR This class defines OperationHistoryManager for reg3D app, 
+    %REGOHM This class defines "Operation History Manager" for reg3D app, 
     % which is the agent to handle image and operations resources
-    % NOTE: change storage strategy need
 
     properties(Constant, Hidden)
         OP_SKIP_OUTPUT = {constdef.OP_LOAD, constdef.OP_SEGMENT}
@@ -30,7 +29,7 @@ classdef regohm < handle
 
     properties(Access = private, Hidden)
         dptr            (1,1)   regmov = regmov.empty()     % current node related data pointer
-        is_distrib      (1,1)   logical = false             % data distributed flag 
+        is_distributed  (1,1)   logical = false             % data distributed flag 
         node_active     (1,1)                               % current active node (or tree)
         nodes_total_num (1,1)   double  = 0                 % number of total generated nodes in the tree
     end
@@ -61,7 +60,7 @@ classdef regohm < handle
         end
 
         function r = get.IsDistributed(this)
-            r = this.is_distrib;
+            r = this.is_distributed;
         end
 
         function set.IsDistributed(this, r)
@@ -71,16 +70,16 @@ classdef regohm < handle
             end
 
             % try to spread or gather all data
-            if r == true && this.is_distrib == false
+            if r == true && this.is_distributed == false
                 % spread data to disk
                 this.move_storage("spread");
 
-                this.is_distrib = true;
-            elseif r == false && this.is_distrib == true
+                this.is_distributed = true;
+            elseif r == false && this.is_distributed == true
                 % gather data to memory
                 this.move_storage("gather");
 
-                this.is_distrib = false;
+                this.is_distributed = false;
             end
         end
 
@@ -91,7 +90,7 @@ classdef regohm < handle
     end
 
     methods (Access = public)
-        function this = regohm(ufig, op_tree, op_txt, ctxt_menu, strategy, dbflag)
+        function this = regohm(ufig, op_tree, op_txt, ctxt_menu, strategy, distributed)
             %REGHIMGR A Constructor
             % Input:
             %   - ufig: 1-by-1 matlab.ui.Figure for progress bar display
@@ -101,6 +100,7 @@ classdef regohm < handle
             %   - ctxt_menu: 1-by-1 matlab.ui.container.ContextMenu as
             %               interaction callback adapter
             %   - strategy: 1-by-1 string, could be "performance"/"resource"/"balance"
+            %   
             arguments
                 ufig        (1,1)   matlab.ui.Figure
                 op_tree     (1,1)   matlab.ui.container.Tree
@@ -108,7 +108,7 @@ classdef regohm < handle
                 ctxt_menu   (1,1)   matlab.ui.container.ContextMenu
                 strategy    (1,1)   string  {mustBeMember(strategy, ...
                                     ["PERFORMANCE", "RESOURCE", "BALANCE"])} = "PERFORMANCE"
-                dbflag      (1,1)   logical = false
+                distributed (1,1)   logical = false
             end
 
             this.ufig = ufig;
@@ -117,7 +117,7 @@ classdef regohm < handle
             this.optxt = op_txt;
             this.ctmenu = ctxt_menu;
             this.optsty = strategy;
-            this.is_distrib = dbflag;
+            this.is_distributed = distributed;
             this.node_active = this.optree;
         end
 
@@ -274,25 +274,27 @@ classdef regohm < handle
         % This function creates a new node as children of active node
         function node = create_new_node(this, optr, args, vars)
 
-            %% create restore point object
-            switch this.optsty
-                case "PERFORMANCE"
-                    rs_node = regrspt(optr, args, vars{:});
-                case "RESOURCE"
-                    warning("OperationHistoryManager:unfinishedItem", ...
-                        "Developing...");
-                case "BALANCE"
-                    warning("OperationHistoryManager:unfinishedItem", ...
-                        "Developing...");
-                otherwise
-                    throw(MException("OperationHistoryManager:invalidStrategy", ...
-                        "Unsupported transmission optimization strategy."));
+            %% create restore point object by cache policy
+            is_storage = constdef.TRANSMISSION_STORAGE_TABLE{this.optsty, optr};
+
+            if is_storage == false
+                % drop data node and replace by empty
+                for n = 1:2:numel(vars)
+                    if isequal("Data", vars{n})
+                        vars{n+1} = regmov.empty();     % drop, handle only be holded by Register
+                        break;
+                    end
+                end
             end
+
+            % construct restore point
+            rs_node = regrspt(optr, args, vars{:});
 
             node_data = struct("Operation",  [], ...
                                "Properties", [], ...
                                "RSPoint",    rs_node, ...
                                "Time",       datetime("now", "Format","MM/dd HH:mm:ss"));
+
             switch optr
                 case constdef.OP_LOAD
                     node_text = "load";
