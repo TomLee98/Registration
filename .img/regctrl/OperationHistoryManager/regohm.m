@@ -100,7 +100,7 @@ classdef regohm < handle
             %   - ctxt_menu: 1-by-1 matlab.ui.container.ContextMenu as
             %               interaction callback adapter
             %   - strategy: 1-by-1 string, could be "performance"/"resource"/"balance"
-            %   
+            %   - distributed: 1-by-1 logical, indicate if is distributed mode
             arguments
                 ufig        (1,1)   matlab.ui.Figure
                 op_tree     (1,1)   matlab.ui.container.Tree

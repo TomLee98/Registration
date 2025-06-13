@@ -221,6 +221,8 @@ classdef regrspt < handle
                 % do imwarp on dpre
                 dpost = dpre.copy();    % deep copy
 
+                pp = parpool("Threads", this.RESTORE_PARPOOL_SIZE);
+
                 switch this.args.(constdef.OP_REGISTER).Algorithm
                     case "TCREG"
                         switch this.args.(constdef.OP_REGISTER).Mode
@@ -244,6 +246,9 @@ classdef regrspt < handle
                         dpost.Transformation(:,3) = this.tfs;
                     otherwise
                 end
+
+                delete(pp);
+
             end
 
             %% NESTED HELPER FUNCTIONS
@@ -258,7 +263,7 @@ classdef regrspt < handle
 
                 RPS = this.RESTORE_PARPOOL_SIZE;
                 if mod(numel(fridx), RPS) ~= 0
-                    frs = [1:RPS:RPS*floor(numel(fridx)/RPS)+1, numel(fridx)];
+                    frs = [1:RPS:RPS*floor(numel(fridx)/RPS)+1, numel(fridx)+1];
                 else
                     frs = 1:RPS:RPS*floor(numel(fridx)/RPS)+1;
                 end
@@ -277,10 +282,10 @@ classdef regrspt < handle
                         avol_fc_m = avol_fc(:,:,:,m);
                         fival_sc = mean(avol_sc_m(:,[1,end],:),"all");
                         fival_fc =  mean(avol_fc_m(:,[1,end],:),"all");
-                        avol_sc(:,:,:,m) = imwarp(avol_sc_m, ...
+                        avol_sc(:,:,:,m) = imwarp(avol_sc_m, rref,...
                             tfss{m}, itpalg,  "OutputView", rref, ...
                             "FillValues",fival_sc);
-                        avol_fc(:,:,:,m) = imwarp(avol_fc_m, ...
+                        avol_fc(:,:,:,m) = imwarp(avol_fc_m, rref,...
                             tfss{m}, itpalg, "OutputView", rref, ...
                             "FillValues",fival_fc);
                     end
@@ -358,7 +363,7 @@ classdef regrspt < handle
                     parfor m = 1:numel(regfrs)
                         avol_fc_m = avol_fc(:,:,:,m);
                         fival_fc =  mean(avol_fc_m(:,[1,end],:),"all");
-                        avol_fc(:,:,:,m) = imwarp(avol_fc_m, ...
+                        avol_fc(:,:,:,m) = imwarp(avol_fc_m, rref, ...
                             tfss{m}, itpalg, "OutputView", rref, ...
                             "FillValues",fival_fc);
                     end
@@ -384,9 +389,9 @@ classdef regrspt < handle
                 % imwarp
                 fival_sc = mean(avol_sc(:,[1,end],:),"all");
                 fival_fc =  mean(avol_fc(:,[1,end],:),"all");
-                avol_sc = imwarp(avol_sc, tfss, itpalg,  "OutputView", rref, ...
+                avol_sc = imwarp(avol_sc, rref, tfss, itpalg,  "OutputView", rref, ...
                     "FillValues",fival_sc);
-                avol_fc = imwarp(avol_fc, tfss, itpalg, "OutputView", rref, ...
+                avol_fc = imwarp(avol_fc, rref, tfss, itpalg, "OutputView", rref, ...
                     "FillValues",fival_fc);
 
                 % save warped data

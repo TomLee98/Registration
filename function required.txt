@@ -398,7 +398,7 @@ V3.x        Galileo          伽利略
 
 V4.x        da Vinci          达·芬奇
   |- V4.0.0     2025/06/15
-  |     |- [New] TODO: introduce operation history manager
+  |     |- [New] introduce operation history manager
   |     |- [New] support cell segmentor "load/export" results
   |     |- [New] TODO: add "Dual-Color" display feature
   |     |- [Adjust] remove "single ROI" function
