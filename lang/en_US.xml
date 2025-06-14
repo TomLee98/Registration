@@ -125,6 +125,7 @@
     <DVIEW_XY>XY Plane(Z)</DVIEW_XY>
     <DVIEW_YZ>YZ Plane(X)</DVIEW_YZ>
     <DVIEW_ZX>ZX Plane(Y)</DVIEW_ZX>
+    <DYNAMIC_ONLY>Dynamic Only</DYNAMIC_ONLY>
     <ENABLE>On</ENABLE>
     <END>End</END>
     <ENHANCEMENT>Enhancement</ENHANCEMENT>
@@ -166,6 +167,7 @@
     <FRAME_FEW>Please select at least two frames</FRAME_FEW>
     <FRAME_OVERFLOW>Frames count overflow</FRAME_OVERFLOW>
     <FRAME_RATE>Frame Rate</FRAME_RATE>
+    <FULL>Full</FULL>
     <FUNCTIONAL_BACKGROUND>Please enter the background on the signal channel:</FUNCTIONAL_BACKGROUND>
     <GAMMA>Gamma</GAMMA>
     <GAUSSIAN_FILTER>Gaussian Filter</GAUSSIAN_FILTER>
@@ -212,18 +214,13 @@
     <INTENSITY_THRESHOLD>Intensity Threshold</INTENSITY_THRESHOLD>
     <INTERFACE_CONTROL>Interface Control</INTERFACE_CONTROL>
     <INTERPOLATION>Interpolation</INTERPOLATION>
-    <INVALID_BACKGROUND>Invalid background value</INVALID_BACKGROUND>
     <INVALID_FRAME_ORDER>Invalid frames order</INVALID_FRAME_ORDER>
-    <INVALID_MASK_FILE>Invalid Mask File: invalid variable exists</INVALID_MASK_FILE>
     <INVALID_PATH>Invalid path</INVALID_PATH>
     <INVALID_PROFILE>Invalid profile</INVALID_PROFILE>
     <INVALID_RULER>Invalid ruler: try resizing the ruler</INVALID_RULER>
     <INVALID_UPDATE_REPOSITORY>Checking for updates: Illegal repository path. Please check update_setting.ini</INVALID_UPDATE_REPOSITORY>
-    <INVERSE>Inverse</INVERSE>
     <INVERSE_CHECK>Inverse Check</INVERSE_CHECK>
-    <IRRECOVERABLE_BACKGROUND>Irrecoverable  background value</IRRECOVERABLE_BACKGROUND>
     <IRREVERSIBLE_CA>Channels alignment operation is irreversible, continue?</IRREVERSIBLE_CA>
-    <IRREVERSIBLE_CROP>Cropping operation is irreversible, continue?</IRREVERSIBLE_CROP>
     <ISOMETRIC>Isometric</ISOMETRIC>
     <ITERATION_COEFFICIENT>Iteration Coefficient</ITERATION_COEFFICIENT>
     <KERNEL>Kernel</KERNEL>
@@ -379,6 +376,7 @@
     <RECTANGLE>Rectangle</RECTANGLE>
     <RECYCLE>Recycle</RECYCLE>
     <RED>Red</RED>
+    <RED_GREEN>Red+Green</RED_GREEN>
     <RED_CHANNEL>Red Channel</RED_CHANNEL>
     <RED_CYAN>Red-Cyan</RED_CYAN>
     <REFRESH_LABEL>Refresh Label</REFRESH_LABEL>

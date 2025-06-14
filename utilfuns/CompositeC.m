@@ -1,18 +1,18 @@
 function C = CompositeC(A, B, method, order, pseudoColor)
-% COMPOSITEC This function composites the color channel and genetates the RGB
-% representaton
+% COMPOSITEC This function composites the color channel and generates the RGB
+% representation
 % Input:
-%   - A: 2D/3D uint8 matrix for channel A
-%   - B: 2D/3D uint8 matrix for channel B
+%   - A: 2-D/3-D uint8 matrix for channel A
+%   - B: 2-D/3-D uint8 matrix for channel B
 %   - method: the combination method, which could be "none", "red-cyan" or
 %   "green-magenta", where the format follows channel "A-B"
-%   - order: if no combiantion, order deteremine which channel is selected,
+%   - order: if no combination, order determine which channel is selected,
 %   and 1 for channel A, 2 for channel B
 %   - pseudoColor: the pseudo color need to viewing, which could be "r",
-%   "g","mix", where "r" for "red"(~694nm light wave), and "g" for
-%   "green"(~521nm light wave), "mix" for dual color viewing
+%   "g","mix", where "r" for "red"(~694 nm light wave), and "g" for
+%   "green"(~521 nm light wave), "mix" for dual color viewing
 % Output:
-%   - C: 3D/4D uint8 true color matrix
+%   - C: 3-D/4-D uint8 true color matrix
 
 % Version 1.1.0
 % Copyright (c) 2022-2023, Weihan Li

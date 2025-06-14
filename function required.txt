@@ -398,7 +398,7 @@ V3.x        Galileo          伽利略
 
 V4.x        da Vinci          达·芬奇
   |- V4.0.0     2025/06/15
-  |     |- [New] introduce operation history manager
+  |     |- [New] introduce powerful operation manager
   |     |- [New] support cell segmentor "load/export" results
   |     |- [New] TODO: add "Dual-Color" display feature
   |     |- [Adjust] remove "single ROI" function
@@ -408,15 +408,16 @@ V4.x        da Vinci          达·芬奇
   |     |- [Note] (hidden)introduce view-based design philosophy
   |     |- [Note] (hidden)introduce new update tag
   |- V4.1.0     2025/06/
-  |     |- [Update] TODO: add "experimental feature": auto save for some results
-  |     |- [Update] TODO: add "History Manager" storage protection to avoid operations overflow
-  |     |- [Update] TODO: support "user's behaviour" collection: track user usage patterns for program features
-  |     |- [Fix Bugs] TODO: adjust some appearance after restore operation
-  |     |- [Fix Bugs] TODO: fix "channel alignment" may cause memory overflow with big file
+  |     |- [New] TODO: add "channel alignment" recovery
+  |     |- [New] TODO: add "History Manager" storage protection to avoid operations overflow
+  |     |- [New] TODO: support "user's behaviour" collection: track user usage patterns for program features
+  |     |- [Adjust] TODO: modify some appearance after restore operation
   |     |- [Fix Bugs] TODO: fix the bug if user uses continues MANREG (too many copy)
   |     |- [Fix Bugs] TODO: update global system message control
   |- V4.2.0     2025/
-  |     |- [Update] TODO: introduce "registration project"
-  |     |- [Update] TODO: support file "drag" and "open"
-  |     |- [Update] TODO: add "storage view"
+  |     |- [New] TODO: introduce "registration project"
+  |     |- [New] TODO: add "experimental feature": auto save for some results
+  |     |- [New] TODO: support file "drag" and "open"
+  |     |- [New] TODO: add user memory allocation limitation as ratio of total memory
+  |     |- [Adjust] TODO: 
   |     |- [Fix Bugs] TODO: 
