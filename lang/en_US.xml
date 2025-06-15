@@ -125,7 +125,6 @@
     <DVIEW_XY>XY Plane(Z)</DVIEW_XY>
     <DVIEW_YZ>YZ Plane(X)</DVIEW_YZ>
     <DVIEW_ZX>ZX Plane(Y)</DVIEW_ZX>
-    <DYNAMIC_ONLY>Dynamic Only</DYNAMIC_ONLY>
     <ENABLE>On</ENABLE>
     <END>End</END>
     <ENHANCEMENT>Enhancement</ENHANCEMENT>
@@ -167,8 +166,8 @@
     <FRAME_FEW>Please select at least two frames</FRAME_FEW>
     <FRAME_OVERFLOW>Frames count overflow</FRAME_OVERFLOW>
     <FRAME_RATE>Frame Rate</FRAME_RATE>
-    <FULL>Full</FULL>
     <FUNCTIONAL_BACKGROUND>Please enter the background on the signal channel:</FUNCTIONAL_BACKGROUND>
+    <FUSED>Fused</FUSED>
     <GAMMA>Gamma</GAMMA>
     <GAUSSIAN_FILTER>Gaussian Filter</GAUSSIAN_FILTER>
     <GENERATE_MASK>Generate Mask</GENERATE_MASK>
@@ -311,6 +310,7 @@
     <NOISE_MODEL>Noise Model</NOISE_MODEL>
     <NONE>None</NONE>
     <NONUNIFORM>Nonuniform</NONUNIFORM>
+    <NORMAL>Normal</NORMAL>
     <NORMAL_DISTRIBUTION>Normal</NORMAL_DISTRIBUTION>
     <NUM_MAX>Maximum</NUM_MAX>
     <OBJECTS_FOUND>Objects number after segmentation:</OBJECTS_FOUND>

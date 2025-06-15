@@ -449,7 +449,7 @@ classdef regohm < handle
         function automove_active_node(this, node)
             if this.is_posterity_of(node)
                 % priority: brother > parent
-                if nueml(node.Parent.Children) > 1
+                if numel(node.Parent.Children) > 1
                     brothers = setdiff(node.Parent.Children, node);
                     this.ActivateNode(brothers(1));
                 else
@@ -563,19 +563,23 @@ classdef regohm < handle
         end
 
         % This function return if the active node is posterity of given
-        % tree node
+        % tree node or equal
         function tf = is_posterity_of(this, node)
             arguments
                 this
                 node (1,1)  matlab.ui.container.TreeNode
             end
 
-            tf = false;
+            if node == this.node_active
+                tf = true;
+            else
+                tf = false;
 
-            node = node.Parent;
-            while ~isempty(node) && isa(node, "matlab.ui.container.TreeNode")
-                if node == this.node_active, tf = true; break; end
                 node = node.Parent;
+                while ~isempty(node) && isa(node, "matlab.ui.container.TreeNode")
+                    if node == this.node_active, tf = true; break; end
+                    node = node.Parent;
+                end
             end
         end
 
