@@ -8,8 +8,8 @@ function status = reg3d_update(mlapp_file, auto_clean)
 %             for failed
 
 arguments
-    mlapp_file (1,1) string;
-    auto_clean (1,1) logical;
+    mlapp_file (1,1) string
+    auto_clean (1,1) logical
 end
 
 % This function generate the auto_update script 
