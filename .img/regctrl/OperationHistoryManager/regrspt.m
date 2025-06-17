@@ -4,7 +4,8 @@ classdef regrspt < handle
 
     properties (Constant, Hidden)
         RESTORE_PARPOOL_SIZE = ceil(GetCPUWorkersMaxN([],[])/2);
-        VALID_FIELD_NAME = ["text_time", "text_meta", "fixdef", "frames_reg", "mask_reg"]
+        VALID_FIELD_NAME = ["text_time", "text_meta", "fixdef", "frames_reg", ...
+            "mask_reg", "mode_zproj"]
     end
     
     properties (GetAccess = private, SetAccess = immutable)
@@ -110,7 +111,8 @@ classdef regrspt < handle
             addParameter(p, "CropDim", "");
             addParameter(p, "Data", regmov.empty());
             addParameter(p, "Others", struct("text_time",[], "text_meta",[], ...
-                                             "fixdef",[], "frames_reg",[], "mask_reg",[]));
+                                             "fixdef",[], "frames_reg",[], ...
+                                             "mask_reg",[], "mode_zproj",[]));
             addParameter(p, "Segmentor", []);
             addParameter(p, "Transform", {});
 

@@ -418,6 +418,7 @@ V4.x        da Vinci          达·芬奇
   |     |- [New] TODO: add "History Manager" storage protection to avoid operations overflow
   |     |- [New] TODO: support "user's behaviour" collection: track user usage patterns for program features
   |     |- [Adjust] TODO: modify some appearance after restore operation
+  |     |- [Adjust] TODO: try to parallel on "ZCROP", "TCROP", "XYCROP" for speed up
   |     |- [Fix Bugs] TODO: fix the bug if user uses continues MANREG (too many copy)
   |     |- [Fix Bugs] TODO: update global system message control
   |     |- [Note] (hidden) TODO: update help files

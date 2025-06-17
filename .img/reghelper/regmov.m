@@ -14,12 +14,13 @@ classdef regmov < matlab.mixin.Copyable
         mopt            % 1-by-12 table, with movie options
         t               % t-by-1 double, camera time
         zprojalg        % 1-by-1 string, method of z-projection
+        zprojupd        % 1-by-1 logical, the flag for projection updating
         tform           % t-by-3 cell, with {global, local, manual} transformation unit
     end
 
     properties(Access=private, Hidden, NonCopyable)
         mptr            % 1-by-1 mpimg/mpimgs object or numeric array
-        
+        zdptr           % m-by-n-by(-c)-by-t uint16 array, z-projected data
     end
 
     properties(Access=public, Dependent)
@@ -32,7 +33,7 @@ classdef regmov < matlab.mixin.Copyable
         MC              % variable, get/___, not stored
         MetaData        % variable, get/set, stored
         Movie           % variable, get/set, stored
-        MovieZProj      % variable, get/___, not stored
+        MovieZProj      % variable, get/___, stored
         RetainCache     % variable, get/set, not stored
         Time            % variable, get/set, stored
         Transformation  % variable, get/set, stored
@@ -68,6 +69,7 @@ classdef regmov < matlab.mixin.Copyable
             this.t = t_;
             this.zprojalg = "max";
             this.tform = cell(mopt_.frames, 3);
+            this.zprojupd = false;
         end
 
         function r = get.Movie(this)
@@ -147,45 +149,60 @@ classdef regmov < matlab.mixin.Copyable
             % NOTE: This function is not real-time function, do not call in
             % real-time situation
 
-            if ismember(class(this.mptr), ["mpimg", "mpimgs"])
-                [vz, pz] = ismember("Z", this.mptr.DimOrder);
-                if ~vz
-                    throw(MException("regmov:invalidOperation", ...
-                        "Movie does not have dimension: 'Z'."));
+            if isempty(this.zdptr)
+                % update z projection source
+                update_flag = true;
+            else
+                update_flag = this.zprojupd;
+            end
+
+            if update_flag == true
+                if ismember(class(this.mptr), ["mpimg", "mpimgs"])
+                    [vz, pz] = ismember("Z", this.mptr.DimOrder);
+                    if ~vz
+                        throw(MException("regmov:invalidOperation", ...
+                            "Movie does not have dimension: 'Z'."));
+                    end
+
+                    rsp_t = repmat({':'}, 1, this.mptr.DataDims);
+                    rsp_tnz = repmat({':'}, 1, this.mptr.DataDims-1);
+                    [~, tloc] = ismember("T", this.mopt.dimOrder);
+                    [~, zloc] = ismember("Z", this.mopt.dimOrder);
+
+                    % partial loading and calculating
+                    block_n = ceil(this.mopt.frames/this.INNER_BLOCK_SIZE);
+                    mov_sz_zproj = this.mptr.DataSize;
+                    mov_sz_zproj(zloc) = [];
+                    r = zeros(mov_sz_zproj, this.mptr.DataType);
+
+                    % slow 50% than exclude typically
+                    for nb = 1:block_n
+                        vidx = ((nb-1)*this.INNER_BLOCK_SIZE+1):min(...
+                            nb*this.INNER_BLOCK_SIZE, this.mopt.frames);
+                        rsp_t{tloc} = vidx;
+                        rsp_tnz{tloc-(tloc>zloc)} = vidx;
+
+                        data = subsref(this.mptr.Data, struct('type','()','subs',{rsp_t}));
+
+                        dr = Projection(data, this.zprojalg, pz);
+
+                        r = subsasgn(r, struct('type','()','subs',{rsp_tnz}), dr);
+                    end
+                elseif isnumeric(this.mptr)
+                    [vz, pz] = ismember("Z", this.mopt.dimOrder);
+                    if ~vz
+                        throw(MException("regmov:invalidOperation", ...
+                            "Movie does not have dimension: 'Z'."));
+                    end
+
+                    r = Projection(this.mptr, this.zprojalg, pz);
                 end
 
-                rsp_t = repmat({':'}, 1, this.mptr.DataDims);
-                rsp_tnz = repmat({':'}, 1, this.mptr.DataDims-1);
-                [~, tloc] = ismember("T", this.mopt.dimOrder);
-                [~, zloc] = ismember("Z", this.mopt.dimOrder);
-
-                % partial loading and calculating
-                block_n = ceil(this.mopt.frames/this.INNER_BLOCK_SIZE);
-                mov_sz_zproj = this.mptr.DataSize;
-                mov_sz_zproj(zloc) = [];
-                r = zeros(mov_sz_zproj, this.mptr.DataType);
-                
-                % slow 50% than exclude typically
-                for nb = 1:block_n
-                    vidx = ((nb-1)*this.INNER_BLOCK_SIZE+1):min(...
-                        nb*this.INNER_BLOCK_SIZE, this.mopt.frames);
-                    rsp_t{tloc} = vidx;
-                    rsp_tnz{tloc-(tloc>zloc)} = vidx;
-
-                    data = subsref(this.mptr.Data, struct('type','()','subs',{rsp_t}));
-
-                    dr = Projection(data, this.zprojalg, pz);
-
-                    r = subsasgn(r, struct('type','()','subs',{rsp_tnz}), dr);
-                end
-            elseif isnumeric(this.mptr)
-                [vz, pz] = ismember("Z", this.mopt.dimOrder);
-                if ~vz
-                    throw(MException("regmov:invalidOperation", ...
-                        "Movie does not have dimension: 'Z'."));
-                end
-
-                r = Projection(this.mptr, this.zprojalg, pz);
+                % update
+                this.zdptr = r;
+            else
+                % copy
+                r = this.zdptr;
             end
         end
 
@@ -200,7 +217,14 @@ classdef regmov < matlab.mixin.Copyable
                     "median","mean"])} = "max"
             end
 
-            this.zprojalg = r_;
+            if ~isequal(r_, this.zprojalg)
+                % update projection data
+                this.zprojalg = r_;
+
+                this.zprojupd = true;   % force to update
+                this.MovieZProj;    % 
+                this.zprojupd = false;  % reset
+            end
         end
 
         function r = get.Transformation(this)
@@ -231,9 +255,9 @@ classdef regmov < matlab.mixin.Copyable
         function r = get.Bytes(this)
             mopt_ = this.mopt; %#ok<NASGU>
             t_ = this.t; %#ok<NASGU>
-            zprojalg_ = this.zprojalg; %#ok<NASGU>
+            zdptr_ = this.zdptr; %#ok<NASGU>
             tform_ = this.tform; %#ok<NASGU>
-            prop_ = struct2table(whos("mopt_","t_","zprojalg_","tform_"));
+            prop_ = struct2table(whos("mopt_","t_","zdptr_","tform_"));
             r.mem = sum(prop_.bytes);
 
             if ismember(class(this.mptr), ["mpimg", "mpimgs"])
