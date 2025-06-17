@@ -66,6 +66,7 @@
     <CLEAR>Clear</CLEAR>
     <CLOCKWISE_90>Clockwise 90°</CLOCKWISE_90>
     <CLOSE>Close</CLOSE>
+    <CLOSE_APP_CONFIRMATION>Confirm to close the current app?</CLOSE_APP_CONFIRMATION>
     <COARSE_REG>Coarse Registration</COARSE_REG>
     <COLOR>Color</COLOR>
     <COLOR_CHANNEL>Color Channel</COLOR_CHANNEL>

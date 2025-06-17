@@ -178,7 +178,6 @@ classdef regmov < matlab.mixin.Copyable
 
                     r = subsasgn(r, struct('type','()','subs',{rsp_tnz}), dr);
                 end
-
             elseif isnumeric(this.mptr)
                 [vz, pz] = ismember("Z", this.mopt.dimOrder);
                 if ~vz

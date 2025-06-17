@@ -148,9 +148,6 @@ classdef regohm < handle
 
             %% activate new node
             this.ActivateNode(node_new);
-
-            %% update appearance
-            this.update_manage_view();
         end
 
         function DelNode(this, node)

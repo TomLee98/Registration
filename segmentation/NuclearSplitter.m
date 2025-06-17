@@ -356,7 +356,21 @@ classdef NuclearSplitter < handle
                         ds(k,1)+1:end-ds(k,2));
                 end
 
-                % remap labels after volume resizing
+                % remove too small object on plane
+                for s = 1:slices
+                    rp = regionprops("table", labels{k}(:,:,s), "EquivDiameter");
+                    if ~isempty(rp)
+                        rmidx = find(rp.EquivDiameter>0 && ...
+                            rp.EquivDiameter<=2*this.MIN_CIRCLE_RADIUS_PLANE);
+                        imgtmp = labels{k}(:,:,s);
+                        for p = 1:numel(rmidx), imgtmp(imgtmp==rmidx(p)) = 0;
+                        end
+                        labels{k}(:,:,s) = imgtmp;
+                    end
+                end
+
+                % remap labels after volume resizing and small objects
+                % removing
                 old_label = unique(labels{k}); old_label(old_label==0) = [];
                 for m = 1:numel(old_label)
                     labels{k}(labels{k}==old_label(m)) = m;

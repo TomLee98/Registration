@@ -407,19 +407,25 @@ V4.x        da Vinci          达·芬奇
   |     |- [Fix Bugs] fix "auto clean" not work on ubuntu server
   |     |- [Note] (hidden)introduce view-based design philosophy
   |     |- [Note] (hidden)introduce new update tag
-  |- V4.1.0     2025/06/
+  |- V4.0.1     2025/06/19
+  |     |- [New] add app close confirmation
+  |     |- [Adjust] increase the "cellpose" segmentated cell size lower bound
+  |     |- [Fix Bugs] TODO: optimize big file operation (Z-Projection caused): remove Z-Projection synchronize, restore z-projection status
+  |     |- [Fix Bugs] TODO: fix the "operation manager" flag display but on MATLAB <= R2024a
+  |- V4.1.0     2025/06/22
+  |     |- [New] TODO: add "pseudo color" configuration in "Resourece Manager"
   |     |- [New] TODO: add "channel alignment" recovery
   |     |- [New] TODO: add "History Manager" storage protection to avoid operations overflow
   |     |- [New] TODO: support "user's behaviour" collection: track user usage patterns for program features
-  |     |- [New] TODO: add "pseudo color" configuration in "Resourece Manager"
   |     |- [Adjust] TODO: modify some appearance after restore operation
   |     |- [Fix Bugs] TODO: fix the bug if user uses continues MANREG (too many copy)
   |     |- [Fix Bugs] TODO: update global system message control
   |     |- [Note] (hidden) TODO: update help files
-  |- V4.2.0     2025/
+  |- V4.2.0     2025/07/
   |     |- [New] TODO: introduce "registration project"
   |     |- [New] TODO: add "experimental feature": auto save for some results
   |     |- [New] TODO: support file "drag" and "open"
   |     |- [New] TODO: add user memory allocation limitation as ratio of total memory
   |     |- [Adjust] TODO: 
   |     |- [Fix Bugs] TODO: 
+
