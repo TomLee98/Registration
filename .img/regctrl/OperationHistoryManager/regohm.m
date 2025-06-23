@@ -435,6 +435,15 @@ classdef regohm < handle
         function deactivate(this)
             % deactivate node in nonempty tree
             if ~this.isempty()
+                if isMATLABReleaseOlderThan("R2024b")
+                    % flag can not be removed by removeStyle even if it was 
+                    % append by addStyle (MATLAB inner bug, still not fixed)
+                    % 2025/06/23
+                    % so we need to remove the icon here
+                    this.node_active.Icon = '';
+                    drawnow
+                end
+
                 % change active node as tree
                 this.node_active = this.optree;
             end
