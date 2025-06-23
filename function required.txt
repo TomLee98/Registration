@@ -410,7 +410,7 @@ V4.x        da Vinci          达·芬奇
   |- V4.0.1     2025/06/23
   |     |- [New] add app close confirmation
   |     |- [Adjust] increase the "cellpose" segmentated cell size lower bound
-  |     |- [Fix Bugs] optimize big file operation (Z-Projection caused): remove Z-Projection synchronize, restore z-projection status
+  |     |- [Fix Bugs] TODO: remove Z-projection syntronize (: UI syntronize bug)
   |     |- [Fix Bugs] TODO: fix the "operation manager" flag display bug on MATLAB <= R2024a
   |- V4.1.0     2025/06/29
   |     |- [New] TODO: "Ctrl+B" for "burn/undo" to view faster than real time objects reconstruct when refine segmentation 
