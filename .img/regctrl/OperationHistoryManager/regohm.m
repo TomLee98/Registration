@@ -436,14 +436,9 @@ classdef regohm < handle
             % deactivate node in nonempty tree
             if ~this.isempty()
                 if isMATLABReleaseOlderThan("R2024b")
-                    % flag can not be removed by removeStyle even if it was 
-                    % append by addStyle (MATLAB inner bug, still not fixed)
-                    % 2025/06/23
-                    % so we need to remove the icon here
+                    % modify the flag
                     this.node_active.Icon = '';
-                    drawnow
                 end
-
                 % change active node as tree
                 this.node_active = this.optree;
             end
@@ -633,22 +628,42 @@ classdef regohm < handle
         % [Group] global control
         function update_operation_view(this)
             %% remove all style
-            removeStyle(this.optree);
+            % can remove icon style only if Verison >= MATLAB R2024b
+            if isMATLABReleaseOlderThan("R2024b")
+                % remove previous font style on tree
+                removeStyle(this.optree);
 
-            %% append bold style on current active branch
-            fontStyle = uistyle("FontWeight", 'bold');
-            iconStyle0 = uistyle("Icon",this.flagsrc, "IconAlignment",'leftmargin');
-            iconStyle = uistyle("Icon",this.readysrc, "IconAlignment",'leftmargin');
-            addStyle(this.optree, fontStyle, "node", this.node_active);
-            addStyle(this.optree, iconStyle0, "node", this.node_active);
-            ndptr = this.get_node_before();
-            while ~isempty(ndptr)
-                % add to previous node
-                addStyle(this.optree, fontStyle, "node", ndptr);
-                addStyle(this.optree, iconStyle, "node", ndptr);
+                fontStyle = uistyle("FontWeight", 'bold');
+                addStyle(this.optree, fontStyle, "node", this.node_active);
+                this.node_active.Icon = this.flagsrc;
+                ndptr = this.get_node_before();
+                while ~isempty(ndptr)
+                    % add to previous node
+                    addStyle(this.optree, fontStyle, "node", ndptr);
+                    ndptr.Icon = this.readysrc;
 
-                % update
-                ndptr = this.get_node_before(ndptr);
+                    % update
+                    ndptr = this.get_node_before(ndptr);
+                end
+            else
+                % remove all previous style on tree
+                removeStyle(this.optree);
+
+                % append bold style on current active branch
+                fontStyle = uistyle("FontWeight", 'bold');
+                iconStyle0 = uistyle("Icon",this.flagsrc, "IconAlignment",'leftmargin');
+                iconStyle = uistyle("Icon",this.readysrc, "IconAlignment",'leftmargin');
+                addStyle(this.optree, fontStyle, "node", this.node_active);
+                addStyle(this.optree, iconStyle0, "node", this.node_active);
+                ndptr = this.get_node_before();
+                while ~isempty(ndptr)
+                    % add to previous node
+                    addStyle(this.optree, fontStyle, "node", ndptr);
+                    addStyle(this.optree, iconStyle, "node", ndptr);
+
+                    % update
+                    ndptr = this.get_node_before(ndptr);
+                end
             end
 
             %% expand older node

@@ -407,11 +407,11 @@ V4.x        da Vinci          达·芬奇
   |     |- [Fix Bugs] fix "auto clean" not work on ubuntu server
   |     |- [Note] (hidden)introduce view-based design philosophy
   |     |- [Note] (hidden)introduce new update tag
-  |- V4.0.1     2025/06/23
+  |- V4.0.1     2025/06/24
   |     |- [New] add app close confirmation
   |     |- [Adjust] increase the "cellpose" segmentated cell size lower bound
-  |     |- [Fix Bugs] TODO: remove Z-projection syntronize (: UI syntronize bug)
-  |     |- [Fix Bugs] TODO: fix the "operation manager" flag display bug on MATLAB <= R2024a
+  |     |- [Fix Bugs] remove Z-projection syntronize (: UI syntronize bug)
+  |     |- [Fix Bugs] fix the "operation manager" flag display bug on MATLAB <= R2024a
   |- V4.1.0     2025/06/29
   |     |- [New] TODO: "Ctrl+B" for "burn/undo" to view faster than real time objects reconstruct when refine segmentation 
   |     |- [New] TODO: add "channel alignment" recovery
