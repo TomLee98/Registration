@@ -56,7 +56,6 @@ max_step = regopt_.MaxStep;
 min_step = regopt_.MinStep;
 iter_coeff = regopt_.IterCoeff;
 max_itern = regopt_.MaxIterN;
-max_shift_z = regopt_.MaxZOptShift;
 dfsize = regopt_.DilateFilter;
 itpalg = regopt_.Interp;
 vpl = fix(log(movsrc_.MetaData.slices)/log(4)) + 1;
@@ -93,8 +92,7 @@ parfor m = 1:numel(regfrs_)
 
     % use imregcoarse for better initialized transformation
     % where the preprocess volumes are needed
-    ptf = imregcoarse(avol_sc_m_ds, kvol_m_ds, rs_ds, true, ...
-            max_shift_z);
+    ptf = imregcoarse(avol_sc_m_ds, kvol_m_ds, rs_ds, true);
 
     % do fine registration, align to key frame
     ptf = imregtform(avol_sc_m_ds, rref_ds, kvol_m_ds, rref_ds, "affine", ...

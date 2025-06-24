@@ -61,26 +61,13 @@ end
 
 mf = regopt.MedianFilter;
 df = regopt.DilateFilter;
-dfh = regopt.DilateFilterEnh;
 gf = regopt.GaussianFilter;
 ga = regopt.Gamma;
 
 % 1. extract the reference volume
 [ds_scale, refvol_ds] = Resample(refvol, regds);
-if dfh == true
-    [refvol_ds_pp, roiref] = preproc_tc(refvol_ds, df, mf, gf, ga);
-    if ~isempty(roiref)
-        roiref(:, 1:3) = [];    % keep w,h,d
-    else
-        if "mmt"==regopt.CoarseAlg
-            throw(MException("tcreg:invalidDilateFilterArgs", ...
-                "No valid object in volume under the given arguments."));
-        end
-    end
-else
-    roiref = double.empty(0, 3);
-    refvol_ds_pp = preproc_tc(refvol_ds, df, mf, gf, ga);
-end
+
+refvol_ds_pp = preproc_tc(refvol_ds, df, mf, gf, ga);
 
 % 2. extract functional and structured channel data
 avol_sc = grv(movsrc, fmode, regopt.SC);
@@ -102,7 +89,6 @@ max_step = regopt.MaxStep;
 min_step = regopt.MinStep;
 iter_coeff = regopt.IterCoeff;
 max_itern = regopt.MaxIterN;
-max_shift_z = regopt.MaxZOptShift;
 zopt_tol = regopt.TolZOpt;
 vpl = regopt.glVPL;
 itpalg = regopt.Interp;
@@ -113,16 +99,12 @@ parfor m = 1:numel(regfrs)
     avol_fc_m = avol_fc(:,:,:,m);
     [~, avol_sc_m_ds] = Resample(avol_sc_m, ds_scale);
 
-    if dfh == true
-        avol_sc_m_ds_pp = preproc_tc(avol_sc_m_ds, df, mf, gf, ga, roiref);
-    else
-        avol_sc_m_ds_pp = preproc_tc(avol_sc_m_ds, df, mf, gf, ga);
-    end
+    avol_sc_m_ds_pp = preproc_tc(avol_sc_m_ds, df, mf, gf, ga);
 
     % use imregcoarse for better initialized transformation
     % where the preprocess volumes are needed
     ptf = imregcoarse(avol_sc_m_ds_pp, refvol_ds_pp, res_ds, true, ...
-            max_shift_z, zopt_tol, coarse_alg, coarse_args);
+            zopt_tol, coarse_alg, coarse_args);
 
     fival_sc = mean(avol_sc_m(:,[1,end],:),"all");
     fival_fc =  mean(avol_fc_m(:,[1,end],:),"all");
@@ -378,9 +360,8 @@ VALID_FIELD_PUBLIC = ["Mode", "SubAlgorithm", "SC", "FC", "Hardware", ...
 switch A.Mode
     case "global"
         VALID_FIELD_PRIVATE = ["RegModal", "AreaMask", "MedianFilter", "GaussianFilter", ...
-            "DilateFilter", "MaxZOptShift", "TolZOpt", "Gamma", "TformType", ...
-            "MaxStep", "MinStep",  "IterCoeff", "DS", "CoarseAlg", "CoarseArgs",...
-            "DilateFilterEnh", "glVPL"];
+            "DilateFilter", "TolZOpt", "Gamma", "TformType", "glVPL", ...
+            "MaxStep", "MinStep",  "IterCoeff", "DS", "CoarseAlg", "CoarseArgs"];
     case "local"
         VALID_FIELD_PRIVATE = ["dmVPL", "dfVPL", "AFS", "GR", "GS", ...
             "ImageRehist", "RepAcc", "flnss", "gStep", "mmtol"];

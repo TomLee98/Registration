@@ -1,4 +1,4 @@
-function [tf_est, movol_est] = imregcoarse(moving, fixed, rsFixed, sc_flag, shift_max, tol, calg, cargs)
+function [tf_est, movol_est] = imregcoarse(moving, fixed, rsFixed, sc_flag, tol, calg, cargs)
 %IMREGCOARSE This function use multiple robust coarse registration
 %algorithm for violently motion correction
 % Input:
@@ -7,8 +7,6 @@ function [tf_est, movol_est] = imregcoarse(moving, fixed, rsFixed, sc_flag, shif
 %   - rsFixed: 1-by-3 array, [x,y,z] coordinate resolution, unit as um/pix
 %   - sc_flag: 1-by-1 logical, indicate if channel is structured channel,
 %              true as default
-%   - shift_max: 1-by-1 double, max shift at z direction, unit as pixel, 
-%               2 as default
 %   - tol: 1-by-1 double, z shift optimal tolerance, 1e-3 as default
 %   - calg: 1-by-1 string, must be in set ["mmt","pcorr","fpp","none"],
 %           "mmt" as default
@@ -25,7 +23,6 @@ arguments
     fixed       (:,:,:) uint16
     rsFixed     (1,3)   double      % [x,y,z] coordinate resolution, unit as um/pix
     sc_flag     (1,1)   logical = true
-    shift_max   (1,1)   double {mustBeNonnegative} = 2
     tol         (1,1)   double {mustBeInRange(tol, 0, 1)} = 1e-3
     calg        (1,1)   string {mustBeMember(calg, ["mmt","pcorr","fpp","none"])} = "mmt"
     cargs       (1,1)   struct {mustBeCoarseRegistrationArguments} = ...
@@ -38,8 +35,7 @@ switch calg
         tf_est = transltform3d();
     otherwise
         % pseudo 3d transformation: XY translation + Z translation
-        tf_est = imregopzr(moving, fixed, rsFixed, sc_flag, shift_max, ...
-            tol, calg, cargs);
+        tf_est = imregopzr(moving, fixed, rsFixed, sc_flag, tol, calg, cargs);
 end
 
 if nargout == 2

@@ -75,7 +75,6 @@ max_step = regopt.MaxStep;
 min_step = regopt.MinStep;
 iter_coeff = regopt.IterCoeff;
 max_itern = regopt.MaxIterN;
-max_shift_z = regopt.MaxZOptShift;
 zopt_tol = regopt.TolZOpt;
 vpl = regopt.VPL;
 itpalg = regopt.Interp;
@@ -90,7 +89,7 @@ parfor m = 1:numel(regfrs)
     % use imregcoarse for better initialized transformation
     % where the preprocess volumes are needed
     ptf = imregcoarse(avol_fc_m_ds_pp, refvol_ds_pp, res_ds, false, ...
-            max_shift_z, zopt_tol, coarse_alg, coarse_args);
+            zopt_tol, coarse_alg, coarse_args);
 
     fival_fc =  mean(avol_fc_m(:,[1,end],:),"all");
 
@@ -137,7 +136,7 @@ end
 
 VALID_FIELD = ["Mode", "SubAlgorithm", "RegModal", "TformType", "GaussianFilter", ...
     "MedianFilter", "MaxStep", "MinStep", "MaxIterN", "CoarseAlg", "CoarseArgs", ...
-    "MaxZOptShift", "TolZOpt", "IterCoeff", "glVPL", "Interp", "DS", "SC", "FC", "Hardware"];
+    "TolZOpt", "IterCoeff", "glVPL", "Interp", "DS", "SC", "FC", "Hardware"];
 
 if ~all(ismember(fieldnames(A), VALID_FIELD))
     throw(MException("mustBeRegistrationOption:invalidOption", ...

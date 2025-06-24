@@ -272,7 +272,6 @@
     <MAX_ITERATION_STEP>Maximum Iteration Step</MAX_ITERATION_STEP>
     <MAX_SEARCHING_RADIUS>Maximum Searching Radius</MAX_SEARCHING_RADIUS>
     <MAX_Z_PROJECTION>Maximum Z Projection</MAX_Z_PROJECTION>
-    <MAX_Z_SHIFT>Maximum Z Shift</MAX_Z_SHIFT>
     <MEAN>Mean</MEAN>
     <MEAN_Z_PROJECTION>Mean Z Projection</MEAN_Z_PROJECTION>
     <MEDIAN>Median</MEDIAN>
@@ -498,6 +497,7 @@
     <TIME_RANGE>Please enter a time range (frames):</TIME_RANGE>
     <TIME_SERIES_FILE>Time series file</TIME_SERIES_FILE>
     <TIME_STAMP>Time Stamp</TIME_STAMP>
+    <TIP_ADD_TIMESTAMPS>Please load the image file first</TIP_ADD_TIMESTAMPS>
     <TIP_CBX_APPLY_TMAT>Specify transformation and skip control point registration</TIP_CBX_APPLY_TMAT>
     <TIP_CBX_AUTO_KEYFRAME>Automatically select keyframes to balance motion intensity</TIP_CBX_AUTO_KEYFRAME>
     <TIP_CBX_ENHANCE>Enhanced algorithm automatically adjusts filter parameters to synchronize template frame foreground</TIP_CBX_ENHANCE>

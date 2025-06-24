@@ -410,6 +410,8 @@ V4.x        da Vinci          达·芬奇
   |- V4.0.1     2025/06/24
   |     |- [New] add app close confirmation
   |     |- [Adjust] increase the "cellpose" segmentated cell size lower bound
+  |     |- [Adjust] update the TCREG->MESS-CENTER preprocess algorithm
+  |     |- [Adjust] remove "DilateEnhancement" on TCREG
   |     |- [Fix Bugs] remove Z-projection syntronize (: UI syntronize bug)
   |     |- [Fix Bugs] fix the "operation manager" flag display bug on MATLAB <= R2024a
   |- V4.1.0     2025/06/29

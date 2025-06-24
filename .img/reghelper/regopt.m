@@ -16,8 +16,7 @@ classdef regopt
         gl_interp       (1,1) string {mustBeMember(gl_interp, ["linear","cubic"])} = "linear"
         iter_coeff      (1,1) double {mustBePositive} = 0.5
         gl_vpl          (1,1) double {mustBePositive, mustBeInteger} = 3
-        zopt_shift_max  (1,1) double {mustBeNonnegative} = 2
-        zopt_tol        (1,1) double {mustBeInRange(zopt_tol, 0, 1)} = 1e-3
+        zopt_tol        (1,1) double {mustBeInRange(zopt_tol, 0, 1)} = 1e-2
         strc_chl        (1,1) string {mustBeMember(strc_chl, ["r","g","b",""])} = ""
         func_chl        (1,1) string {mustBeMember(func_chl, ["r","g","b",""])} = ""
 
@@ -37,7 +36,6 @@ classdef regopt
         tc_mfilter      (1,3) double {mustBeNonnegative, mustBeInteger} = [3,3,3]
         tc_gfilter      (1,3) double {mustBeNonnegative, mustBeInteger} = [3,3,3]
         dfilter         (1,4) double {mustBeInteger} = [3,115,65535,1000]
-        dfilter_enh     (1,1) logical = false
         area_mask       (1,1) logical = false
         gamma           (1,1) double {mustBeInRange(gamma, 0, 4)} = 1.0
         ds              (1,1) string {mustBeMember(ds, ["auto","1X1","2X2","3X3"])} = "auto"
@@ -161,7 +159,6 @@ classdef regopt
 
             % =========== not overloading parameters =============
             addParameter(p, 'RegModal',     this.reg_modal);
-            addParameter(p, 'MaxZOptShift', this.zopt_shift_max);
             addParameter(p, 'TolZOpt',      this.zopt_tol);
             addParameter(p, 'glVPL',        this.gl_vpl);
             addParameter(p, 'dmVPL',        this.dm_vpl);
@@ -197,7 +194,6 @@ classdef regopt
                             addParameter(p, 'MedianFilter',     this.tc_mfilter);
                             addParameter(p, 'GaussianFilter',   this.tc_gfilter);
                             addParameter(p, 'DilateFilter',     this.dfilter);
-                            addParameter(p, 'DilateFilterEnh',  this.dfilter_enh);
                             addParameter(p, 'AreaMask',     this.area_mask);
                             addParameter(p, 'TformType',    this.tc_tform_type);
                             addParameter(p, 'MaxStep',      this.step_max);
@@ -265,7 +261,6 @@ classdef regopt
                                        "MaxIterN",      this.gl_itn_max, ...
                                        "CoarseAlg",     this.oc_coarse_alg, ...
                                        "CoarseArgs",    this.oc_coarse_args, ...
-                                       "MaxZOptShift",  this.zopt_shift_max, ...
                                        "TolZOpt",       this.zopt_tol, ...
                                        "IterCoeff",     this.iter_coeff, ...
                                        "glVPL",         this.gl_vpl, ...
@@ -285,8 +280,6 @@ classdef regopt
                                        "MedianFilter",  this.tc_mfilter, ...
                                        "GaussianFilter",this.tc_gfilter, ...
                                        "DilateFilter",  this.dfilter, ...
-                                       "DilateFilterEnh",this.dfilter_enh, ...
-                                       "MaxZOptShift",  this.zopt_shift_max, ...
                                        "TolZOpt",       this.zopt_tol, ...
                                        "CoarseAlg",     this.tc_coarse_alg, ...
                                        "CoarseArgs",    this.tc_coarse_args, ...
@@ -338,7 +331,6 @@ classdef regopt
                                "AutoTemplate",  this.lt_autotpl, ...
                                "TGridMinMax",   this.lt_tgridminmax, ...
                                "RegChain",      this.lt_regchain, ...
-                               "MaxZOptShift",  this.zopt_shift_max, ...
                                "DilateFilter",  this.dfilter, ...
                                "DS",            this.ds, ...
                                "Interp",        this.lt_interp, ...
@@ -363,7 +355,6 @@ classdef regopt
                             this.oc_tform_type = r_.TformType;
                             this.oc_mfilter = r_.MedianFilter;
                             this.oc_gfilter = r_.GaussianFilter;
-                            this.zopt_shift_max = r_.MaxZOptShift;
                             this.zopt_tol = r_.TolZOpt;
                             this.step_max = r_.MaxStep;
                             this.step_min = r_.MinStep;
@@ -386,9 +377,7 @@ classdef regopt
                             this.tc_tform_type = r_.TformType;
                             this.tc_mfilter = r_.MedianFilter;
                             this.dfilter = r_.DilateFilter;
-                            this.dfilter_enh = r_.DilateFilterEnh;
                             this.tc_gfilter = r_.GaussianFilter;
-                            this.zopt_shift_max = r_.MaxZOptShift;
                             this.zopt_tol = r_.TolZOpt;
                             this.tc_coarse_alg = r_.CoarseAlg;
                             this.tc_coarse_args = r_.CoarseArgs;
@@ -442,7 +431,6 @@ classdef regopt
                     this.lt_step_min = r_.MinStep;
                     this.lt_interp = r_.Interp;
                     this.dfilter = r_.DilateFilter;
-                    this.zopt_shift_max = r_.MaxZOptShift;
                     this.ds = r_.DS;
                     this.strc_chl = r_.SC;
                     this.func_chl = r_.FC;

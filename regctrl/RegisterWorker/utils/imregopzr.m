@@ -1,4 +1,4 @@
-function tf_est = imregopzr(moving, fixed, rsFixed, sc_flag, shift_max, tol, calg, cargs)
+function tf_est = imregopzr(moving, fixed, rsFixed, sc_flag, tol, calg, cargs)
 %IMREGOPZR This function use imregcorr and z optimization for transformation
 % estimation
 % Input:
@@ -25,20 +25,20 @@ arguments
     fixed       (:,:,:) uint16
     rsFixed     (1,3)   double              % [x,y,z] coordinate resolution, unit as um/pix
     sc_flag     (1,1)   logical = true      % structured channel flag, true for exist
-    shift_max   (1,1)   double {mustBeNonnegative} = 2
     tol         (1,1)   double {mustBeInRange(tol, 0, 1)} = 1e-3
     calg        (1,1)   string {mustBeMember(calg, ["mmt","pcorr","fpp"])} = "mmt"
     cargs       (1,1)   struct = struct("Operator","SIFT", "QT",0.0133, "NumOctave",3);
 end
 
-zlim = [-1, 1]*shift_max;
+KUN_COEFF = 2.5;
 
 % do maximum z projection  for imregcorr
 mov_img = max(moving, [], 3);
 ref_img = max(fixed, [], 3);
 
 % get imwarp filled value
-fi_val = mean([mov_img(1,:)'; mov_img(end,:)'; mov_img(:,1); mov_img(:,end)]);
+mi_val = mean([mov_img(1,:)'; mov_img(end,:)'; mov_img(:,1); mov_img(:,end)]);
+ri_val = mean([ref_img(1,:)'; ref_img(end,:)'; ref_img(:,1); ref_img(:,end)]);
 
 % add border for a square image
 [height, width] = size(ref_img);
@@ -66,8 +66,8 @@ switch calg
         % use imregmmt1 for robust shift estimation, only if one
         % predominant in the scene could be best
         if sc_flag == true
-            ref_img = ref_img - fi_val;     % remove background for little objects better estimation
-            mov_img = mov_img - fi_val;
+            ref_img = ref_img - ri_val;     % remove background for little objects better estimation
+            mov_img = mov_img - mi_val;
             tf0 = imregmc(mov_img, ref_img, rref);
         else
             % just return the transltform3d object
@@ -86,22 +86,28 @@ switch calg
     otherwise
 end
 
+% estimate z0 by mess center on projection on Z axis
+% as iteratin initial value
+Mr = reshape(sum(fixed-ri_val, [1,2]), 1, []);
+Mv = reshape(sum(moving-mi_val, [1,2]), 1, []);
+dz0 = sum(Mr.*(1:size(fixed,3)))/sum(Mr) - sum(Mv.*(1:size(moving,3)))/sum(Mv);
+
 % optimize the z shift by immse as loss function
 fminbnd_opts = optimset('MaxIter',100, 'TolX', tol);
 
-optf = @(x)opfun(x, moving, fixed, rref3d, tf0, fi_val);
+optf = @(x)opfun(x, moving, fixed, rref3d, tf0, dz0, mi_val);
 
-[z_, ~] = fminbnd(optf, zlim(1), zlim(2), fminbnd_opts);
+[z_, ~] = fminbnd(optf, -KUN_COEFF, KUN_COEFF, fminbnd_opts);
 
 % omit the micro shift, which may be correction artifact
-if abs(z_) < 1e-2, z_ = 0; end
+if abs(z_+dz0) < 1e-2, z_ = -dz0; end
 
 % transform rigid2d object to affine3d object as imregtform initialized
 % transformation estimation
-tf_est = tformto3d(tf0, z_);
+tf_est = tformto3d(tf0, z_+dz0);
 
-    function f = opfun(z_, mov_, ref_, ra_, tf0_, fival_)
-        T = tformto3d(tf0_, z_);
+    function f = opfun(z_, mov_, ref_, ra_, tf0_, dz0_, fival_)
+        T = tformto3d(tf0_, z_+dz0_);
         % imrotate3 and imtranslate?
         mov_ = imwarp(mov_, ra_, T, "linear", ...
             "FillValues",fival_, "OutputView",ra_);
