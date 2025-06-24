@@ -415,9 +415,9 @@ V4.x        da Vinci          达·芬奇
   |     |- [Fix Bugs] remove Z-projection syntronize (: UI syntronize bug)
   |     |- [Fix Bugs] fix the "operation manager" flag display bug on MATLAB <= R2024a
   |- V4.1.0     2025/06/29
-  |     |- [New] TODO: "Ctrl+B" for "burn/undo" to view faster than real time objects reconstruct when refine segmentation 
   |     |- [New] TODO: add "channel alignment" recovery
   |     |- [New] TODO: add "History Manager" storage protection to avoid operations overflow
+  |     |- [New] TODO: "Ctrl+B" for "burn/undo" to view faster than real time objects reconstruct when refine segmentation 
   |     |- [Adjust] TODO: modify some appearance after restore operation
   |     |- [Adjust] TODO: try to parallel on "ZCROP", "TCROP", "XYCROP" for speed up
   |     |- [Fix Bugs] TODO: fix the bug if user uses continues MANREG (too many copy)
