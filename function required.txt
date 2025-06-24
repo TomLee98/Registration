@@ -418,12 +418,12 @@ V4.x        da Vinci          达·芬奇
   |     |- [New] TODO: add "channel alignment" recovery
   |     |- [New] TODO: add "History Manager" storage protection to avoid operations overflow
   |     |- [New] TODO: "Ctrl+B" for "burn/undo" to view faster than real time objects reconstruct when refine segmentation 
-  |     |- [Adjust] TODO: modify some appearance after restore operation
+  |     |- [Adjust] modify the "history manager" view size changing
   |     |- [Adjust] TODO: try to parallel on "ZCROP", "TCROP", "XYCROP" for speed up
   |     |- [Fix Bugs] TODO: fix the bug if user uses continues MANREG (too many copy)
   |     |- [Fix Bugs] TODO: update global system message control
   |     |- [Note] (hidden) TODO: update help files
-  |     |- [Note] (hidden) TODO: auto delete the current user's rcf under /data/.rcfs after app closed
+  |     |- [Note] (hidden) auto delete the current user's rcf under /data/.rcfs after app closed
   |- V4.2.0     2025/07/
   |     |- [New] TODO: introduce "registration project"
   |     |- [New] TODO: support "user's behaviour" collection: track user usage patterns for program features
