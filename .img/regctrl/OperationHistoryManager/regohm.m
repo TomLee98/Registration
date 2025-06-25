@@ -9,7 +9,6 @@ classdef regohm < handle
     properties(Access = public, Dependent)
         ActiveNodeData  % ___/get, 1-by-1 struct with field {arg, cbot, data, optr}
         ActiveNodeTag   % ___/get, 1-by-1 string, could be empty
-        IsDistributed   % set/get, 1-by-1 logical, indicates if data spread on disk
         CachePolicy     % ___/get, 1-by-1 string, could be "PERFORMANCE"/"RESOURCE"/"BALANCE"
         CacheLocation   % set/get, 1-by-1 string, could be "AUTO"/"CUSTOMIZED"
         CacheSizeMEM    % set/get, 1-by-1 double, indicate the maximal memory cache size
@@ -32,11 +31,10 @@ classdef regohm < handle
     end
 
     properties(Access = private, Hidden)
-        cacheloc        (1,1)   string  = "AUTO"            % cache location, "AUTO" for auto select
+        cache_loc       (1,1)   string  = "AUTO"            % cache location, "AUTO" for auto select
         cache_size_mem  (1,1)   double  = 64                % memory cache size, unit as GB 
         cache_size_hdd  (1,1)   double  = 128               % hard drive cache size, unit as GB
         dptr            (1,1)   regmov = regmov.empty()     % current node related data pointer
-        is_distributed  (1,1)   logical = false             % data distributed flag 
         node_active     (1,1)                               % current active node (or tree)
         nodes_total_num (1,1)   double  = 0                 % number of total generated nodes in the tree
         storage_summary (1,1)   struct                      % struct with storage summary
@@ -82,12 +80,41 @@ classdef regohm < handle
             if r <= MEM_CACHE_SIZE_MAX
                 this.cache_size_mem = r;
             else
-
+                throw(MException("regohm:invalidCacheSize", ...
+                    "Please contact the administrator to allocate more cache."));
             end
+
+            % update view
+            this.update_storage_summary();
+            this.update_storage_view([1,2]);
+        end
+
+        function r = get.CacheSizeHDD(this)
+            r = this.cache_size_hdd;
+        end
+
+        function set.CacheSizeHDD(this, r)
+            arguments
+                this
+                r       (1,1)   double  {mustBeNonnegative}
+            end
+
+            aes = aesobj();
+            eval(aes.decrypt(constdef.HDD_BUFFER_KEY));
+            if r <= HDD_BUFFER_SIZE_MAX
+                this.cache_size_hdd = r;
+            else
+                throw(MException("regohm:invalidCacheSize", ...
+                    "Please contact the administrator to allocate more cache."));
+            end
+
+            % update view
+            this.update_storage_summary();
+            this.update_storage_view([1,2]);
         end
 
         function r= get.CacheLocation(this)
-            r = this.cacheloc;
+            r = this.cache_loc;
         end
 
         function set.CacheLocation(this, r)
@@ -96,7 +123,7 @@ classdef regohm < handle
                 r   (1,1)   string  {mustBeMember(r, ["AUTO", "CUSTOMIZED"])}
             end
 
-            this.cacheloc = r;
+            this.cache_loc = r;
 
             switch r
                 case "AUTO"
@@ -108,31 +135,7 @@ classdef regohm < handle
 
             % update view
             this.update_storage_summary();
-            this.update_storage_view();
-        end
-
-        function r = get.IsDistributed(this)
-            r = this.is_distributed;
-        end
-
-        function set.IsDistributed(this, r)
-            arguments
-                this 
-                r       (1,1)   logical
-            end
-
-            % try to spread or gather all data
-            if r == true && this.is_distributed == false
-                % spread data to disk
-                this.move_storage("spread");
-
-                this.is_distributed = true;
-            elseif r == false && this.is_distributed == true
-                % gather data to memory
-                this.move_storage("gather");
-
-                this.is_distributed = false;
-            end
+            this.update_storage_view([1,2,3]);
         end
 
         function r = get.CachePolicy(this)
@@ -142,7 +145,7 @@ classdef regohm < handle
     end
 
     methods (Access = public)
-        function this = regohm(ufig, op_tree, op_txt, op_smgr, ctxt_menu, cache_mem, cache_hdd, strategy, distributed)
+        function this = regohm(ufig, op_tree, op_txt, op_smgr, ctxt_menu, cache_loc, cache_mem, cache_hdd, strategy)
             %REGHIMGR A Constructor
             % Input:
             %   - ufig: 1-by-1 matlab.ui.Figure for progress bar display
@@ -159,11 +162,11 @@ classdef regohm < handle
                 op_txt      (1,1)   matlab.ui.control.TextArea
                 op_smgr     (1,1)   storage_manager
                 ctxt_menu   (1,1)   matlab.ui.container.ContextMenu
+                cache_loc   (1,1)   string  {mustBeMember(cache_loc, ["AUTO","CUSTOMIZED"])}
                 cache_mem   (1,1)   double
                 cache_hdd   (1,1)   double
                 strategy    (1,1)   string  {mustBeMember(strategy, ...
                                     ["PERFORMANCE", "RESOURCE", "BALANCE"])} = "PERFORMANCE"
-                distributed (1,1)   logical = false
             end
 
             this.ufig = ufig;
@@ -171,18 +174,20 @@ classdef regohm < handle
             this.optree.SelectionChangedFcn = @(~, event)this.sltchg_callback(event);
             this.optxt = op_txt;
             this.opsmgr = op_smgr;
+            this.opsmgr.SetBoss(this);
             this.ctmenu = ctxt_menu;
+            this.cache_loc = cache_loc;
             this.optsty = strategy;
-            this.is_distributed = distributed;
             this.node_active = this.optree;
 
-            r = aesobj();
-            eval(r.decrypt(constdef.MEM_CACHE_KEY));
-            eval(r.decrypt(constdef.HDD_BUFFER_KEY));
+            % validate
+            this.CacheSizeMEM = cache_mem;
+            this.CacheSizeHDD = cache_hdd;
+            % pass
 
-            this.storage_summary.Overview = array2table([MEM_CACHE_SIZE_MAX, HDD_BUFFER_SIZE_MAX; ...
-                                                         0,                  0; ...
-                                                         0,                  0], ...
+            this.storage_summary.Overview = array2table([cache_mem, cache_hdd; ...
+                                                         0,         0; ...
+                                                         0,         0], ...
                 "VariableNames",["MEM","HDD"], "RowNames",["Full", "Used", "UsedRatio"]);
             this.storage_summary.Details = table('Size',[0,3], ...
                 'VariableTypes',{'string','double','string'}, ...
@@ -332,6 +337,54 @@ classdef regohm < handle
             this.update_snapshot_view();    % snap only for fast view
         end
 
+        % This function find node with tag <node> and modify the storage
+        function TrySwitchStorage(this, tag, storage)
+            arguments
+                this 
+                tag     (1,1)   string
+                storage (1,1)   string  {mustBeMember(storage, ["MEM","HDD"])}
+            end
+
+            % use depth-first traversal to spread data onto disk
+            st = mStack();
+            st.push(this.optree);   % push the tree root
+            while ~isempty(st)
+                % pop the node
+                node = st.pop();
+
+                if isa(node, "matlab.ui.container.TreeNode")
+                    if node.Tag == tag
+                        udlg = uiprogressdlg(this.ufig, "Indeterminate","on", ...
+                            "Title","Message", "Icon","info");
+
+                        switch storage
+                            case "MEM"
+                                udlg.Message = "Storage Changing(HDD/SSD->Memory) ...";
+                                regohm.node_storage_switch(node, "gather");
+                            case "HDD"
+                                udlg.Message = "Storage Changing(Memory->HDD/SSD) ...";
+                                regohm.node_storage_switch(node, "spread");
+                            otherwise
+                        end
+
+                        delete(udlg);
+
+                        % tag is unique, just break
+                        break;
+                    end
+                end
+
+                nodes = node.Children;     % nodes
+                for k = 1:numel(nodes), st.push(nodes(k)); end
+            end
+
+            this.update_storage_summary();
+
+            % update view
+            this.update_storage_view([1,2]);
+            this.update_snapshot_view();
+        end
+
         % This function packages all data as project to given folder
         function PackageProjectTo(this, folder)
             
@@ -349,6 +402,7 @@ classdef regohm < handle
     methods (Access = private)
 
         % This function creates a new node as children of active node
+        % note that this function also determines storage
         function node = create_new_node(this, optr, args, vars)
 
             %% create restore point object by cache policy
@@ -664,30 +718,6 @@ classdef regohm < handle
             end
         end
 
-        % This function moves the data storage between memory and disk
-        function move_storage(this, optr)
-            arguments
-                this
-                optr    (1,1)   string  {mustBeMember(optr, ["spread", "gather"])}
-            end
-
-            % use depth-first traversal to spread data onto disk
-            st = mStack();
-            st.push(this.optree);   % push the tree root
-            while ~isempty(st)
-                % pop the node
-                node = st.pop();
-
-                if isa(node, "matlab.ui.container.TreeNode")
-                    % change node storage location
-                    regohm.node_storage_switch(node, optr);
-                end
-
-                nodes = node.Children;     % nodes
-                for k = 1:numel(nodes), st.push(nodes(k)); end
-            end
-        end
-
         % This is select changed callback binding on tree
         function sltchg_callback(this, event)
             % get node data
@@ -704,7 +734,7 @@ classdef regohm < handle
             if this.isempty(), return; end
 
             %% remove all style
-            % can remove icon style only if Verison >= MATLAB R2024b
+            % can remove icon style only if Version >= MATLAB R2024b
             if isMATLABReleaseOlderThan("R2024b")
                 % remove previous font style on tree
                 removeStyle(this.optree);
@@ -752,10 +782,15 @@ classdef regohm < handle
 
         % This function updates source view
         % [Group] global control
-        function update_storage_view(this)
+        function update_storage_view(this, comp)
+            arguments
+                this 
+                comp (1,:)  double  {mustBeMember(comp, [1,2,3])} = [1,2,3]
+            end
             % invoke storage manager agent repaint
             this.opsmgr.UpdateView(this.storage_summary, ...
-                                   this.cacheloc=="AUTO");
+                                   this.cache_loc=="AUTO", ...
+                                   comp);
         end
 
         % This function updates snapshot view
@@ -833,10 +868,6 @@ classdef regohm < handle
 
         % This function visit all tree and summary the storage view
         function update_storage_summary(this)
-            r = aesobj();
-            eval(r.decrypt(constdef.MEM_CACHE_KEY));
-            eval(r.decrypt(constdef.HDD_BUFFER_KEY));
-
             if ~this.isempty()
                 % use depth-first traversal to spread data onto disk
                 % TODO: if there is too many nodes, use incremental update
@@ -874,16 +905,16 @@ classdef regohm < handle
                 end
 
                 % summary to table
-                this.storage_summary.Overview = array2table([MEM_CACHE_SIZE_MAX, HDD_BUFFER_SIZE_MAX; ...
-                                                             MEM_Used/2^30,      HDD_Used/2^30; ...
-                                                             MEM_Used/(MEM_CACHE_SIZE_MAX*2^30), HDD_Used/(HDD_BUFFER_SIZE_MAX*2^30)], ...
+                this.storage_summary.Overview = array2table([this.cache_size_mem, this.cache_size_hdd; ...
+                                                             MEM_Used/2^30,       HDD_Used/2^30; ...
+                                                             MEM_Used/(this.cache_size_mem*2^30), HDD_Used/(this.cache_size_hdd*2^30)], ...
                     "VariableNames",["MEM","HDD"], "RowNames",["Full", "Used", "UsedRatio"]);
                 this.storage_summary.Details = table(NodeTag, Used, Location);
             else
                 % generate empty table
-                this.storage_summary.Overview = array2table([MEM_CACHE_SIZE_MAX, HDD_BUFFER_SIZE_MAX; ...
-                                                             0,                  0; ...
-                                                             0,                  0], ...
+                this.storage_summary.Overview = array2table([this.cache_size_mem, this.cache_size_hdd; ...
+                                                             0,                   0; ...
+                                                             0,                   0], ...
                     "VariableNames",["MEM","HDD"], "RowNames",["Full", "Used", "UsedRatio"]);
                 this.storage_summary.Details = table('Size',[0,3], ...
                     'VariableTypes',{'string','double','string'}, ...

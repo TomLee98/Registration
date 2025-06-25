@@ -60,7 +60,7 @@ classdef constdef
                                  "SimpleStatistics",      "ON", ...                 % "ON"/"OFF"
                                  "AutoTemplate",          "ON", ...                 % "ON"/"OFF"
                                  "Style",                 "FOLLOW", ...             % "LIGHT"/"DARK"/"FOLLOW"
-                                 "StorageViewStyle",      "CLASSICAL", ...          % "CLASSICAL"/"MODERN"
+                                 "StorageViewStyle",      "MODERN", ...             % "CLASSICAL"/"MODERN"
                                  "ProgressBarColor",      [0.30, 0.75, 0.93], ...   % 0 ~ 1, 1-by-3 array
                                  "CacheLocation",         "AUTO", ...               % "AUTO"/"CUSTOMIZED"
                                  "CachePolicy",           "PERFORMANCE", ...        % "PERFORMANCE"/"RESOURCES"/"BALANCE" 
