@@ -26,11 +26,11 @@ classdef mpimgs < handle
 
     % hidden to avoid user hacked by app designer
     methods (Static, Access = ?ResourceManager, Hidden)
-        function r = GetBufferSizeMax()
+        function [MEM_CACHE_SIZE_MAX, HDD_BUFFER_SIZE_MAX] = GetBufferSizeMax() %#ok<STOUT>
             locker = aesobj();
-            code = locker.decrypt(constdef.HDD_BUFFER_KEY);
-            eval(code);
-            r = HDD_BUFFER_SIZE_MAX;
+
+            eval(locker.decrypt(constdef.HDD_BUFFER_KEY));
+            eval(locker.decrypt(constdef.MEM_CACHE_KEY));
         end
     end
 end

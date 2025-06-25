@@ -959,13 +959,11 @@ classdef mpimg < matlab.mixin.Copyable
 
     % hidden to avoid user hacked by app designer
     methods (Static, Access = ?ResourceManager, Hidden)
-        function r = GetBufferSizeMax()
+        function [MEM_CACHE_SIZE_MAX, HDD_BUFFER_SIZE_MAX] = GetBufferSizeMax() %#ok<STOUT>
             locker = aesobj();
 
             eval(locker.decrypt(constdef.HDD_BUFFER_KEY));
             eval(locker.decrypt(constdef.MEM_CACHE_KEY));
-
-            r = [MEM_CACHE_SIZE_MAX, HDD_BUFFER_SIZE_MAX];
         end
     end
 end
