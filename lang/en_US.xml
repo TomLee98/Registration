@@ -92,7 +92,6 @@
     <CONTROL_REGISTRATION_RUNNING>Controlling registration procedure execution</CONTROL_REGISTRATION_RUNNING>
     <CONTROL_VAL>Control Amount</CONTROL_VAL>
     <COUNTERCLOCKWISE_90>Counterclockwise 90°</COUNTERCLOCKWISE_90>
-    <COVERAGE_OPERATION>Based on the current registration, the operation is irreversible, continue?</COVERAGE_OPERATION>
     <CPU_TIME>CPU Time</CPU_TIME>
     <CROP_FRAME>Crop Frame</CROP_FRAME>
     <CROP_VOLUME>Crop Volume</CROP_VOLUME>
@@ -120,7 +119,6 @@
     <DISPLAY>Display</DISPLAY>
     <DISPLAY_AREA>Display Area</DISPLAY_AREA>
     <DISPLAY_MODE>Display Mode</DISPLAY_MODE>
-    <DISTRIBUTED>Distributed</DISTRIBUTED>
     <DISTRIBUTION>Distribution</DISTRIBUTION>
     <DOCUMENT>Document</DOCUMENT>
     <DOWNLOADING>Downloading…</DOWNLOADING>
@@ -137,8 +135,6 @@
     <ERODE_RADIUS>Erode Radius</ERODE_RADIUS>
     <ERROR>Error</ERROR>
     <EVERYDAY>Every Day</EVERYDAY>
-    <EXCLUSIVE>Exclusive</EXCLUSIVE>
-    <EXCLUSIVE_WARNING>You are currently running in distributed mode. Exclusive mode may cause MATLAB to crash. Continue?</EXCLUSIVE_WARNING>
     <EXIT>Exit</EXIT>
     <EXPORT>Export</EXPORT>
     <EXPORT_AS>Export as</EXPORT_AS>
@@ -258,7 +254,6 @@
     <LONG_TERM_ONCE_ONLY>Long-term mode only supports single registration</LONG_TERM_ONCE_ONLY>
     <LOSSLESS>Lossless</LOSSLESS>
     <LOW>Low</LOW>
-    <LOW_MEMORY_WARNING>The available memory is too small and the exclusive mode cannot be enabled.</LOW_MEMORY_WARNING>
     <LTGLOBAL>Global(Long-Term)</LTGLOBAL>
     <MAGENTA>Magenta</MAGENTA>
     <MACHINE_LEARNING>Machine Learning</MACHINE_LEARNING>

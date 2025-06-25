@@ -2,6 +2,8 @@ classdef constdef
     %CONSTDEF This class with some public constant definition
     
     properties (Access = public, Constant)
+        SERVER_HOST_NAME = "silab"
+
         REG3D_UPDATE_FILE_TITLE_ROW_SIZE = 2
 
         CAMERA_BACKGROUND = 100

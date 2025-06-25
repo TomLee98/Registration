@@ -9,9 +9,9 @@ classdef RegisterController < handle
     end
 
     properties(Access = private)
-        regopts             % registration options
-        nw_protected        % the protected workers number
-        distrib             % distribution flag
+        regopts                                     % registration options
+        nw_protected                                % the protected workers number
+        distrib         (1,1)   logical = false     % distribution flag
     end
 
     properties(Access = private, Hidden)
@@ -35,19 +35,17 @@ classdef RegisterController < handle
     end
 
     methods
-        function this = RegisterController(caller_, regopt_, nwproctect_, distrib_)
+        function this = RegisterController(caller_, regopt_, nwproctect_)
             %REGISTER A constructor
             arguments
                 caller_     (1,1)  Register
                 regopt_     (1,1)  regopt
                 nwproctect_ (1,2)  double {mustBeNonnegative, mustBeInteger} = [0, 0]
-                distrib_    (1,1)  logical = false
             end
 
             this.caller = caller_;
             this.regopts = regopt_;
             this.nw_protected = nwproctect_;
-            this.distrib = distrib_;
 
             % 
             this.taskmgr = TaskManager(regopt_);

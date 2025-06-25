@@ -880,12 +880,12 @@ classdef mpimg < matlab.mixin.Copyable
 
             warning('off', 'MATLAB:MKDIR:DirectoryExists');
 
-            BUFFER_SIZE_MAX = mpimg.GetBufferSizeMax();
+            [~, HDD_BUFFER_MAX] = mpimg.GetBufferSizeMax();
 
-            if capacity > BUFFER_SIZE_MAX
+            if capacity > HDD_BUFFER_MAX
                 throw(MException("mpimg:hackedBufferSize", ...
                     "Your buffer size shouldn't be larger than %d GBytes.", ...
-                    BUFFER_SIZE_MAX));
+                    HDD_BUFFER_MAX));
             end
 
             if ispc()
@@ -961,9 +961,11 @@ classdef mpimg < matlab.mixin.Copyable
     methods (Static, Access = ?ResourceManager, Hidden)
         function r = GetBufferSizeMax()
             locker = aesobj();
-            code = locker.decrypt(constdef.HDD_BUFFER_KEY);
-            eval(code);
-            r = HDD_BUFFER_SIZE_MAX;
+
+            eval(locker.decrypt(constdef.HDD_BUFFER_KEY));
+            eval(locker.decrypt(constdef.MEM_CACHE_KEY));
+
+            r = [MEM_CACHE_SIZE_MAX, HDD_BUFFER_SIZE_MAX];
         end
     end
 end

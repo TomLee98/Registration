@@ -420,8 +420,7 @@ V4.x        da Vinci          达·芬奇
   |     |- [New] TODO: "Ctrl+B" for "burn/undo" to view faster than real time objects reconstruct when refine segmentation 
   |     |- [Adjust] modify the "history manager" view size changing
   |     |- [Adjust] TODO: try to parallel on "ZCROP", "TCROP", "XYCROP" for speed up
-  |     |- [Fix Bugs] TODO: root load remove bug (display resource lost)
-  |     |- [Fix Bugs] TODO: fix the bug if user uses continues MANREG (too many copy)
+  |     |- [Fix Bugs] "load" node remove bug (display resource lost)
   |     |- [Fix Bugs] TODO: update global system message control
   |     |- [Note] (hidden) TODO: update help files
   |     |- [Note] (hidden) auto delete the current user's rcf under /data/.rcfs after app closed
@@ -431,7 +430,6 @@ V4.x        da Vinci          达·芬奇
   |     |- [New] TODO: add "experimental feature": auto save for some results
   |     |- [New] TODO: add "pseudo color" configuration in "Resourece Manager"
   |     |- [New] TODO: support file "drag" and "open"
-  |     |- [New] TODO: add user memory allocation limitation as ratio of total memory
   |     |- [Adjust] TODO: 
-  |     |- [Fix Bugs] TODO: 
+  |     |- [Fix Bugs] TODO: fix the bug if user uses continues MANREG (too many copy)
 

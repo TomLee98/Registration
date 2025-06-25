@@ -13,6 +13,7 @@ classdef regohm < handle
         CacheLocation   % set/get, 1-by-1 string, could be "AUTO"/"CUSTOMIZED"
         CacheSizeMEM    % set/get, 1-by-1 double, indicate the maximal memory cache size
         CacheSizeHDD    % set/get, 1-by-1 double, indicate the maximal hard drive cache size
+        BestStorageNext % ___/get, 1-by-1 string, could be "MEM"/"HDD"
     end
 
     properties(SetAccess = immutable, GetAccess = private)
@@ -63,6 +64,36 @@ classdef regohm < handle
 
         function r = get.ActiveNodeTag(this)
             r = string(this.node_active.Tag);
+        end
+
+        function r = get.BestStorageNext(this)
+            switch this.cache_loc
+                case "AUTO"
+                    % select the location with maximal free space
+                    mem_free = this.storage_summary.Overview.MEM(1) - ...
+                        this.storage_summary.Overview.MEM(2);
+                    hdd_free = this.storage_summary.Overview.HDD(1) - ...
+                        this.storage_summary.Overview.HDD(2);
+                    if mem_free >= hdd_free
+                        r = "MEM";
+                    else
+                        r = "HDD";
+                    end
+                case "CUSTOMIZED"
+                    % follow the active node
+                    if ~this.isempty()
+                        switch this.dptr.Location
+                            case "Memory"
+                                r = "MEM";
+                            otherwise
+                                r = "HDD";
+                        end
+                    else
+                        r = "HDD";  % make sure data can be stored
+                    end
+                otherwise
+                    % never come here
+            end
         end
 
         function r = get.CacheSizeMEM(this)
@@ -359,10 +390,10 @@ classdef regohm < handle
 
                         switch storage
                             case "MEM"
-                                udlg.Message = "Storage Changing(HDD/SSD->Memory) ...";
+                                udlg.Message = "Gathering (HDD/SSD->Memory) ...";
                                 regohm.node_storage_switch(node, "gather");
                             case "HDD"
-                                udlg.Message = "Storage Changing(Memory->HDD/SSD) ...";
+                                udlg.Message = "Spreading (Memory->HDD/SSD) ...";
                                 regohm.node_storage_switch(node, "spread");
                             otherwise
                         end
