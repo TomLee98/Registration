@@ -17,6 +17,7 @@ classdef regohm < handle
         ufig            % 1-by-1 matlab.ui.Figure
         optree          % 1-by-1 matlab.ui.container.Tree
         optxt           % 1-by-1 matlab.ui.controller.TextArea
+        opsmgr          % 1-by-1 storage_mananer object (component app)
         ctmenu          % 1-by-1 matlab.ui.container.ContextMenu
         optsty          % 1-by-1 string, indicate the manager running method
         flagsrc = string(fileparts(mfilename("fullpath"))).extractBefore(...
@@ -32,6 +33,7 @@ classdef regohm < handle
         is_distributed  (1,1)   logical = false             % data distributed flag 
         node_active     (1,1)                               % current active node (or tree)
         nodes_total_num (1,1)   double  = 0                 % number of total generated nodes in the tree
+        storage_summary (1,1)   struct                      % struct with storage summary
     end
     
     methods
@@ -90,7 +92,7 @@ classdef regohm < handle
     end
 
     methods (Access = public)
-        function this = regohm(ufig, op_tree, op_txt, ctxt_menu, strategy, distributed)
+        function this = regohm(ufig, op_tree, op_txt, op_smgr, ctxt_menu, strategy, distributed)
             %REGHIMGR A Constructor
             % Input:
             %   - ufig: 1-by-1 matlab.ui.Figure for progress bar display
@@ -105,6 +107,7 @@ classdef regohm < handle
                 ufig        (1,1)   matlab.ui.Figure
                 op_tree     (1,1)   matlab.ui.container.Tree
                 op_txt      (1,1)   matlab.ui.control.TextArea
+                op_smgr     (1,1)   storage_manager
                 ctxt_menu   (1,1)   matlab.ui.container.ContextMenu
                 strategy    (1,1)   string  {mustBeMember(strategy, ...
                                     ["PERFORMANCE", "RESOURCE", "BALANCE"])} = "PERFORMANCE"
@@ -115,10 +118,14 @@ classdef regohm < handle
             this.optree = op_tree;
             this.optree.SelectionChangedFcn = @(~, event)this.sltchg_callback(event);
             this.optxt = op_txt;
+            this.opsmgr = op_smgr;
             this.ctmenu = ctxt_menu;
             this.optsty = strategy;
             this.is_distributed = distributed;
             this.node_active = this.optree;
+            this.storage_summary.Overview = array2table([], "VariableNames",["MEM","HDD"], ...
+                "RowNames",["Full", "Used", "UsedRatio"]);
+            this.storage_summary.Details = table('Size',[0,4])
         end
 
         function delete(this)
@@ -139,12 +146,19 @@ classdef regohm < handle
             tf = isa(this.node_active, "matlab.ui.container.Tree");
         end
 
+        function tf = isaddable(this, data, optr)
+
+        end
+
         function AddNode(this, optr, args, varargin)
             % This function create new node at optree and store a regrspt
             % object in the node
 
             %% append node after active node
             node_new = this.create_new_node(optr, args, varargin);
+
+            %% update storage summary
+            this.update_storage_summary();
 
             %% activate new node
             this.ActivateNode(node_new);
@@ -161,6 +175,9 @@ classdef regohm < handle
 
             %% free memory/disk
             this.remove(node);
+
+            %% update storage summary
+            this.update_storage_summary();
 
             %% update appearance
             this.update_manage_view();
@@ -278,7 +295,7 @@ classdef regohm < handle
                 % drop data node and replace by empty
                 for n = 1:2:numel(vars)
                     if isequal("Data", vars{n})
-                        vars{n+1} = regmov.empty();     % drop, handle only be holded by Register
+                        vars{n+1} = regmov.empty();     % drop, handle is only hold by Register
                         break;
                     end
                 end
@@ -324,7 +341,6 @@ classdef regohm < handle
                     end
                 case constdef.OP_REGISTER
                     st = args.(constdef.OP_REGISTER);
-                    %TODO: add more descriptor
                     node_text = sprintf("register(%s)", st.Mode);
                     switch st.Algorithm
                         case {"TCREG", "OCREG"}
@@ -677,9 +693,8 @@ classdef regohm < handle
         % This function updates source view
         % [Group] global control
         function update_source_view(this)
-            % invoke storage agent scan the project
-
-            % and repaint
+            % invoke storage manager agent repaint
+            this.opsmgr.UpdateView(this.storage_summary);
         end
 
         % This function updates snapshot view
@@ -748,6 +763,15 @@ classdef regohm < handle
 
             %% update text field to display the snapshot
             this.optxt.Value = txt;
+        end
+
+        % This function visit all tree and summary the storage view
+        function update_storage_summary(this)
+            if this.isempty()
+
+            else
+
+            end
         end
     end
 

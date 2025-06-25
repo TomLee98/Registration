@@ -72,8 +72,11 @@ classdef constdef
     end
 
     properties (Access = {?mpimg, ?mpimgs}, Constant, Hidden)
-        % code as: BUFFER_SIZE_MAX = 128
-        BUFFER_KEY = "VsPkzE1Oc/bWrOEaYsjTaf8u6fpaRmKoGnbElf+MZX4="
+        % code as: HDD_BUFFER_SIZE_MAX = 128;
+        HDD_BUFFER_KEY = "I6rlKEDWTeAmmC2/Yd311cVU1vbubYc8JQLKkaoMTmA="
+
+        % code as: MEM_CACHE_SIZE_MAX = 64;
+        MEM_CACHE_KEY = "Oav0Qo3zI0Qy+gxvtb6XscThqd7rEl6T/hwhDj3iySk="
     end
     
 end

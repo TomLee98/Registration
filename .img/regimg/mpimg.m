@@ -74,6 +74,7 @@ classdef mpimg < matlab.mixin.Copyable
                     && ~isempty(data_)
                 this.newmptr(file_, data_);
             else
+                % empty data can't map on disk
                 throw(MException("mpimg:invalidUse", ...
                     "Can not parse input arguments."));
             end
@@ -870,7 +871,7 @@ classdef mpimg < matlab.mixin.Copyable
 
         function status = clean_temporary_folder(capacity)
             arguments
-                capacity    (1,1)   double  {mustBeInRange(capacity, 1, 1024)} = 64
+                capacity    (1,1)   double  {mustBeInRange(capacity, 0, 1024)} = 0
             end
 
             import java.io.*;
@@ -888,9 +889,9 @@ classdef mpimg < matlab.mixin.Copyable
             end
 
             if ispc()
-                if capacity < 1 || capacity > 1024
+                if capacity < 0 || capacity > 1024
                     warning("mpimg:invalidCapacity", "Capacity should be between " + ...
-                        "1(GB) and 1024(GB).");
+                        "0(GB) and 1024(GB).");
                     status = -1;
                     return;
                 else
@@ -907,6 +908,7 @@ classdef mpimg < matlab.mixin.Copyable
                                 [~, date_idx] = sort(d.datenum, "descend");
                                 locptt = find(cumsum(d.bytes(date_idx)) ...
                                     < capacity*2^30, 1, "last");
+                                if isempty(locptt), locptt = 0; end % remove all
                                 for idx = date_idx(locptt+1:end)'
                                     try
                                         delete(fullfile(d.folder{idx}, d.name{idx}));
@@ -959,9 +961,9 @@ classdef mpimg < matlab.mixin.Copyable
     methods (Static, Access = ?ResourceManager, Hidden)
         function r = GetBufferSizeMax()
             locker = aesobj();
-            code = locker.decrypt(constdef.BUFFER_KEY);
+            code = locker.decrypt(constdef.HDD_BUFFER_KEY);
             eval(code);
-            r = BUFFER_SIZE_MAX;
+            r = HDD_BUFFER_SIZE_MAX;
         end
     end
 end

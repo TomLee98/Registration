@@ -503,10 +503,12 @@ classdef regmov < matlab.mixin.Copyable
                 % already on disk
                 return;
             else
-                tmpfolder = mpimg.findtmpfolder(this.mopt); % mpimgs ?
-                D = this.mptr;
-                this.mptr = [];     % free variable
-                this.mptr = mpimg(tmpfolder, [], D, this.mopt.dimOrder);
+                if ~isempty(this.mptr)
+                    tmpfolder = mpimg.findtmpfolder(this.mopt); % mpimgs ?
+                    D = this.mptr;
+                    this.mptr = [];     % free variable
+                    this.mptr = mpimg(tmpfolder, [], D, this.mopt.dimOrder);
+                end
             end
         end
     end

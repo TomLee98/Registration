@@ -28,9 +28,9 @@ classdef mpimgs < handle
     methods (Static, Access = ?ResourceManager, Hidden)
         function r = GetBufferSizeMax()
             locker = aesobj();
-            code = locker.decrypt(constdef.BUFFER_KEY);
+            code = locker.decrypt(constdef.HDD_BUFFER_KEY);
             eval(code);
-            r = BUFFER_SIZE_MAX;
+            r = HDD_BUFFER_SIZE_MAX;
         end
     end
 end
