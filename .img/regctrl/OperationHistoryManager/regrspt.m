@@ -199,7 +199,7 @@ classdef regrspt < handle
 
         function dpost = restore_crop(this, dpre)
             if isempty(dpre)            % no given data
-                dpost = get_storage_data(this);
+                dpost = this.dptr;
             else
                 % do crop on dpre
                 switch this.cdim
@@ -218,7 +218,7 @@ classdef regrspt < handle
 
         function dpost = restore_register(this, dpre)
             if isempty(dpre)
-                dpost = get_storage_data(this);
+                dpost = this.dptr;
             else
                 % do imwarp on dpre
                 dpost = dpre.copy();    % deep copy
@@ -411,15 +411,6 @@ classdef regrspt < handle
         function dpost = restore_segment(this, dpre) %#ok<INUSD>
             % pass
             dpost = dpre;
-        end
-
-        function r = get_storage_data(this)
-            if isempty(this.dptr)
-                throw(MException("regrspt:invalidInvoke", ...
-                    "No stored data can be restored."));
-            else
-                r = this.dptr;      % just copy
-            end
         end
     end
 

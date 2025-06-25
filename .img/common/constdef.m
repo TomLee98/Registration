@@ -12,6 +12,9 @@ classdef constdef
         GRAYSCALE_AXES_LIGHT = [1.00, 1.00, 1.00]
         GRAYSCALE_AXES_DARK = [0.80, 0.80, 0.80]
 
+        COLOR_PERCENTAGE_SAFE = [0.25,0.75,1.00]
+        COLOR_PERCENTAGE_URGENT = [1.00, 0.25, 0.25]
+
         COLOR_IMAGING_RED = [1.00, 0.00, 0.00; ...
                              0.00, 0.00, 0.00; ...
                              0.00, 0.00, 0.00]
@@ -57,10 +60,13 @@ classdef constdef
                                  "SimpleStatistics",      "ON", ...                 % "ON"/"OFF"
                                  "AutoTemplate",          "ON", ...                 % "ON"/"OFF"
                                  "Style",                 "FOLLOW", ...             % "LIGHT"/"DARK"/"FOLLOW"
+                                 "StorageViewStyle",      "CLASSICAL", ...          % "CLASSICAL"/"MODERN"
                                  "ProgressBarColor",      [0.30, 0.75, 0.93], ...   % 0 ~ 1, 1-by-3 array
+                                 "CacheLocation",         "AUTO", ...               % "AUTO"/"CUSTOMIZED"
                                  "CachePolicy",           "PERFORMANCE", ...        % "PERFORMANCE"/"RESOURCES"/"BALANCE" 
-                                 "BufferCleanTrigger",    "EXIT", ...               % "EXIT"/"RT"/"OFF"
-                                 "Capacity",              64, ...                   % positive double scalar, 1 ~ 128
+                                 "CacheCleanTrigger",     "EXIT", ...               % "EXIT"/"RT"/"OFF"
+                                 "MemoryCapacity",        64, ...                   % positive double scalar, 1 ~ 64
+                                 "HardDriveCapacity",     128, ...                  % positive double scalar, 1 ~ 128
                                  "NumProtectedCPU",       0, ...                    % nonnegative integer
                                  "NumProtectedGPU",       0, ...                    % nonnegative integer
                                  "MessageLevel",          "WARNING", ...            % "WARNING"/"INFO"
@@ -71,7 +77,7 @@ classdef constdef
                                  "ExperimentalFeature",   "OFF")                    % "ON"/"OFF"
     end
 
-    properties (Access = {?mpimg, ?mpimgs}, Constant, Hidden)
+    properties (Access = {?mpimg, ?mpimgs, ?regohm}, Constant, Hidden)
         % code as: HDD_BUFFER_SIZE_MAX = 128;
         HDD_BUFFER_KEY = "I6rlKEDWTeAmmC2/Yd311cVU1vbubYc8JQLKkaoMTmA="
 

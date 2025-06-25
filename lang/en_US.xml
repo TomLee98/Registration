@@ -45,12 +45,14 @@
     <BLUE>Blue</BLUE>
     <BOTH_SIDE>Both</BOTH_SIDE>
     <BREAK>Break</BREAK>
+    <CACHE_LOCATION>Cache Location</CACHE_LOCATION>
     <CACHE_POLICY>Cache Policy</CACHE_POLICY>
     <CALCULATING_GOODNESS>Calculating goodness of registration...</CALCULATING_GOODNESS>
     <CAMERA_BACKGROUND>Camera Background</CAMERA_BACKGROUND>
     <CAMERA_TIME>Camera Time</CAMERA_TIME>
     <CANCEL>Cancel</CANCEL>
-    <CAPACITY_MAX>Maximum Capacitry</CAPACITY_MAX>
+    <CAPACITY_HDD>Hard Drive Capacitry</CAPACITY_HDD>
+    <CAPACITY_MEM>Memory Capacity</CAPACITY_MEM>
     <CELL_MANAGEMENT>Cell Management</CELL_MANAGEMENT>
     <CELL_SEGMENTOR>Cell Segmentor</CELL_SEGMENTOR>
     <CENTROID>Centroid</CENTROID>
@@ -61,6 +63,7 @@
     <CHECK_UPDATE>Check Update</CHECK_UPDATE>
     <CIRCLE>Circle</CIRCLE>
     <CIRCLE_HAT>Circle Hat</CIRCLE_HAT>
+    <CLASSICAL>Classical</CLASSICAL>
     <CLEAN_BUFFER>Clean Buffer</CLEAN_BUFFER>
     <CLEAN_CYCLE>Clean Cycle</CLEAN_CYCLE>
     <CLEAR>Clear</CLEAR>
@@ -96,6 +99,7 @@
     <CROP_XY>Crop XY</CROP_XY>
     <CROP_Z>Thickness Cropping</CROP_Z>
     <CUBIC_HIGH_QUALITY>Cubic(High Quality)</CUBIC_HIGH_QUALITY>
+    <CUSTOMIZED>Customized</CUSTOMIZED>
     <CYAN>Cyan</CYAN>
     <DATA_MANAGEMENT>Data Management</DATA_MANAGEMENT>
     <DATA_PROTECTED>Data Protected</DATA_PROTECTED>
@@ -187,6 +191,7 @@
     <GRID_STEP>Grid Step</GRID_STEP>
     <GRID_UNIT_SIZE>Grid Unit Size</GRID_UNIT_SIZE>
     <GROWTH_FACTOR>Growth Factor</GROWTH_FACTOR>
+    <HARD_DRIVE>Hard Drive</HARD_DRIVE>
     <HAT_SIZE>Hat Size</HAT_SIZE>
     <HEIGHT>Height</HEIGHT>
     <HELP>Help</HELP>
@@ -297,6 +302,7 @@
     <MODAL>Modal</MODAL>
     <MODEL>Model</MODEL>
     <MODEL_PARAMETERS>Model Parameters</MODEL_PARAMETERS>
+    <MODERN>Modern</MODERN>
     <MONOMODAL>Monomodal</MONOMODAL>
     <MORPHOLOGY>Morphology</MORPHOLOGY>
     <MOVIE_EXPORTED_SUCCESS>Video exported successfully</MOVIE_EXPORTED_SUCCESS>
@@ -307,6 +313,7 @@
     <MULTIMODAL>Multimodal</MULTIMODAL>
     <NETWORK_TOPOLOGY>Network Topology</NETWORK_TOPOLOGY>
     <NO>No</NO>
+    <NODE>Node</NODE>
     <NOISE_MODEL>Noise Model</NOISE_MODEL>
     <NONE>None</NONE>
     <NONUNIFORM>Nonuniform</NONUNIFORM>
@@ -464,6 +471,7 @@
     <STAGE>Stage</STAGE>
     <STARTUP>Start up</STARTUP>
     <STATUS>Status</STATUS>
+    <STORAGE>Storage</STORAGE>
     <STORAGE_VIEW>Storage View</STORAGE_VIEW>
     <STRUCTURED_BACKGROUND>Please enter the background on the location channel:</STRUCTURED_BACKGROUND>
     <STYLE>Style</STYLE>
@@ -537,6 +545,7 @@
     <UPDATE_SCRIPT_FAILED>Update script generation failed, please check the write permissions</UPDATE_SCRIPT_FAILED>
     <USER>User</USER>
     <USUAL>Usual</USUAL>
+    <UTILIZATION>Utilization</UTILIZATION>
     <VALIDATE_UPDATE>Validate update…</VALIDATE_UPDATE>
     <VARIABLE_LOADED>Variable loaded</VARIABLE_LOADED>
     <VERTICAL>Vertical</VERTICAL>

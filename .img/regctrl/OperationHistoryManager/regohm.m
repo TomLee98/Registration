@@ -11,6 +11,9 @@ classdef regohm < handle
         ActiveNodeTag   % ___/get, 1-by-1 string, could be empty
         IsDistributed   % set/get, 1-by-1 logical, indicates if data spread on disk
         CachePolicy     % ___/get, 1-by-1 string, could be "PERFORMANCE"/"RESOURCE"/"BALANCE"
+        CacheLocation   % set/get, 1-by-1 string, could be "AUTO"/"CUSTOMIZED"
+        CacheSizeMEM    % set/get, 1-by-1 double, indicate the maximal memory cache size
+        CacheSizeHDD    % set/get, 1-by-1 double, indicate the maximal hard drive cache size
     end
 
     properties(SetAccess = immutable, GetAccess = private)
@@ -29,6 +32,9 @@ classdef regohm < handle
     end
 
     properties(Access = private, Hidden)
+        cacheloc        (1,1)   string  = "AUTO"            % cache location, "AUTO" for auto select
+        cache_size_mem  (1,1)   double  = 64                % memory cache size, unit as GB 
+        cache_size_hdd  (1,1)   double  = 128               % hard drive cache size, unit as GB
         dptr            (1,1)   regmov = regmov.empty()     % current node related data pointer
         is_distributed  (1,1)   logical = false             % data distributed flag 
         node_active     (1,1)                               % current active node (or tree)
@@ -59,6 +65,50 @@ classdef regohm < handle
 
         function r = get.ActiveNodeTag(this)
             r = string(this.node_active.Tag);
+        end
+
+        function r = get.CacheSizeMEM(this)
+            r = this.cache_size_mem;
+        end
+
+        function set.CacheSizeMEM(this, r)
+            arguments
+                this
+                r       (1,1)   double  {mustBeNonnegative}
+            end
+
+            aes = aesobj();
+            eval(aes.decrypt(constdef.MEM_CACHE_KEY));
+            if r <= MEM_CACHE_SIZE_MAX
+                this.cache_size_mem = r;
+            else
+
+            end
+        end
+
+        function r= get.CacheLocation(this)
+            r = this.cacheloc;
+        end
+
+        function set.CacheLocation(this, r)
+            arguments
+                this
+                r   (1,1)   string  {mustBeMember(r, ["AUTO", "CUSTOMIZED"])}
+            end
+
+            this.cacheloc = r;
+
+            switch r
+                case "AUTO"
+                    % TODO: redistribute data
+                case "CUSTOMIZED"
+                    % skip
+                otherwise
+            end
+
+            % update view
+            this.update_storage_summary();
+            this.update_storage_view();
         end
 
         function r = get.IsDistributed(this)
@@ -92,7 +142,7 @@ classdef regohm < handle
     end
 
     methods (Access = public)
-        function this = regohm(ufig, op_tree, op_txt, op_smgr, ctxt_menu, strategy, distributed)
+        function this = regohm(ufig, op_tree, op_txt, op_smgr, ctxt_menu, cache_mem, cache_hdd, strategy, distributed)
             %REGHIMGR A Constructor
             % Input:
             %   - ufig: 1-by-1 matlab.ui.Figure for progress bar display
@@ -109,6 +159,8 @@ classdef regohm < handle
                 op_txt      (1,1)   matlab.ui.control.TextArea
                 op_smgr     (1,1)   storage_manager
                 ctxt_menu   (1,1)   matlab.ui.container.ContextMenu
+                cache_mem   (1,1)   double
+                cache_hdd   (1,1)   double
                 strategy    (1,1)   string  {mustBeMember(strategy, ...
                                     ["PERFORMANCE", "RESOURCE", "BALANCE"])} = "PERFORMANCE"
                 distributed (1,1)   logical = false
@@ -123,9 +175,18 @@ classdef regohm < handle
             this.optsty = strategy;
             this.is_distributed = distributed;
             this.node_active = this.optree;
-            this.storage_summary.Overview = array2table([], "VariableNames",["MEM","HDD"], ...
-                "RowNames",["Full", "Used", "UsedRatio"]);
-            this.storage_summary.Details = table('Size',[0,4])
+
+            r = aesobj();
+            eval(r.decrypt(constdef.MEM_CACHE_KEY));
+            eval(r.decrypt(constdef.HDD_BUFFER_KEY));
+
+            this.storage_summary.Overview = array2table([MEM_CACHE_SIZE_MAX, HDD_BUFFER_SIZE_MAX; ...
+                                                         0,                  0; ...
+                                                         0,                  0], ...
+                "VariableNames",["MEM","HDD"], "RowNames",["Full", "Used", "UsedRatio"]);
+            this.storage_summary.Details = table('Size',[0,3], ...
+                'VariableTypes',{'string','double','string'}, ...
+                'VariableNames',{'NodeTag', 'Used', 'Location'});
         end
 
         function delete(this)
@@ -157,11 +218,13 @@ classdef regohm < handle
             %% append node after active node
             node_new = this.create_new_node(optr, args, varargin);
 
+            %% activate new node
+            this.ActivateNode(node_new);
+
             %% update storage summary
             this.update_storage_summary();
 
-            %% activate new node
-            this.ActivateNode(node_new);
+            this.update_manage_view();
         end
 
         function DelNode(this, node)
@@ -474,7 +537,8 @@ classdef regohm < handle
                         % activate the nearest
                         this.ActivateNode(node.Parent);
                     else
-                        % skip, tree only
+                        % only one node, deactivate
+                        this.deactivate();
                     end
                 end
             end
@@ -485,7 +549,7 @@ classdef regohm < handle
         function update_manage_view(this)
             % global control
             this.update_operation_view();
-            this.update_source_view();
+            this.update_storage_view();
 
             % local control
             this.update_snapshot_view();
@@ -614,16 +678,9 @@ classdef regohm < handle
                 % pop the node
                 node = st.pop();
 
-                % visit node
                 if isa(node, "matlab.ui.container.TreeNode")
-                    nd = node.NodeData;
-                    switch optr
-                        case "spread"
-                            nd.RSPoint.IsDistributed = true;    % spread data
-                        case "gather"
-                            nd.RSPoint.IsDistributed = false;    % spread data
-                        otherwise
-                    end
+                    % change node storage location
+                    regohm.node_storage_switch(node, optr);
                 end
 
                 nodes = node.Children;     % nodes
@@ -643,6 +700,9 @@ classdef regohm < handle
         % This function updates operation view
         % [Group] global control
         function update_operation_view(this)
+
+            if this.isempty(), return; end
+
             %% remove all style
             % can remove icon style only if Verison >= MATLAB R2024b
             if isMATLABReleaseOlderThan("R2024b")
@@ -692,9 +752,10 @@ classdef regohm < handle
 
         % This function updates source view
         % [Group] global control
-        function update_source_view(this)
+        function update_storage_view(this)
             % invoke storage manager agent repaint
-            this.opsmgr.UpdateView(this.storage_summary);
+            this.opsmgr.UpdateView(this.storage_summary, ...
+                                   this.cacheloc=="AUTO");
         end
 
         % This function updates snapshot view
@@ -707,59 +768,64 @@ classdef regohm < handle
 
             % set default node as selected node
             if isempty(node), node = this.optree.SelectedNodes; end
-            nd = node.NodeData;
 
-            %% parse node data and generate formatted text
-            txt = sprintf("[Tag] %s\n[Time] %s\n[Operation] %s\n[Properties]{\n%%s}\n", ...
-                node.Tag, string(nd.Time), nd.Operation);
-            txt_prop = "";
-            props = fieldnames(nd.Properties);
-            switch nd.Operation
-                case constdef.OP_LOAD
-                    for k = 1:numel(props)
-                        % key-value as props{k}-nd.Properties.(props{k})
-                        switch props{k}
-                            case "Dims"
-                                txt_prop = txt_prop + sprintf("\t[%s] (%s)\n", string(props{k}), ...
-                                    string(nd.Properties.(props{k})).join(","));
-                            case "Size"
-                                txt_prop = txt_prop + sprintf("\t[%s] %s GBytes\n", string(props{k}), ...
-                                    string(nd.Properties.(props{k})));
-                            otherwise
-                                txt_prop = txt_prop + sprintf("\t[%s] %s\n", string(props{k}), ...
-                                    string(nd.Properties.(props{k})));
-                        end
-                    end
-                case {constdef.OP_REGISTER, constdef.OP_SEGMENT}
-                    for k = 1:numel(props)
-                        % key-value as props{k}-nd.Properties.(props{k})
-                        txt_prop = txt_prop + sprintf("\t[%s] %s\n", string(props{k}), ...
-                            string(nd.Properties.(props{k})));
-                    end
-                case constdef.OP_CROP
-                    for k = 1:numel(props)
-                        % key-value as props{k}-nd.Properties.(props{k})
-                        switch props{k}
-                            case "Origin"
-                                if isequal("XY", nd.RSPoint.CropDim)
+            if isempty(node)
+                txt = "";
+            else
+                nd = node.NodeData;
+
+                %% parse node data and generate formatted text
+                txt = sprintf("[Tag] %s\n[Time] %s\n[Operation] %s\n[Properties]{\n%%s}\n", ...
+                    node.Tag, string(nd.Time), nd.Operation);
+                txt_prop = "";
+                props = fieldnames(nd.Properties);
+                switch nd.Operation
+                    case constdef.OP_LOAD
+                        for k = 1:numel(props)
+                            % key-value as props{k}-nd.Properties.(props{k})
+                            switch props{k}
+                                case "Dims"
                                     txt_prop = txt_prop + sprintf("\t[%s] (%s)\n", string(props{k}), ...
                                         string(nd.Properties.(props{k})).join(","));
-                                else
+                                case "Size"
+                                    txt_prop = txt_prop + sprintf("\t[%s] %s GBytes\n", string(props{k}), ...
+                                        string(nd.Properties.(props{k})));
+                                otherwise
                                     txt_prop = txt_prop + sprintf("\t[%s] %s\n", string(props{k}), ...
                                         string(nd.Properties.(props{k})));
-                                end
-                            case "Frames"
-                                txt_prop = txt_prop + sprintf("\t[%s] %s\n", string(props{k}), ...
-                                    string(nd.Properties.(props{k})).join(":").join(","));
-                            otherwise
-                                txt_prop = txt_prop + sprintf("\t[%s] %s\n", string(props{k}), ...
-                                    string(nd.Properties.(props{k})));
+                            end
                         end
-                    end
-                otherwise
-            end
+                    case {constdef.OP_REGISTER, constdef.OP_SEGMENT}
+                        for k = 1:numel(props)
+                            % key-value as props{k}-nd.Properties.(props{k})
+                            txt_prop = txt_prop + sprintf("\t[%s] %s\n", string(props{k}), ...
+                                string(nd.Properties.(props{k})));
+                        end
+                    case constdef.OP_CROP
+                        for k = 1:numel(props)
+                            % key-value as props{k}-nd.Properties.(props{k})
+                            switch props{k}
+                                case "Origin"
+                                    if isequal("XY", nd.RSPoint.CropDim)
+                                        txt_prop = txt_prop + sprintf("\t[%s] (%s)\n", string(props{k}), ...
+                                            string(nd.Properties.(props{k})).join(","));
+                                    else
+                                        txt_prop = txt_prop + sprintf("\t[%s] %s\n", string(props{k}), ...
+                                            string(nd.Properties.(props{k})));
+                                    end
+                                case "Frames"
+                                    txt_prop = txt_prop + sprintf("\t[%s] %s\n", string(props{k}), ...
+                                        string(nd.Properties.(props{k})).join(":").join(","));
+                                otherwise
+                                    txt_prop = txt_prop + sprintf("\t[%s] %s\n", string(props{k}), ...
+                                        string(nd.Properties.(props{k})));
+                            end
+                        end
+                    otherwise
+                end
 
-            txt = sprintf(txt, txt_prop);   % nested generation
+                txt = sprintf(txt, txt_prop);   % nested generation
+            end
 
             %% update text field to display the snapshot
             this.optxt.Value = txt;
@@ -767,10 +833,61 @@ classdef regohm < handle
 
         % This function visit all tree and summary the storage view
         function update_storage_summary(this)
-            if this.isempty()
+            r = aesobj();
+            eval(r.decrypt(constdef.MEM_CACHE_KEY));
+            eval(r.decrypt(constdef.HDD_BUFFER_KEY));
 
+            if ~this.isempty()
+                % use depth-first traversal to spread data onto disk
+                % TODO: if there is too many nodes, use incremental update
+                NodeTag = string([]);
+                Used = [];
+                Location = string([]);
+                MEM_Used = 0;
+                HDD_Used = 0;
+
+                st = mStack();
+                st.push(this.optree);   % push the tree root
+                while ~isempty(st)
+                    % pop the node
+                    node = st.pop();
+
+                    if isa(node, "matlab.ui.container.TreeNode")
+                        nd = node.NodeData;
+                        % get node data summary
+                        NodeTag = [NodeTag; node.Tag]; %#ok<AGROW>
+                        dptr_tmp = nd.RSPoint.getData();
+                        switch dptr_tmp.Location
+                            case "Memory"
+                                Location = [Location; "MEM"]; %#ok<AGROW>
+                                Used = [Used; dptr_tmp.Bytes.mem/2^30]; %#ok<AGROW>
+                                MEM_Used = MEM_Used + dptr_tmp.Bytes.mem;
+                            otherwise
+                                Location = [Location; "HDD"]; %#ok<AGROW>
+                                Used = [Used; dptr_tmp.Bytes.map/2^30]; %#ok<AGROW>
+                                HDD_Used = HDD_Used + dptr_tmp.Bytes.map;
+                        end
+                    end
+
+                    nodes = node.Children;     % nodes
+                    for k = 1:numel(nodes), st.push(nodes(k)); end
+                end
+
+                % summary to table
+                this.storage_summary.Overview = array2table([MEM_CACHE_SIZE_MAX, HDD_BUFFER_SIZE_MAX; ...
+                                                             MEM_Used/2^30,      HDD_Used/2^30; ...
+                                                             MEM_Used/(MEM_CACHE_SIZE_MAX*2^30), HDD_Used/(HDD_BUFFER_SIZE_MAX*2^30)], ...
+                    "VariableNames",["MEM","HDD"], "RowNames",["Full", "Used", "UsedRatio"]);
+                this.storage_summary.Details = table(NodeTag, Used, Location);
             else
-
+                % generate empty table
+                this.storage_summary.Overview = array2table([MEM_CACHE_SIZE_MAX, HDD_BUFFER_SIZE_MAX; ...
+                                                             0,                  0; ...
+                                                             0,                  0], ...
+                    "VariableNames",["MEM","HDD"], "RowNames",["Full", "Used", "UsedRatio"]);
+                this.storage_summary.Details = table('Size',[0,3], ...
+                    'VariableTypes',{'string','double','string'}, ...
+                    'VariableNames',{'NodeTag', 'Used', 'Location'});
             end
         end
     end
@@ -800,6 +917,22 @@ classdef regohm < handle
                     r = [r; frames(ps), frames(pe)]; %#ok<AGROW>
                     break;
                 end
+            end
+        end
+
+        function node_storage_switch(node, optr)
+            arguments
+                node    (1,1)   matlab.ui.container.TreeNode
+                optr    (1,1)   string  {mustBeMember(optr, ["spread", "gather"])}
+            end
+
+            nd = node.NodeData;
+            switch optr
+                case "spread"
+                    nd.RSPoint.IsDistributed = true;    % spread data
+                case "gather"
+                    nd.RSPoint.IsDistributed = false;    % spread data
+                otherwise
             end
         end
     end
