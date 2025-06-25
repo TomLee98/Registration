@@ -1,5 +1,5 @@
 function pts = Vol2Pts(vol, res, minobj, rlut)
-% This function does pre-processing and transformes voxels to point cloud
+% This function does pre-processing and transforms voxels to point cloud
 arguments
     vol (:,:,:);
     res (1,3) double {mustBePositive};
@@ -7,14 +7,14 @@ arguments
     rlut (1,2) double {mustBeInRange(rlut, 0,100)} = [99.99, 97];
 end
 
-% ========================== preprocessing ===========================
+% ========================== pre-processing ===========================
 % limit the over exposure voxels
 vol(vol>prctile(vol,rlut(1),"all")) = prctile(vol,rlut(1),"all");
 
 % remove background baseline
 vol = vol - median(vol,"all");
 
-% using otsu algorithm for calculating nuclear pixels
+% using Otsu algorithm for calculating nuclear pixels
 vol_u8 = Remap(vol, "uint8");
 clear vol;
 

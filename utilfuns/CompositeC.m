@@ -1,68 +1,48 @@
-function C = CompositeC(A, B, method, order, pseudoColor)
-% COMPOSITEC This function composites the color channel and generates the RGB
+function C = CompositeC(R, G, B, cdef)
+%COMPOSITEC_NEW composites the color channel and generates the RGB
 % representation
 % Input:
-%   - A: 2-D/3-D uint8 matrix for channel A
+%   - R: 2-D/3-D uint8 matrix for channel R
+%   - G: 2-D/3-D uint8 matrix for channel G
 %   - B: 2-D/3-D uint8 matrix for channel B
-%   - method: the combination method, which could be "none", "red-cyan" or
-%   "green-magenta", where the format follows channel "A-B"
-%   - order: if no combination, order determine which channel is selected,
-%   and 1 for channel A, 2 for channel B
-%   - pseudoColor: the pseudo color need to viewing, which could be "r",
-%   "g","mix", where "r" for "red"(~694 nm light wave), and "g" for
-%   "green"(~521 nm light wave), "mix" for dual color viewing
+%   - cdef: 3-by-3 color transformation array, 0 ~ 1
 % Output:
 %   - C: 3-D/4-D uint8 true color matrix
 
-% Version 1.1.0
-% Copyright (c) 2022-2023, Weihan Li
+% Version 1.0.0
+% Copyright (c) 2022-2025, Weihan Li
 
 arguments
-    A (:,:,:) {isnumeric(A)}
-    B (:,:,:) {isnumeric(B)}
-    method (1,1) string {ismember(method,["none","red-cyan",...
-        "green-magenta"])} = "none";
-    order (1,1) double {ismember(order,[1,2])} = 1;
-    pseudoColor (1,1) string {ismember(pseudoColor, ["r","g","mix"])} = "r";
+    R       (:,:,:) single   {isnumeric(R)}
+    G       (:,:,:) single   {isnumeric(G)}
+    B       (:,:,:) single   {isnumeric(B)}
+    cdef    (3,3)   double  {mustBeInRange(cdef, 0, 1)}
 end
 
-if ~isempty(A)&&~isempty(B)&&any(size(A)~=size(B))
-    error("Size not match!");
+% validate image size
+if isempty(R) && isempty(G) && isempty(B)
+    C = uint8([]);
+    return;
+end
+if (~isempty(R)&&~isempty(G)&&(any(size(R,1:3)~=size(G,1:3)))) ...
+        || (~isempty(G)&&~isempty(B)&&any(size(G,1:3)~=size(B,1:3)))
+    throw(MException("Composite:sizeNotMatch", ...
+        "Input channels size are not compatible."));
 end
 
-switch method
-    case "none"
-        % no combination, only single pseudo color
-        if order == 1, C = A; else, C = B; end
-        switch pseudoColor
-            case "r"
-                % generate the pure red for 694nm light wave
-                % on both image and viewer3d solution
-                C = cat(ndims(C)+1, C, zeros([size(C),2],'like',C));
-            case "g"
-                if ismatrix(C)
-                    % generate the mixing green for 521nm light wave
-                    % image view solution need both R and G
-                    C = cat(ndims(C)+1, uint8(0.4*double(C)),C,zeros(size(C),'like',C));
-                else
-                    % generate the mixing green for 521nm light wave
-                    % viewer3d only need G channel
-                    C = cat(ndims(C)+1, zeros(size(C),'like',C),C,zeros(size(C),'like',C));
-                end
-            case "mix"
-                % generate the red and green mixing view
-                % B for red channel and A for green, where using mixer with
-                % (0.8, 0.2) for color tuning
-                C = cat(ndims(C)+1,uint8(0.8*double(B)+0.08*double(A)),A,zeros(size(C),'like',C));
-            otherwise
-                % gray scale(RGB representation)
-                % comments: we will not going here
-                C = cat(ndims(C),C,C,C);
-        end
-    case "red-cyan"
-        C = cat(ndims(A)+1,A,B,B);
-    case "green-magenta"
-        C = cat(ndims(A)+1,B,A,B);
-end
+% compatible modification
+vsize = max(max(size(R, 1:3), size(G, 1:3)), size(B, 1:3));
+vblack = zeros(vsize, "single");
+if isempty(R), R = vblack; end
+if isempty(G), G = vblack; end
+if isempty(B), B = vblack; end
+
+% transform 
+Rp = cdef(1,1)*R + cdef(1,2)*G + cdef(1,3)*B;
+Gp = cdef(2,1)*R + cdef(2,2)*G + cdef(2,3)*B;
+Bp = cdef(3,1)*R + cdef(3,2)*G + cdef(3,3)*B;
+
+% explicit casting to uint8
+C = cast(cat(ndims(vblack)+1, Rp, Gp, Bp), "uint8");
 end
 
