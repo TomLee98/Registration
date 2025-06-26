@@ -415,13 +415,13 @@ V4.x        da Vinci          达·芬奇
   |     |- [Fix Bugs] remove Z-projection syntronize (: UI syntronize bug)
   |     |- [Fix Bugs] fix the "operation manager" flag display bug on MATLAB <= R2024a
   |- V4.1.0     2025/06/29
-  |     |- [New] TODO: add "History Manager" storage protection to avoid operations overflow
+  |     |- [New] TODO: add "History Manager" storage manager to avoid operations overflow
   |     |- [New] TODO: add "channel alignment" recovery
   |     |- [New] TODO: "Ctrl+B" for "burn/undo" to view faster than real time objects reconstruct when refine segmentation 
   |     |- [Adjust] modify the "history manager" view size changing
   |     |- [Adjust] TODO: try to parallel on "ZCROP", "TCROP", "XYCROP" for speed up
-  |     |- [Fix Bugs] "load" node remove bug (display resource lost)
-  |     |- [Fix Bugs] TODO: update global system message control
+  |     |- [Fix Bugs] fix resource lost after removing "load" node
+  |     |- [Fix Bugs] TODO: fix OCREG function
   |     |- [Note] (hidden) TODO: update help files
   |     |- [Note] (hidden) auto delete the current user's rcf under /data/.rcfs after app closed
   |- V4.2.0     2025/07/
@@ -431,5 +431,6 @@ V4.x        da Vinci          达·芬奇
   |     |- [New] TODO: add "pseudo color" configuration in "Resourece Manager"
   |     |- [New] TODO: support file "drag" and "open"
   |     |- [Adjust] TODO: 
+  |     |- [Adjust] TODO: update global system message control
   |     |- [Fix Bugs] TODO: fix the bug if user uses continues MANREG (too many copy)
 
