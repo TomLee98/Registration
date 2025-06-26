@@ -39,5 +39,10 @@ ImagePointer = libpointer('s_LIMPICTUREPtr', ImageStru);
 calllib(libname, 'Lim_InitPicture', ImagePointer, ImageStru.uiWidth, ImageStru.uiHeight, ImageStru.uiBitsPerComp, ImageStru.uiComponents);
 
 [~, ~, ImageReadOut] = calllib(libname, 'Lim_FileGetImageData', FilePointer, uint32(0), ImagePointer);
-setdatatype(ImageReadOut.pImageData, 'uint16Ptr', ImageStru.uiWidth * ImageStru.uiHeight * ImageStru.uiComponents)
+
+% explicit call member function
+% Note that MATLAB R2025a Update-1 will throw error if implicit call this
+% function
+ImageReadOut.pImageData.setdatatype('uint16Ptr', ...
+    ImageStru.uiWidth * ImageStru.uiHeight * ImageStru.uiComponents);
 end
