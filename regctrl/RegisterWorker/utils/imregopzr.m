@@ -90,7 +90,8 @@ end
 % as iteratin initial value
 Mr = reshape(sum(fixed-ri_val, [1,2]), 1, []);
 Mv = reshape(sum(moving-mi_val, [1,2]), 1, []);
-dz0 = sum(Mr.*(1:size(fixed,3)))/sum(Mr) - sum(Mv.*(1:size(moving,3)))/sum(Mv);
+dz0 = sum(Mr.*(1:size(fixed,3)))/(sum(Mr)+eps) ...
+    - sum(Mv.*(1:size(moving,3)))/(sum(Mv)+eps);
 
 % optimize the z shift by immse as loss function
 fminbnd_opts = optimset('MaxIter',100, 'TolX', tol);
