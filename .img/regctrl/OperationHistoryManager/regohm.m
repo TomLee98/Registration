@@ -243,8 +243,65 @@ classdef regohm < handle
             tf = isa(this.node_active, "matlab.ui.container.Tree");
         end
 
-        function tf = isaddable(this, data, optr)
+        function tf = isaddable(this, optr, args)
+            % note that current operation generates data must be with less
+            % or equal size than active node data
+            % And there must be enough space to allow current image display
+            arguments
+                this 
+                optr (1,1)  string  {mustBeMember(optr, ["CROP","LOAD","SEGMENT","REGISTER"])}
+                args (1,:)  cell    = {}        % Name-Value pair, example: "Z",[5, 10]
+            end
 
+            % empty tree, must be addable
+            if this.isempty() == true, tf = true; return; end
+
+            % storage policy determines if new storage space needed
+            is_storage = constdef.TRANSMISSION_STORAGE_TABLE{this.optsty, optr};
+            if is_storage== false, tf = true; return; end
+
+            % calculate storage free size
+            mem_left = this.storage_summary.Overview.MEM(1) ...
+                - this.storage_summary.Overview.MEM(2);     % GB
+            hdd_left = this.storage_summary.Overview.HDD(1) ...
+                - this.storage_summary.Overview.HDD(2);     % GB
+
+            % find the nearest stored node and get the storage size
+            node = this.find_nearest_prior_stored_node(this.node_active);
+            dptr_tmp = node.NodeData.RSPoint.getData();
+            alloc_st = (dptr_tmp.Bytes.mem + dptr_tmp.Bytes.map)/2^30;   % GB
+
+            % use operator and arguments to estimate the storage using
+            switch optr
+                case constdef.OP_CROP
+                    switch args{1}
+                        case "XY"
+                            alloc_new = prod(diff(args{2},1,1)+1) ...
+                                /(dptr_tmp.MetaData.width*dptr_tmp.MetaData.height) ...
+                                * alloc_st;
+                        case "Z"
+                            alloc_new = (diff(args{2},1)+1)/dptr_tmp.MetaData.slices ...
+                                * alloc_st;
+                        case "T"
+                            alloc_new = numel(args{2})/dptr_tmp.MetaData.frames ...
+                                * alloc_st;
+                        otherwise
+                    end
+
+                    tf = alloc_new < max(mem_left, hdd_left);
+                case constdef.OP_LOAD
+                    % loading must be addable
+                    tf = true;
+                case constdef.OP_SEGMENT
+                    % note that NuclearCtrlBot and some variables in the
+                    % memory, and space using could be omitted
+                    tf = true;
+                case constdef.OP_REGISTER
+                    % note that register need space as active node if
+                    % policy is "performance"
+                    tf = (alloc_st < max(mem_left, hdd_left));
+                otherwise
+            end
         end
 
         function AddNode(this, optr, args, varargin)
@@ -297,7 +354,16 @@ classdef regohm < handle
                this.activate(node);
 
                %% update appearance
-               this.update_manage_view();
+               this.update_operation_view();
+               this.update_snapshot_view();
+            end
+        end
+
+        function ActivatePreviousNode(this)
+            node = get_node_before(this);
+
+            if ~isempty(node)
+                this.ActivateNode(node); 
             end
         end
 
@@ -416,17 +482,17 @@ classdef regohm < handle
             this.update_snapshot_view();
         end
 
-        % This function packages all data as project to given folder
-        function PackageProjectTo(this, folder)
-            
-
-        end
-
-        % This function loads data from given project folder
-        function LoadProjectFrom(this, folder)
-            
-
-        end
+        % % This function packages all data as project to given folder
+        % function PackageProjectTo(this, folder)
+        % 
+        % 
+        % end
+        % 
+        % % This function loads data from given project folder
+        % function LoadProjectFrom(this, folder)
+        % 
+        % 
+        % end
 
     end
 
@@ -443,7 +509,7 @@ classdef regohm < handle
                 % drop data node and replace by empty
                 for n = 1:2:numel(vars)
                     if isequal("Data", vars{n})
-                        vars{n+1} = regmov.empty();     % drop, handle is only hold by Register
+                        vars{n+1} = regmov.empty();     % drop, handle is only hold by Register now
                         break;
                     end
                 end
@@ -451,6 +517,25 @@ classdef regohm < handle
 
             % construct restore point
             rs_node = regrspt(optr, args, vars{:});
+
+            switch this.cache_loc
+                case "AUTO"
+                    % determine if node is in memory or on hard drive
+                    mem_left = this.storage_summary.Overview.MEM(1) ...
+                        - this.storage_summary.Overview.MEM(2);     % GB
+                    hdd_left = this.storage_summary.Overview.HDD(1) ...
+                        - this.storage_summary.Overview.HDD(2);     % GB
+                    if hdd_left > 2 * mem_left
+                        % storage with more than 2 fold free space than 
+                        % memory, higher priority
+                        rs_node.IsOnHardDrive = true;
+                    else
+                        % memory will be faster for big file, higher priority
+                        rs_node.IsOnHardDrive = false;
+                    end
+                otherwise
+                    % keep the current property
+            end
 
             node_data = struct("Operation",  [], ...
                                "Properties", [], ...
@@ -546,23 +631,8 @@ classdef regohm < handle
                 % just read from node
                 this.dptr = rpt.getData();
             else
-                % find the shortest calculation path, equals to find the 
-                % nearest storage which is of a higher  seniority in the 
-                % family hierarchy
-
-                % use stack for previous tracing
-                nodes = mStack();
-                nodes.push(node);   % push the first node
-                while ~isempty(this.get_node_before(node))
-                    % push node
-                    node = this.get_node_before(node);
-                    nodes.push(node);
-
-                    % determine breaking if node strategy is storage
-                    rpt = node.NodeData.RSPoint;
-                    is_storage = constdef.TRANSMISSION_STORAGE_TABLE{this.optsty, rpt.Operator};
-                    if is_storage, break; end
-                end
+                % generate nodes line
+                [~, nodes] = find_nearest_prior_stored_node(this, node);
 
                 % generate calculation waitbar
                 msg = sprintf("Calculating ...(0/%d)", nodes.size()-1);
@@ -579,7 +649,7 @@ classdef regohm < handle
                     node = nodes.pop();
                     rpt = node.NodeData.RSPoint;
 
-                    % update current dptr
+                    % update current dptr, source only one copy
                     this.dptr = rpt.getData(this.dptr);
 
                     n = n + 1;
@@ -747,6 +817,31 @@ classdef regohm < handle
                     node = node.Parent;
                 end
             end
+        end
+
+        % find the shortest calculation path, equals to find the
+        % nearest storage which is of a higher  seniority in the
+        % family hierarchy
+        function [node, nodes] = find_nearest_prior_stored_node(this, node)
+            arguments
+                this 
+                node (1,1)  matlab.ui.container.TreeNode
+            end
+
+            nodes = mStack();
+            nodes.push(node);   % push the first node
+            while ~isempty(this.get_node_before(node))
+                % push node
+                node = this.get_node_before(node);
+                nodes.push(node);
+
+                % determine breaking if node strategy is storage
+                rpt = node.NodeData.RSPoint;
+                is_storage = constdef.TRANSMISSION_STORAGE_TABLE{this.optsty, rpt.Operator};
+                if is_storage, break; end
+            end
+
+            node = nodes.top();
         end
 
         % This is select changed callback binding on tree
@@ -989,11 +1084,12 @@ classdef regohm < handle
             end
 
             nd = node.NodeData;
+
             switch optr
                 case "spread"
-                    nd.RSPoint.IsDistributed = true;    % spread data
+                    nd.RSPoint.IsOnHardDrive = true;    % spread data
                 case "gather"
-                    nd.RSPoint.IsDistributed = false;    % spread data
+                    nd.RSPoint.IsOnHardDrive = false;    % spread data
                 otherwise
             end
         end

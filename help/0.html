@@ -6,48 +6,50 @@
 </head>
 <body>
 <p align="center"><font face="宋体"><font size="7"><strong>帮助文档(for
-V2.2.X</strong> <span lang="la"><font color="#202122" face="Arial">Wujing</font></span><strong>)</strong></font></font></p>
-<p align="center"><font size="5.5" face="宋体"><b>运行环境：Windows 10/Windows 11/Ubuntu 20.04 LTS +
-MATLAB R2022b/R2023a/R2023b/R2024a</b></font></p>
+V4.X</strong> <span lang="la"><font color="#202122" face="Arial">da Vinci</font></span><strong>)</strong></font></font></p>
+<p align="center"><font size="5.5" face="宋体"><b>运行环境：Windows 10 22H2/Windows 11 22H2/Ubuntu 20.04 LTS +
+MATLAB R2022b/R2023a/R2023b/R2024a/R2024b/R2025a</b></font></p>
 <p align="left"><font size="6" face="宋体">一、<strong>用户界面</strong></font></p>
 <p align="center"><img src="0%1.bmp" alt=""></p>
 <blockquote style="MARGIN-RIGHT: 0px" dir="ltr">
 <p style="MARGIN-RIGHT: 0px" dir="ltr" align="left"><font size="4">区域1.
-<strong>菜单栏</strong>，包括文件操作、基本图像处理、播放器设置、配准设置导入/导出及帮助文档。</font></p>
+<strong>菜单栏</strong>，包括文件操作、基本图像处理、图像数据分析、高级功能与使用帮助。</font></p>
 <p style="MARGIN-RIGHT: 0px" dir="ltr" align="left"><font size="4">区域2.
-<strong>片层滑块</strong>，上下滑动用于浏览三维体数据不同片层(一般为 Z 方向)，可使用键盘 "UP" 或 "DOWN"
+<strong>片层滑块</strong>，上下滑动用于浏览三维体数据不同片层(一般为 Z 方向)，当焦点为程序主窗体时，可使用键盘 "UP" 或 "DOWN"
 控制。</font></p>
 <p style="MARGIN-RIGHT: 0px" dir="ltr" align="left"><font size="4">区域3.
-<strong>浏览器主窗口</strong>。</font></p>
+<strong>浏览器主窗口</strong>，可在其上右键单击呼出右键菜单。</font></p>
 <p style="MARGIN-RIGHT: 0px" dir="ltr" align="left"><font size="4">区域4.
-<strong>时间滑块</strong>，左右滑动用于浏览四维体数据不同帧，可使用键盘 "LEFT" 或 "RIGHT" 控制。</font></p>
+<strong>时间滑块</strong>，左右滑动用于浏览四维体数据不同帧，当焦点为程序主窗体时，可使用键盘 "LEFT" 或 "RIGHT" 控制。</font></p>
 <p style="MARGIN-RIGHT: 0px" dir="ltr" align="left"><font size="4">区域5.
-  <strong>控制面板</strong>，功能包括控制配准启动、切换浏览源、指示系统状态及显示系统日志。</font></p>
+  <strong>控制面板</strong>，功能包括控制配准启动、切换浏览源及显示系统日志。</font></p>
 <p style="MARGIN-RIGHT: 0px" dir="ltr" align="left"><font size="4">区域6.
-  <strong>进度条</strong>，指示当前操作完成进度，包括数据读取、写入及配准进度。</font></p>
+  <strong>进度条</strong>，指示当前操作完成进度，包括数据读取、写入，图像分割及配准进度。</font></p>
 <p style="MARGIN-RIGHT: 0px" dir="ltr" align="left"><font size="4">区域7.
-  <strong>历史管理器</strong>，快捷呼出历史管理器子窗口，用于管理相关数据。(Version&ge;2.2.0)</font></p>
+  <strong>历史管理器</strong>，包括动作视图、存储视图及动作快照组件，用于管理操作历史。</font></p>
 <p style="MARGIN-RIGHT: 0px" dir="ltr" align="left"><font size="4">区域8.
-	<strong>图像信息</strong>，显示当前图像信息，包括鼠标位置，像素值等。</font></p>
+	<strong>图像信息</strong>，显示当前图像信息，包括鼠标位置，像素值，当前相机时间及ROI信息。</font></p>
 <p style="MARGIN-RIGHT: 0px" dir="ltr" align="left"><font size="4">区域9.
-  <strong>更新信息</strong>，该位置在有可用更新时可显示三个图标中的一种，分别为：红色甲虫(Debug Channel), 蓝色UFO(Preview Channel) 以及 红色火箭(Release Channel)。点击即可更新，推荐在Release版本发布后更新程序。</font></p>
+  <strong>更新信息</strong>，该位置在有可用更新时可显示一种图标，这取决于您选择的更新通道 (Debug/Preview/Release)。</font></p>
 </blockquote>
 <p align="left"><font size="4" face="宋体"><strong>&nbsp;注1：Ubuntu 20.04 GNOME可完全满足UI操作，KDE难以完成交互，例如单击菜单时无响应。其余图形界面未测试。</strong></font></p>
-<p align="left"><font size="4" face="宋体"><strong>&nbsp;注2：推荐使用 Windows 10 + MATLAB R2024a 以获取最佳体验。（2024/07）</strong></font></p> 
+<p align="left"><font size="4" face="宋体"><strong>&nbsp;注2：推荐使用 Windows 10(>=22H2)+ MATLAB R2025a 以获取最佳体验。（2025/06）</strong></font></p>
 <p align="left">&nbsp;</p>
 <p align="left"><font size="5" face="宋体"><strong>1.菜单栏</strong></font></p>
 <blockquote style="MARGIN-RIGHT: 0px" dir="ltr">
 <p align="left"><font size="4" face="宋体"><strong>1.1 文件</strong></font></p>
 <blockquote style="MARGIN-RIGHT: 0px" dir="ltr">
 <p align="left"><font face="宋体"><strong><a href="1_1_1.html">1.1.1
-加载文件</a></strong></font></p>
+加载图像</a></strong></font></p>
 <p align="left"><font face="宋体"><strong><a href="1_1_2.html">1.1.2
-导出图像</a></strong></font></p>
+加载时间</a></strong></font></p>
 <p align="left"><font face="宋体"><strong><a href="1_1_3.html">1.1.3
+导出图像</a></strong></font></p>
+<p align="left"><font face="宋体"><strong><a href="1_1_4.html">1.1.4
 导出时间</a></strong></font></p>
-<p align="left"><strong><a href="1_1_4.html"><font face="宋体">1.1.4
+<p align="left"><strong><a href="1_1_5.html"><font face="宋体">1.1.5
 导出影片</font></a></strong></p>
-<p align="left"><font face="宋体"><strong>1.1.5 退出</strong></font></p>
+<p align="left"><font face="宋体"><strong>1.1.6 退出</strong></font></p>
 <blockquote style="MARGIN-RIGHT: 0px" dir="ltr">
 <p align="left">无。</p>
 </blockquote>
@@ -61,11 +63,11 @@ Z投影</a></strong></font></p>
 <p align="left"><font face="宋体"><strong><a href="1_2_3.html">1.2.3
 通道对齐</a></strong></font></p>
 <p align="left"><font face="宋体"><strong><a href="1_2_4.html">1.2.4
-移除背景</a></strong></font></p>
-<p align="left"><font face="宋体"><strong><a href="1_2_5.html">1.2.5
-单连通蒙版</a></strong></font></p>
-<p align="left"><font face="宋体"><strong><a href="1_2_6.html">1.2.6
 添加注释</a></strong></font></p>
+<p align="left"><font face="宋体"><strong><a href="1_2_5.html">1.2.5
+动画</a></strong></font></p>
+<p align="left"><font face="宋体"><strong><a href="1_2_6.html">1.2.6
+播放模式</a></strong></font></p>
 <p align="left"><font face="宋体"><strong><a href="1_2_7.html">1.2.7
 体积裁剪</a></strong></font></p>
 <p align="left"><font face="宋体"><strong><a href="1_2_8.html">1.2.8
@@ -75,33 +77,23 @@ Z投影</a></strong></font></p>
 <p align="left"><font face="宋体"><strong><a href="1_2_10.html">1.2.10
 旋转</a></strong></font></p>
 </blockquote>
-<p align="left"><font size="4" face="宋体"><strong>1.3 选项</strong></font></p>
+<p align="left"><font size="4" face="宋体"><strong>1.3 分析</strong></font></p>
 <blockquote style="MARGIN-RIGHT: 0px" dir="ltr">
 <p align="left"><font face="宋体"><strong><a href="1_3_1.html">1.3.1
-导出配置</a></strong></font></p>
+图像配准</a></strong></font></p>
 <p align="left"><font face="宋体"><strong><a href="1_3_2.html">1.3.2
-加载配置</a></strong></font></p>
+细胞分割</a></strong></font></p>
 <p align="left"><font face="宋体"><strong><a href="1_3_3.html">1.3.3
-动画</a></strong></font></p>
-<p align="left"><font face="宋体"><strong><a href="1_3_4.html">1.3.4
-播放模式</a></strong></font></p>
-<p align="left"><font face="宋体"><strong><a href="1_3_5.html">1.3.5
-配准器</a></strong></font></p>
-<p align="left"><font face="宋体"><strong><a href="1_3_6.html">1.3.6
-运行模态</a></strong></font></p>
-<p align="left"><font face="宋体"><strong><a href="1_3_7.html">1.3.7
-任务浏览器</a></strong></font></p>
+信号提取</a></strong></font></p>
 <blockquote style="MARGIN-RIGHT: 0px" dir="ltr">
 </blockquote>
 </blockquote>
 <p align="left"><font size="4" face="宋体"><strong>1.4 高级</strong></font></p>
 <blockquote style="MARGIN-RIGHT: 0px" dir="ltr">
 <p align="left"><font face="宋体"><strong><a href="1_4_1.html">1.4.1
-python解释器</a></strong></font></p>
+资源管理</a></strong></font></p>
 <p align="left"><font face="宋体"><strong><a href="1_4_2.html">1.4.2
-细胞分割器</a></strong></font></p>
-<p align="left"><font face="宋体"><strong><a href="1_4_3.html">1.4.3
-信号提取器</a></strong></font></p>
+历史管理</a></strong></font></p>
 </blockquote>
 <p align="left"><font size="4" face="宋体"><strong>1.5 帮助</strong></font></p>
 <blockquote style="MARGIN-RIGHT: 0px" dir="ltr">
@@ -111,10 +103,6 @@ python解释器</a></strong></font></p>
 <blockquote style="MARGIN-RIGHT: 0px" dir="ltr">
 <p align="left"><font face="宋体">无。</font></p>
 </blockquote>
-<p align="left"><font face="宋体"><strong><a href="1_5_3.html">1.5.3
-语言</a></strong></font></p>
-<p align="left"><font face="宋体"><strong><a href="1_5_4.html">1.5.4
-协助改进</a></strong></font></p>
 <p dir="ltr" align="left">&nbsp;</p>
 </blockquote>
 <p align="left"><font size="5" face="宋体"><strong>2.片层滑块</strong></font></p>
@@ -169,14 +157,17 @@ python解释器</a></strong></font></p>
 </blockquote>
 <p dir="ltr" align="left"><font size="5" face="宋体"><strong>6.进度条</strong></font></p>
 <blockquote style="MARGIN-RIGHT: 0px" dir="ltr">
-<p align="left"><font size="4" face="宋体">在进度条上右键会唤出“颜色”菜单，点击可修改进度条颜色。</font></p>
-<p dir="ltr" align="left"><img src="0%3.bmp" alt="" width="600"></p>
+<p align="left"><font size="4" face="宋体">您可以通过点击菜单栏 <u>高级</u>-><u>资源管理</u>-><u>外观</u> 配置进度条颜色。</font></p>
 </blockquote>
 <br>
 <p dir="ltr" align="left"><font size="5" face="宋体"><strong>7.历史管理器</strong></font></p>
 <blockquote style="MARGIN-RIGHT: 0px" dir="ltr">
 <p align="left"><font size="4" face="宋体"><strong><a href="7_1.html">7.1
-历史管理器</a></strong></font></p>
+动作视图</a></strong></font></p>
+<p align="left"><font size="4" face="宋体"><strong><a href="7_2.html">7.2
+ 存储视图</a></strong></font></p>
+<p align="left"><font size="4" face="宋体"><strong><a href="7_3.html">7.3
+动作快照</a></strong></font></p>
 <p dir="ltr" align="left">&nbsp;</p>
 </blockquote>
 <p dir="ltr" align="left"><font size="5" face="宋体"><strong>8.图像信息</strong></font></p>

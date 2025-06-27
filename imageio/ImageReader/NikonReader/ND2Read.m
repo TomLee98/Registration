@@ -19,11 +19,23 @@ else
 
     for i = 1:size(Num, 2)
         [~, ~, ImageReadOut] = calllib(libname, 'Lim_FileGetImageData', FilePointer, uint32(Num(i) - 1), ImagePointer);
-        % explicit call member function
-        % Note that MATLAB R2025a Update-1 will throw error if implicit call this
-        % function
         
-        Image = reshape(ImageReadOut.pImageData, [ImageReadOut.uiComponents, ImageReadOut.uiWidth * ImageReadOut.uiHeight]);
+        % Note that if MATLAB version <= R2024b, ImageReadOut.pImageData
+        % will be uint16 array, but if not, it will be libpointer
+        if isMATLABReleaseOlderThan("R2025a")
+            % call MATLAB reshape (overload for uint16 array)
+            Image = reshape(ImageReadOut.pImageData, ...
+                [ImageReadOut.uiComponents, ImageReadOut.uiWidth * ImageReadOut.uiHeight]);
+        else
+            % must explicit call member function!!!
+            ImageReadOut.pImageData.setdatatype('uint16Ptr', ...
+                ImageReadOut.uiWidth * ImageReadOut.uiHeight * ImageReadOut.uiComponents);
+            ImageReadOut.pImageData.reshape(ImageReadOut.uiComponents, ...
+                ImageReadOut.uiWidth * ImageReadOut.uiHeight);
+            Image = ImageReadOut.pImageData.Value;
+        end
+
+        
 
         for j = 1:ImageReadOut.uiComponents
             ImageStack{j}(:, :, i) = reshape(Image(j, :), [ImageReadOut.uiWidth, ImageReadOut.uiHeight])';

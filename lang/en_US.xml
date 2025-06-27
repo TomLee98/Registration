@@ -9,6 +9,7 @@
     <AFFINE_TOOLTIP>translation, rotation, anisotropic scaling, reflection, and shearing</AFFINE_TOOLTIP>
     <ALIGNED>Aligned</ALIGNED>
     <ALL_CHANNEL>All</ALL_CHANNEL>
+    <ANALYZE>Analyze</ANALYZE>
     <ANGULAR_DISPLACEMENT_RADIAN>Angular displacement (Radian)</ANGULAR_DISPLACEMENT_RADIAN>
     <ANIMATION>Animation</ANIMATION>
     <ANOMALY_DETECTION>Anomaly Detection</ANOMALY_DETECTION>
@@ -36,7 +37,6 @@
     <BASELINE_MODEL>Baseline Model</BASELINE_MODEL>
     <BATCH_SIZE>Batch Size</BATCH_SIZE>
     <BCS_EXIT>Exit</BCS_EXIT>
-    <BCS_RT>Real time</BCS_RT>
     <BCS_OFF>Never (not recommended)</BCS_OFF>
     <BEGIN>begin</BEGIN>
     <BICUBIC>Bicubic</BICUBIC>
@@ -136,6 +136,7 @@
     <ERROR>Error</ERROR>
     <EVERYDAY>Every Day</EVERYDAY>
     <EXIT>Exit</EXIT>
+    <EXIT_FREE>Cleaning up temporary files…</EXIT_FREE>
     <EXPORT>Export</EXPORT>
     <EXPORT_AS>Export as</EXPORT_AS>
     <EXPORT_PARAMETERS>Export Parameters</EXPORT_PARAMETERS>
@@ -468,6 +469,7 @@
     <STARTUP>Start up</STARTUP>
     <STATUS>Status</STATUS>
     <STORAGE>Storage</STORAGE>
+    <STORAGE_INSUFFICIENT>Insufficient storage space, operation failed</STORAGE_INSUFFICIENT>
     <STORAGE_VIEW>Storage View</STORAGE_VIEW>
     <STRUCTURED_BACKGROUND>Please enter the background on the location channel:</STRUCTURED_BACKGROUND>
     <STYLE>Style</STYLE>

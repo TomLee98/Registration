@@ -47,7 +47,7 @@ classdef mpimg < matlab.mixin.Copyable
                 file_
                 data_
                 dimorder_  (1,:)    string = ["X","Y","C","Z","T"]
-                autoclear_ (1,1)    logical = false
+                autoclear_ (1,1)    logical = true
                 const_     (1,1)    logical = false
                 display_   (1,1)    logical = false     % for debugging
             end

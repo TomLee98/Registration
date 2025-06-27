@@ -66,9 +66,9 @@ classdef constdef
                                  "ProgressBarColor",      [0.30, 0.75, 0.93], ...   % 0 ~ 1, 1-by-3 array
                                  "CacheLocation",         "AUTO", ...               % "AUTO"/"CUSTOMIZED"
                                  "CachePolicy",           "PERFORMANCE", ...        % "PERFORMANCE"/"RESOURCES"/"BALANCE" 
-                                 "CacheCleanTrigger",     "EXIT", ...               % "EXIT"/"RT"/"OFF"
+                                 "CacheCleanTrigger",     "EXIT", ...               % "EXIT"/"OFF"
                                  "MemoryCapacity",        64, ...                   % positive double scalar, 1 ~ 64
-                                 "HardDriveCapacity",     128, ...                  % positive double scalar, 1 ~ 128
+                                 "HardDriveCapacity",     128, ...                   % positive double scalar, 1 ~ 128
                                  "NumProtectedCPU",       0, ...                    % nonnegative integer
                                  "NumProtectedGPU",       0, ...                    % nonnegative integer
                                  "MessageLevel",          "WARNING", ...            % "WARNING"/"INFO"
@@ -80,11 +80,11 @@ classdef constdef
     end
 
     properties (Access = {?mpimg, ?mpimgs, ?regohm}, Constant, Hidden)
-        % code as: HDD_BUFFER_SIZE_MAX = 128;
-        HDD_BUFFER_KEY = "I6rlKEDWTeAmmC2/Yd311cVU1vbubYc8JQLKkaoMTmA="
+        % code as: HDD_BUFFER_SIZE_MAX = 256;
+        HDD_BUFFER_KEY = "I6rlKEDWTeAmmC2/Yd311bJ+f9h+K+9CfCYICfRZKcY="
 
-        % code as: MEM_CACHE_SIZE_MAX = 64;
-        MEM_CACHE_KEY = "Oav0Qo3zI0Qy+gxvtb6XscThqd7rEl6T/hwhDj3iySk="
+        % code as: MEM_CACHE_SIZE_MAX = 96;
+        MEM_CACHE_KEY = "Oav0Qo3zI0Qy+gxvtb6XscbuMv0sbTJiUvNQY9m9kRo="
     end
     
 end

@@ -5,7 +5,7 @@ classdef regrspt < handle
     properties (Constant, Hidden)
         RESTORE_PARPOOL_SIZE = ceil(GetCPUWorkersMaxN([],[])/2);
         VALID_FIELD_NAME = ["text_time", "text_meta", "fixdef", "frames_reg", ...
-            "mask_reg", "mode_zproj"]
+            "mask_reg", "masked_flag", "mode_zproj"]
     end
     
     properties (GetAccess = private, SetAccess = immutable)
@@ -19,17 +19,13 @@ classdef regrspt < handle
         ncbptr  (1,:)                                                                       % NuclearCtrlBot object
     end
 
-    properties (Access = private)
-
-    end
-
     properties (Access = public, Dependent)
         Arguments       % ___/get, 1-by-1 struct with regopt, segopt, struct and []
         CropDim         % ___/get, 1-by-1 string indicate crop dimension
         CellsCount      % ___/get, 1-by-1 nonnegative integer indicates cells count
         File            % ___/get, 1-by-1 string indicate inner data file
         ImageDim        % ___/get, 1-by-5 positive integer as [X,Y,C,Z,T] dimensions
-        IsDistributed   % set/get, 1-by-1 logical, indicate the storage data location
+        IsOnHardDrive   % set/get, 1-by-1 logical, indicate the storage data location
         Operator        % ___/get, 1-by-1 string, operator indicator
         Others          % ___/get, 1-by-1 struct with binding data
         Segmentor       % ___/get, 1-by-1 NuclearCtrlBot or []
@@ -71,11 +67,11 @@ classdef regrspt < handle
             r = [md.width, md.height, md.channels, md.slices, md.frames];
         end
 
-        function r = get.IsDistributed(this)
+        function r = get.IsOnHardDrive(this)
             r = isfile(this.dptr.Location);
         end
 
-        function set.IsDistributed(this, r)
+        function set.IsOnHardDrive(this, r)
             arguments
                 this
                 r       (1,1)   logical

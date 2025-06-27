@@ -210,15 +210,19 @@ classdef TaskManager < handle
             end
         end
 
+        % clear resource by keep TaskManager object valid
         function clear(this)
             % free parpool resource
             delete(this.parobj);
+            this.parobj = [];
 
             % delete rcf
             delete(this.rcfobj);
+            this.rcfobj = [];
 
-            % clear task queue
+            % delete task queue
             delete(this.job);
+            this.job = [];
 
             % reset the counter
             this.nworker_old = 0;
