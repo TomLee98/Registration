@@ -423,6 +423,7 @@ V4.x        da Vinci          达·芬奇
   |     |- [Fix Bugs] TODO: fix the segmentation ROI restore failed bug
   |     |- [Note] (hidden) TODO: update help files
   |     |- [Note] (hidden) auto delete the current user's rcf under /data/.rcfs after app closed
+  |     |- [Note] (hidden) TODO: fix the task-network language bug (English no display)
   |- V4.2.0     2025/07/
   |     |- [New] TODO: introduce "registration project"
   |     |- [New] TODO: support "user's behaviour" collection: track user usage patterns for program features

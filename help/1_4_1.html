@@ -7,11 +7,29 @@
 <body>
 <p align="left"><font face="宋体"><strong>1.4.1 资源管理</strong></font></p>
 <blockquote style="MARGIN-RIGHT: 0px" dir="ltr">
-<p align="left"><font face="宋体"><img src="1_4_1%1.bmp" alt=""> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <img src="1_4_1%2.bmp" alt="">
-</font></p>
 <p align="left">&nbsp;资源管理包含两个组分：<u>首选项</u> 与 <u>任务网络</u>。您可以通过首选项调整程序的行为或使用任务网络观测当前正在进行的任务。</p>
-<p align="left"><font size="4"><strong>&nbsp;一、参数设置</strong></font></p>
-<p align="left">&nbsp;配准控制流程将根据单通道或双通道图像自动选择合适的算法，因此参数设置面板会产生对应的变化。</p>
+<p align="left"><font size="4"><strong>&nbsp;1. 首选项</strong></font></p>
+<p align="left"><font face="宋体"><img src="1_4_1%1.bmp" alt="" width="400">&nbsp;<img src="1_4_1%2.bmp" alt="" width="400">&nbsp;<img src="1_4_1%3.bmp" alt="" width="400">&nbsp;<img src="1_4_1%4.bmp" alt="" width="400"></font></p>
+<p align="left">&nbsp; <b>您可以选择左侧栏目，并调整右侧对应选项。</b></p>
+<p align="left">&nbsp;<u>外观</u> - <u>存储视图</u>：“现代”包含窗体拉伸逻辑，“经典”始终显示完整存储视图。</p>
+<p align="left">&nbsp;<u>外观</u> - <u>简单统计</u>：启用该选项允许您通过片层浏览器中的交互式工具完成指定ROI内的基本描述性统计。详见 <u>图像交互工具条</u></p>
+<p align="left">&nbsp;<u>外观</u> - <u>自动模板</u>：启用该选项允许您通过片层浏览器中的交互式工具自动识别平均梯度最大的体积图像作为模板帧。详见 <u>图像交互工具条</u></p>
+<p align="left">&nbsp;<u>数据管理</u> - <u>缓冲区位置</u>：“自定义”选项允许您手动调整每个数据的存储位置，或者选择“自动”，此时将由程序决定缓冲区的位置。</p>
+<p align="left">&nbsp;<u>数据管理</u> - <u>缓存策略</u>：“性能”选项优先缓存所有数据以保证用户操作流畅度，“资源”尽可能使用实时计算代替数据缓存以节约缓冲区（大文件建议使用），或者您可以选择“平衡”以折中需求。</p>
+<p align="left">&nbsp;<u>数据管理</u> - <u>缓存清理</u>：推荐选用“退出时”，这将在程序退出时自动清空您的缓冲区以保证程序后续正常工作。</p>
+<p align="left">&nbsp;<u>数据管理</u> - <u>内存/硬盘容量</u>：您可以根据需要调整您的在内存及硬盘上的缓冲区大小。服务器公共资源约束您的内存缓冲区不超过96GB，硬盘缓冲区不超过256GB.</p>
+<p align="left">&nbsp;<u>并行计算</u> - <u>保留数(CPU/GPU)</u>：您可以选择保留部分 CPU 或 GPU 核心，这有助于提升您本地进行除配准外的多任务（WORD / PPT / EXCEL ...）处理时的流畅度。</p>
+<p align="left">&nbsp;<u>其他设置</u> - <u>消息级别</u>：您可以选择不同的消息级别以控制程序对您的通知。“错误”意味着程序仅在发生无法运行的严重错误时会通知您。</p>
+<p align="left">&nbsp;<u>其他设置</u> - <u>数据保护</u>：启用数据保护将对您的项目中的指定敏感数据进行加密保护。（Version &gt;= V5.0.0 release）</p>
+<p align="left">&nbsp;<u>其他设置</u> - <u>Python解释器</u>：您可指定python可执行文件路径以自定义python运行环境。推荐带有numpy与tifffile包以加速读写 tif 格式图像。</p>
+<p align="left">&nbsp;<u>其他设置</u> - <u>自动更新</u>：“实时”或“每天”选项适用于希望尽快获取新特性并修复可能BUG的用户，“启动时”仅在每次程序启动时检查更新。</p>
+<p align="left">&nbsp;<u>其他设置</u> - <u>更新频道</u>：更新频道分为“正式版”，“预览版”及“所有”。“正式版”通道仅推送稳定版更新（推荐）。“预览版”及“所有”也推送正在进行功能测试的不稳定版本。</p>
+<p align="left">&nbsp;<u>其他设置</u> - <u>实验功能</u>：当您正在使用“预览版”程序，启用“实验功能”允许您体验最新功能，您也可以关闭该选项，程序行为将与最后一次推送的“正式版”保持一致。（Version &gt;=V4.2.0）</p>
+<p align="left">&nbsp;</p>
+<p align="left"><font size="4"><strong>&nbsp;2. 任务网络</strong></font></p>
+<p align="left"><font face="宋体"><img src="1_4_1%5.bmp" alt="" width="400"></font></p>
+<p align="left">&nbsp; <b>任务表显示当前正在使用资源的用户状态，网络拓扑作为资源使用的可视化。</b></p>
+<p align="left">&nbsp; 任务网络的可见性采用“参与原则”。当且仅当您启动一个“配准”任务后，任务网络中的其他任务对您可见，同时您的任务也对其他用户可见。</p>
 </blockquote>
 </body>
 </html>
