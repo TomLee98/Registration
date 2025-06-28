@@ -414,16 +414,16 @@ V4.x        da Vinci          达·芬奇
   |     |- [Adjust] remove "DilateEnhancement" on TCREG
   |     |- [Fix Bugs] remove Z-projection syntronize (: UI syntronize bug)
   |     |- [Fix Bugs] fix the "operation manager" flag display bug on MATLAB <= R2024a
-  |- V4.1.0     2025/06/27
+  |- V4.1.0     2025/06/28
   |     |- [New] add "History Manager" storage manager to avoid operations overflow
   |     |- [Adjust] modify the "history manager" view size changing
   |     |- [Adjust] optimize app appearance
   |     |- [Fix Bugs] fix resource lost after removing "load" node
   |     |- [Fix Bugs] fix OCREG function bug
-  |     |- [Fix Bugs] TODO: fix the segmentation ROI restore failed bug
-  |     |- [Note] (hidden) TODO: update help files
+  |     |- [Fix Bugs] fix the segmentation ROI restore failed bug
+  |     |- [Note] (hidden) update help files
   |     |- [Note] (hidden) auto delete the current user's rcf under /data/.rcfs after app closed
-  |     |- [Note] (hidden) TODO: fix the task-network language bug (English no display)
+  |     |- [Note] (hidden) fix the task-network language bug (English no display)
   |- V4.2.0     2025/07/
   |     |- [New] TODO: introduce "registration project"
   |     |- [New] TODO: support "user's behaviour" collection: track user usage patterns for program features
