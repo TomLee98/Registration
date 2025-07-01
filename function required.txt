@@ -424,11 +424,18 @@ V4.x        da Vinci          达·芬奇
   |     |- [Note] (hidden) update help files
   |     |- [Note] (hidden) auto delete the current user's rcf under /data/.rcfs after app closed
   |     |- [Note] (hidden) fix the task-network language bug (English no display)
-  |- V4.2.0     2025/07/
+  |- V4.1.1     2025/07/01
+  |     |- [Fix Bugs] fix temporary files and folder management bug
+  |     |- [Fix Bugs] fix the bug if user delele node before current active node
+  |     |- [Fix Bugs] synchronize important sub apps appearance after "RestoreSystemBy"
+  |- V4.2.0     2025/07/07
+  |     |- [New] TODO: add pre-process simple results to avoid bad filters, report bad frames
   |     |- [New] TODO: introduce "registration project"
-  |     |- [New] TODO: support "user's behaviour" collection: track user usage patterns for program features
   |     |- [New] TODO: support file "drag" and "open"
-  |     |- [Adjust] TODO: hidden the "Cache Clean" and set it to "EXIT" at any time
   |     |- [Adjust] TODO: update global system message control
-  |     |- [Fix Bugs] TODO: fix the bug if user uses continues MANREG (too many copy)
+  |     |- [Note] (hidden) validate if current user belongs to regusers group
+  |- V4.3.0     2025/07/13
+  |     |- [New] TODO:
+  |     |- [Adjust] TODO:
+  |     |- [Fix Bugs] TODO:
 

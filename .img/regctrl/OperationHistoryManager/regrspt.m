@@ -175,8 +175,6 @@ classdef regrspt < handle
         % invoke this to free related data
         function delete(this)
             % ~
-            % set the dptr "Retain-Cache" to false
-            this.dptr.RetainCache = false;  % 
             delete(this.dptr);
 
             delete(this.ncbptr);

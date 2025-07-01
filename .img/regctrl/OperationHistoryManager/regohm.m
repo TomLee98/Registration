@@ -9,11 +9,12 @@ classdef regohm < handle
     properties(Access = public, Dependent)
         ActiveNodeData  % ___/get, 1-by-1 struct with field {arg, cbot, data, optr}
         ActiveNodeTag   % ___/get, 1-by-1 string, could be empty
+        BestStorageNext % ___/get, 1-by-1 string, could be "MEM"/"HDD"
         CachePolicy     % ___/get, 1-by-1 string, could be "PERFORMANCE"/"RESOURCE"/"BALANCE"
         CacheLocation   % set/get, 1-by-1 string, could be "AUTO"/"CUSTOMIZED"
         CacheSizeMEM    % set/get, 1-by-1 double, indicate the maximal memory cache size
         CacheSizeHDD    % set/get, 1-by-1 double, indicate the maximal hard drive cache size
-        BestStorageNext % ___/get, 1-by-1 string, could be "MEM"/"HDD"
+        CurrentImagePtr % ___/get, 1-by-1 regmov, indicate the current activated image
     end
 
     properties(SetAccess = immutable, GetAccess = private)
@@ -171,6 +172,10 @@ classdef regohm < handle
 
         function r = get.CachePolicy(this)
             r = this.optsty;
+        end
+
+        function r = get.CurrentImagePtr(this)
+            r = this.dptr;
         end
         
     end
@@ -682,7 +687,7 @@ classdef regohm < handle
         % This function auto moves the active node if it is on the branch
         % which will be deleted
         function automove_active_node(this, node)
-            if this.is_posterity_of(node)
+            if this.is_posterity_of(node)   % active_node is posterity of node?
                 % priority: brother > parent
                 if numel(node.Parent.Children) > 1
                     brothers = setdiff(node.Parent.Children, node);
@@ -755,13 +760,14 @@ classdef regohm < handle
 
             if isempty(node)
                 % return node before active node
-                if isa(this.node_active.Parent, "matlab.ui.container.TreeNode")
+                if isvalid(this.node_active) && ...
+                        isa(this.node_active.Parent, "matlab.ui.container.TreeNode")
                     node = this.node_active.Parent;
                 else
                     node = [];
                 end
             else
-                if isa(node.Parent, "matlab.ui.container.TreeNode")
+                if isvalid(node) && isa(node.Parent, "matlab.ui.container.TreeNode")
                     node =  node.Parent;
                 else
                     node = [];
@@ -811,10 +817,10 @@ classdef regohm < handle
             else
                 tf = false;
 
-                node = node.Parent;
-                while ~isempty(node) && isa(node, "matlab.ui.container.TreeNode")
-                    if node == this.node_active, tf = true; break; end
-                    node = node.Parent;
+                node_tmp = this.node_active.Parent;
+                while ~isempty(node_tmp) && isa(node_tmp, "matlab.ui.container.TreeNode")
+                    if node == node_tmp, tf = true; break; end
+                    node_tmp = node_tmp.Parent;
                 end
             end
         end
@@ -903,7 +909,11 @@ classdef regohm < handle
             if ~isempty(pnode), pnode.expand(); end
 
             %% update current selected node
-            this.optree.SelectedNodes = this.node_active;
+            if isvalid(this.node_active)
+                this.optree.SelectedNodes = this.node_active;
+            else
+                this.optree.SelectedNodes = [];
+            end
         end
 
         % This function updates source view

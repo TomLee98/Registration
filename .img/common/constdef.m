@@ -3,6 +3,7 @@ classdef constdef
     
     properties (Access = public, Constant)
         SERVER_HOST_NAME = "silab"
+        REGISTRATION_GROUP_NAME = "regusers"
 
         REG3D_UPDATE_FILE_TITLE_ROW_SIZE = 2
 
@@ -52,11 +53,11 @@ classdef constdef
             "VariableNames",["CROP",        "LOAD",     "REGISTER", "SEGMENT"], ...
             "RowNames",     ["PERFORMANCE", "RESOURCE", "BALANCE"]);
 
-        NODE_FREE_TABLE = array2table(["KEEP",      "KEEP"; ...
-                                       "DROP_ALL",  "KEEP"; ...
-                                       "DROP_REG",  "KEEP"], ...
-            "VariableNames",["OLDER",       "NEWER"], ...
-            "RowNames",     ["PERFORMANCE", "RESOURCE", "BALANCE"]);
+        % NODE_FREE_TABLE = array2table(["KEEP",      "KEEP"; ...
+        %                                "DROP_ALL",  "KEEP"; ...
+        %                                "DROP_REG",  "KEEP"], ...
+        %     "VariableNames",["OLDER",       "NEWER"], ...
+        %     "RowNames",     ["PERFORMANCE", "RESOURCE", "BALANCE"]);
 
         PROFILE_DEFAULT = struct("Language",              "FOLLOW", ...             % "CN"/"US"/"FOLLOW"
                                  "SimpleStatistics",      "ON", ...                 % "ON"/"OFF"
@@ -67,8 +68,8 @@ classdef constdef
                                  "CacheLocation",         "AUTO", ...               % "AUTO"/"CUSTOMIZED"
                                  "CachePolicy",           "PERFORMANCE", ...        % "PERFORMANCE"/"RESOURCES"/"BALANCE" 
                                  "CacheCleanTrigger",     "EXIT", ...               % "EXIT"/"OFF"
-                                 "MemoryCapacity",        64, ...                   % positive double scalar, 1 ~ 64
-                                 "HardDriveCapacity",     128, ...                   % positive double scalar, 1 ~ 128
+                                 "MemoryCapacity",        64, ...                   % positive double scalar, 1 ~ 96
+                                 "HardDriveCapacity",     128, ...                   % positive double scalar, 1 ~ 256
                                  "NumProtectedCPU",       0, ...                    % nonnegative integer
                                  "NumProtectedGPU",       0, ...                    % nonnegative integer
                                  "MessageLevel",          "WARNING", ...            % "WARNING"/"INFO"
