@@ -775,6 +775,21 @@ classdef regmov < matlab.mixin.Copyable
 
             mov = regmov(uint16.empty(), mopt_, []);
         end
+
+        % This function
+        function mov = place_holder_as(tmpl)
+            arguments
+                tmpl    (1,1)   regmov
+            end
+
+            mov = regmov.empty();
+
+            % copy stored properties
+            mov.MetaData = tmpl.MetaData;
+            mov.Time = tmpl.Time;
+            mov.Transformation = tmpl.Transformation;
+            mov.ZProjMethod = tmpl.ZProjMethod;
+        end
     end
 end
 

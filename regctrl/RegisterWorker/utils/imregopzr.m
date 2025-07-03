@@ -87,7 +87,7 @@ switch calg
 end
 
 % estimate z0 by mess center on projection on Z axis
-% as iteratin initial value
+% as iteration initial value
 Mr = reshape(sum(fixed-ri_val, [1,2]), 1, []);
 Mv = reshape(sum(moving-mi_val, [1,2]), 1, []);
 dz0 = sum(Mr.*(1:size(fixed,3)))/(sum(Mr)+eps) ...

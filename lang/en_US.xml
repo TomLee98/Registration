@@ -71,6 +71,7 @@
     <CLOSE>Close</CLOSE>
     <CLOSE_APP_CONFIRMATION>Confirm to close the current app?</CLOSE_APP_CONFIRMATION>
     <COARSE_REG>Coarse Registration</COARSE_REG>
+    <PREPROCESSING_EVALUATION>Preprocessing Evaluation</PREPROCESSING_EVALUATION>
     <COLOR>Color</COLOR>
     <COLOR_CHANNEL>Color Channel</COLOR_CHANNEL>
     <COLOR_MAPPING>Color Mapping</COLOR_MAPPING>
@@ -83,8 +84,8 @@
     <CONFIGURATION_CORRUPTED>The configuration file is corrupted</CONFIGURATION_CORRUPTED>
     <CONFIGURATION_EXPORTED>The configuration is exported</CONFIGURATION_EXPORTED>
     <CONFGURATION_LOADED>The configuration is loaded</CONFGURATION_LOADED>
-    <CONFIRM_COVERAGE>Confirm coverage registration</CONFIRM_COVERAGE>
     <CONFIRM_CROP>Confirm cropping</CONFIRM_CROP>
+    <CONFIRM_REG_SOLUTION>Please confirm the registration solution</CONFIRM_REG_SOLUTION>
     <CONFIRM_ROI_RANGE>Please confirm the ROI range</CONFIRM_ROI_RANGE>
     <CONTINUE>Continue</CONTINUE>
     <CONTRAST>Contrast</CONTRAST>
@@ -134,6 +135,7 @@
     <EQUIVALENT_RADIUS>Equivalent Radius</EQUIVALENT_RADIUS>
     <ERODE_RADIUS>Erode Radius</ERODE_RADIUS>
     <ERROR>Error</ERROR>
+    <EVALUATE_PREPROCESSING_QUALITY>Evaluating preprocessing quality…</EVALUATE_PREPROCESSING_QUALITY>
     <EVERYDAY>Every Day</EVERYDAY>
     <EXIT>Exit</EXIT>
     <EXIT_FREE>Cleaning up temporary files…</EXIT_FREE>
@@ -169,7 +171,6 @@
     <FRAME_OVERFLOW>Frames count overflow</FRAME_OVERFLOW>
     <FRAME_RATE>Frame Rate</FRAME_RATE>
     <FREE>Free</FREE>
-    <FUNCTIONAL_BACKGROUND>Please enter the background on the signal channel:</FUNCTIONAL_BACKGROUND>
     <FUSED>Fused</FUSED>
     <GAMMA>Gamma</GAMMA>
     <GAUSSIAN_FILTER>Gaussian Filter</GAUSSIAN_FILTER>
@@ -226,6 +227,7 @@
     <IRREVERSIBLE_CA>Channels alignment operation is irreversible, continue?</IRREVERSIBLE_CA>
     <ISOMETRIC>Isometric</ISOMETRIC>
     <ITERATION_COEFFICIENT>Iteration Coefficient</ITERATION_COEFFICIENT>
+    <KEEP_ORIGINAL_BRANCHES_OR_NOT>Keep the original branches?</KEEP_ORIGINAL_BRANCHES_OR_NOT>
     <KERNEL>Kernel</KERNEL>
     <KERNEL_GAUSSIAN>Gaussian Kernel</KERNEL_GAUSSIAN>
     <KERNEL_LAPLACIAN_GAUSSIAN>Laplacian of Gaussian Kernel</KERNEL_LAPLACIAN_GAUSSIAN>
@@ -282,6 +284,7 @@
     <MEDIUM>Medium</MEDIUM>
     <MEMORY>Memory</MEMORY>
     <MEMORY_TIME>Memory Time</MEMORY_TIME>
+    <MERGE_NODES>Merge Nodes</MERGE_NODES>
     <MERGE_SOURCE>Merge Sources(R-S)</MERGE_SOURCE>
     <MESSAGE_LEVEL>Message Level</MESSAGE_LEVEL>
     <METADATA>Metadata</METADATA>
@@ -353,6 +356,8 @@
     <PRECISION>Precision</PRECISION>
     <PREFERENCE>Preferences</PREFERENCE>
     <PREPROCESSING>Preprocessing</PREPROCESSING>
+    <PREPROCESSOR_EXCEPTION>Preprocessor Exception:</PREPROCESSOR_EXCEPTION>
+    <PREPROCESSOR_LOST>The registration process does not include preprocessing</PREPROCESSOR_LOST>
     <PREVIEW>Preview</PREVIEW>
     <PREVIEW_CHANNEL>Preview</PREVIEW_CHANNEL>
     <PROGRESS>Progress</PROGRESS>
@@ -471,7 +476,6 @@
     <STORAGE>Storage</STORAGE>
     <STORAGE_INSUFFICIENT>Insufficient storage space, operation failed</STORAGE_INSUFFICIENT>
     <STORAGE_VIEW>Storage View</STORAGE_VIEW>
-    <STRUCTURED_BACKGROUND>Please enter the background on the location channel:</STRUCTURED_BACKGROUND>
     <STYLE>Style</STYLE>
     <STYLE_LIGHT>Light</STYLE_LIGHT>
     <STYLE_DARK>Dark</STYLE_DARK>

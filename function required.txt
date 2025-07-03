@@ -428,14 +428,21 @@ V4.x        da Vinci          达·芬奇
   |     |- [Fix Bugs] fix temporary files and folder management bug
   |     |- [Fix Bugs] fix the bug if user delele node before current active node
   |     |- [Fix Bugs] synchronize important sub apps appearance after "RestoreSystemBy"
-  |- V4.2.0     2025/07/07
-  |     |- [New] TODO: add pre-process simple results to avoid bad filters, report bad frames
-  |     |- [New] TODO: introduce "registration project"
-  |     |- [New] TODO: support file "drag" and "open"
+  |- V4.2.0     2025/07/06
+  |     |- [New] add "Merge" to merge two registration results (on different frames)
+  |     |- [New] add pre-process simple results to avoid bad filters, report bad frames
   |     |- [Adjust] TODO: update global system message control
+  |     |- [Adjust] TODO: optimize tips for all app (icons and message)
+  |     |- [Adjust] REGISTER operation "snapshot" with registrated frames bug
+  |     |- [Fix Bugs] fix the segment based on cellpose
   |     |- [Note] (hidden) validate if current user belongs to regusers group
+  |     |- [Note] (hidden) remove registration solution switching report
+  |     |- [Note] (hidden) modify the network topology resource name
+  |     |- [Note] (hidden) lock the "History Manager" scroll bar after removing all nodes
+  |     |- [Note] (hidden) initialize progress bar after app appearance initialization
   |- V4.3.0     2025/07/13
-  |     |- [New] TODO:
+  |     |- [New] TODO: add "registration project" function
+  |     |- [New] TODO: support file "drag" and "open"
   |     |- [Adjust] TODO:
   |     |- [Fix Bugs] TODO:
 

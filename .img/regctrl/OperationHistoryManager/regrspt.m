@@ -29,6 +29,7 @@ classdef regrspt < handle
         Operator        % ___/get, 1-by-1 string, operator indicator
         Others          % ___/get, 1-by-1 struct with binding data
         Segmentor       % ___/get, 1-by-1 NuclearCtrlBot or []
+        Transformation  % set/get, n-by-1 cell with transformation objects
     end
 
     methods
@@ -94,6 +95,19 @@ classdef regrspt < handle
 
         function r = get.Segmentor(this)
             r = this.ncbptr;
+        end
+
+        function r = get.Transformation(this)
+            r = this.tfs;
+        end
+
+        function set.Transformation(this, r)
+            arguments
+                this 
+                r       (:,1)   cell
+            end
+
+            this.tfs = r;
         end
     end
     

@@ -360,11 +360,10 @@ classdef NuclearSplitter < handle
                 for s = 1:slices
                     rp = regionprops("table", labels{k}(:,:,s), "EquivDiameter");
                     if ~isempty(rp)
-                        rmidx = find(rp.EquivDiameter>0 && ...
+                        rmidx = find(rp.EquivDiameter>0 & ...
                             rp.EquivDiameter<=2*this.MIN_CIRCLE_RADIUS_PLANE);
                         imgtmp = labels{k}(:,:,s);
-                        for p = 1:numel(rmidx), imgtmp(imgtmp==rmidx(p)) = 0;
-                        end
+                        for p = 1:numel(rmidx), imgtmp(imgtmp==rmidx(p)) = 0; end
                         labels{k}(:,:,s) = imgtmp;
                     end
                 end

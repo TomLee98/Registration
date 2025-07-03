@@ -309,12 +309,12 @@ classdef regohm < handle
             end
         end
 
-        function AddNode(this, optr, args, varargin)
+        function AddNode(this, node, optr, args, varargin)
             % This function create new node at optree and store a regrspt
             % object in the node
 
             %% append node after active node
-            node_new = this.create_new_node(optr, args, varargin);
+            node_new = this.create_new_node(node, optr, args, varargin);
 
             %% activate new node
             this.ActivateNode(node_new);
@@ -362,6 +362,96 @@ classdef regohm < handle
                this.update_operation_view();
                this.update_snapshot_view();
             end
+        end
+
+        function MergeNodes(this, skflag)
+            arguments
+                this 
+                skflag  (1,1)   logical = true
+            end
+
+            %% validate if data size and operation are compatible
+            for k = 1:numel(this.optree.SelectedNodes)-1
+                nd_cur = this.optree.SelectedNodes(k).NodeData;
+                nd_next = this.optree.SelectedNodes(k+1).NodeData;
+                if any(nd_cur.RSPoint.ImageDim ~= nd_next.RSPoint.ImageDim)
+                    uialert(this.ufig, "Nodes must be with equal data size.", ...
+                        "Error", "Icon","error");
+                    return;
+                end
+
+                opt_cur = nd_cur.RSPoint.Arguments.(constdef.OP_REGISTER);
+                opt_next = nd_next.RSPoint.Arguments.(constdef.OP_REGISTER);
+
+                if (opt_cur.Algorithm==opt_next.Algorithm) ...
+                        || (ismember(opt_cur.Algorithm, ["TCREG","OCREG","MANREG"]) ...
+                        && ismember(opt_next.Algorithm, ["TCREG","OCREG","MANREG"]))
+                    % continue
+                else
+                    uialert(this.ufig, "Nodes must be with compatible registration type.", ...
+                        "Error", "Icon","error");
+                    return;
+                end
+            end
+
+            %% create combined node
+            % generate nodes line
+            [~, nodes] = find_nearest_prior_stored_node(this, ...
+                this.optree.SelectedNodes(1));
+            % real time calculation chain
+            node = nodes.pop();
+            rpt = node.NodeData.RSPoint;
+            dptr_tmp = rpt.getData();     % get storage, will be thrown after merging
+            while ~isempty(nodes)
+                node = nodes.pop();
+                rpt = node.NodeData.RSPoint;
+
+                % update current dptr, source only one copy
+                dptr_tmp = rpt.getData(dptr_tmp);
+            end
+
+            % generate new data storage
+            img_comb = dptr_tmp.copy();     % current data deep copy
+
+            % generated variables
+            args_comb = this.optree.SelectedNodes(1).NodeData.RSPoint.Arguments;
+            tfs_comb = this.optree.SelectedNodes(1).NodeData.RSPoint.Transformation;
+            others_comb = this.optree.SelectedNodes(1).NodeData.RSPoint.Others;
+            for k = 2:numel(this.optree.SelectedNodes)
+                % combined transformation
+                vloc = cellfun(@(x)isempty(x), tfs_comb, "UniformOutput",true);
+                tfs_k = this.optree.SelectedNodes(k).NodeData.RSPoint.Transformation;
+                ploc = cellfun(@(x)~isempty(x), tfs_k, "UniformOutput",true);
+                tfs_comb(vloc&ploc) = tfs_k(vloc&ploc);
+
+                % modify others
+                others_k = this.optree.SelectedNodes(k).NodeData.RSPoint.Others;
+                others_comb.fixdef.Sampling(2) = ...
+                    string(unique([others_comb.fixdef.Sampling(2), others_k.fixdef.Sampling(2)])).join(",");
+            end
+            ploc = cellfun(@(x)~isempty(x), tfs_comb, "UniformOutput",true);
+            optf.f = find(ploc);
+            r = regohm.reformat_time(optf);
+            others_comb.frames_reg(1) = string(r).join(":").join(",");
+
+            % add new node and activate
+            this.AddNode(this.optree, constdef.OP_REGISTER, args_comb, "Data",img_comb, ...
+                "Transform",tfs_comb, "Others", others_comb);
+
+            if ~skflag
+                % remove nodes
+                for k = 1:numel(this.optree.SelectedNodes)
+                    node = this.optree.SelectedNodes(k);
+                    this.DelNode(node);
+                end
+
+                this.optree.SelectedNodes = this.node_active;
+            end
+
+            %% update appearance
+            this.update_storage_summary();
+            this.update_manage_view();
+
         end
 
         function ActivatePreviousNode(this)
@@ -422,7 +512,7 @@ classdef regohm < handle
             end
 
             %% take next node
-            node = this.optree.SelectedNodes;
+            node = this.optree.SelectedNodes(end);
             node = this.get_node_after(node);
             if ~isempty(node)
                 this.optree.SelectedNodes = node;
@@ -505,7 +595,7 @@ classdef regohm < handle
 
         % This function creates a new node as children of active node
         % note that this function also determines storage
-        function node = create_new_node(this, optr, args, vars)
+        function node = create_new_node(this, node, optr, args, vars)
 
             %% create restore point object by cache policy
             is_storage = constdef.TRANSMISSION_STORAGE_TABLE{this.optsty, optr};
@@ -514,7 +604,9 @@ classdef regohm < handle
                 % drop data node and replace by empty
                 for n = 1:2:numel(vars)
                     if isequal("Data", vars{n})
-                        vars{n+1} = regmov.empty();     % drop, handle is only hold by Register now
+                        % drop, handle is only hold by Register now
+                        % replace with a place holder
+                        vars{n+1} = regmov.place_holder_as(vars{n+1});  
                         break;
                     end
                 end
@@ -585,23 +677,27 @@ classdef regohm < handle
                             switch st.Mode
                                 case "global"
                                     node_data.Properties = struct("Algorithm",      st.Algorithm, ...
+                                                                  "RegisterFrames", rs_node.Others.frames_reg(1), ...
                                                                   "Transformation", st.Options.TformType, ...
                                                                   "CoarseRegister", st.Options.CoarseAlg, ...
                                                                   "MaxStep",        string(st.Options.MaxStep), ...
                                                                   "MinStep",        string(st.Options.MinStep));
                                 case "local"
                                     node_data.Properties = struct("Algorithm",          st.SubAlgorithm, ...
+                                                                  "RegisterFrames", rs_node.Others.frames_reg(1), ...
                                                                   "Compensation",       string(st.Options.ImageRehist), ...
                                                                   "CompensationGrade",  string(st.Options.RepAcc));
                                 otherwise
                             end
                         case "MANREG"
                             node_data.properties = struct("Transformation", st.Options.TformType, ...
+                                                          "RegisterFrames", rs_node.Others.frames_reg(2), ...
                                                           "Degree",         string(st.Options.Degree), ...
                                                           "ProjectedView",  st.Options.DView, ...
                                                           "Isometric",      string(st.Options.Isometric));
                         case "LTREG"
                             node_data.Properties = struct("Keyframes",      string(reshape(st.Options.Keyframes,1,[])).join(","), ...
+                                                          "RegisterFrames", rs_node.Others.frames_reg(1), ...
                                                           "AutoKeyframes",  string(st.Options.AutoKeyframe), ...
                                                           "MaxStep",        string(st.Options.MaxStep), ...
                                                           "MinStep",        string(st.Options.MaxStep));
@@ -616,9 +712,17 @@ classdef regohm < handle
 
             node_data.Operation = optr;
 
-            %% add node to active node
-            node = uitreenode(this.node_active, "Text",node_text, ...
-                "NodeData",node_data, "ContextMenu",this.ctmenu);
+            %% add node to active node or given node
+            if isempty(node)
+                node = uitreenode(this.node_active, "Text",node_text, ...
+                    "NodeData",node_data, "ContextMenu",this.ctmenu);
+            else
+                if isvalid(node) && (isa(node, "matlab.ui.container.TreeNode") ...
+                        || isa(node, "matlab.ui.container.Tree"))
+                    node = uitreenode(node, "Text",node_text, ...
+                        "NodeData",node_data, "ContextMenu",this.ctmenu);
+                end
+            end
             this.nodes_total_num = this.nodes_total_num + 1;
             node.Tag = string(this.nodes_total_num);
         end
@@ -826,7 +930,7 @@ classdef regohm < handle
         end
 
         % find the shortest calculation path, equals to find the
-        % nearest storage which is of a higher  seniority in the
+        % nearest storage which is of a higher seniority in the
         % family hierarchy
         function [node, nodes] = find_nearest_prior_stored_node(this, node)
             arguments
@@ -850,13 +954,15 @@ classdef regohm < handle
             node = nodes.top();
         end
 
-        % This is select changed callback binding on tree
+        % This is select changed callback binding on tree dynamically
         function sltchg_callback(this, event)
-            % get node data
-            node = event.SelectedNodes;
+            if ~isempty(event.SelectedNodes)
+                % get node data (select the last node)
+                node = event.SelectedNodes(end);
 
-            % update snapshot only
-            this.update_snapshot_view(node);
+                % update snapshot only
+                this.update_snapshot_view(node);
+            end
         end
 
         % This function updates operation view
@@ -938,7 +1044,17 @@ classdef regohm < handle
             end
 
             % set default node as selected node
-            if isempty(node), node = this.optree.SelectedNodes; end
+            if isempty(node)
+                if ~isempty(this.optree.SelectedNodes)
+                    node = this.optree.SelectedNodes(end);
+                else
+                    if ~this.isempty()
+                        node = this.node_active;
+                    else
+                        node = [];  % no node left
+                    end
+                end
+            end
 
             if isempty(node)
                 txt = "";
