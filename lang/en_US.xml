@@ -172,6 +172,8 @@
     <FRAME_OVERFLOW>Frames count overflow</FRAME_OVERFLOW>
     <FRAME_RATE>Frame Rate</FRAME_RATE>
     <FREE>Free</FREE>
+    <FULL_FRAMES>The full frame sequence does not require cropping</FULL_FRAMES>
+    <FULL_SLICES>The complete slice does not require cropping</FULL_SLICES>
     <FUSED>Fused</FUSED>
     <GAMMA>Gamma</GAMMA>
     <GAUSSIAN_FILTER>Gaussian Filter</GAUSSIAN_FILTER>

@@ -62,6 +62,11 @@ classdef constdef
         TOOLTIP_DETAIL  = "DETAIL"
         TOOLTIP_NONE    = "NONE"
 
+        %% message level definition
+        MESSAGE_ERROR   = "ERROR"
+        MESSAGE_WARNING = "WARNING"
+        MESSAGE_INFO    = "INFO"
+
         %% restored operation definition
         OP_LOAD = "LOAD"
         OP_CROP = "CROP"
@@ -92,7 +97,7 @@ classdef constdef
                                  "HardDriveCapacity",     128, ...                   % positive double scalar, 1 ~ 256
                                  "NumProtectedCPU",       0, ...                    % nonnegative integer
                                  "NumProtectedGPU",       0, ...                    % nonnegative integer
-                                 "MessageLevel",          "WARNING", ...            % "WARNING"/"INFO"
+                                 "MessageLevel",          "WARNING", ...            % "ERROR"/"WARNING"/"INFO"
                                  "TooltipsLevel",         "SIMPLE", ...             % "SIMPLE"/"DETAIL"/"NONE"
                                  "DataProtected",         "OFF", ...                % "ON"/"OFF"
                                  "PythonPath",            "", ...                   % string scalar as python executable path

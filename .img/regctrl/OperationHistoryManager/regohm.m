@@ -375,6 +375,7 @@ classdef regohm < handle
                 nd_cur = this.optree.SelectedNodes(k).NodeData;
                 nd_next = this.optree.SelectedNodes(k+1).NodeData;
                 if any(nd_cur.RSPoint.ImageDim ~= nd_next.RSPoint.ImageDim)
+                    % ERROR: display at anytime
                     uialert(this.ufig, "Nodes must be with equal data size.", ...
                         "Error", "Icon","error");
                     return;
@@ -388,6 +389,7 @@ classdef regohm < handle
                         && ismember(opt_next.Algorithm, ["TCREG","OCREG","MANREG"]))
                     % continue
                 else
+                    % ERROR: display at anytime
                     uialert(this.ufig, "Nodes must be with compatible registration type.", ...
                         "Error", "Icon","error");
                     return;
