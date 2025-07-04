@@ -57,6 +57,11 @@ classdef constdef
         SOURCE_MERGE_PREPROCESS = "PRE_PROCESS"
         SOURCE_MERGE_FUSED = "FUSED"
 
+        %% tooltips level definition
+        TOOLTIP_SIMPLE  = "SIMPLE"
+        TOOLTIP_DETAIL  = "DETAIL"
+        TOOLTIP_NONE    = "NONE"
+
         %% restored operation definition
         OP_LOAD = "LOAD"
         OP_CROP = "CROP"
@@ -88,6 +93,7 @@ classdef constdef
                                  "NumProtectedCPU",       0, ...                    % nonnegative integer
                                  "NumProtectedGPU",       0, ...                    % nonnegative integer
                                  "MessageLevel",          "WARNING", ...            % "WARNING"/"INFO"
+                                 "TooltipsLevel",         "SIMPLE", ...             % "SIMPLE"/"DETAIL"/"NONE"
                                  "DataProtected",         "OFF", ...                % "ON"/"OFF"
                                  "PythonPath",            "", ...                   % string scalar as python executable path
                                  "AutoUpdate",            "RT", ...                 % "STARTUP"/"RT"/"EVERYDAY"/"OFF"

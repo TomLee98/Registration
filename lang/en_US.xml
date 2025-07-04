@@ -106,6 +106,7 @@
     <DATA_SECURITY>Data Security</DATA_SECURITY>
     <DELETE_NODE>Delete Node</DELETE_NODE>
     <DELINEATION>Delineation</DELINEATION>
+    <DETAIL>Detail</DETAIL>
     <DEVELOPING>Developing…</DEVELOPING>
     <DIAMOND_HAT>Diamond Hat</DIAMOND_HAT>
     <DILATE_FILTER>Dilate Filter</DILATE_FILTER>
@@ -319,6 +320,7 @@
     <NONUNIFORM>Nonuniform</NONUNIFORM>
     <NORMAL>Normal</NORMAL>
     <NORMAL_DISTRIBUTION>Normal</NORMAL_DISTRIBUTION>
+    <NOTIFICATION>Notification</NOTIFICATION>
     <NUM_MAX>Maximum</NUM_MAX>
     <OBJECTS_FOUND>Objects number after segmentation:</OBJECTS_FOUND>
     <OBJECTS_LOAD>Objecs number after loading:</OBJECTS_LOAD>
@@ -409,10 +411,6 @@
     <REG_LOCAL_CPD>Coherent Point Drift</REG_LOCAL_CPD>
     <REG_LOCAL_DEMONS>Diffeomorphic Demons</REG_LOCAL_DEMONS>
     <REG_LOCAL_DEFORM>Isotropic Total Variation</REG_LOCAL_DEFORM>
-    <REGMODE_CURRENT_GLOBAL>Current Registration Mode: Global</REGMODE_CURRENT_GLOBAL>
-    <REGMODE_CURRENT_LOCAL>Current Registration Mode: Local</REGMODE_CURRENT_LOCAL>
-    <REGMODE_CURRENT_LTGLOBAL>Current Registration Mode: Global(Long-Term)</REGMODE_CURRENT_LTGLOBAL>
-    <REGMODE_CURRENT_MGLOBAL>Current Registration Mode: Global(Manually)</REGMODE_CURRENT_MGLOBAL>
     <RELEASE_CHANNEL>Release</RELEASE_CHANNEL>
     <REMOVE>Remove</REMOVE>
     <REMOVE_BACKGROUND>Remove Background</REMOVE_BACKGROUND>
@@ -456,6 +454,7 @@
     <SETTING_PANEL>Setting Panel</SETTING_PANEL>
     <SIGNAL>Signal</SIGNAL>
     <SIGNAL_EXTRACTOR>Signal Extractor</SIGNAL_EXTRACTOR>
+    <SIMPLE>Simple</SIMPLE>
     <SIMPLE_STAT>Simple Statistics</SIMPLE_STAT>
     <SINGLE_CHANNEL>Single Channel</SINGLE_CHANNEL>
     <SLICE>Slice</SLICE>
@@ -508,13 +507,21 @@
     <TIME_SERIES_FILE>Time series file</TIME_SERIES_FILE>
     <TIME_STAMP>Time Stamp</TIME_STAMP>
     <TIP_ADD_TIMESTAMPS>Please load the image file first</TIP_ADD_TIMESTAMPS>
+    <TIP_CACHE_LOCATION>Manually optimize performance by customizing buffer locations (Auto mode recommended)</TIP_CACHE_LOCATION>
+    <TIP_CACHE_POLICY_UPDATE>The caching policy takes effect after the program restarts</TIP_CACHE_POLICY_UPDATE>
     <TIP_CBX_APPLY_TMAT>Specify transformation and skip control point registration</TIP_CBX_APPLY_TMAT>
     <TIP_CBX_AUTO_KEYFRAME>Automatically select keyframes to balance motion intensity</TIP_CBX_AUTO_KEYFRAME>
     <TIP_CBX_ENHANCE>Enhanced algorithm automatically adjusts filter parameters to synchronize template frame foreground</TIP_CBX_ENHANCE>
     <TIP_CBX_ISOMETRIC>Isometric resampling reconstructs volume cells into cubes</TIP_CBX_ISOMETRIC>
     <TIP_CBX_LOCK>Lock the registration solution</TIP_CBX_LOCK>
     <TIP_CBX_PHOTOBLEACHING>Compensating foreground photobleaching under constant background</TIP_CBX_PHOTOBLEACHING>
-    <TIP_EAPPRST>App takes effect after a restart.</TIP_EAPPRST>
+    <TIP_CELLPOSE_BATCH_SIZE>Using a larger batch size can accelerate computation but will consume more video memory</TIP_CELLPOSE_BATCH_SIZE>
+    <TIP_CELLPOSE_THRESHOLD>Using a smaller threshold generally detects more targets</TIP_CELLPOSE_THRESHOLD>
+    <TIP_DATA_PROTECTION>Enable this option to encrypt sensitive data (requires program version &gt;= 5.0)</TIP_DATA_PROTECTION>
+    <TIP_DILATE_FILTER_DETAIL>Regenerate the image by constraining the target within specified volume and pixel intensity limits. Parameter array (non-negative integers): [Dilation radius (voxels), Minimum intensity, Maximum intensity, Minimum volume (voxels)]</TIP_DILATE_FILTER_DETAIL>
+    <TIP_DILATE_FILTER_SIMPLE>Regenerating images with both volume and pixel intensity constraints</TIP_DILATE_FILTER_SIMPLE>
+    <TIP_EXPERIMENTAL_FEATURES>Enable this option to experience new features (Only available in Preview versions, requires program version &gt;= 5.0)</TIP_EXPERIMENTAL_FEATURES>
+    <TIP_OUTLIER_DIRECTION>Automatically remove targets with outlier volumes</TIP_OUTLIER_DIRECTION>
     <TIP_SLR_PROGRESS>Progress bar</TIP_SLR_PROGRESS>
     <TIP_SLR_TIME>Time</TIP_SLR_TIME>
     <TIP_SPN_CPUS>It is recommended to retain 1~2 cores to maintain normal interaction</TIP_SPN_CPUS>
@@ -527,6 +534,7 @@
     <TIP_TAB_MGLOBAL>The regional deformation based on control points</TIP_TAB_MGLOBAL>
     <TIP_TRANSFORM_OPTIMIZATION>Load new file to take effect</TIP_TRANSFORM_OPTIMIZATION>
     <TOO_MUCH_ROI>There are too many ROIs, please redraw and try to add them.</TOO_MUCH_ROI>
+    <TOOLTIP>Tooltip</TOOLTIP>
     <TRAINING>Training</TRAINING>
     <TRAINING_SAMPLES>Training Samples</TRAINING_SAMPLES>
     <TRANSFORMATION_MATRIX>Transformation Matrix</TRANSFORMATION_MATRIX>
