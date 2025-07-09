@@ -422,7 +422,14 @@ classdef NuclearSplitter < handle
                         otherwise
                     end
 
-                    terminate(pyenv);
+                    if isunix()
+                        % OutOfProcess as default
+                        terminate(pyenv);
+                    else
+                        % pc selected InProcess automatically
+                        % can't terminate pyenv
+                        % ~
+                    end
 
                     this.caller.SetProgressBar(0.1+n/numel(bdvol)*0.7);
                 end
@@ -502,7 +509,14 @@ classdef NuclearSplitter < handle
                 otherwise
             end
 
-            terminate(pyenv);
+            if isunix()
+                % OutOfProcess as default
+                terminate(pyenv);
+            else
+                % pc selected InProcess automatically
+                % can't terminate pyenv
+                % ~
+            end
         end
     end
 end
