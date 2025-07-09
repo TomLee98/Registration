@@ -440,10 +440,10 @@ V4.x        da Vinci          达·芬奇
   |     |- [Note] (hidden) modify the network topology resource name
   |     |- [Note] (hidden) lock the "History Manager" scroll bar after removing all nodes
   |     |- [Note] (hidden) initialize progress bar after app appearance initialization
-  |- V4.3.0     2025/07/13
+  |- V4.3.0     2025/07/20
+  |     |- [Urgent] there is conflict between tiff loading and cellpose
   |     |- [New] TODO: add "registration project" function
   |     |- [New] TODO: support file "drag" and "open"
   |     |- [New] TODO: design "System Logger" to trace user behaviour and Reg3D error stack
   |     |- [Adjust] TODO:
-  |     |- [Fix Bugs] TODO:
 

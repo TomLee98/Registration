@@ -90,6 +90,7 @@ classdef constdef
                                  "Style",                 "FOLLOW", ...             % "LIGHT"/"DARK"/"FOLLOW"
                                  "StorageViewStyle",      "MODERN", ...             % "CLASSICAL"/"MODERN"
                                  "ProgressBarColor",      [0.30, 0.75, 0.93], ...   % 0 ~ 1, 1-by-3 array
+                                 "WorkingFolder",         "", ...                   % string scalar as working folder
                                  "CacheLocation",         "AUTO", ...               % "AUTO"/"CUSTOMIZED"
                                  "CachePolicy",           "PERFORMANCE", ...        % "PERFORMANCE"/"RESOURCES"/"BALANCE" 
                                  "CacheCleanTrigger",     "EXIT", ...               % "EXIT"/"OFF"

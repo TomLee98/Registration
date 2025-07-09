@@ -82,8 +82,8 @@ classdef ImageReader < handle
             if ~isfile(fname)
                 % uigetfile selection
                 [dstfile, path] = uigetfile(...
-                    {'*.ims;*.nd2;*.tif;*.h5', ...
-                    'microscope volume files(*.ims,*.tif,*.nd2,*.h5)'},...
+                    {'*.ims;*.nd2;*.tif;*.h5;*.rmv', ...
+                    'microscope volume files(*.ims,*.tif,*.nd2,*.h5,*.rmv)'},...
                     'volumes series selector');
                 if isequal(dstfile,0) || isequal(path,0)
                     this.state = "off";
@@ -112,14 +112,14 @@ classdef ImageReader < handle
             ft = ImageReader.fast_loading(ext);
 
             % load the metadata
-            info = loadmeta_bf(this.srcfile);
+            info = loadimgmd(this.srcfile);
             this.metadata = info.opts;
             this.t = info.rt;
 
             this.folder = mpimg.findtmpfolder(this.metadata, 0);
 
             switch lower(ext)
-                case ".tif"
+                case {'.tif', '.rmv'}
                     if ft == true
                         % reset the block size
                         block = this.metadata.frames;
@@ -249,7 +249,7 @@ classdef ImageReader < handle
                     else
                         tf = false;
                     end
-                case ".ims"
+                case {'.ims', '.rmv'}
                     tf = true;  % ims library with builtin function
                 case ".tif"
                     tf = isPyReady();

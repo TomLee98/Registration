@@ -1,5 +1,5 @@
-function info = loadmeta_bf(file)
-%LOADMETA_BF This function load the metadata by using package bfmatlab
+function info = loadimgmd(file)
+%LOADIMGMD This function load the metadata by using package bfmatlab
 % Input:
 %   - file: 1-by-1 string or char array, image file path
 % Output:
@@ -28,8 +28,22 @@ if isequal(".h5", ext)
     dimOrder = ["X","Y","Z","T","C"];   % protocal independent, [sub - root]
     cOrder = ["r", "g"];  % order must be "r","g"
 
+    % options summary
+    opts = table(width,...          % #pixel
+        height,...          % #pixel
+        channels,...        % #channels
+        slices,...          % #slices
+        frames,...          % #volumes
+        images,...          % #images
+        xRes,...            % μm/pixel
+        yRes,...            % μm/pixel
+        zRes,...            % μm/layer z
+        dataType,...        % uint8, uint16, single
+        dimOrder,...        % dimension order array
+        cOrder);            % color channel order
+
     rt = str2double(h5read(file, '/Metadata/TimeStamp'));
-else
+elseif ismember(lower(ext), [".ims", ".tif", ".nd2"])
     % bfmatlab (bioformats) takes over
     status = bfCheckJavaPath(1);
     assert(status, ['Missing Bio-Formats library. Either add bioformats_package.jar '...
@@ -98,24 +112,29 @@ else
         otherwise
     end
 
+    % options summary
+    opts = table(width,...          % #pixel
+        height,...          % #pixel
+        channels,...        % #channels
+        slices,...          % #slices
+        frames,...          % #volumes
+        images,...          % #images
+        xRes,...            % μm/pixel
+        yRes,...            % μm/pixel
+        zRes,...            % μm/layer z
+        dataType,...        % uint8, uint16, single
+        dimOrder,...        % dimension order array
+        cOrder);            % color channel order
+
     rt = get_real_time(r, ext);
 
     r.close();
+elseif ismember(lower(ext), [".rmv"])
+    load(file, "-mat", "MetaData");
+    load(file, "-mat", "Time");
+    opts = MetaData;
+    rt = Time;
 end
-
-% options summary
-opts = table(width,...          % #pixel
-            height,...          % #pixel
-            channels,...        % #channels
-            slices,...          % #slices
-            frames,...          % #volumes
-            images,...          % #images
-            xRes,...            % μm/pixel
-            yRes,...            % μm/pixel
-            zRes,...            % μm/layer z
-            dataType,...        % uint8, uint16, single
-            dimOrder,...        % dimension order array
-            cOrder);            % color channel order
 
 info = struct("opts", opts, "rt", rt);
 end

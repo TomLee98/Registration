@@ -44,7 +44,7 @@ classdef ImageWriter < handle
             arguments
                 this
                 mov         (1,1)   regmov
-                ch          (1,1)   string  {mustBeMember(ch, ["r","g","b"])}
+                ch          (1,:)   string  {mustBeMember(ch, ["r","g","b"])}
                 metadata    (1,1)   struct
                 block       (1,1)   double {mustBePositive, mustBeInteger} = 50
             end
@@ -52,12 +52,12 @@ classdef ImageWriter < handle
             [path, fname, ext] = fileparts(this.file);
 
             % reselect the save file name
-            if ~ismember(ext, [".tif",".h5", ".mat"]) || ~isfolder(path)
+            if ~ismember(ext, [".tif",".h5", ".rmv"]) || ~isfolder(path)
                 % uigetfile seletion
                 [dstfile, path] = uiputfile(...
                     {'*.tif','Tag Image File Format(*.tif)'; ...
                     '*.h5', 'Hierarchical Data Format(*.h5)'; ...
-                    '*.mat', 'MATLAB File Format(*.mat)'},...
+                    '*.rmv', 'Register File Format(*.rmv)'},...
                     'volumes series selector', fname);
                 if isequal(dstfile,0) || isequal(path,0)
                     this.status = -1;       % break mark
@@ -85,7 +85,7 @@ classdef ImageWriter < handle
             ft = ImageWriter.fast_writting(ext);
 
             switch lower(ext)
-                case ".tif"
+                case {'.tif', '.rmv'}
                     % reset the block size
                     block = mov.MetaData.frames;
                     % indeterminate progress bar
@@ -127,6 +127,8 @@ classdef ImageWriter < handle
             switch lower(ext)
                 case ".tif"
                     tf = isPyReady();
+                case ".rmv"
+                    tf = true;
                 otherwise
                     tf = false;
             end
