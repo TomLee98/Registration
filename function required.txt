@@ -446,5 +446,10 @@ V4.x        da Vinci          达·芬奇
   |     |- [New] TODO: add "registration project" function
   |     |- [New] TODO: support file "drag" and "open"
   |     |- [New] TODO: design "System Logger" to trace user behaviour and Reg3D error stack
-  |     |- [Adjust] TODO:
+  |     |- [Adjust] allow user load tif with "r" as given color
+  |     |- [Fix Bugs] fix the bug if user close segmentor subapp before segmentation
+  |     |- [Fix Bugs] fix the bug if open signal extractor after "conflict detection"
+  |     |- [Fix Bugs] fix the bug if user cancel load/save segmentor mask
+  |     |- [Fix Bugs] TODO: fix the bug of storage manager pie chart on MATLAB R2023a
+
 

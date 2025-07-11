@@ -923,9 +923,9 @@ classdef mpimg < matlab.mixin.Copyable
                 end
             elseif isunix()
                 if isfolder('/data/.Reg3DCache')
-                    if capacity < 1 || capacity > 1024
+                    if capacity < 0 || capacity > 1024
                         warning("mpimg:invalidCapacity", "Capacity should be between " + ...
-                            "1(GB) and 1024(GB).");
+                            "0(GB) and 1024(GB).");
                         status = -1;
                         return;
                     else
