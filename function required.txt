@@ -441,15 +441,18 @@ V4.x        da Vinci          达·芬奇
   |     |- [Note] (hidden) lock the "History Manager" scroll bar after removing all nodes
   |     |- [Note] (hidden) initialize progress bar after app appearance initialization
   |- V4.3.0     2025/07/20
-  |     |- [Urgent] there is conflict between tiff loading and cellpose on Windows Platform
+  |     |- [Urgent] Please do not load tiff file if you want to segment by cellpose on Windows Platform. 
+  |     |           You can use other file formats or do segmentation on Unix platform.
   |     |- [New] Add new file format support ".rmv", add dual channels export support
+  |     |- [New] TODO: design "System Logger" to trace user behaviour and Reg3D error stack
   |     |- [New] TODO: add "registration project" function
   |     |- [New] TODO: support file "drag" and "open"
-  |     |- [New] TODO: design "System Logger" to trace user behaviour and Reg3D error stack
   |     |- [Adjust] allow user load tif with "r" as given color
+  |     |- [Adjust] add ROI "high light" for cell  when select rows from table
   |     |- [Fix Bugs] fix the bug if user close segmentor subapp before segmentation
   |     |- [Fix Bugs] fix the bug if open signal extractor after "conflict detection"
   |     |- [Fix Bugs] fix the bug if user cancel load/save segmentor mask
-  |     |- [Fix Bugs] TODO: fix the bug of storage manager pie chart on MATLAB R2023a
+  |     |- [Fix Bugs] fix the bug of storage manager pie chart on MATLAB R2023
+  |     |- [Fix Bugs] fix the bug if "restore system" at "segmentation" but no "cell management" menu
 
 

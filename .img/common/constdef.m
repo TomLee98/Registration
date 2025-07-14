@@ -5,6 +5,19 @@ classdef constdef
         %% environment definition
         SERVER_HOST_NAME = "silab"
         REGISTRATION_GROUP_NAME = "regusers"
+        APP_PROFILE_FILE_NAME = ".profile.xml"
+
+        %% file extension definition
+        RAW_FILE_EXT = ".dat"
+        MASK_FILE_EXT = ".mask"
+        CMMASK_FILE_EXT = ".mat"
+        REGCONF_FILE_EXT = ".reg3d"
+        LOG_FILE_EXT = ".log"
+        REGMOV_FILE_EXT = ".rmv"
+        TIME_FILE_EXT = ".tim"
+        HLOG_FILE_EXT = ".txt"
+        APPCONF_FILE_EXT = ".xml"
+        LANGUAGE_FILE_EXT = ".xml"
 
         %% experiment definition
         CAMERA_BACKGROUND = 100
@@ -95,12 +108,13 @@ classdef constdef
                                  "CachePolicy",           "PERFORMANCE", ...        % "PERFORMANCE"/"RESOURCES"/"BALANCE" 
                                  "CacheCleanTrigger",     "EXIT", ...               % "EXIT"/"OFF"
                                  "MemoryCapacity",        64, ...                   % positive double scalar, 1 ~ 96
-                                 "HardDriveCapacity",     128, ...                   % positive double scalar, 1 ~ 256
+                                 "HardDriveCapacity",     128, ...                  % positive double scalar, 1 ~ 256
                                  "NumProtectedCPU",       0, ...                    % nonnegative integer
                                  "NumProtectedGPU",       0, ...                    % nonnegative integer
                                  "MessageLevel",          "WARNING", ...            % "ERROR"/"WARNING"/"INFO"
                                  "TooltipsLevel",         "SIMPLE", ...             % "SIMPLE"/"DETAIL"/"NONE"
                                  "DataProtected",         "OFF", ...                % "ON"/"OFF"
+                                 "InformationCollection", "ON", ...                 % "ON"/"OFF"
                                  "PythonPath",            "", ...                   % string scalar as python executable path
                                  "AutoUpdate",            "RT", ...                 % "STARTUP"/"RT"/"EVERYDAY"/"OFF"
                                  "UpdateChannel",         "REL", ...                % "REL"/"PRE"/"ALL"
@@ -113,6 +127,14 @@ classdef constdef
 
         % code as: MEM_CACHE_SIZE_MAX = 96;
         MEM_CACHE_KEY = "Oav0Qo3zI0Qy+gxvtb6XscbuMv0sbTJiUvNQY9m9kRo="
+    end
+
+    properties (Access = ?InformationCollector, Constant, Hidden)
+        % code as: REMOTE_INFORMATION_FOLDER = '\\LabNas1\group_SharedFolder\Code\Reg3D App\.reports';
+        RIF_PC = "S9DNLUrQeOcvdj+W5tSBW6xQyL9L1QKd9mAWLONqiI23uKl4tcsBL0uCWHNF5ptTFtK9btWWDKFuEtiRe5i7qNfbcPCY3bXLsgvyhv8ZVI4bzdoMnNcufVnJz1V5gAeV";
+
+        % code as: REMOTE_INFORMATION_FOLDER = '/data/Share/Code/Reg3D App/.reports';
+        RIF_UNIX = "S9DNLUrQeOcvdj+W5tSBW7zjwXUSstMziN530gTIkDTqkWsYR7BicaYvZy2OU17cMwIIiGj1ZBR7abrE+ClTdZhfo0tRX3ztnkwQqHarlSA=";
     end
     
 end

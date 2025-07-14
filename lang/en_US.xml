@@ -7,6 +7,7 @@
     <ADVANCED>Advanced</ADVANCED>
     <AFFINE>Affine</AFFINE>
     <AFFINE_TOOLTIP>translation, rotation, anisotropic scaling, reflection, and shearing</AFFINE_TOOLTIP>
+    <AGREE>Agree</AGREE>
     <ALIGNED>Aligned</ALIGNED>
     <ALL_CHANNEL>All</ALL_CHANNEL>
     <ANALYZE>Analyze</ANALYZE>
@@ -23,6 +24,7 @@
     <APPEARANCE>Appearance</APPEARANCE>
     <APPEND>Append</APPEND>
     <APPEND_COMMENTS>Append Comments</APPEND_COMMENTS>
+    <APP_INFO_COLLECTION>Collect application information</APP_INFO_COLLECTION>
     <APPLY>Apply</APPLY>
     <AREA>Area</AREA>
     <AREA_MASK>Area Mask</AREA_MASK>
@@ -112,6 +114,7 @@
     <DILATE_FILTER>Dilate Filter</DILATE_FILTER>
     <DIRECT>Direct</DIRECT>
     <DISABLE>Off</DISABLE>
+    <DISAGREE>Disagree</DISAGREE>
     <DISCARD_RATIO>Discard Ratio</DISCARD_RATIO>
     <DISPLACEMENT_FIELD_ESTIMATION>Displacement Field Estimation</DISPLACEMENT_FIELD_ESTIMATION>
     <DISPLACEMENT_FIELD>Displacement Field</DISPLACEMENT_FIELD>
@@ -509,6 +512,8 @@
     <TIME_SERIES_FILE>Time series file</TIME_SERIES_FILE>
     <TIME_STAMP>Time Stamp</TIME_STAMP>
     <TIP_ADD_TIMESTAMPS>Please load the image file first</TIP_ADD_TIMESTAMPS>
+    <TIP_APP_INFO_COLLECTION_DETAIL>Allow the program to collect your usage information and upload it to the server, so that developers can resolve program anomalies and optimize the user experience. Your usage information will be encrypted, and user information will be anonymized.</TIP_APP_INFO_COLLECTION_DETAIL>
+    <TIP_APP_INFO_COLLECTION_SIMPLE>Allow the program to collect your usage information so that developers can resolve program anomalies and optimize the user experience.</TIP_APP_INFO_COLLECTION_SIMPLE>
     <TIP_CACHE_LOCATION>Manually optimize performance by customizing buffer locations (Auto mode recommended)</TIP_CACHE_LOCATION>
     <TIP_CACHE_POLICY_UPDATE>The caching policy takes effect after the program restarts</TIP_CACHE_POLICY_UPDATE>
     <TIP_CBX_APPLY_TMAT>Specify transformation and skip control point registration</TIP_CBX_APPLY_TMAT>
@@ -575,6 +580,7 @@
     <WINDOW>Window</WINDOW>
     <WITH_CAIMAN>CaImAn Initial Value Estimation</WITH_CAIMAN>
     <WORKING_FOLDER>Working Folder</WORKING_FOLDER>
+    <WORKING_FOLDER_SELECTION>Select Working Folder</WORKING_FOLDER_SELECTION>
     <WORKSHEET>Worksheet</WORKSHEET>
     <X_DIRECTION_LENGTH>X Scale</X_DIRECTION_LENGTH>
     <X_DIRECTION_RESOLUTION>X Resolution</X_DIRECTION_RESOLUTION>
