@@ -443,11 +443,10 @@ V4.x        da Vinci          达·芬奇
   |- V4.3.0     2025/07/15
   |     |- [Urgent] Please do not load tiff file if you want to segment by cellpose on Windows Platform. 
   |     |           You can use other file formats or do segmentation on Unix platform.
-  |     |- [New] Add new file format support ".rmv", add dual channels export support
-  |     |- [New] TODO: support custom parallel configuration file in "Resource Manager"
-  |     |- [New] TODO: design "System Logger" to trace user behaviour and Reg3D error stack
-  |     |- [New] TODO: support file "drag" and "open"
+  |     |- [New] Add new file format support ".rmv"
+  |     |- [New] TODO: design "Information Collector" to trace Reg3D error stack
   |     |- [Adjust] allow user load tif with "r" as given color
+  |     |- [Adjust] support dual channels movie export
   |     |- [Adjust] add ROI "high light" for cell  when select rows from table
   |     |- [Fix Bugs] fix the bug if user close segmentor subapp before segmentation
   |     |- [Fix Bugs] fix the bug if open signal extractor after "conflict detection"
@@ -461,6 +460,8 @@ V4.x        da Vinci          达·芬奇
 V5.x        Wittgenstein          维特根斯坦
   |- V5.0.0     2025/08/01
   |     |- [New] TODO: add "registration project" function
+  |     |- [New] TODO: support file "drag" and "open"
+  |     |- [New] TODO: support custom parallel configuration file in "Resource Manager"
   |     |- [New] TODO: introduce "developer mode": add user behaviour stat tools / add to "resource manager"
 
 
