@@ -440,12 +440,12 @@ V4.x        da Vinci          达·芬奇
   |     |- [Note] (hidden) modify the network topology resource name
   |     |- [Note] (hidden) lock the "History Manager" scroll bar after removing all nodes
   |     |- [Note] (hidden) initialize progress bar after app appearance initialization
-  |- V4.3.0     2025/07/20
+  |- V4.3.0     2025/07/15
   |     |- [Urgent] Please do not load tiff file if you want to segment by cellpose on Windows Platform. 
   |     |           You can use other file formats or do segmentation on Unix platform.
   |     |- [New] Add new file format support ".rmv", add dual channels export support
+  |     |- [New] TODO: support custom parallel configuration file in "Resource Manager"
   |     |- [New] TODO: design "System Logger" to trace user behaviour and Reg3D error stack
-  |     |- [New] TODO: add "registration project" function
   |     |- [New] TODO: support file "drag" and "open"
   |     |- [Adjust] allow user load tif with "r" as given color
   |     |- [Adjust] add ROI "high light" for cell  when select rows from table
@@ -454,5 +454,13 @@ V4.x        da Vinci          达·芬奇
   |     |- [Fix Bugs] fix the bug if user cancel load/save segmentor mask
   |     |- [Fix Bugs] fix the bug of storage manager pie chart on MATLAB R2023
   |     |- [Fix Bugs] fix the bug if "restore system" at "segmentation" but no "cell management" menu
+  |     |- [Fix Bugs] TODO: fix the bug if merge branch without raw source keep, and parent of new node is wrong
+  #     #
+
+
+V5.x        Wittgenstein          维特根斯坦
+  |- V5.0.0     2025/08/01
+  |     |- [New] TODO: add "registration project" function
+  |     |- [New] TODO: introduce "developer mode": add user behaviour stat tools / add to "resource manager"
 
 
