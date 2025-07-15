@@ -11,6 +11,7 @@ classdef constdef
         RAW_FILE_EXT = ".dat"
         MASK_FILE_EXT = ".mask"
         CMMASK_FILE_EXT = ".mat"
+        PARALLEL_PROFILE_EXT = ".mlsettings"
         REGCONF_FILE_EXT = ".reg3d"
         LOG_FILE_EXT = ".log"
         REGMOV_FILE_EXT = ".rmv"
@@ -109,6 +110,7 @@ classdef constdef
                                  "CacheCleanTrigger",     "EXIT", ...               % "EXIT"/"OFF"
                                  "MemoryCapacity",        64, ...                   % positive double scalar, 1 ~ 96
                                  "HardDriveCapacity",     128, ...                  % positive double scalar, 1 ~ 256
+                                 "ParallelProfile",       "", ...                   % string scalar indicate parallel profile when parallel running
                                  "NumProtectedCPU",       0, ...                    % nonnegative integer
                                  "NumProtectedGPU",       0, ...                    % nonnegative integer
                                  "MessageLevel",          "WARNING", ...            % "ERROR"/"WARNING"/"INFO"
@@ -116,6 +118,7 @@ classdef constdef
                                  "DataProtected",         "OFF", ...                % "ON"/"OFF"
                                  "InformationCollection", "ON", ...                 % "ON"/"OFF"
                                  "PythonPath",            "", ...                   % string scalar as python executable path
+                                 "DeveloperMode",         "OFF", ...                % "ON"/"OFF"
                                  "AutoUpdate",            "RT", ...                 % "STARTUP"/"RT"/"EVERYDAY"/"OFF"
                                  "UpdateChannel",         "REL", ...                % "REL"/"PRE"/"ALL"
                                  "ExperimentalFeature",   "OFF")                    % "ON"/"OFF"

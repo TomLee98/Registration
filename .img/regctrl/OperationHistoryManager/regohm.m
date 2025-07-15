@@ -371,6 +371,7 @@ classdef regohm < handle
             end
 
             %% validate if data size and operation are compatible
+            slt_nodes = this.optree.SelectedNodes;  % 
             for k = 1:numel(this.optree.SelectedNodes)-1
                 nd_cur = this.optree.SelectedNodes(k).NodeData;
                 nd_next = this.optree.SelectedNodes(k+1).NodeData;
@@ -442,12 +443,10 @@ classdef regohm < handle
 
             if ~skflag
                 % remove nodes
-                for k = 1:numel(this.optree.SelectedNodes)
-                    node = this.optree.SelectedNodes(k);
+                for k = 1:numel(slt_nodes)
+                    node = slt_nodes(k);
                     this.DelNode(node);
                 end
-
-                this.optree.SelectedNodes = this.node_active;
             end
 
             %% update appearance

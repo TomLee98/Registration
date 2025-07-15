@@ -73,7 +73,6 @@
     <CLOSE>Close</CLOSE>
     <CLOSE_APP_CONFIRMATION>Confirm to close the current app?</CLOSE_APP_CONFIRMATION>
     <COARSE_REG>Coarse Registration</COARSE_REG>
-    <PREPROCESSING_EVALUATION>Preprocessing Evaluation</PREPROCESSING_EVALUATION>
     <COLOR>Color</COLOR>
     <COLOR_CHANNEL>Color Channel</COLOR_CHANNEL>
     <COLOR_MAPPING>Color Mapping</COLOR_MAPPING>
@@ -109,6 +108,8 @@
     <DELETE_NODE>Delete Node</DELETE_NODE>
     <DELINEATION>Delineation</DELINEATION>
     <DETAIL>Detail</DETAIL>
+    <DEVELOPER>Developer</DEVELOPER>
+    <DEVELOPER_MODE>Developer Mode</DEVELOPER_MODE>
     <DEVELOPING>Developing…</DEVELOPING>
     <DIAMOND_HAT>Diamond Hat</DIAMOND_HAT>
     <DILATE_FILTER>Dilate Filter</DILATE_FILTER>
@@ -344,6 +345,8 @@
     <OUTLIER_DIRECTION>Outlier Direction</OUTLIER_DIRECTION>
     <OUTLIER_RATIO>Outlier Ratio</OUTLIER_RATIO>
     <PARALLEL_COMPUTING>Parallel Computing</PARALLEL_COMPUTING>
+    <PARALLEL_PROFILE>Parallel Profile</PARALLEL_PROFILE>
+    <PARALLEL_PROFILE_SELECTION>Select parallel computing profile</PARALLEL_PROFILE_SELECTION>
     <PARAMETER>Parameter</PARAMETER>
     <PASSWORD>Password</PASSWORD>
     <PERCENTILE>Percentile</PERCENTILE>
@@ -367,6 +370,7 @@
     <PREPROCESSOR_LOST>The registration process does not include preprocessing</PREPROCESSOR_LOST>
     <PREVIEW>Preview</PREVIEW>
     <PREVIEW_CHANNEL>Preview</PREVIEW_CHANNEL>
+    <PREPROCESSING_EVALUATION>Preprocessing Evaluation</PREPROCESSING_EVALUATION>
     <PROGRESS>Progress</PROGRESS>
     <PROGRESSBAR_COLOR>Progressbar Color</PROGRESSBAR_COLOR>
     <PROJECTION>Projection</PROJECTION>
@@ -489,7 +493,7 @@
     <SURFACE_AREA>Surface Area</SURFACE_AREA>
     <SYS_INITIALIZE_SUCCESS>System initialized completely</SYS_INITIALIZE_SUCCESS>
     <SYS_INITIALIZING>System Initializing</SYS_INITIALIZING>
-    <SYS_UPDATE>System Update</SYS_UPDATE>
+    <SYS_UPDATE>System and Update</SYS_UPDATE>
     <TASK_NETWORK>Task Network</TASK_NETWORK>
     <TASK_TABLE>Task Table</TASK_TABLE>
     <TARGET_BITRATE>Target Bitrate</TARGET_BITRATE>
@@ -525,10 +529,12 @@
     <TIP_CELLPOSE_BATCH_SIZE>Using a larger batch size can accelerate computation but will consume more video memory</TIP_CELLPOSE_BATCH_SIZE>
     <TIP_CELLPOSE_THRESHOLD>Using a smaller threshold generally detects more targets</TIP_CELLPOSE_THRESHOLD>
     <TIP_DATA_PROTECTION>Enable this option to encrypt sensitive data (requires program version &gt;= 5.0)</TIP_DATA_PROTECTION>
+    <TIP_DEVELOPER_MODE>Enabling developer mode allows you to load custom plugins.</TIP_DEVELOPER_MODE>
     <TIP_DILATE_FILTER_DETAIL>Regenerate the image by constraining the target within specified volume and pixel intensity limits. Parameter array (non-negative integers): [Dilation radius (voxels), Minimum intensity, Maximum intensity, Minimum volume (voxels)]</TIP_DILATE_FILTER_DETAIL>
     <TIP_DILATE_FILTER_SIMPLE>Regenerating images with both volume and pixel intensity constraints</TIP_DILATE_FILTER_SIMPLE>
     <TIP_EXPERIMENTAL_FEATURES>Enable this option to experience new features (Only available in Preview versions, requires program version &gt;= 5.0)</TIP_EXPERIMENTAL_FEATURES>
     <TIP_OUTLIER_DIRECTION>Automatically remove targets with outlier volumes</TIP_OUTLIER_DIRECTION>
+    <TIP_PARALLEL_PROFILE>Select the parallel computing configuration file for registration. This option is unavailable when server mode is enabled.</TIP_PARALLEL_PROFILE>
     <TIP_SLR_PROGRESS>Progress bar</TIP_SLR_PROGRESS>
     <TIP_SLR_TIME>Time</TIP_SLR_TIME>
     <TIP_SPN_CPUS>It is recommended to retain 1~2 cores to maintain normal interaction</TIP_SPN_CPUS>
