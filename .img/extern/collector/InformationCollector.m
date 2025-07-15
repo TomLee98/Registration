@@ -46,7 +46,7 @@ classdef InformationCollector < handle
                     if ispc()
                         eval(this.scoder.decrypt(constdef.RIF_PC));
                     elseif isunix()
-                        eval(locker.decrypt(constdef.RIF_UNIX));
+                        eval(this.scoder.decrypt(constdef.RIF_UNIX));
                     else
                         throw(MException("InformationCollector:unsupportPlatform", ...
                             "Only windows and unix are supported."));
