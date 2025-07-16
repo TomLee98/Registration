@@ -48,13 +48,16 @@ classdef NuclearGroup < handle
             end
 
             idtable_ = cell2mat(idset);
-            this.nan_num = sum(isnan(idtable_),"all");
-            this.rm_num = 0;
-
+            
             idtable_c1 = unique(idtable_);
             idtable_c1(isnan(idtable_c1)) = [];
+            idtable_c1(idtable_c1==-1) = [];
+
+            this.nan_num = 0;
+            this.rm_num = 0;
 
             if ~isempty(idtable_c1)
+                % histcounts from 1 to maximum, omit NaN
                 idtable_c2 = histcounts(cell2mat(idset),"BinWidth",1, ...
                     "BinLimits",[1, max(idtable_c1,[],"all","omitmissing")+1]);
                 idtable_c2(idtable_c2==0) = [];

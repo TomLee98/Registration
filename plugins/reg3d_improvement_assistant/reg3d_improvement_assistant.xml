@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<struct>
+    <name>Reg3D Improvement Assistant</name>
+    <version>1.0.0</version>
+    <author>Weihan Li</author>
+    <company>IBP</company>
+    <release_date>2025/08/01</release_date>
+    <description>This plugin helps developer to improve Reg3D by users' information.</description>
+</struct>

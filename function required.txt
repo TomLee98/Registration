@@ -463,8 +463,8 @@ V5.x        Wittgenstein          维特根斯坦
   |- V5.0.0     2025/08/01
   |     |- [New] TODO: support custom parallel configuration file in "Resource Manager"
   |     |- [New] TODO: introduce "developer mode": enable custom plugins loading
-  |     |- [New] TODO: add "registration project" function
   |     |- [New] TODO: support file "drag" and "open"
-  |     |- [New] TODO: add user behaviour stat tools / add to "resource manager"
+  |     |- [New] TODO: add "registration project" function
+  |     |- [New] TODO: add user behaviour stat tools as plugin
 
 
