@@ -466,5 +466,6 @@ V5.x        Wittgenstein          维特根斯坦
   |     |- [New] TODO: support file "drag" and "open"
   |     |- [New] TODO: add "registration project" function
   |     |- [New] TODO: add user behaviour stat tools as plugin
+  |     |- [Fix Bugs] fix the bug when segmentor loading ROI
 
 
