@@ -529,7 +529,7 @@
     <TIP_CELLPOSE_BATCH_SIZE>Using a larger batch size can accelerate computation but will consume more video memory</TIP_CELLPOSE_BATCH_SIZE>
     <TIP_CELLPOSE_THRESHOLD>Using a smaller threshold generally detects more targets</TIP_CELLPOSE_THRESHOLD>
     <TIP_DATA_PROTECTION>Enable this option to encrypt sensitive data (requires program version &gt;= 5.0)</TIP_DATA_PROTECTION>
-    <TIP_DEVELOPER_MODE>Enabling developer mode allows you to load custom plugins.</TIP_DEVELOPER_MODE>
+    <TIP_DEVELOPER_MODE>Enabling developer mode allows you to load custom plugins (requires program version &gt;= 5.0)</TIP_DEVELOPER_MODE>
     <TIP_DILATE_FILTER_DETAIL>Regenerate the image by constraining the target within specified volume and pixel intensity limits. Parameter array (non-negative integers): [Dilation radius (voxels), Minimum intensity, Maximum intensity, Minimum volume (voxels)]</TIP_DILATE_FILTER_DETAIL>
     <TIP_DILATE_FILTER_SIMPLE>Regenerating images with both volume and pixel intensity constraints</TIP_DILATE_FILTER_SIMPLE>
     <TIP_EXPERIMENTAL_FEATURES>Enable this option to experience new features (Only available in Preview versions, requires program version &gt;= 5.0)</TIP_EXPERIMENTAL_FEATURES>
