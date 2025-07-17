@@ -46,11 +46,14 @@ Note that the custom plugins need to follow the next 7 rules:
 
 (6) A plugin(*.mlapp) should implement function [Close], this will be
     called when Register close as parent.
+    Note that these implement access permission need to be 'public', and
+    visibility should not be hidden.
 
 (7) A plugin could implement [RefreshPanelStyle], [RefreshPanelLanguage] 
     [RefreshMessageLevel] and [RefreshTooltips]. 
     Register could invoke these functions as needed.
-    Note that these implement access permission need to be 'public'.
+    Note that these implement access permission need to be 'public', and
+    visibility should not be hidden.
 
 (8) A plugin shouldn't modify any Register public properties which don't 
     provide public implements, such as UI components.

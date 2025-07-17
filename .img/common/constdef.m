@@ -6,6 +6,7 @@ classdef constdef
         SERVER_HOST_NAME = "silab"
         REGISTRATION_GROUP_NAME = "regusers"
         APP_PROFILE_FILE_NAME = ".profile.xml"
+        SUBAPP_CLOSE_IMPLEMENT_NAME = "Close"
         SUBAPP_UPDATE_STYLE_IMPLEMENT_NAME = "RefreshPanelStyle"
         SUBAPP_UPDATE_LANGUAGE_IMPLEMENT_NAME = "RefreshPanelLanguage"
         SUBAPP_UPDATE_MESSAGE_IMPLEMENT_NAME = "RefreshMessageLevel"
