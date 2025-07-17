@@ -48,7 +48,9 @@ Note that the custom plugins need to follow the next 7 rules:
     called when Register close as parent.
 
 (7) A plugin could implement [RefreshPanelStyle], [RefreshPanelLanguage] 
-    and [RefreshTooltips]. Register will invoke these functions as needed.
+    [RefreshMessageLevel] and [RefreshTooltips]. 
+    Register could invoke these functions as needed.
+    Note that these implement access permission need to be 'public'.
 
 (8) A plugin shouldn't modify any Register public properties which don't 
     provide public implements, such as UI components.

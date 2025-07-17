@@ -6,6 +6,10 @@ classdef constdef
         SERVER_HOST_NAME = "silab"
         REGISTRATION_GROUP_NAME = "regusers"
         APP_PROFILE_FILE_NAME = ".profile.xml"
+        SUBAPP_UPDATE_STYLE_IMPLEMENT_NAME = "RefreshPanelStyle"
+        SUBAPP_UPDATE_LANGUAGE_IMPLEMENT_NAME = "RefreshPanelLanguage"
+        SUBAPP_UPDATE_MESSAGE_IMPLEMENT_NAME = "RefreshMessageLevel"
+        SUBAPP_UPDATE_TOOLTIP_IMPLEMENT_NAME = "RefreshTooltips"
 
         %% file extension definition
         RAW_FILE_EXT = ".dat"
@@ -110,7 +114,6 @@ classdef constdef
                                  "CacheCleanTrigger",     "EXIT", ...               % "EXIT"/"OFF"
                                  "MemoryCapacity",        64, ...                   % positive double scalar, 1 ~ 96
                                  "HardDriveCapacity",     128, ...                  % positive double scalar, 1 ~ 256
-                                 "ParallelProfile",       "", ...                   % string scalar indicate parallel profile when parallel running
                                  "NumProtectedCPU",       0, ...                    % nonnegative integer
                                  "NumProtectedGPU",       0, ...                    % nonnegative integer
                                  "MessageLevel",          "WARNING", ...            % "ERROR"/"WARNING"/"INFO"

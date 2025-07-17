@@ -461,11 +461,11 @@ V4.x        da Vinci          达·芬奇
 
 V5.x        Wittgenstein          维特根斯坦
   |- V5.0.0     2025/08/01
-  |     |- [New] TODO: support custom parallel configuration file in "Resource Manager"
   |     |- [New] TODO: introduce "developer mode": enable custom plugins loading
+  |     |- [New] TODO: add user behaviour stat tools as plugin
   |     |- [New] TODO: support file "drag" and "open"
   |     |- [New] TODO: add "registration project" function
-  |     |- [New] TODO: add user behaviour stat tools as plugin
   |     |- [Fix Bugs] fix the bug when segmentor loading ROI
+  |     |- [Fix Bugs] fix the bug if user select items from segment "anomaly" table
 
 
