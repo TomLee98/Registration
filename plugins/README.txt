@@ -36,7 +36,7 @@ Note that the custom plugins need to follow the next 7 rules:
             ...
         end
 
-(4) A plugin can only visit the following shared data (GetAccess=public) from Register.
+(4) A plugin can only visit the following shared properties (GetAccess = public) from Register.
     These variables are ('[',']' inner marked):
 
     % [Version] - Specifies the Register version
@@ -45,20 +45,77 @@ Note that the custom plugins need to follow the next 7 rules:
     %                                   which placeholder is oct nonnegtive integer
     % Default - N/A
 
-(5) A plugin must take over its output, Register doesn't support outputs management.
+(5) A plugin can only visit the following shared methods (Access = public) from Register.
+    These methods are ('[',']' inner marked):
 
-(6) A plugin(*.mlapp) should implement function [Close], this will be
+    % [GetImgInfo] - Return current image info
+    % Usage: info = caller.GetImgInfo()
+    % Input: None
+    % Output: 1-by-12 image info table
+
+    % [GetLangsInfo] - Return local machine region and languages mapping
+    % Usage: [lang, mapping] = caller.GetLangsInfo()
+    % Input: None
+    % Output:
+    %   - lang: 1-by-1 string, could be "zh_CN" or "en_US"
+    %   - mapping: 1-by-1 struct, as language mapping (from Register basic dictionary)
+
+    % [GetAppStyle] - Return app global style
+    % Usage: stl = caller.GetAppStyle()
+    % Input: None
+    % Output:
+    %   - stl: 1-by-1 string, could be "FOLLOW","LIGHT","DARK"
+
+    % [GetAppTipsLevel] - Return app tips level
+    % Usage: tl = caller.GetAppTipsLevel()
+    % Input: None
+    % Output:
+    %   - tl: 1-by-1 string, could be "SIMPLE", "DETAIL", "NONE"
+
+    % [GetAppMessageLevel] - Return app message 
+    % Usage: ml = caller.GetAppMessageLevel()
+    % Input: None
+    % Output:
+    %   - ml: 1-by-1 string, could be "ERROR", "WARNING", "INFO"
+
+    % [PushInfo] - push plugin information into Register inner information collector
+    % Usage: caller.PushInfo(subapp, obj, exception)
+    % Input:
+    %   - subapp: 1-by-1 string, current running plugin name
+    %   - obj: 1-by-1 string, the name of function or callback which invokes [PushInfo]
+    %   - exception: 1-by-1 string, the exception identifier or "None" if no exception
+    % Output: None
+
+    % [SendMessage] - send message to Register log that you want it is notified right now
+    % Usage: caller.SendMessage(id, timeStamp)
+    % Input:
+    %   - id: 1-by-2 string, first item must be registered command (see 'Supplementary' 
+              at the end of this file), second item could be parameter text
+    %   - timeStamp: 1-by-1 logical, indicate if message with current time
+    % Output: None
+
+    % [SetProgressBar] - set the progress bar on Register panel
+    % Usage: caller.SetProgressBar(x, iterinf)
+    % Input:
+    %   - x: 1-by-1 double in [0, 1], indicate the progress value
+    %   - iterinf: 1-by-1 logical, if it is true and x is 0, progress bar will display
+    %               an infinity loop animation
+    % Output: None
+
+(6) A plugin must take over its output, Register doesn't support outputs management.
+
+(7) A plugin(*.mlapp) should implement function [Close], this will be
     called when Register close as parent.
     Note that these implement access permission need to be 'public', and
     visibility should not be hidden.
 
-(7) A plugin could implement [RefreshPanelStyle], [RefreshPanelLanguage] 
+(8) A plugin could implement [RefreshPanelStyle], [RefreshPanelLanguage] 
     [RefreshMessageLevel] and [RefreshTooltips]. 
     Register could invoke these functions as needed.
     Note that these implement access permission need to be 'public', and
     visibility should not be hidden.
 
-(8) A plugin shouldn't modify any Register public properties which don't 
+(9) A plugin shouldn't modify any Register public properties which don't 
     provide public implements, such as UI components.
 
 ======================================================================
@@ -72,4 +129,11 @@ Note that if you want to apply new plugin, please restart Register.
 
 We design simple app view_max_activity.mlapp as an example.
 Have fun :)
+
+
+
+
+Supplementary:
+
+
 
