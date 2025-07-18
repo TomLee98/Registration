@@ -13,12 +13,15 @@ Note that the custom plugins need to follow the next 7 rules:
         |- my_plugin.mlapp
         |- my_plugin.xml
         |- <dependencies>
+        |- <lang> (optional)
 
     where <dependencies> folder includes support files, my_plugin.xml is optional file, which includes
     information about my_plugin, such as "name", "version", "release date", "author(s)", etc. 
     You can package a plugin use .\plugins\PackageCustomPlugin.mlx for folder generation.
     Open PackageCustomPlugin.mlx, modify it, and run it by command window. (Do not use editor running!)
     Register will use "name" field in my_plugin.xml as plugin identifier under "PluginsManager" menu.
+    And <lang> is an optional folder, you can put language mapping file .xml under here if multi-lanuage
+    support is needed.
 
 (3) A plugin must accept at least one input argument <caller> as 1-by-1 Register object, which must be 
     the first argument(for function) or the second argument(for app).
