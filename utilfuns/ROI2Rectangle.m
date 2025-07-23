@@ -26,8 +26,8 @@ switch class(ROI)
         W = ROI.Vertices(3,1)-ROI.Vertices(1,1);
         H = ROI.Vertices(3,2)-ROI.Vertices(1,2);
     otherwise
-        R = [min(ROI.Position(:,1)),min(ROI.Position(:,2));...
-            max(ROI.Position(:,1)),max(ROI.Position(:,2))];
+        R = [min(ROI.Position(:,1)),min(ROI.Position(:,2)); ...
+             max(ROI.Position(:,1)),max(ROI.Position(:,2))];
         W = max(ROI.Position(:,1))-min(ROI.Position(:,1));
         H = max(ROI.Position(:,2))-min(ROI.Position(:,2));
 end

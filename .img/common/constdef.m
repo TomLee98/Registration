@@ -6,6 +6,9 @@ classdef constdef
         SERVER_HOST_NAME = "silab"
         REGISTRATION_GROUP_NAME = "regusers"
         APP_PROFILE_FILE_NAME = ".profile.xml"
+        PROJECT_CONFIG_FILE_NAME = ".config.xml"
+        PROJECT_NAME_DEFAULT = "Untitled"
+        PROJECT_FOLDER_NAME_DEFAULT = "Reg3D Projects";
         SUBAPP_CLOSE_IMPLEMENT_NAME = "Close"
         SUBAPP_UPDATE_STYLE_IMPLEMENT_NAME = "RefreshPanelStyle"
         SUBAPP_UPDATE_LANGUAGE_IMPLEMENT_NAME = "RefreshPanelLanguage"
@@ -18,6 +21,7 @@ classdef constdef
         CMMASK_FILE_EXT = ".mat"
         PARALLEL_PROFILE_EXT = ".mlsettings"
         REGCONF_FILE_EXT = ".reg3d"
+        PROJECT_FILE_EXT = ".regproj"
         LOG_FILE_EXT = ".log"
         REGMOV_FILE_EXT = ".rmv"
         TIME_FILE_EXT = ".tim"
@@ -109,7 +113,8 @@ classdef constdef
                                  "Style",                 "FOLLOW", ...             % "LIGHT"/"DARK"/"FOLLOW"
                                  "StorageViewStyle",      "MODERN", ...             % "CLASSICAL"/"MODERN"
                                  "ProgressBarColor",      [0.30, 0.75, 0.93], ...   % 0 ~ 1, 1-by-3 array
-                                 "WorkingFolder",         "", ...                   % string scalar as working folder
+                                 "ProjectFolder",         "", ...                   % string scalar as project file folder
+                                 "DataRootFolder",        "", ...                   % string scalar as temporary files folder
                                  "CacheLocation",         "AUTO", ...               % "AUTO"/"CUSTOMIZED"
                                  "CachePolicy",           "PERFORMANCE", ...        % "PERFORMANCE"/"RESOURCES"/"BALANCE" 
                                  "CacheCleanTrigger",     "EXIT", ...               % "EXIT"/"OFF"
@@ -126,6 +131,16 @@ classdef constdef
                                  "AutoUpdate",            "RT", ...                 % "STARTUP"/"RT"/"EVERYDAY"/"OFF"
                                  "UpdateChannel",         "REL", ...                % "REL"/"PRE"/"ALL"
                                  "ExperimentalFeature",   "OFF")                    % "ON"/"OFF"
+
+        PROJECT_CONFIG_DEFAULT = struct("ProjectName",      "", ...                 % "Untitled" as constant, can not be changed
+                                        "ProjectFolders",   "", ...                 % string array as project root folder
+                                        "ProjectFolder",    "", ...                 % string scalar indicate current project folder
+                                        "DataFolder",       "", ...                 % string scalar indicate data folder name
+                                        "ColorMap",         [255,   0,   0; ...     % "r": 694nm, "g": 525nm, "b": 440nm
+                                                              75, 255,   0; ...     % color map, row as ["r";"g";"b"] indicates image channel, 
+                                                               0,   0, 255], ...    % column as ["R","G","B"] indicates RGB representation
+                                        "Template",         "NONE", ...             % "NONE", "STDREG", "MEDIA", "DEV"
+                                        "IgnoreImport",     "OFF")                  % "ON"/"OFF", indicate if ignore import process
     end
 
     properties (Access = {?mpimg, ?mpimgs, ?regohm}, Constant, Hidden)

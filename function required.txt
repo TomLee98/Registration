@@ -463,9 +463,12 @@ V5.x        Wittgenstein          维特根斯坦
   |- V5.0.0     2025/08/01
   |     |- [New] introduce "developer mode": enable custom plugins loading
   |     |- [New] add user behaviour analyzer and debugger as plugin <reg3d_improvement_assistant>
+  |     |- [New] add "local display" to speed up segmentation display
   |     |- [New] TODO: support file "drag" and "open"
   |     |- [New] TODO: add "registration project" function
   |     |- [Fix Bugs] fix the bug when segmentor loading ROI
   |     |- [Fix Bugs] fix the bug if user select items from segment "anomaly" table
+  |     |- [Fix Bugs] fix the bug if user cancel export movie
+  |     |- [Fix Bugs] TODO: fix the bug that segmentation will keep the previous algorithm on next segmentation
 
 

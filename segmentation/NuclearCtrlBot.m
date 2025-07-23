@@ -18,6 +18,7 @@ classdef NuclearCtrlBot < handle
         hobj            % handle of circle objects
         cmap            % string, indicate the color map
         dispflag        % string, indicate ROIs display state, "on"/"off"
+        disp_range      % 0/1-by-4 positive integer double, as [x0, y0, w, h]
     end
 
     properties(SetAccess=private, GetAccess=private)
@@ -32,6 +33,7 @@ classdef NuclearCtrlBot < handle
 
     properties(Access=public, Dependent)
         DispFlag
+        DispRange
         HighlightID
         MaxN
         Parent
@@ -50,6 +52,19 @@ classdef NuclearCtrlBot < handle
             end
 
             this.dispflag = df;
+        end
+
+        function r = get.DispRange(this)
+            r = this.disp_range;
+        end
+
+        function set.DispRange(this, r)
+            arguments
+                this
+                r       (:,4)   double  {mustBeNonnegative, mustBeInteger} = []
+            end
+
+            this.disp_range = r;
         end
 
         function r = get.HighlightID(this)
@@ -125,6 +140,12 @@ classdef NuclearCtrlBot < handle
                 return;
             end
 
+            % skip
+            if this.dispflag ~= "on"
+                status = this.STATUS_SUCCESS;
+                return;
+            end
+
             id_z = this.nuid{zidx};
             if ~isempty(id_z)
                 h_obj = cell(numel(id_z),1);
@@ -141,31 +162,44 @@ classdef NuclearCtrlBot < handle
                         else
                             cc = this.NORMAL_CIRCLE_COLOR;   % deep gray
                         end
-                        self = images.roi.Circle(this.ax_caller,...
-                            "Center",this.center{zidx}(cir_index,:),...
-                            "Radius",this.radius{zidx}(cir_index), ...
-                            "Color",cc, ...
-                            "LabelTextColor", this.VALID_FONT_COLOR, ...
-                            "Visible", this.dispflag, ...
-                            "LineWidth",1.5, "MarkerSize",1, "Label",string(cir_id),...
-                            "LabelVisible","on", "FaceAlpha",0, "LabelAlpha",0,...
-                            "Deletable",true, "UserData",[cir_index, zidx]);
+                        % validate if circle in range (consider center for simple)
+                        if isempty(this.disp_range)
+                            create_new_object = true;
+                        else
+                            x0 = this.center{zidx}(cir_index, 1);
+                            y0 = this.center{zidx}(cir_index, 2);
+                            create_new_object = (x0 > this.disp_range(1) ...
+                                && x0 < this.disp_range(1)+this.disp_range(3)) && ...
+                                (y0 > this.disp_range(2) ...
+                                && y0 < this.disp_range(2)+this.disp_range(4));
+                        end
 
-                        % binding listener(will be auto removed if the roi was deleted)
-                        addlistener(self, ...
-                            'ROIMoved', @(src,~)this.roi_moved(src,[],self));
+                        if create_new_object == true
+                            self = images.roi.Circle(this.ax_caller,...
+                                "Center",this.center{zidx}(cir_index,:),...
+                                "Radius",this.radius{zidx}(cir_index), ...
+                                "Color",cc, ...
+                                "LabelTextColor", this.VALID_FONT_COLOR, ...
+                                "LineWidth",1.5, "MarkerSize",1, "Label",string(cir_id),...
+                                "LabelVisible","on", "FaceAlpha",0, "LabelAlpha",0,...
+                                "Deletable",true, "UserData",[cir_index, zidx]);
 
-                        % binding menu: 修改ID
-                        uimenu(self.ContextMenu, ...
-                            "Text","修改ID",...
-                            "MenuSelectedFcn",@(~,~)this.roi_modify_id([],[],self), ...
-                            "Tag","IDROIContextMenuModify");
+                            % binding listener(will be auto removed if the roi was deleted)
+                            addlistener(self, ...
+                                'ROIMoved', @(src,~)this.roi_moved(src,[],self));
 
-                        % changed the default context menu: delete
-                        self.ContextMenu.Children(end).MenuSelectedFcn ...
-                            = @(~,~)this.roi_delete([],[],self);
+                            % binding menu: 修改ID
+                            uimenu(self.ContextMenu, ...
+                                "Text","修改ID",...
+                                "MenuSelectedFcn",@(~,~)this.roi_modify_id([],[],self), ...
+                                "Tag","IDROIContextMenuModify");
 
-                        h_obj{cir_index} = self;
+                            % changed the default context menu: delete
+                            self.ContextMenu.Children(end).MenuSelectedFcn ...
+                                = @(~,~)this.roi_delete([],[],self);
+
+                            h_obj{cir_index} = self;
+                        end
                     end
                 end
             else

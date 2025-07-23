@@ -72,6 +72,7 @@
     <CLOCKWISE_90>Clockwise 90°</CLOCKWISE_90>
     <CLOSE>Close</CLOSE>
     <CLOSE_APP_CONFIRMATION>Confirm to close the current app?</CLOSE_APP_CONFIRMATION>
+    <CLOSE_PROJECT>Close Project</CLOSE_PROJECT>
     <COARSE_REG>Coarse Registration</COARSE_REG>
     <COLOR>Color</COLOR>
     <COLOR_CHANNEL>Color Channel</COLOR_CHANNEL>
@@ -95,6 +96,7 @@
     <CONTROL_VAL>Control Amount</CONTROL_VAL>
     <COUNTERCLOCKWISE_90>Counterclockwise 90°</COUNTERCLOCKWISE_90>
     <CPU_TIME>CPU Time</CPU_TIME>
+    <CREATION>Creation</CREATION>
     <CROP_FRAME>Crop Frame</CROP_FRAME>
     <CROP_VOLUME>Crop Volume</CROP_VOLUME>
     <CROP_XY>Crop XY</CROP_XY>
@@ -102,8 +104,10 @@
     <CUBIC_HIGH_QUALITY>Cubic(High Quality)</CUBIC_HIGH_QUALITY>
     <CUSTOMIZED>Customized</CUSTOMIZED>
     <CYAN>Cyan</CYAN>
+    <DATA_FOLDER>Data Folder</DATA_FOLDER>
     <DATA_MANAGEMENT>Data Management</DATA_MANAGEMENT>
     <DATA_PROTECTED>Data Protected</DATA_PROTECTED>
+    <DATA_ROOT_FOLDER>Data Root Folder</DATA_ROOT_FOLDER>
     <DATA_SECURITY>Data Security</DATA_SECURITY>
     <DELETE_NODE>Delete Node</DELETE_NODE>
     <DELINEATION>Delineation</DELINEATION>
@@ -125,6 +129,7 @@
     <DISPLAY>Display</DISPLAY>
     <DISPLAY_AREA>Display Area</DISPLAY_AREA>
     <DISPLAY_MODE>Display Mode</DISPLAY_MODE>
+    <DISPLAY_RANGE>Display Range</DISPLAY_RANGE>
     <DISTRIBUTION>Distribution</DISTRIBUTION>
     <DOCUMENT>Document</DOCUMENT>
     <DOWNLOADING>Downloading…</DOWNLOADING>
@@ -147,12 +152,10 @@
     <EXPORT>Export</EXPORT>
     <EXPORT_AS>Export as</EXPORT_AS>
     <EXPORT_PARAMETERS>Export Parameters</EXPORT_PARAMETERS>
-    <EXPORT_IMAGES>Export Images Stack</EXPORT_IMAGES>
     <EXPORTING_IMAGE>Exporting images...</EXPORTING_IMAGE>
     <EXPORTING_MOVIE>Exporting movie…</EXPORTING_MOVIE>
     <EXPORT_MASK>Export mask</EXPORT_MASK>
     <EXPORT_MASK_SUCCESS>Mask and area attributes exported successfully.</EXPORT_MASK_SUCCESS>
-    <EXPORT_MOVIE>Export Movie</EXPORT_MOVIE>
     <EXPORT_TEMPLATE>Export Template</EXPORT_TEMPLATE>
     <EXPORT_TIME>Export Time</EXPORT_TIME>
     <EXPERIMENTAL_FEATURE>Experimental Features</EXPERIMENTAL_FEATURE>
@@ -187,6 +190,7 @@
     <GEOMETRIC_TRANSFORMATION_EXPORT_SUCCESS>Geometric transformation exported successfully</GEOMETRIC_TRANSFORMATION_EXPORT_SUCCESS>
     <GLOBAL>Global</GLOBAL>
     <GLOBAL_ERROR_LIMIT>Global Error Limit</GLOBAL_ERROR_LIMIT>
+    <GLOBAL_OBJECTS>Global Objects</GLOBAL_OBJECTS>
     <GLOBAL_REGISTRATION>Global Registration</GLOBAL_REGISTRATION>
     <GPU_TIME>GPU Time</GPU_TIME>
     <GREEN>Green</GREEN>
@@ -205,6 +209,7 @@
     <HISTORY_MANAGER>History Manager</HISTORY_MANAGER>
     <HISTORY>History</HISTORY>
     <HORIZONTAL>Horizontal</HORIZONTAL>
+    <IGNORE_IMPORT_STEP>Ignore Import Step</IGNORE_IMPORT_STEP>
     <IGNORE_UNFIT_ITEMS>Automatically ignore unfitted components</IGNORE_UNFIT_ITEMS>
     <IMAGE>Images</IMAGE>
     <IMAGE_EXPORT_SUCCESS>Images exported successfully</IMAGE_EXPORT_SUCCESS>
@@ -225,6 +230,7 @@
     <INTENSITY_THRESHOLD>Intensity Threshold</INTENSITY_THRESHOLD>
     <INTERFACE_CONTROL>Interface Control</INTERFACE_CONTROL>
     <INTERPOLATION>Interpolation</INTERPOLATION>
+    <INVALID_FILE_NAME>Invalid File Name</INVALID_FILE_NAME>
     <INVALID_FRAME_ORDER>Invalid frames order</INVALID_FRAME_ORDER>
     <INVALID_PATH>Invalid path</INVALID_PATH>
     <INVALID_PROFILE>Invalid profile</INVALID_PROFILE>
@@ -254,6 +260,7 @@
     <LOAD_IMAGE>Load Image</LOAD_IMAGE>
     <LOAD_TIME>Load Time</LOAD_TIME>
     <LOCAL>Local</LOCAL>
+    <LOCAL_OBJECTS>Local Objects</LOCAL_OBJECTS>
     <LOCAL_REGISTRATION>Local Registration</LOCAL_REGISTRATION>
     <LOCAL_REGISTRATION_AUTO>Local Registration(Auto)</LOCAL_REGISTRATION_AUTO>
     <LOCAL_WEIGHTED_MEAN>Local Weighted Mean</LOCAL_WEIGHTED_MEAN>
@@ -312,13 +319,15 @@
     <MODERN>Modern</MODERN>
     <MONOMODAL>Monomodal</MONOMODAL>
     <MORPHOLOGY>Morphology</MORPHOLOGY>
-    <MOVIE_EXPORTED_SUCCESS>Video exported successfully</MOVIE_EXPORTED_SUCCESS>
+    <MOVIE>Movie</MOVIE>
+    <MOVIE_EXPORTED_SUCCESS>Movie exported successfully</MOVIE_EXPORTED_SUCCESS>
     <MOVIE_EXPORT_INTERRUPTED>Movie export interrupted</MOVIE_EXPORT_INTERRUPTED>
     <MOVIE_FORMAT>Movie Format</MOVIE_FORMAT>
     <MOVING_QUANTILE>Moving Quantile</MOVING_QUANTILE>
     <MULTI_CONNECTION>Multi-connected regions are found, and the largest singly connected subset has been selected</MULTI_CONNECTION>
     <MULTIMODAL>Multimodal</MULTIMODAL>
     <NETWORK_TOPOLOGY>Network Topology</NETWORK_TOPOLOGY>
+    <NEW_PROJECT>New Project</NEW_PROJECT>
     <NO>No</NO>
     <NODE>Node</NODE>
     <NOISE_MODEL>Noise Model</NOISE_MODEL>
@@ -336,6 +345,8 @@
     <OK>OK</OK>
     <ON>On</ON>
     <OPACITY>Opacity</OPACITY>
+    <OPEN_PROJECT>Open Project</OPEN_PROJECT>
+    <OPEN_REGISTRATION_PROJECT>Open Registration Project File</OPEN_REGISTRATION_PROJECT>
     <OPERATION_SNAPSHOT>Operation Snapshot</OPERATION_SNAPSHOT>
     <OPERATION_TREE_DEPTH>Operation Tree (Depth)</OPERATION_TREE_DEPTH>
     <OPERATION_VIEW>Operation View</OPERATION_VIEW>
@@ -364,6 +375,7 @@
     <POLYGON>Polygon</POLYGON>
     <POLYNOMIAL>Polynomial</POLYNOMIAL>
     <POLYNOMIAL_ORDER>Polynomial Order</POLYNOMIAL_ORDER>
+    <POSITION>Position</POSITION>
     <PRECISION>Precision</PRECISION>
     <PREFERENCE>Preferences</PREFERENCE>
     <PREPROCESSING>Preprocessing</PREPROCESSING>
@@ -375,6 +387,9 @@
     <PROGRESS>Progress</PROGRESS>
     <PROGRESSBAR_COLOR>Progressbar Color</PROGRESSBAR_COLOR>
     <PROJECTION>Projection</PROJECTION>
+    <PROJECT_FOLDER>Project Folder</PROJECT_FOLDER>
+    <PROJECT_FOLDER_SELECTION>Select Project Folder</PROJECT_FOLDER_SELECTION>
+    <PROJECT_NAME>Project Name</PROJECT_NAME>
     <PROTECTED_NUMBER_CPU>Protected Number (CPU)</PROTECTED_NUMBER_CPU>
     <PROTECTED_NUMBER_GPU>Protected Number (GPU)</PROTECTED_NUMBER_GPU>
     <PYRAMID_COEFFICIENT>Pyramid Coefficient</PYRAMID_COEFFICIENT>
@@ -421,6 +436,7 @@
     <REG_LOCAL_CPD>Coherent Point Drift</REG_LOCAL_CPD>
     <REG_LOCAL_DEMONS>Diffeomorphic Demons</REG_LOCAL_DEMONS>
     <REG_LOCAL_DEFORM>Isotropic Total Variation</REG_LOCAL_DEFORM>
+    <REG_PROJECT_FILE>Registration Project File</REG_PROJECT_FILE>
     <RELEASE_CHANNEL>Release</RELEASE_CHANNEL>
     <REMOVE>Remove</REMOVE>
     <REMOVE_BACKGROUND>Remove Background</REMOVE_BACKGROUND>
@@ -431,6 +447,8 @@
     <RENDERING_DISPLACEMENT_FIELD>Rendering displacement field...</RENDERING_DISPLACEMENT_FIELD>
     <RENDER_PRECISION>Render Precision</RENDER_PRECISION>
     <RENDER_QUALITY>Render Quality</RENDER_QUALITY>
+    <REPLACE>Replace</REPLACE>
+    <REPLACE_EXIST_PROJECT>The project already exists. Do you want to replace it? This operation cannot be undone</REPLACE_EXIST_PROJECT>
     <REPLENISH_PHOTOBLEACHING>Replenish Photobleaching</REPLENISH_PHOTOBLEACHING>
     <REQUIRE_CAPACITY>Please contact the administrator to negotiate for a larger buffer</REQUIRE_CAPACITY>
     <RESAMPLING_RATIO>Resampling Ratio</RESAMPLING_RATIO>
@@ -448,6 +466,7 @@
     <RUN_MODAL>Run Modal</RUN_MODAL>
     <SAMPLING>Sampling</SAMPLING>
     <SAVE>Save</SAVE>
+    <SAVE_AS>Save As …</SAVE_AS>
     <SAVE_CONFIGURATION_FILE>Save configuration file</SAVE_CONFIGURATION_FILE>
     <SAVE_MASK_FILE>Save mask file</SAVE_MASK_FILE>
     <SCALE>Scale</SCALE>
@@ -530,10 +549,11 @@
     <TIP_CELLPOSE_BATCH_SIZE>Using a larger batch size can accelerate computation but will consume more video memory</TIP_CELLPOSE_BATCH_SIZE>
     <TIP_CELLPOSE_THRESHOLD>Using a smaller threshold generally detects more targets</TIP_CELLPOSE_THRESHOLD>
     <TIP_DATA_PROTECTION>Enable this option to encrypt sensitive data (requires program version &gt;= 5.0)</TIP_DATA_PROTECTION>
-    <TIP_DEVELOPER_MODE>Enabling developer mode allows you to load custom plugins (requires program version &gt;= 5.0)</TIP_DEVELOPER_MODE>
+    <TIP_DATA_ROOT_FOLDER>Please ensure that the disk partition where the root directory of the files is located has sufficient space</TIP_DATA_ROOT_FOLDER>
+    <TIP_DEVELOPER_MODE>Enabling developer mode allows you to load custom plugins</TIP_DEVELOPER_MODE>
     <TIP_DILATE_FILTER_DETAIL>Regenerate the image by constraining the target within specified volume and pixel intensity limits. Parameter array (non-negative integers): [Dilation radius (voxels), Minimum intensity, Maximum intensity, Minimum volume (voxels)]</TIP_DILATE_FILTER_DETAIL>
     <TIP_DILATE_FILTER_SIMPLE>Regenerating images with both volume and pixel intensity constraints</TIP_DILATE_FILTER_SIMPLE>
-    <TIP_EXPERIMENTAL_FEATURES>Enable this option to experience new features (Only available in Preview versions, requires program version &gt;= 5.0)</TIP_EXPERIMENTAL_FEATURES>
+    <TIP_EXPERIMENTAL_FEATURES>Enable this option to experience new features (Only available in Preview versions)</TIP_EXPERIMENTAL_FEATURES>
     <TIP_OUTLIER_DIRECTION>Automatically remove targets with outlier volumes</TIP_OUTLIER_DIRECTION>
     <TIP_PARALLEL_PROFILE>Select the parallel computing configuration file for registration. This option is unavailable when server mode is enabled.</TIP_PARALLEL_PROFILE>
     <TIP_SLR_PROGRESS>Progress bar</TIP_SLR_PROGRESS>
@@ -559,6 +579,7 @@
     <UI_INITIALIZE_SUCCESS>Interface initialized completely</UI_INITIALIZE_SUCCESS>
     <ULTIMATE_EROSION_PT>Ultimate Erosion Point Cloud</ULTIMATE_EROSION_PT>
     <UNABLE_ACCESS_UPDATE_SETTING>Unable to open update_setting.ini. Insufficient permissions</UNABLE_ACCESS_UPDATE_SETTING>
+    <UNNAMED>Unnamed</UNNAMED>
     <UNRECOGNIZED_UPDATE_IDENTIFIER>Checking for updates: Unrecognized identifier. Please check update_setting.ini</UNRECOGNIZED_UPDATE_IDENTIFIER>
     <UNREGISTRATERED_FRAMES>Frames to be registered</UNREGISTRATERED_FRAMES>
     <UNSUPPORTED_CHANNEL_NUMBER>Unsupported number of channels</UNSUPPORTED_CHANNEL_NUMBER>
@@ -586,8 +607,7 @@
     <WIDTH>Width</WIDTH>
     <WINDOW>Window</WINDOW>
     <WITH_CAIMAN>CaImAn Initial Value Estimation</WITH_CAIMAN>
-    <WORKING_FOLDER>Working Folder</WORKING_FOLDER>
-    <WORKING_FOLDER_SELECTION>Select Working Folder</WORKING_FOLDER_SELECTION>
+    <TEMPORARY_FOLDER_SELECTION>Select Temporary Files Folder</TEMPORARY_FOLDER_SELECTION>
     <WORKSHEET>Worksheet</WORKSHEET>
     <X_DIRECTION_LENGTH>X Scale</X_DIRECTION_LENGTH>
     <X_DIRECTION_RESOLUTION>X Resolution</X_DIRECTION_RESOLUTION>

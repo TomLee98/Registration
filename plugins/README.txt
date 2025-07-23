@@ -53,6 +53,12 @@ Note that the custom plugins need to follow the next 7 rules:
     % Input: None
     % Output: 1-by-12 image info table
 
+    % [GetAppPosition] - Return main app figure  position(from left cornor), 
+    %                    as [X, Y, W, H]
+    % Usage: pos = caller.GetAppPosition()
+    % Input: None
+    % Output: 1-by-4 double array
+
     % [GetLangsInfo] - Return local machine region and languages mapping
     % Usage: [lang, mapping] = caller.GetLangsInfo()
     % Input: None
