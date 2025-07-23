@@ -114,7 +114,9 @@ classdef constdef
                                  "StorageViewStyle",      "MODERN", ...             % "CLASSICAL"/"MODERN"
                                  "ProgressBarColor",      [0.30, 0.75, 0.93], ...   % 0 ~ 1, 1-by-3 array
                                  "ProjectFolder",         "", ...                   % string scalar as project file folder
-                                 "DataRootFolder",        "", ...                   % string scalar as temporary files folder
+                                 "DataRootFolder",        "", ...                   % string scalar as data files root folder
+                                 "AutoSave",              "ON", ...                 % "ON"/"OFF", if project is auto save
+                                 "AutoSaveInterval",      10, ...                   % positive integer scalar, 1 ~ 120, unit as minute
                                  "CacheLocation",         "AUTO", ...               % "AUTO"/"CUSTOMIZED"
                                  "CachePolicy",           "PERFORMANCE", ...        % "PERFORMANCE"/"RESOURCES"/"BALANCE" 
                                  "CacheCleanTrigger",     "EXIT", ...               % "EXIT"/"OFF"
@@ -136,9 +138,7 @@ classdef constdef
                                         "ProjectFolders",   "", ...                 % string array as project root folder
                                         "ProjectFolder",    "", ...                 % string scalar indicate current project folder
                                         "DataFolder",       "", ...                 % string scalar indicate data folder name
-                                        "ColorMap",         [255,   0,   0; ...     % "r": 694nm, "g": 525nm, "b": 440nm
-                                                              75, 255,   0; ...     % color map, row as ["r";"g";"b"] indicates image channel, 
-                                                               0,   0, 255], ...    % column as ["R","G","B"] indicates RGB representation
+                                        "WaveLength",       [694, 525, 440], ...    % "r": 694nm, "g": 525nm, "b": 440nm as default
                                         "Template",         "NONE", ...             % "NONE", "STDREG", "MEDIA", "DEV"
                                         "IgnoreImport",     "OFF")                  % "ON"/"OFF", indicate if ignore import process
     end

@@ -33,6 +33,8 @@
     <ASK_FOR_UPDATE>There is an updated version, is it updated?</ASK_FOR_UPDATE>
     <AUTO>Auto</AUTO>
     <AUTO_CLEAR>Auto Clear</AUTO_CLEAR>
+    <AUTO_SAVE>Auto Save</AUTO_SAVE>
+    <AUTO_SAVE_INTERVAL>Auto Save Interval</AUTO_SAVE_INTERVAL>
     <AUTO_TEMPLATE>Auto Template</AUTO_TEMPLATE>
     <AUTO_UPDATE>Auto Update</AUTO_UPDATE>
     <BALANCE>Balance</BALANCE>
@@ -217,6 +219,7 @@
     <IMAGE_LOADING_COMPLETE>Image loading completed:</IMAGE_LOADING_COMPLETE>
     <IMAGE_PARAMETER>Image Parameters</IMAGE_PARAMETER>
     <IMAGE_TOOLBAR>Image Toolbar</IMAGE_TOOLBAR>
+    <IMPORT>Import</IMPORT>
     <IMPORT_MASK>Import mask</IMPORT_MASK>
     <INFORMATION>Information</INFORMATION>
     <IN_PROGRESS>In progress</IN_PROGRESS>
@@ -257,8 +260,6 @@
     <LINE_HAT>Line Hat</LINE_HAT>
     <LINE_WIDTH>Line Width</LINE_WIDTH>
     <LOAD_PARAMETERS>Load Parameters</LOAD_PARAMETERS>
-    <LOAD_IMAGE>Load Image</LOAD_IMAGE>
-    <LOAD_TIME>Load Time</LOAD_TIME>
     <LOCAL>Local</LOCAL>
     <LOCAL_OBJECTS>Local Objects</LOCAL_OBJECTS>
     <LOCAL_REGISTRATION>Local Registration</LOCAL_REGISTRATION>
@@ -308,6 +309,7 @@
     <MIN_ITERATION_STEP>Minimum Iteration Step</MIN_ITERATION_STEP>
     <MIN_SEARCHING_RADIUS>Minimum Searching Radius</MIN_SEARCHING_RADIUS>
     <MIN_Z_PROJECTION>Minimum Z Projection</MIN_Z_PROJECTION>
+    <MINUTES>Minutes</MINUTES>
     <MISMATCH_TOLERANCE>Mismatch Tolerance</MISMATCH_TOLERANCE>
     <MISSING_HELP>help.html file is missing</MISSING_HELP>
     <MISSING_PRIVACY>privacy html file is missing</MISSING_PRIVACY>

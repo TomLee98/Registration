@@ -41,6 +41,7 @@ try
     chs = MetaData.cOrder;
     Data = mov.Movie(:,:,ch==chs,:,:);   % 5D array
     MetaData.cOrder = ch;       % modify the output color channel
+    MetaData.channels = numel(ch);
 
     Supplementary = metadata;
 
