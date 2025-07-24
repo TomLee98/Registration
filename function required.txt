@@ -467,6 +467,7 @@ V5.x        Wittgenstein          维特根斯坦
   |     |- [New] TODO: support file "drag" and "open"
   |     |- [New] TODO: add "registration project" function
   |     |- [New] TODO: add project "auto save" setting and function
+  |     |- [New] TODO: add "data protection" to encrypt/decrypt sensitivity data
   |     |- [Adjust] accelarator key changed from 'ctrl' to 'alt', for "CropT", "Source Changing"
   |     |- [Adjust] add z projection synchronization after registration
   |     |- [Fix Bugs] fix the bug when segmentor loading ROI

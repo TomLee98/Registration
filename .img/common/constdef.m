@@ -20,7 +20,6 @@ classdef constdef
         MASK_FILE_EXT = ".mask"
         CMMASK_FILE_EXT = ".mat"
         PARALLEL_PROFILE_EXT = ".mlsettings"
-        REGCONF_FILE_EXT = ".reg3d"
         PROJECT_FILE_EXT = ".regproj"
         LOG_FILE_EXT = ".log"
         REGMOV_FILE_EXT = ".rmv"

@@ -12,13 +12,14 @@ classdef NuclearCtrlBot < handle
     end
 
     properties(SetAccess=private, GetAccess=private, Hidden)
-        caller          % app caller, must be ReTiNA object
-        ax_caller       % axes from caller, must be uiaxes
-        nuclears        % NuclearGroup object, for objects record
-        hobj            % handle of circle objects
-        cmap            % string, indicate the color map
-        dispflag        % string, indicate ROIs display state, "on"/"off"
-        disp_range      % 0/1-by-4 positive integer double, as [x0, y0, w, h]
+        caller                              % app caller, must be ReTiNA object
+        ax_caller                           % axes from caller, must be uiaxes
+        nuclears                            % NuclearGroup object, for objects record
+        hobj        (:,1)   cell            % handle of circle objects
+        hrange      (:,1)           = []    % handle of display range (rectangle)
+        cmap                                % string, indicate the color map
+        disp_flag   (1,1)   string  = "on"  % string, indicate ROIs display state, "on"/"off"
+        disp_range  (:,4)           = []    % 0/1-by-4 positive integer double, as [x0, y0, w, h]
     end
 
     properties(SetAccess=private, GetAccess=private)
@@ -42,7 +43,7 @@ classdef NuclearCtrlBot < handle
 
     methods
         function r = get.DispFlag(this)
-            r = this.dispflag;
+            r = this.disp_flag;
         end
 
         function set.DispFlag(this, df)
@@ -51,7 +52,7 @@ classdef NuclearCtrlBot < handle
                 df      (1,1)   string  {mustBeMember(df, ["on","off"])}
             end
 
-            this.dispflag = df;
+            this.disp_flag = df;
         end
 
         function r = get.DispRange(this)
@@ -123,7 +124,6 @@ classdef NuclearCtrlBot < handle
             this.rois = GenROI(this.nuid, this.center, this.radius);
             this.volopts = vopt;
             this.cmap = cmap;
-            this.dispflag = "on";
             this.nuclears = NuclearGroup(this.nuid);
             this.gen_colormap();
         end
@@ -141,9 +141,27 @@ classdef NuclearCtrlBot < handle
             end
 
             % skip
-            if this.dispflag ~= "on"
+            if this.disp_flag ~= "on"
                 status = this.STATUS_SUCCESS;
                 return;
+            end
+
+            % create display range if needed
+            if ~isempty(this.disp_range)
+                if isempty(this.hrange) || ~isvalid(this.hrange)
+                    this.hrange = images.roi.Rectangle(this.ax_caller, ...
+                        "Position",this.disp_range, "Color","y", ...
+                        "FaceAlpha",0, "StripeColor",[0.1, 0.1, 0.1], "Deletable",false, ...
+                        "InteractionsAllowed","none", "LineWidth",1, "MarkerSize",0.1);
+                else
+                    % keep exist rectangle ROI
+                end
+            else
+                if ~isempty(this.hrange) && isvalid(this.hrange)
+                    delete(this.hrange);
+                end
+
+                this.hrange = [];
             end
 
             id_z = this.nuid{zidx};
@@ -234,7 +252,7 @@ classdef NuclearCtrlBot < handle
             this.volopts = VolOpts;
             this.cmap = CMap;
 
-            this.dispflag = "on";
+            this.disp_flag = "on";
             this.nuclears = NuclearGroup(this.nuid);
             this.gen_colormap();
         end
@@ -290,6 +308,11 @@ classdef NuclearCtrlBot < handle
         end
 
         function status = Clear(this)
+            if ~isempty(this.hrange) && isvalid(this.hrange)
+                delete(this.hrange);
+            end
+            this.hrange = [];
+
             if ~isempty(this.hobj)
                 for k = 1:numel(this.hobj)
                     delete(this.hobj{k}); 

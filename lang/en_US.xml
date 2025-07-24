@@ -153,7 +153,6 @@
     <EXIT_FREE>Cleaning up temporary files…</EXIT_FREE>
     <EXPORT>Export</EXPORT>
     <EXPORT_AS>Export as</EXPORT_AS>
-    <EXPORT_PARAMETERS>Export Parameters</EXPORT_PARAMETERS>
     <EXPORTING_IMAGE>Exporting images...</EXPORTING_IMAGE>
     <EXPORTING_MOVIE>Exporting movie…</EXPORTING_MOVIE>
     <EXPORT_MASK>Export mask</EXPORT_MASK>
@@ -259,7 +258,7 @@
     <LINEARITY>Linear</LINEARITY>
     <LINE_HAT>Line Hat</LINE_HAT>
     <LINE_WIDTH>Line Width</LINE_WIDTH>
-    <LOAD_PARAMETERS>Load Parameters</LOAD_PARAMETERS>
+    <LOAD_TIME>Load Time</LOAD_TIME>
     <LOCAL>Local</LOCAL>
     <LOCAL_OBJECTS>Local Objects</LOCAL_OBJECTS>
     <LOCAL_REGISTRATION>Local Registration</LOCAL_REGISTRATION>
