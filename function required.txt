@@ -475,6 +475,7 @@ V5.x        Wittgenstein          维特根斯坦
   |     |- [Fix Bugs] fix the bug if user cancel export movie
   |     |- [Fix Bugs] fix the bug if user export single channel as ".rmv" file
   |     |- [Fix Bugs] fix the bug if user set registration with 3D view
+  |     |- [Fix Bugs] TODO: fix the bug if there is no mask but user pushes "Export Mask" button
   |     |- [Fix Bugs] TODO: fix the bug that segmentation will keep the previous algorithm on next segmentation
 
 
