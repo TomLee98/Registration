@@ -217,7 +217,6 @@ switch lower(ext)
             dt = seconds(diff([datetime(gmd.get("AcquisitionStart")),...
                 datetime(gmd.get("RecordingDate"))]));
         else
-            warning("Camera timestamps not found, the timestamps have been replaced with frame indices.");
             t = [];
             return;
         end

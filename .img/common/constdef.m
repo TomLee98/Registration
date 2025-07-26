@@ -116,6 +116,7 @@ classdef constdef
                                  "DataRootFolder",        "", ...                   % string scalar as data files root folder
                                  "AutoSave",              "ON", ...                 % "ON"/"OFF", if project is auto save
                                  "AutoSaveInterval",      10, ...                   % positive integer scalar, 1 ~ 120, unit as minute
+                                 "ImportSourcePreset",    "HOME", ...               % "LAST"/"MODE"/"HOME", indicate default import source
                                  "CacheLocation",         "AUTO", ...               % "AUTO"/"CUSTOMIZED"
                                  "CachePolicy",           "PERFORMANCE", ...        % "PERFORMANCE"/"RESOURCES"/"BALANCE" 
                                  "CacheCleanTrigger",     "EXIT", ...               % "EXIT"/"OFF"
@@ -137,9 +138,9 @@ classdef constdef
                                         "ProjectFolders",   "", ...                 % string array as project root folder
                                         "ProjectFolder",    "", ...                 % string scalar indicate current project folder
                                         "DataFolder",       "", ...                 % string scalar indicate data folder name
+                                        "SourceFolders",    "", ...                 % string array as import source folders
                                         "WaveLength",       [694, 525, 440], ...    % "r": 694nm, "g": 525nm, "b": 440nm as default
-                                        "Template",         "NONE", ...             % "NONE", "STDREG", "MEDIA", "DEV"
-                                        "IgnoreImport",     "OFF")                  % "ON"/"OFF", indicate if ignore import process
+                                        "Template",         "NONE")                 % "NONE", "STDREG", "MEDIA", "DEV"
     end
 
     properties (Access = {?mpimg, ?mpimgs, ?regohm}, Constant, Hidden)

@@ -163,7 +163,7 @@
     <EXPERIMENTAL_FEATURE>Experimental Features</EXPERIMENTAL_FEATURE>
     <EXTERNAL_PATH>External Path</EXTERNAL_PATH>
     <FEATURE_POINT_MATCHING>Feature Point Matching</FEATURE_POINT_MATCHING>
-    <FILE>Files</FILE>
+    <FILE>File</FILE>
     <FILTER>Filter</FILTER>
     <FINISH_UPDATE>The download is complete, please restart the Reg3D app to complete the update</FINISH_UPDATE>
     <FIT>Fit</FIT>
@@ -210,17 +210,20 @@
     <HIGH>High</HIGH>
     <HISTORY_MANAGER>History Manager</HISTORY_MANAGER>
     <HISTORY>History</HISTORY>
+    <HOME>Home</HOME>
     <HORIZONTAL>Horizontal</HORIZONTAL>
     <IGNORE_IMPORT_STEP>Ignore Import Step</IGNORE_IMPORT_STEP>
     <IGNORE_UNFIT_ITEMS>Automatically ignore unfitted components</IGNORE_UNFIT_ITEMS>
-    <IMAGE>Images</IMAGE>
-    <IMAGE_EXPORT_SUCCESS>Images exported successfully</IMAGE_EXPORT_SUCCESS>
+    <IMAGE>Image</IMAGE>
+    <IMAGE_EXPORT_SUCCESS>Image exported successfully</IMAGE_EXPORT_SUCCESS>
     <IMAGE_INTENSITY>image intensity</IMAGE_INTENSITY>
     <IMAGE_LOADING_COMPLETE>Image loading completed:</IMAGE_LOADING_COMPLETE>
     <IMAGE_PARAMETER>Image Parameters</IMAGE_PARAMETER>
     <IMAGE_TOOLBAR>Image Toolbar</IMAGE_TOOLBAR>
+    <IMAGING_FILE>Imaging File</IMAGING_FILE>
     <IMPORT>Import</IMPORT>
     <IMPORT_MASK>Import mask</IMPORT_MASK>
+    <IMPORT_SOURCE_PRESETS>Import Source Presets</IMPORT_SOURCE_PRESETS>
     <INFORMATION>Information</INFORMATION>
     <IN_PROGRESS>In progress</IN_PROGRESS>
     <INPUT>input</INPUT>
@@ -321,6 +324,7 @@
     <MODERN>Modern</MODERN>
     <MONOMODAL>Monomodal</MONOMODAL>
     <MORPHOLOGY>Morphology</MORPHOLOGY>
+    <MOST_FREQUENTLY_USED>Most Frequently Used</MOST_FREQUENTLY_USED>
     <MOVIE>Movie</MOVIE>
     <MOVIE_EXPORTED_SUCCESS>Movie exported successfully</MOVIE_EXPORTED_SUCCESS>
     <MOVIE_EXPORT_INTERRUPTED>Movie export interrupted</MOVIE_EXPORT_INTERRUPTED>
@@ -347,6 +351,7 @@
     <OK>OK</OK>
     <ON>On</ON>
     <OPACITY>Opacity</OPACITY>
+    <OPEN_IMAGING_FILE>Open Imaging File</OPEN_IMAGING_FILE>
     <OPEN_PROJECT>Open Project</OPEN_PROJECT>
     <OPEN_REGISTRATION_PROJECT>Open Registration Project File</OPEN_REGISTRATION_PROJECT>
     <OPERATION_SNAPSHOT>Operation Snapshot</OPERATION_SNAPSHOT>
@@ -449,6 +454,7 @@
     <RENDERING_DISPLACEMENT_FIELD>Rendering displacement field...</RENDERING_DISPLACEMENT_FIELD>
     <RENDER_PRECISION>Render Precision</RENDER_PRECISION>
     <RENDER_QUALITY>Render Quality</RENDER_QUALITY>
+    <REPEAT_LAST_TIME>Repeat Last Time</REPEAT_LAST_TIME>
     <REPLACE>Replace</REPLACE>
     <REPLACE_EXIST_PROJECT>The project already exists. Do you want to replace it? This operation cannot be undone</REPLACE_EXIST_PROJECT>
     <REPLENISH_PHOTOBLEACHING>Replenish Photobleaching</REPLENISH_PHOTOBLEACHING>

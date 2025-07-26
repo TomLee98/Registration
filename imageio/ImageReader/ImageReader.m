@@ -75,7 +75,7 @@ classdef ImageReader < handle
             % This function load the data by calling the image reader
             arguments
                 this
-                fname   (1,1)   string
+                fname   (1,1)   string                                 = ""
                 block   (1,1)   double {mustBePositive, mustBeInteger} = 50;
             end
 
