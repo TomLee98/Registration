@@ -1,31 +1,36 @@
 classdef opTree < handle
     %OPTREE This class defines a tree which stored a structured tree 
     % comes from regohm object 
+
+    properties (Access = public, Dependent)
+        OhmgrProperties
+    end
     
     properties (Access = private, Hidden)
         tree    (1,1)   struct
     end
     
     methods
-        function this = opTree(root, mode)
+        function this = opTree(root, ds)
             %OPTREE A constructor
             arguments
                 root    (1,1)   matlab.ui.container.Tree
-                mode    (1,1)   string  {mustBeMember(mode, ["save", "all"])} = "save"
+                ds      (1,1)   struct
             end
 
             % use recursion to copy the Tree
             % generate struct dynamically
             this.tree.Type = 'tree';
             this.tree.Tag = '';
+            this.tree.PrivateProperties = ds;
             this.tree.Children = cell(1, numel(root.Children));
             for k = 1:numel(root.Children)
-                this.tree.Children{k} = opTree.treeNodesToStruct(root.Children(k), mode);
+                this.tree.Children{k} = opTree.treeNodesToStruct(root.Children(k));
             end
         end
         
         % This function restores uitree on given tree root
-        function root = Restore(this, root, cm)
+        function root = RestoreUITree(this, root, cm)
             arguments
                 this
                 root    (1,1)   matlab.ui.container.Tree
@@ -33,16 +38,20 @@ classdef opTree < handle
             end
 
             for k = 1:numel(this.tree.Children)
-                root.Children(k) = opTree.structToTreeNode(root, cm, this.tree.Children{k});
+                % add children to root
+                opTree.structToTreeNode(root, cm, this.tree.Children{k});
             end
+        end
+
+        function r = get.OhmgrProperties(this)
+            r = this.tree.PrivateProperties;
         end
     end
 
     methods (Static)
-        function tree = treeNodesToStruct(node, mode)
+        function tree = treeNodesToStruct(node)
             arguments
                 node    (1,1)   matlab.ui.container.TreeNode
-                mode    (1,1)   string  {mustBeMember(mode, ["save", "all"])} = "save"
             end
             % 将uitree及其所有子节点转换为结构体
             % 输入：root - 树对象（uitree）
@@ -55,13 +64,6 @@ classdef opTree < handle
             tree.Tag = node.Tag;
             tree.Type = 'treenode';
             tree.NodeData = node.NodeData;
-            switch mode
-                case "save"
-                    % free link to avoid copy data in disk
-                    tree.NodeData.RSPoint.freelink();
-                    tree.NodeData.RSPoint
-                otherwise
-            end
 
             % 递归处理子节点
             if ~isempty(node.Children)
@@ -78,17 +80,27 @@ classdef opTree < handle
             end
         end
 
-        function cNode = structToTreeNode(pNode, cm, ns)
+        function structToTreeNode(pNode, cm, ns)
+            arguments
+                pNode   (1,1)   % matlab.ui.container.TreeNode or  matlab.ui.container.Tree
+                cm      (1,1)   matlab.ui.container.ContextMenu
+                ns      (1,1)   struct
+            end
+
             % 创建当前节点
             cNode = uitreenode(pNode, "Text",ns.Text, "NodeData",ns.NodeData, ...
                 "ContextMenu",cm);
-            cNode.NodeData.RSPoint.relink();
+            cNode.Tag = ns.Tag;
+
+            % TODO: validate if disk file lost?
 
             % 递归添加子节点
             if ~isempty(ns.Children)
                 for k = 1:length(ns.Children)
-                    cNode.Children(k) = structToTreeNode(cNode, cm, ns.Children{k});
+                    opTree.structToTreeNode(cNode, cm, ns.Children{k});
                 end
+            else
+                % skip
             end
         end
     end

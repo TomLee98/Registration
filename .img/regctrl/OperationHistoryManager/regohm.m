@@ -21,7 +21,6 @@ classdef regohm < handle
         optxt           % 1-by-1 matlab.ui.controller.TextArea
         opsmgr          % 1-by-1 storage_mananer object (component app)
         ctmenu          % 1-by-1 matlab.ui.container.ContextMenu
-        optsty          % 1-by-1 string, indicate the manager running method
         flagsrc = string(fileparts(mfilename("fullpath"))).extractBefore(...
             "regctrl") + filesep + "sources" + filesep + "active.png"
         readysrc = string(fileparts(mfilename("fullpath"))).extractBefore(...
@@ -36,6 +35,7 @@ classdef regohm < handle
         dptr            (1,1)   regmov = regmov.empty()     % current node related data pointer
         node_active     (1,1)                               % current active node (or tree)
         nodes_total_num (1,1)   double  = 0                 % number of total generated nodes in the tree
+        optsty          (1,1)   string  = "PERFORMANCE"     % 1-by-1 string, indicate the manager running method
         storage_summary (1,1)   struct                      % struct with storage summary
     end
     
@@ -529,7 +529,15 @@ classdef regohm < handle
             [~, ~, ext] = fileparts(file);
             switch ext
                 case constdef.PROJECT_FILE_EXT
-                    op_tree = opTree(this.optree);
+                    DS_ = struct("cache_size_mem",  this.cache_size_mem, ...
+                                 "cache_size_hdd",  this.cache_size_hdd, ...
+                                 "dptr",            this.dptr, ...
+                                 "optsty",          this.optsty, ...
+                                 "tag_active",      this.node_active.Tag, ...
+                                 "nodes_total_num", this.nodes_total_num, ...
+                                 "storage_summary", this.storage_summary);
+
+                    op_tree = opTree(this.optree, DS_);
                     save(file, "op_tree", '-mat','-append', '-nocompression');
                 otherwise
                     throw(MException("regohm:invalidFileFormat", ...
@@ -548,7 +556,20 @@ classdef regohm < handle
             switch ext
                 case constdef.PROJECT_FILE_EXT
                     load(file, '-mat', "op_tree");
-                    this.optree = op_tree.Restore(this.optree);
+                    op_tree.RestoreUITree(this.optree, this.ctmenu);
+                    DS_ = op_tree.OhmgrProperties;
+                    this.cache_size_mem = DS_.cache_size_mem;
+                    this.cache_size_hdd = DS_.cache_size_hdd;
+                    this.dptr = DS_.dptr;
+                    this.optsty = DS_.optsty;
+                    this.nodes_total_num = DS_.nodes_total_num;
+                    this.storage_summary = DS_.storage_summary;
+                    node = this.find(DS_.tag_active);
+                    if ~isempty(node)
+                        this.ActivateNode(node);
+                    else
+                        this.node_active = this.optree;
+                    end
                 otherwise
                     throw(MException("regohm:invalidFileFormat", ...
                         "File extension must be %s.", constdef.PROJECT_FILE_EXT));
@@ -730,7 +751,29 @@ classdef regohm < handle
                 % change active node as tree
                 this.node_active = this.optree;
             end
+        end
 
+        % This function finds the node which has Tag equals to given tag
+        function node = find(this, tag)
+            arguments
+                this
+                tag     (1,1)   string
+            end
+
+            node = matlab.graphics.GraphicsPlaceholder.empty();
+            
+            nodes = mQueue();
+            nodes.enqueue(this.optree);
+            while ~isempty(nodes)
+                nd = nodes.dequeue();
+                if isa(nd, "matlab.ui.container.TreeNode")
+                    if nd.Tag == tag, node = nd; return; end
+                end
+                
+                for k = 1:numel(nd.Children)
+                    nodes.enqueue(nd.Children(k));
+                end
+            end
         end
 
         % This function auto moves the active node if it is on the branch
