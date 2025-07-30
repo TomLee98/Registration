@@ -130,8 +130,7 @@ classdef constdef
                                  "UpdateChannel",         "REL", ...                % "REL"/"PRE"/"ALL"
                                  "ExperimentalFeature",   "OFF")                    % "ON"/"OFF"
 
-        PROJECT_CONFIG_DEFAULT = struct("CacheLocation",    "AUTO", ...             % "AUTO"/"CUSTOMIZED"...
-                                        "CachePolicy",      "PERFORMANCE", ...      % "PERFORMANCE"/"RESOURCES"/"BALANCE" 
+        PROJECT_CONFIG_DEFAULT = struct("CachePolicy",      "PERFORMANCE", ...      % "PERFORMANCE"/"RESOURCES"/"BALANCE" 
                                         "DataFolder",       "", ...                 % string scalar indicate data folder name
                                         "DataProtected",    "OFF", ...              % "ON"/"OFF"
                                         "DataRootFolder",   "", ...                 % data files root folder, as same as PROFILE defined

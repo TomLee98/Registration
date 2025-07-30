@@ -17,8 +17,6 @@ classdef ImageReader < handle
 
     properties(SetAccess=immutable, Hidden)
         caller          % calling object, must has SetProgressBar method
-        mapflag         % 1-by-1 logical, memmap pointer flag
-
     end
 
     properties(Access=private, Hidden)
@@ -31,14 +29,12 @@ classdef ImageReader < handle
     end
 
     methods
-        function this = ImageReader(caller_, mapflag_)
+        function this = ImageReader(caller_)
             %IMAGELOADER A Constructor
             arguments
                 caller_     (1,1)   Register
-                mapflag_    (1,1)   logical = true
             end
             this.caller = caller_;
-            this.mapflag = mapflag_;
 
             warning('off', 'MATLAB:loadlibrary:cppoutput');
         end
@@ -142,70 +138,42 @@ classdef ImageReader < handle
             % turn on loader
             this.state = "on";
 
-            if this.mapflag == true
-                % generate a new temporary file
-                dstfile = mpimg.genfilename(this.folder);
-                fid = fopen(dstfile, "a");
-                for k = 1:n_piece
-                    if this.state == "off"
-                        break;
-                    end
-                    tspan = [(k-1)*block+1, min(k*block, this.metadata.frames)];
-                    % load piecewise data
-                    img = pfunc(this.srcfile, this.metadata, tspan, ft);
-
-                    % reshape img to X,Y,C,Z,T order
-                    img = ImageReader.imreshape(img, info.opts, this.INNER_DIM_ORDER);
-
-                    % write to disk file
-                    fwrite(fid, img, "uint16");
-
-                    this.caller.SetProgressBar(k/n_piece);
-                end
-                fclose(fid);
-
+            % generate a new temporary file
+            dstfile = mpimg.genfilename(this.folder);
+            fid = fopen(dstfile, "a");
+            for k = 1:n_piece
                 if this.state == "off"
-                    % remove the exists file
-                    delete(this.srcfile);
-                    this.metadata = [];
-                    this.t = [];
-                    this.caller.SetProgressBar(0);
-                else
-                    this.state = "off";
-                    this.data = mpimg(this.folder, [], 1);
-                    tmpfile = this.data.FileName;   % 1kb temporary marker
-                    this.data.link(dstfile, {"uint16", ...
-                        [this.metadata.height, this.metadata.width, ...
-                        this.metadata.channels, this.metadata.slices, ...
-                        this.metadata.frames], "mov"}, this.INNER_DIM_ORDER);
-                    delete(tmpfile);
+                    break;
                 end
+                tspan = [(k-1)*block+1, min(k*block, this.metadata.frames)];
+                % load piecewise data
+                img = pfunc(this.srcfile, this.metadata, tspan, ft);
+
+                % reshape img to X,Y,C,Z,T order
+                img = ImageReader.imreshape(img, info.opts, this.INNER_DIM_ORDER);
+
+                % write to disk file
+                fwrite(fid, img, "uint16");
+
+                this.caller.SetProgressBar(k/n_piece);
+            end
+            fclose(fid);
+
+            if this.state == "off"
+                % remove the exists file
+                delete(this.srcfile);
+                this.metadata = [];
+                this.t = [];
+                this.caller.SetProgressBar(0);
             else
-                % shape as X,Y,C,Z,T
-                this.data = zeros([this.metadata.height, this.metadata.width, ...
-                        this.metadata.channels, this.metadata.slices, ...
-                        this.metadata.frames], "uint16");
-                for k = 1:n_piece
-                    if this.state == "off"
-                        break;
-                    end
-                    tspan = [(k-1)*block+1, min(k*block, this.metadata.frames)];
-                    % load piecewise data
-                    img = pfunc(this.srcfile, this.metadata, tspan, ft);
-
-                    % reshape img to X,Y,C,Z,T order
-                    img = ImageReader.imreshape(img, info.opts, this.INNER_DIM_ORDER);
-
-                    this.data(:,:,:,:,tspan(1):tspan(2)) = img;
-                    this.caller.SetProgressBar(k/n_piece);
-                end
-
-                if this.state == "off"
-                    this.data = [];
-                    this.metadata = [];
-                    this.t = [];
-                    this.caller.SetProgressBar(0);
-                end
+                this.state = "off";
+                this.data = mpimg(this.folder, [], 1);
+                tmpfile = this.data.FileName;   % 1kb temporary marker
+                this.data.link(dstfile, {"uint16", ...
+                    [this.metadata.height, this.metadata.width, ...
+                    this.metadata.channels, this.metadata.slices, ...
+                    this.metadata.frames], "mov"}, this.INNER_DIM_ORDER);
+                delete(tmpfile);
             end
 
             % normalized dimention order

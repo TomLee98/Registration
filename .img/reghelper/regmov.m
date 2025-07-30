@@ -12,6 +12,7 @@ classdef regmov < matlab.mixin.Copyable
 
     properties(Access=private, Hidden)
         mopt            % 1-by-12 table, with movie options
+        encrypted       % 1-by-1 logical, indicate if data was encrypted
         t               % t-by-1 double, camera time
         zprojalg        % 1-by-1 string, method of z-projection
         zprojupd        % 1-by-1 logical, the flag for projection updating
@@ -31,6 +32,7 @@ classdef regmov < matlab.mixin.Copyable
         EMedian         % variable, get/___, not stored
         EMin            % variable, get/___, not stored
         ETmplIdx        % variable, get/___, not stored
+        IsEncrypted     % variable, get/___, stored
         Location        % variable, get/___, not stored
         MC              % variable, get/___, not stored
         MetaData        % variable, get/set, stored
@@ -76,6 +78,7 @@ classdef regmov < matlab.mixin.Copyable
             end
             this.mopt = mopt_;
             this.t = t_;
+            this.encrypted = false;
             this.zprojalg = "max";
             this.tform = cell(mopt_.frames, 3);
             this.zprojupd = false;
@@ -113,6 +116,10 @@ classdef regmov < matlab.mixin.Copyable
                     % recycle by OS
                 end
             end
+        end
+
+        function r = get.IsEncrypted(this)
+            r = this.encrypted;
         end
 
         function r = get.Movie(this)
@@ -559,6 +566,14 @@ classdef regmov < matlab.mixin.Copyable
                     this.mptr = mpimg(tmpfolder, [], D, this.mopt.dimOrder);
                 end
             end
+        end
+
+        function status = encrypt(this, key)
+
+        end
+
+        function status = decrypt(this, key)
+            
         end
     end
 

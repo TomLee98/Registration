@@ -555,7 +555,7 @@
     <TIP_CBX_PHOTOBLEACHING>补偿恒定背景下的前景光漂白</TIP_CBX_PHOTOBLEACHING>
     <TIP_CELLPOSE_BATCH_SIZE>使用更大的批处理大小可以加速计算，但会使用更多的显存</TIP_CELLPOSE_BATCH_SIZE>
     <TIP_CELLPOSE_THRESHOLD>使用更小的阈值通常可以检测到更多目标</TIP_CELLPOSE_THRESHOLD>
-    <TIP_DATA_PROTECTION>启用此选项以加密敏感数据(需要程序版本&gt;=5.0)</TIP_DATA_PROTECTION>
+    <TIP_DATA_PROTECTION>启用此选项以加密敏感数据</TIP_DATA_PROTECTION>
     <TIP_DATA_ROOT_FOLDER>请确保文件根目录所在磁盘分区足够大</TIP_DATA_ROOT_FOLDER>
     <TIP_DEVELOPER_MODE>启用开发者模式允许您加载自定义插件</TIP_DEVELOPER_MODE>
     <TIP_DILATE_FILTER_DETAIL>使用体积与像素强度约束范围内目标并重新生成图像，参数数组(非负整数)：[膨胀半径(体素)，最小强度，最大强度，最小体积(体素)]</TIP_DILATE_FILTER_DETAIL>

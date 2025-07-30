@@ -9,9 +9,7 @@ classdef regohm < handle
     properties(Access = public, Dependent)
         ActiveNodeData  % ___/get, 1-by-1 struct with field {arg, cbot, data, optr}
         ActiveNodeTag   % ___/get, 1-by-1 string, could be empty
-        BestStorageNext % ___/get, 1-by-1 string, could be "MEM"/"HDD"
         CachePolicy     % ___/get, 1-by-1 string, could be "PERFORMANCE"/"RESOURCE"/"BALANCE"
-        CacheLocation   % set/get, 1-by-1 string, could be "AUTO"/"CUSTOMIZED"
         CacheSizeMEM    % set/get, 1-by-1 double, indicate the maximal memory cache size
         CacheSizeHDD    % set/get, 1-by-1 double, indicate the maximal hard drive cache size
         CurrentImagePtr % ___/get, 1-by-1 regmov, indicate the current activated image
@@ -33,7 +31,6 @@ classdef regohm < handle
     end
 
     properties(Access = private, Hidden)
-        cache_loc       (1,1)   string  = "AUTO"            % cache location, "AUTO" for auto select
         cache_size_mem  (1,1)   double  = 64                % memory cache size, unit as GB 
         cache_size_hdd  (1,1)   double  = 128               % hard drive cache size, unit as GB
         dptr            (1,1)   regmov = regmov.empty()     % current node related data pointer
@@ -65,36 +62,6 @@ classdef regohm < handle
 
         function r = get.ActiveNodeTag(this)
             r = string(this.node_active.Tag);
-        end
-
-        function r = get.BestStorageNext(this)
-            switch this.cache_loc
-                case "AUTO"
-                    % select the location with maximal free space
-                    mem_free = this.storage_summary.Overview.MEM(1) - ...
-                        this.storage_summary.Overview.MEM(2);
-                    hdd_free = this.storage_summary.Overview.HDD(1) - ...
-                        this.storage_summary.Overview.HDD(2);
-                    if mem_free >= hdd_free
-                        r = "MEM";
-                    else
-                        r = "HDD";
-                    end
-                case "CUSTOMIZED"
-                    % follow the active node
-                    if ~this.isempty()
-                        switch this.dptr.Location
-                            case "Memory"
-                                r = "MEM";
-                            otherwise
-                                r = "HDD";
-                        end
-                    else
-                        r = "HDD";  % make sure data can be stored
-                    end
-                otherwise
-                    % never come here
-            end
         end
 
         function r = get.CacheSizeMEM(this)
@@ -145,31 +112,6 @@ classdef regohm < handle
             this.update_storage_view([1,2]);
         end
 
-        function r= get.CacheLocation(this)
-            r = this.cache_loc;
-        end
-
-        function set.CacheLocation(this, r)
-            arguments
-                this
-                r   (1,1)   string  {mustBeMember(r, ["AUTO", "CUSTOMIZED"])}
-            end
-
-            this.cache_loc = r;
-
-            switch r
-                case "AUTO"
-                    % TODO: redistribute data
-                case "CUSTOMIZED"
-                    % skip
-                otherwise
-            end
-
-            % update view
-            this.update_storage_summary();
-            this.update_storage_view([1,2,3]);
-        end
-
         function r = get.CachePolicy(this)
             r = this.optsty;
         end
@@ -181,7 +123,7 @@ classdef regohm < handle
     end
 
     methods (Access = public)
-        function this = regohm(ufig, op_tree, op_txt, op_smgr, ctxt_menu, cache_loc, cache_mem, cache_hdd, strategy)
+        function this = regohm(ufig, op_tree, op_txt, op_smgr, ctxt_menu, cache_mem, cache_hdd, strategy)
             %REGHIMGR A Constructor
             % Input:
             %   - ufig: 1-by-1 matlab.ui.Figure for progress bar display
@@ -198,7 +140,6 @@ classdef regohm < handle
                 op_txt      (1,1)   matlab.ui.control.TextArea
                 op_smgr     (1,1)   storage_manager
                 ctxt_menu   (1,1)   matlab.ui.container.ContextMenu
-                cache_loc   (1,1)   string  {mustBeMember(cache_loc, ["AUTO","CUSTOMIZED"])}
                 cache_mem   (1,1)   double
                 cache_hdd   (1,1)   double
                 strategy    (1,1)   string  {mustBeMember(strategy, ...
@@ -212,7 +153,6 @@ classdef regohm < handle
             this.opsmgr = op_smgr;
             this.opsmgr.SetBoss(this);
             this.ctmenu = ctxt_menu;
-            this.cache_loc = cache_loc;
             this.optsty = strategy;
             this.node_active = this.optree;
 
@@ -639,30 +579,8 @@ classdef regohm < handle
             end
 
             % construct restore point
+            % note that the data must be on disk
             rs_node = regrspt(optr, args, vars{:});
-
-            switch this.cache_loc
-                case "AUTO"
-                    if optr ~= constdef.OP_LOAD
-                        % determine if node is in memory or on hard drive
-                        mem_left = this.storage_summary.Overview.MEM(1) ...
-                            - this.storage_summary.Overview.MEM(2);     % GB
-                        hdd_left = this.storage_summary.Overview.HDD(1) ...
-                            - this.storage_summary.Overview.HDD(2);     % GB
-                        if hdd_left > 2 * mem_left
-                            % storage with more than 2 fold free space than
-                            % memory, higher priority
-                            rs_node.IsOnHardDrive = true;
-                        else
-                            % memory will be faster for big file, higher priority
-                            rs_node.IsOnHardDrive = false;
-                        end
-                    else
-                        rs_node.IsOnHardDrive = true;
-                    end
-                otherwise
-                    % keep the current property
-            end
 
             node_data = struct("Operation",  [], ...
                                "Properties", [], ...
@@ -1057,9 +975,7 @@ classdef regohm < handle
                 comp (1,:)  double  {mustBeMember(comp, [1,2,3])} = [1,2,3]
             end
             % invoke storage manager agent repaint
-            this.opsmgr.UpdateView(this.storage_summary, ...
-                                   this.cache_loc=="AUTO", ...
-                                   comp);
+            this.opsmgr.UpdateView(this.storage_summary, comp);
         end
 
         % This function updates snapshot view
