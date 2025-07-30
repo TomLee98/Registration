@@ -20,10 +20,12 @@ classdef regmov < matlab.mixin.Copyable
 
     properties(Access=private, Hidden, NonCopyable)
         mptr            % 1-by-1 mpimg/mpimgs object or numeric array
+        mptr_info       % 1-by-1 struct, with {"file", "format", "dim_order"}
         zdptr           % m-by-n-by(-c)-by-t uint16 array, z-projected data
     end
 
     properties(Access=public, Dependent)
+        Accessible      % variable, get/set, not stored
         Bytes           % variable, get/___, not stored
         EMax            % variable, get/___, not stored
         EMedian         % variable, get/___, not stored
@@ -65,11 +67,52 @@ classdef regmov < matlab.mixin.Copyable
             end
 
             this.mptr = mptr_;
+            if ismember(class(mptr_), ["mpimg", "mpimgs"])
+                this.mptr_info = struct("file",         mptr_.FileName, ...
+                                        "format",       {mptr_.Format}, ...
+                                        "dim_order",    mptr_.DimOrder);
+            else
+                this.mptr_info = struct([]);
+            end
             this.mopt = mopt_;
             this.t = t_;
             this.zprojalg = "max";
             this.tform = cell(mopt_.frames, 3);
             this.zprojupd = false;
+        end
+
+        function r = get.Accessible(this)
+            r = ~isempty(this.mptr);
+        end
+
+        function set.Accessible(this, r)
+            arguments
+                this
+                r       (1,1)   logical
+            end
+
+            if r == true
+                if isempty(this.mptr) && ismember(class(this.mptr), ["mpimg","mpimgs"])
+                    % link to an exist temporary file
+                    file_ = this.mptr_info.file;
+                    fmt_ = this.mptr_info.format;
+                    dimorder_ = this.mptr_info.dim_order;
+                    try
+                        this.mptr.link(file_, fmt_, dimorder_);
+                    catch ME
+                        rethrow(ME);
+                    end
+                else
+                    % skip
+                end
+            else
+                if ~isempty(this.mptr) && ismember(class(this.mptr), ["mpimg","mpimgs"])
+                    this.mptr.unlink();
+                else
+                    % skip, load in memory can not lost, which will be
+                    % recycle by OS
+                end
+            end
         end
 
         function r = get.Movie(this)
@@ -459,6 +502,8 @@ classdef regmov < matlab.mixin.Copyable
             end
 
             if ismember(class(this.mptr), ["mpimg", "mpimgs"])
+                % if RetainCache is false, delete regmov will also remove
+                % the linked mpimg object from disk
                 this.mptr.RetainCache = r;
             else
                 % do nothing
@@ -475,11 +520,15 @@ classdef regmov < matlab.mixin.Copyable
             if isnumeric(this.mptr)
                 % allocate after changing, MATLAB backend takes over,
                 % implicit controller
-                cpt.mptr = this.mptr;   
+                cpt.mptr = this.mptr;
+                cpt.mptr_info = this.mptr_info;
             elseif ismember(class(this.mptr), ["mpimg", "mpimgs"])
                 % allocate right now, programming takes over manually
                 % explicit controller
                 cpt.mptr = this.mptr.copy();
+                cpt.mptr_info = struct("file",      cpt.mptr.FileName, ...
+                                       "format",    {cpt.mptr.Format}, ...
+                                       "dim_order", cpt.mptr.DimOrder);
             end
         end
     end
@@ -777,12 +826,16 @@ classdef regmov < matlab.mixin.Copyable
         end
 
         % This function
-        function mov = place_holder_as(tmpl)
+        function mov = make_placeholder_as(tmpl)
             arguments
                 tmpl    (1,1)   regmov
             end
 
             mov = regmov.empty();
+            mov.mptr = mpimg.empty();   % must be mpimg object
+
+            % copy mptr info
+            mov.mptr_info = tmpl.mptr_info;
 
             % copy stored properties
             mov.MetaData = tmpl.MetaData;

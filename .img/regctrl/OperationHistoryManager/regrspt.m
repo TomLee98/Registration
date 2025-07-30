@@ -195,14 +195,31 @@ classdef regrspt < handle
         end
     end
 
+    methods (Access = public, Hidden)
+        function freelink(this)
+            if ~isempty(this.dptr)
+                this.dptr.Accessible = false;
+            end
+        end
+
+        function relink(this)
+            if isempty(this.dptr)
+                try
+                    % try to make it accessible
+                    this.dptr.Accessible = true;
+                catch ME
+                    rethrow(ME);
+                end
+            end
+        end
+    end
+
     methods (Access = private)
         function dpost = restore_load(this)
-            if isempty(this.dptr)
-                throw(MException("regrspt:invalidInvoke", ...
-                    "No stored data can be restored."));
-            else
-                dpost = this.dptr;      % pass
-            end
+            % relink ans get
+            this.relink();
+
+            dpost = this.dptr;      % pass
         end
 
         function dpost = restore_crop(this, dpre)

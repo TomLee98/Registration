@@ -8,7 +8,8 @@ classdef constdef
         APP_PROFILE_FILE_NAME = ".profile.xml"
         PROJECT_CONFIG_FILE_NAME = ".config.xml"
         PROJECT_NAME_DEFAULT = "Untitled"
-        PROJECT_FOLDER_NAME_DEFAULT = "Reg3D Projects";
+        PROJECT_FOLDER_NAME_DEFAULT = "Reg3D Projects"
+        OPTREE_FOLDER_NAME = ".OPS"
         SUBAPP_CLOSE_IMPLEMENT_NAME = "Close"
         SUBAPP_UPDATE_STYLE_IMPLEMENT_NAME = "RefreshPanelStyle"
         SUBAPP_UPDATE_LANGUAGE_IMPLEMENT_NAME = "RefreshPanelLanguage"
@@ -17,11 +18,12 @@ classdef constdef
 
         %% file extension definition
         RAW_FILE_EXT = ".dat"
+        LOG_FILE_EXT = ".log"
         MASK_FILE_EXT = ".mask"
         CMMASK_FILE_EXT = ".mat"
         PARALLEL_PROFILE_EXT = ".mlsettings"
+        % OHMGR_FILE_EXT = ".ohmgr"
         PROJECT_FILE_EXT = ".regproj"
-        LOG_FILE_EXT = ".log"
         REGMOV_FILE_EXT = ".rmv"
         TIME_FILE_EXT = ".tim"
         HLOG_FILE_EXT = ".txt"
@@ -98,9 +100,9 @@ classdef constdef
         %% cache policy definition
         % table as transmission optimal solution
         % 1 for load storage, 0 for real-time calculate recovery
-        TRANSMISSION_STORAGE_TABLE = array2table([1, 1, 1, 0; ...
-                                                  0, 1, 0, 0; ...
-                                                  1, 1, 0, 0], ...
+        TRANSMISSION_STORAGE_TABLE = array2table([1, 0, 1, 0; ...
+                                                  0, 0, 0, 0; ...
+                                                  1, 0, 0, 0], ...
             "VariableNames",["CROP",        "LOAD",     "REGISTER", "SEGMENT"], ...
             "RowNames",     ["PERFORMANCE", "RESOURCE", "BALANCE"]);
 
@@ -112,21 +114,15 @@ classdef constdef
                                  "Style",                 "FOLLOW", ...             % "LIGHT"/"DARK"/"FOLLOW"
                                  "StorageViewStyle",      "MODERN", ...             % "CLASSICAL"/"MODERN"
                                  "ProgressBarColor",      [0.30, 0.75, 0.93], ...   % 0 ~ 1, 1-by-3 array
-                                 "ProjectFolder",         "", ...                   % string scalar as project file folder
-                                 "DataRootFolder",        "", ...                   % string scalar as data files root folder
                                  "AutoSave",              "ON", ...                 % "ON"/"OFF", if project is auto save
                                  "AutoSaveInterval",      10, ...                   % positive integer scalar, 1 ~ 120, unit as minute
                                  "ImportSourcePreset",    "HOME", ...               % "LAST"/"MODE"/"HOME", indicate default import source
-                                 "CacheLocation",         "AUTO", ...               % "AUTO"/"CUSTOMIZED"
-                                 "CachePolicy",           "PERFORMANCE", ...        % "PERFORMANCE"/"RESOURCES"/"BALANCE" 
-                                 "CacheCleanTrigger",     "EXIT", ...               % "EXIT"/"OFF"
                                  "MemoryCapacity",        64, ...                   % positive double scalar, 1 ~ 96
                                  "HardDriveCapacity",     128, ...                  % positive double scalar, 1 ~ 256
                                  "NumProtectedCPU",       0, ...                    % nonnegative integer
                                  "NumProtectedGPU",       0, ...                    % nonnegative integer
                                  "MessageLevel",          "WARNING", ...            % "ERROR"/"WARNING"/"INFO"
                                  "TooltipsLevel",         "SIMPLE", ...             % "SIMPLE"/"DETAIL"/"NONE"
-                                 "DataProtected",         "OFF", ...                % "ON"/"OFF"
                                  "InformationCollection", "ON", ...                 % "ON"/"OFF"
                                  "PythonPath",            "", ...                   % string scalar as python executable path
                                  "DeveloperMode",         "OFF", ...                % "ON"/"OFF"
@@ -134,13 +130,17 @@ classdef constdef
                                  "UpdateChannel",         "REL", ...                % "REL"/"PRE"/"ALL"
                                  "ExperimentalFeature",   "OFF")                    % "ON"/"OFF"
 
-        PROJECT_CONFIG_DEFAULT = struct("ProjectName",      "", ...                 % "Untitled" as constant, can not be changed
+        PROJECT_CONFIG_DEFAULT = struct("CacheLocation",    "AUTO", ...             % "AUTO"/"CUSTOMIZED"...
+                                        "CachePolicy",      "PERFORMANCE", ...      % "PERFORMANCE"/"RESOURCES"/"BALANCE" 
+                                        "DataFolder",       "", ...                 % string scalar indicate data folder name
+                                        "DataProtected",    "OFF", ...              % "ON"/"OFF"
+                                        "DataRootFolder",   "", ...                 % data files root folder, as same as PROFILE defined
                                         "ProjectFolders",   "", ...                 % string array as project root folder
                                         "ProjectFolder",    "", ...                 % string scalar indicate current project folder
-                                        "DataFolder",       "", ...                 % string scalar indicate data folder name
+                                        "ProjectName",      "", ...                 % "Untitled" as constant, can not be changed
                                         "SourceFolders",    "", ...                 % string array as import source folders
-                                        "WaveLength",       [694, 525, 440], ...    % "r": 694nm, "g": 525nm, "b": 440nm as default
-                                        "Template",         "NONE")                 % "NONE", "STDREG", "MEDIA", "DEV"
+                                        "Template",         "NONE", ...             % "NONE", "STDREG", "MEDIA", "DEV"
+                                        "WaveLength",       [694, 525, 440])        % "r": 694nm, "g": 525nm, "b": 440nm as default
     end
 
     properties (Access = {?mpimg, ?mpimgs, ?regohm}, Constant, Hidden)

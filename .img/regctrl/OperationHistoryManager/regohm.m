@@ -578,18 +578,42 @@ classdef regohm < handle
             this.update_snapshot_view();
         end
 
-        % % This function packages all data as project to given folder
-        % function PackageProjectTo(this, folder)
-        % 
-        % 
-        % end
-        % 
-        % % This function loads data from given project folder
-        % function LoadProjectFrom(this, folder)
-        % 
-        % 
-        % end
+        function Save(this, file)
+            arguments
+                this
+                file    (1,1)   string
+            end
 
+            % This function uses struct to save the operation tree
+            % construct tree-struct dynamically
+            [~, ~, ext] = fileparts(file);
+            switch ext
+                case constdef.PROJECT_FILE_EXT
+                    op_tree = opTree(this.optree);
+                    save(file, "op_tree", '-mat','-append', '-nocompression');
+                otherwise
+                    throw(MException("regohm:invalidFileFormat", ...
+                        "File extension must be %s.", constdef.PROJECT_FILE_EXT));
+            end
+        end
+
+        function Load(this, file)
+            arguments
+                this
+                file    (1,1)   string  {mustBeFile}
+            end
+
+            % This function reconstruct regohm from given file
+            [~, ~, ext] = fileparts(file);
+            switch ext
+                case constdef.PROJECT_FILE_EXT
+                    load(file, '-mat', "op_tree");
+                    this.optree = op_tree.Restore(this.optree);
+                otherwise
+                    throw(MException("regohm:invalidFileFormat", ...
+                        "File extension must be %s.", constdef.PROJECT_FILE_EXT));
+            end
+        end
     end
 
     methods (Access = private)
@@ -607,7 +631,8 @@ classdef regohm < handle
                     if isequal("Data", vars{n})
                         % drop, handle is only hold by Register now
                         % replace with a place holder
-                        vars{n+1} = regmov.place_holder_as(vars{n+1});  
+                        tmprv = vars{n+1};
+                        vars{n+1} = regmov.make_placeholder_as(tmprv);
                         break;
                     end
                 end
@@ -618,18 +643,22 @@ classdef regohm < handle
 
             switch this.cache_loc
                 case "AUTO"
-                    % determine if node is in memory or on hard drive
-                    mem_left = this.storage_summary.Overview.MEM(1) ...
-                        - this.storage_summary.Overview.MEM(2);     % GB
-                    hdd_left = this.storage_summary.Overview.HDD(1) ...
-                        - this.storage_summary.Overview.HDD(2);     % GB
-                    if hdd_left > 2 * mem_left
-                        % storage with more than 2 fold free space than 
-                        % memory, higher priority
-                        rs_node.IsOnHardDrive = true;
+                    if optr ~= constdef.OP_LOAD
+                        % determine if node is in memory or on hard drive
+                        mem_left = this.storage_summary.Overview.MEM(1) ...
+                            - this.storage_summary.Overview.MEM(2);     % GB
+                        hdd_left = this.storage_summary.Overview.HDD(1) ...
+                            - this.storage_summary.Overview.HDD(2);     % GB
+                        if hdd_left > 2 * mem_left
+                            % storage with more than 2 fold free space than
+                            % memory, higher priority
+                            rs_node.IsOnHardDrive = true;
+                        else
+                            % memory will be faster for big file, higher priority
+                            rs_node.IsOnHardDrive = false;
+                        end
                     else
-                        % memory will be faster for big file, higher priority
-                        rs_node.IsOnHardDrive = false;
+                        rs_node.IsOnHardDrive = true;
                     end
                 otherwise
                     % keep the current property
@@ -643,15 +672,12 @@ classdef regohm < handle
             switch optr
                 case constdef.OP_LOAD
                     node_text = "load";
-                    file_dp = rs_node.File;
-                    % node_data.Properties.Location = file_dp.File;
-                    node_data.Properties.Dims = rs_node.ImageDim;
-                    switch file_dp.File
-                        case "Memory"
-                            node_data.Properties.Size = round(file_dp.Size.mem/2^30, 1);
-                        otherwise
-                            node_data.Properties.Size = round(file_dp.Size.map/2^30, 1);
-                    end
+                    % must be on hard-drive
+                    node_data.Properties.Location = tmprv.Location;
+                    node_data.Properties.Dims = [tmprv.MetaData.width, ...
+                        tmprv.MetaData.height, tmprv.MetaData.channels, ...
+                        tmprv.MetaData.slices, tmprv.MetaData.frames];
+                    node_data.Properties.Size = round(tmprv.Bytes.map/2^30, 1);
                 case constdef.OP_CROP
                     node_text = sprintf("crop(%s)", rs_node.CropDim);
                     st = args.(constdef.OP_CROP);
@@ -691,7 +717,7 @@ classdef regohm < handle
                                 otherwise
                             end
                         case "MANREG"
-                            node_data.properties = struct("Transformation", st.Options.TformType, ...
+                            node_data.Properties = struct("Transformation", st.Options.TformType, ...
                                                           "RegisterFrames", rs_node.Others.frames_reg(2), ...
                                                           "Degree",         string(st.Options.Degree), ...
                                                           "ProjectedView",  st.Options.DView, ...

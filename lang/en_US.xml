@@ -41,8 +41,6 @@
     <BALANCE>Balance</BALANCE>
     <BASELINE_MODEL>Baseline Model</BASELINE_MODEL>
     <BATCH_SIZE>Batch Size</BATCH_SIZE>
-    <BCS_EXIT>Exit</BCS_EXIT>
-    <BCS_OFF>Never (not recommended)</BCS_OFF>
     <BEGIN>begin</BEGIN>
     <BICUBIC>Bicubic</BICUBIC>
     <BILINEAR>Bilinear</BILINEAR>
@@ -237,6 +235,7 @@
     <INTERFACE_CONTROL>Interface Control</INTERFACE_CONTROL>
     <INTERPOLATION>Interpolation</INTERPOLATION>
     <INVALID_FILE_NAME>Invalid File Name</INVALID_FILE_NAME>
+    <INVALID_FOLDER_NAME>Invalid Folder Name</INVALID_FOLDER_NAME>
     <INVALID_FRAME_ORDER>Invalid frames order</INVALID_FRAME_ORDER>
     <INVALID_PATH>Invalid path</INVALID_PATH>
     <INVALID_PROFILE>Invalid profile</INVALID_PROFILE>
@@ -547,7 +546,7 @@
     <TIP_APP_INFO_COLLECTION_DETAIL>Allow the program to collect your usage information and upload it to the server, so that developers can resolve program anomalies and optimize the user experience. Your usage information will be encrypted, and user information will be anonymized.</TIP_APP_INFO_COLLECTION_DETAIL>
     <TIP_APP_INFO_COLLECTION_SIMPLE>Allow the program to collect your usage information so that developers can resolve program anomalies and optimize the user experience.</TIP_APP_INFO_COLLECTION_SIMPLE>
     <TIP_CACHE_LOCATION>Manually optimize performance by customizing buffer locations (Auto mode recommended)</TIP_CACHE_LOCATION>
-    <TIP_CACHE_POLICY_UPDATE>The caching policy takes effect after the program restarts</TIP_CACHE_POLICY_UPDATE>
+    <TIP_CACHE_POLICY>The cache strategy is bound to the current project and cannot be changed after being set</TIP_CACHE_POLICY>
     <TIP_CBX_APPLY_TMAT>Specify transformation and skip control point registration</TIP_CBX_APPLY_TMAT>
     <TIP_CBX_AUTO_KEYFRAME>Automatically select keyframes to balance motion intensity</TIP_CBX_AUTO_KEYFRAME>
     <TIP_CBX_ENHANCE>Enhanced algorithm automatically adjusts filter parameters to synchronize template frame foreground</TIP_CBX_ENHANCE>
@@ -564,6 +563,7 @@
     <TIP_EXPERIMENTAL_FEATURES>Enable this option to experience new features (Only available in Preview versions)</TIP_EXPERIMENTAL_FEATURES>
     <TIP_OUTLIER_DIRECTION>Automatically remove targets with outlier volumes</TIP_OUTLIER_DIRECTION>
     <TIP_PARALLEL_PROFILE>Select the parallel computing configuration file for registration. This option is unavailable when server mode is enabled.</TIP_PARALLEL_PROFILE>
+    <TIP_PROJECT_TEMPLATE>Choosing a suitable project template helps simplify the workflow</TIP_PROJECT_TEMPLATE>
     <TIP_SLR_PROGRESS>Progress bar</TIP_SLR_PROGRESS>
     <TIP_SLR_TIME>Time</TIP_SLR_TIME>
     <TIP_SPN_CPUS>It is recommended to retain 1~2 cores to maintain normal interaction</TIP_SPN_CPUS>
@@ -575,6 +575,7 @@
     <TIP_TAB_LTGLOBAL>The automatic global geometric transformation based on keyframes</TIP_TAB_LTGLOBAL>
     <TIP_TAB_MGLOBAL>The regional deformation based on control points</TIP_TAB_MGLOBAL>
     <TIP_TRANSFORM_OPTIMIZATION>Load new file to take effect</TIP_TRANSFORM_OPTIMIZATION>
+    <TIP_WAVELENGTH>Please set an appropriate excitation light wavelength to accurately display the color</TIP_WAVELENGTH>
     <TOO_MUCH_ROI>There are too many ROIs, please redraw and try to add them.</TOO_MUCH_ROI>
     <TOOLTIP>Tooltip</TOOLTIP>
     <TRAINING>Training</TRAINING>

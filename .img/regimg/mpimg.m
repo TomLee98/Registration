@@ -20,6 +20,7 @@ classdef mpimg < matlab.mixin.Copyable
         DataDims        % variable, get
         DataBytes       % variable, get
         FileName        % variable, get
+        Format          % variable, get
         IsConst         % constant, get
         RetainCache     % variable, get/set
     end
@@ -47,7 +48,7 @@ classdef mpimg < matlab.mixin.Copyable
                 file_
                 data_
                 dimorder_  (1,:)    string = ["X","Y","C","Z","T"]
-                autoclear_ (1,1)    logical = true
+                autoclear_ (1,1)    logical = false
                 const_     (1,1)    logical = false
                 display_   (1,1)    logical = false     % for debugging
             end
@@ -73,28 +74,40 @@ classdef mpimg < matlab.mixin.Copyable
             elseif isempty(folder_) && (~isempty(file_)&&~isfile(file_)) ...
                     && ~isempty(data_)
                 this.newmptr(file_, data_);
-            else
+            elseif isempty(folder_) && isempty(file_) && isempty(data_)
                 % empty data can't map on disk
+                % but we can hold the variable until link to an exist file
+                this.dimorder = "";
+            else
                 throw(MException("mpimg:invalidUse", ...
                     "Can not parse input arguments."));
             end
         end
 
         function r = get.Data(this)
-            r = this.memptr.Data.mov;
+            if ~this.isempty()
+                r = this.memptr.Data.mov;
+            else
+                r = [];
+            end
         end
 
         function set.Data(this, r)
             if this.isconst == false
-                if all(size(this.memptr.Data.mov) ...
-                        == size(r)) ...
-                        && strcmp(this.DataType, class(r))
-                    % only change the value, write to disk
-                    this.memptr.Data.mov = r;
+                if ~this.isempty()
+                    if all(size(this.memptr.Data.mov) ...
+                            == size(r)) ...
+                            && strcmp(this.DataType, class(r))
+                        % only change the value, write to disk
+                        this.memptr.Data.mov = r;
+                    else
+                        % remapping a new file, but keep the name
+                        % and this file will be removed from disk
+                        this.remaptr(r);
+                    end
                 else
-                    % remapping a new file, but keep the name
-                    % and this file will be removed from disk
-                    this.remaptr(r);
+                    throw(MException("mpimg:invalidObject", ...
+                        "Use class constructor instead of given value to empty pointer."));
                 end
             else
                 throw(MException("mpimg:tryToModifyConstant", ...
@@ -139,15 +152,27 @@ classdef mpimg < matlab.mixin.Copyable
         end
 
         function r = get.DataType(this)
-            r = class(this.memptr.Data.mov);
+            if ~this.isempty()
+                r = class(this.memptr.Data.mov);
+            else
+                r = '';
+            end
         end
 
         function r = get.DataSize(this)
-            r = size(this.memptr.Data.mov);
+            if ~this.isempty()
+                r = size(this.memptr.Data.mov);
+            else
+                r = [0, 0];
+            end
         end
 
         function r = get.DataDims(this)
-            r = ndims(this.memptr.Data.mov);
+            if ~this.isempty()
+                r = ndims(this.memptr.Data.mov);
+            else
+                r = 2;
+            end
         end
 
         function r = get.DataBytes(this)
@@ -165,7 +190,19 @@ classdef mpimg < matlab.mixin.Copyable
         end
 
         function r = get.FileName(this)
-            r = this.memptr.Filename;
+            if ~this.isempty()
+                r = this.memptr.Filename;
+            else
+                r = '';
+            end
+        end
+
+        function r = get.Format(this)
+            if ~this.isempty()
+                r = this.fmt;
+            else
+                r = {'', [0, 0], 'mov'};
+            end
         end
 
         function r = get.RetainCache(this)
@@ -208,6 +245,13 @@ classdef mpimg < matlab.mixin.Copyable
             else
                 throw(MException("mpimg:genmptr:invalidUse", ...
                     "File is not found or access permission denied."));
+            end
+        end
+
+        function unlink(this)
+            if ~this.isempty()
+                % auto free by memmapfile->cleanup
+                this.memptr = [];
             end
         end
 
@@ -954,6 +998,10 @@ classdef mpimg < matlab.mixin.Copyable
                         "Please connect to the administrator."));
                 end
             end
+        end
+
+        function r = empty()
+            r = mpimg([], [], []);
         end
     end
 

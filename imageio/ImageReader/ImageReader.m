@@ -35,7 +35,7 @@ classdef ImageReader < handle
             %IMAGELOADER A Constructor
             arguments
                 caller_     (1,1)   Register
-                mapflag_    (1,1)   logical = false
+                mapflag_    (1,1)   logical = true
             end
             this.caller = caller_;
             this.mapflag = mapflag_;
@@ -71,12 +71,13 @@ classdef ImageReader < handle
     end
 
     methods(Access=public)
-        function load(this, fname, block)
+        function load(this, dst_path, fname, block)
             % This function load the data by calling the image reader
             arguments
                 this
-                fname   (1,1)   string                                 = ""
-                block   (1,1)   double {mustBePositive, mustBeInteger} = 50;
+                dst_path    (1,1)   string                                  = ""
+                fname       (1,1)   string                                  = ""
+                block       (1,1)   double {mustBePositive, mustBeInteger}  = 50;
             end
 
             if ~isfile(fname)
@@ -116,7 +117,11 @@ classdef ImageReader < handle
             this.metadata = info.opts;
             this.t = info.rt;
 
-            this.folder = mpimg.findtmpfolder(this.metadata, 0);
+            if ~isfolder(dst_path)
+                this.folder = mpimg.findtmpfolder(this.metadata, 0);
+            else
+                this.folder = dst_path;
+            end
 
             switch lower(ext)
                 case {'.tif', '.rmv'}
