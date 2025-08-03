@@ -220,6 +220,7 @@
     <IMAGE_TOOLBAR>Image Toolbar</IMAGE_TOOLBAR>
     <IMAGING_FILE>Imaging File</IMAGING_FILE>
     <IMPORT>Import</IMPORT>
+    <IMPORT_DATA_DELAY>Import Data Later</IMPORT_DATA_DELAY>
     <IMPORT_MASK>Import mask</IMPORT_MASK>
     <IMPORT_SOURCE_PRESETS>Import Source Presets</IMPORT_SOURCE_PRESETS>
     <INFORMATION>Information</INFORMATION>
@@ -352,6 +353,7 @@
     <OPACITY>Opacity</OPACITY>
     <OPEN_IMAGING_FILE>Open Imaging File</OPEN_IMAGING_FILE>
     <OPEN_PROJECT>Open Project</OPEN_PROJECT>
+    <OPEN_PROJECT_EXIST>The project is already open. Please close it before creating a new one.</OPEN_PROJECT_EXIST>
     <OPEN_REGISTRATION_PROJECT>Open Registration Project File</OPEN_REGISTRATION_PROJECT>
     <OPERATION_SNAPSHOT>Operation Snapshot</OPERATION_SNAPSHOT>
     <OPERATION_TREE_DEPTH>Operation Tree (Depth)</OPERATION_TREE_DEPTH>

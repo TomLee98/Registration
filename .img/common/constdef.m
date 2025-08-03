@@ -6,7 +6,7 @@ classdef constdef
         SERVER_HOST_NAME = "silab"
         REGISTRATION_GROUP_NAME = "regusers"
         APP_PROFILE_FILE_NAME = ".profile.xml"
-        PROJECT_CONFIG_FILE_NAME = ".config.xml"
+        PROJECT_PROFILE_FILE_NAME = ".project.xml"
         PROJECT_NAME_DEFAULT = "Untitled"
         PROJECT_FOLDER_NAME_DEFAULT = "Reg3D Projects"
         OPTREE_FOLDER_NAME = ".Others"
@@ -106,39 +106,42 @@ classdef constdef
             "RowNames",     ["PERFORMANCE", "RESOURCE", "BALANCE"]);
 
         %% app profile definition
-        PROFILE_DEFAULT = struct("Language",              "FOLLOW", ...             % "CN"/"US"/"FOLLOW"
-                                 "SimpleStatistics",      "ON", ...                 % "ON"/"OFF"
-                                 "AutoTemplate",          "ON", ...                 % "ON"/"OFF"
-                                 "PreprocessEvaluation",  "ON", ...                 % "ON"/"OFF"
-                                 "Style",                 "FOLLOW", ...             % "LIGHT"/"DARK"/"FOLLOW"
-                                 "StorageViewStyle",      "MODERN", ...             % "CLASSICAL"/"MODERN"
-                                 "ProgressBarColor",      [0.30, 0.75, 0.93], ...   % 0 ~ 1, 1-by-3 array
-                                 "AutoSave",              "ON", ...                 % "ON"/"OFF", if project is auto save
-                                 "AutoSaveInterval",      10, ...                   % positive integer scalar, 1 ~ 120, unit as minute
-                                 "ImportSourcePreset",    "HOME", ...               % "LAST"/"MODE"/"HOME", indicate default import source
-                                 "MemoryCapacity",        64, ...                   % positive double scalar, 1 ~ 96
-                                 "HardDriveCapacity",     128, ...                  % positive double scalar, 1 ~ 256
-                                 "NumProtectedCPU",       0, ...                    % nonnegative integer
-                                 "NumProtectedGPU",       0, ...                    % nonnegative integer
-                                 "MessageLevel",          "WARNING", ...            % "ERROR"/"WARNING"/"INFO"
-                                 "TooltipsLevel",         "SIMPLE", ...             % "SIMPLE"/"DETAIL"/"NONE"
-                                 "InformationCollection", "ON", ...                 % "ON"/"OFF"
-                                 "PythonPath",            "", ...                   % string scalar as python executable path
-                                 "DeveloperMode",         "OFF", ...                % "ON"/"OFF"
-                                 "AutoUpdate",            "RT", ...                 % "STARTUP"/"RT"/"EVERYDAY"/"OFF"
-                                 "UpdateChannel",         "REL", ...                % "REL"/"PRE"/"ALL"
-                                 "ExperimentalFeature",   "OFF")                    % "ON"/"OFF"
+        PROFILE_DEFAULT = struct("Language",              "FOLLOW", ...         % "CN"/"US"/"FOLLOW"
+                                 "Style",                 "FOLLOW", ...         % "LIGHT"/"DARK"/"FOLLOW"
+                                 "StorageViewStyle",      "MODERN", ...         % "CLASSICAL"/"MODERN"
+                                 "ProgressBarColor",      [0.30, 0.75, 0.93],...% 0 ~ 1, 1-by-3 array
+                                 "SimpleStatistics",      "ON", ...             % "ON"/"OFF"
+                                 "AutoTemplate",          "ON", ...             % "ON"/"OFF"
+                                 "PreprocessEvaluation",  "ON", ...             % "ON"/"OFF"
+                                 "DataRootFolder",        "", ...               % data files root folder, under <user> data folder as usual
+                                 "AutoSave",              "ON", ...             % "ON"/"OFF", if project is auto save
+                                 "AutoSaveInterval",      10, ...               % positive integer scalar, 1 ~ 120, unit as minute
+                                 "ImportSourcePreset",    "HOME", ...           % "LAST"/"MODE"/"HOME", indicate default import source
+                                 "MemoryCapacity",        64, ...               % positive double scalar, 1 ~ 96
+                                 "HardDriveCapacity",     128, ...              % positive double scalar, 1 ~ 256
+                                 "NumProtectedCPU",       0, ...                % nonnegative integer
+                                 "NumProtectedGPU",       0, ...                % nonnegative integer
+                                 "MessageLevel",          "WARNING", ...        % "ERROR"/"WARNING"/"INFO"
+                                 "TooltipsLevel",         "SIMPLE", ...         % "SIMPLE"/"DETAIL"/"NONE"
+                                 "InformationCollection", "ON", ...             % "ON"/"OFF"
+                                 "PythonPath",            "", ...               % string scalar as python executable path
+                                 "DeveloperMode",         "OFF", ...            % "ON"/"OFF"
+                                 "AutoUpdate",            "RT", ...             % "STARTUP"/"RT"/"EVERYDAY"/"OFF"
+                                 "UpdateChannel",         "REL", ...            % "REL"/"PRE"/"ALL"
+                                 "ExperimentalFeature",   "OFF")                % "ON"/"OFF"
 
-        PROJECT_CONFIG_DEFAULT = struct("CachePolicy",      "PERFORMANCE", ...      % "PERFORMANCE"/"RESOURCES"/"BALANCE" 
-                                        "DataFolder",       "", ...                 % string scalar indicate data folder name
-                                        "DataProtected",    "OFF", ...              % "ON"/"OFF"
-                                        "DataRootFolder",   "", ...                 % data files root folder, as same as PROFILE defined
-                                        "ProjectFolders",   "", ...                 % string array as project root folder
-                                        "ProjectFolder",    "", ...                 % string scalar indicate current project folder
-                                        "ProjectName",      "", ...                 % "Untitled" as constant, can not be changed
-                                        "SourceFolders",    "", ...                 % string array as import source folders
-                                        "Template",         "NONE", ...             % "NONE", "STDREG", "MEDIA", "DEV"
-                                        "WaveLength",       [694, 525, 440])        % "r": 694nm, "g": 525nm, "b": 440nm as default
+        %% project profile defination (global)
+        PROJECT_PROFILE_DEFAULT = struct("ProjectFolders",  "", ...             % string array as project root folder
+                                         "SourceFolders",   "")                 % string array as import source folders
+
+        %% project configuration (local)
+        PROJECT_CONFIG_DEFAULT = struct("CachePolicy",      "PERFORMANCE", ...  % "PERFORMANCE"/"RESOURCES"/"BALANCE"
+                                        "DataFolder",       "", ...             % string scalar indicate data folder name
+                                        "DataProtected",    "OFF", ...          % "ON"/"OFF"
+                                        "ProjectFolder",    "", ...             % string scalar indicate current project folder
+                                        "ProjectName",      "Untitled", ...     % "Untitled" as constant, can not be changed
+                                        "Template",         "NONE", ...         % "NONE", "STDREG", "MEDIA", "DEV"
+                                        "WaveLength",       [694, 525, 440])    % "r": 694nm, "g": 525nm, "b": 440nm as default
     end
 
     properties (Access = {?mpimg, ?mpimgs, ?regohm}, Constant, Hidden)

@@ -39,7 +39,7 @@ classdef RegisterController < handle
             %REGISTER A constructor
             arguments
                 caller_     (1,1)  Register
-                regopt_     (1,1)  regopt
+                regopt_     (1,1)  regopt   =   regopt("TCREG", "global")
                 nwproctect_ (1,2)  double {mustBeNonnegative, mustBeInteger} = [0, 0]
             end
 
