@@ -9,7 +9,7 @@ classdef constdef
         PROJECT_PROFILE_FILE_NAME = ".project.xml"
         PROJECT_NAME_DEFAULT = "Untitled"
         PROJECT_FOLDER_NAME_DEFAULT = "Reg3D Projects"
-        OPTREE_FOLDER_NAME = ".Others"
+        OPTREE_FOLDER_NAME = ".misc"
         SUBAPP_CLOSE_IMPLEMENT_NAME = "Close"
         SUBAPP_UPDATE_STYLE_IMPLEMENT_NAME = "RefreshPanelStyle"
         SUBAPP_UPDATE_LANGUAGE_IMPLEMENT_NAME = "RefreshPanelLanguage"

@@ -9,7 +9,7 @@ classdef regproj < handle
 
     properties(Access = {?regpm, ?Register})
         %% variables could restore after loading
-        cidx_cur        (1,:)   double  {mustBeNumericOrLogical} = []               % 1-by-c logical array, the current channel index
+        cidx_cur        (1,:)   logical  {mustBeNumericOrLogical} = []              % 1-by-c logical array, the current channel index
         c_order         (1,:)   string  {mustBeMember(c_order, ["r","g","b"])} = [] % 1-by-c string, the channels order
         fixdef          (1,1)   struct  = struct("Sampling",["mean","1"], ...
                                                  "Channel","r");                    % the template volume description
@@ -26,7 +26,7 @@ classdef regproj < handle
         opt_seg         (1,1)   segopt  = segopt()                                  % segmentation options
         opt_sig         (1,1)   sigopt  = sigopt("MovingQuantile", "Constant")      % signal extraction options
         pcolor          (1,1)   struct  = struct("normal",zeros(3), ...
-                                                 "fused",zeros(3))                  % pseudo RGB color definition, {normal, fused}
+                                                 "fused", zeros(3))                 % pseudo RGB color definition, {normal, fused}
         proj_fname      (1,1)   string  = ""                                        % current project filename
         refvol          (1,1)   regtmpl = regtmpl.empty()                           % current registration template object
         saved_flag      (1,1)   logical = false                                     % 1-by-1 logical, flag for project saved status
@@ -72,6 +72,26 @@ classdef regproj < handle
             end
 
             % distribute stored varibles
+            this.redist(seed);
+
+            % develop other variables
+            this.develop();
+        end
+
+        function r = isempty(this)
+            r = isempty(this.img_cur);
+        end
+
+        function delete(this)
+            % free link
+            delete(this.img_cur);
+
+            % ~
+        end
+    end
+
+    methods (Access = private)
+        function redist(this, seed)
             this.cidx_cur = seed.cidx_cur;
             this.c_order = seed.c_order;
             this.fixdef = seed.fixdef;
@@ -92,22 +112,15 @@ classdef regproj < handle
             this.refvol = seed.refvol;
             this.saved_flag = seed.saved_flag;
             this.sidx_cur = seed.sidx_cur;
-
-            % develop other variables
-            this.develop();
         end
 
-        function r = isempty(this)
-            r = isempty(this.img_cur);
-        end
-    end
-
-    methods (Access = private)
         function develop(this)
             % develop img_zproj variable
-            this.img_zproj.cur = this.img_cur.MovieZProj;
-            this.img_zproj.ref = Projection(this.refvol.RefVol, ...
-                this.img_cur.ZProjMethod, 3);
+            if this.img_cur.IsProjected
+                this.img_zproj.cur = this.img_cur.MovieZProj;
+                this.img_zproj.ref = Projection(this.refvol.RefVol, ...
+                    this.img_cur.ZProjMethod, 3);
+            end
 
             % develop mimg_cur
             vol = this.img_cur.Movie(:, :, this.cidx_cur, :, this.fidx_cur);

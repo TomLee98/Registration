@@ -235,6 +235,7 @@
     <INTENSITY_THRESHOLD>Intensity Threshold</INTENSITY_THRESHOLD>
     <INTERFACE_CONTROL>Interface Control</INTERFACE_CONTROL>
     <INTERPOLATION>Interpolation</INTERPOLATION>
+    <INVALID_DATA_ROOT_FOLDER>Invalid data root directory. Please check the settings</INVALID_DATA_ROOT_FOLDER>
     <INVALID_FILE_NAME>Invalid File Name</INVALID_FILE_NAME>
     <INVALID_FOLDER_NAME>Invalid Folder Name</INVALID_FOLDER_NAME>
     <INVALID_FRAME_ORDER>Invalid frames order</INVALID_FRAME_ORDER>

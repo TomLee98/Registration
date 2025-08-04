@@ -33,6 +33,7 @@ classdef regmov < matlab.mixin.Copyable
         EMin            % variable, get/___, not stored
         ETmplIdx        % variable, get/___, not stored
         IsEncrypted     % variable, get/___, stored
+        IsProjected     % variable, get/___, stored
         Location        % variable, get/___, not stored
         MC              % variable, get/___, not stored
         MetaData        % variable, get/set, stored
@@ -120,6 +121,10 @@ classdef regmov < matlab.mixin.Copyable
 
         function r = get.IsEncrypted(this)
             r = this.encrypted;
+        end
+
+        function r = get.IsProjected(this)
+            r = ~isempty(this.zdptr);
         end
 
         function r = get.Movie(this)
