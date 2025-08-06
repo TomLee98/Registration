@@ -74,6 +74,7 @@
     <CLOSE>Close</CLOSE>
     <CLOSE_APP_CONFIRMATION>Confirm to close the current app?</CLOSE_APP_CONFIRMATION>
     <CLOSE_PROJECT>Close Project</CLOSE_PROJECT>
+    <CLOSE_PROJECT_CONFIRMATION>Save changes made to the project?</CLOSE_PROJECT_CONFIRMATION>
     <COARSE_REG>Coarse Registration</COARSE_REG>
     <COLOR>Color</COLOR>
     <COLOR_CHANNEL>Color Channel</COLOR_CHANNEL>
@@ -133,6 +134,7 @@
     <DISPLAY_RANGE>Display Range</DISPLAY_RANGE>
     <DISTRIBUTION>Distribution</DISTRIBUTION>
     <DOCUMENT>Document</DOCUMENT>
+    <DO_NOT_SAVE>Don‘t Save</DO_NOT_SAVE>
     <DOWNLOADING>Downloading…</DOWNLOADING>
     <DOWNSAMPLING>Downsampling</DOWNSAMPLING>
     <DUAL_CHANNEL>Dual Channel</DUAL_CHANNEL>
@@ -281,6 +283,7 @@
     <MACHINE_LEARNING>Machine Learning</MACHINE_LEARNING>
     <MAIN_APP>Main Application</MAIN_APP>
     <MASK_COMPONENTS>Mask Components</MASK_COMPONENTS>
+    <MASK_EXPORT_CANCEL>Mask does not exist. Cancel export</MASK_EXPORT_CANCEL>
     <MASK_LOADED>Mask loaded</MASK_LOADED>
     <MASK_MISMATCH>Mask size mismatch</MASK_MISMATCH>
     <MASK_MULTIPLY>Multiply Connected Mask</MASK_MULTIPLY>
@@ -333,6 +336,7 @@
     <MOVING_QUANTILE>Moving Quantile</MOVING_QUANTILE>
     <MULTI_CONNECTION>Multi-connected regions are found, and the largest singly connected subset has been selected</MULTI_CONNECTION>
     <MULTIMODAL>Multimodal</MULTIMODAL>
+    <MY_PROJECT>My Project</MY_PROJECT>
     <NETWORK_TOPOLOGY>Network Topology</NETWORK_TOPOLOGY>
     <NEW_PROJECT>New Project</NEW_PROJECT>
     <NO>No</NO>
@@ -398,7 +402,10 @@
     <PROJECTION>Projection</PROJECTION>
     <PROJECT_FOLDER>Project Folder</PROJECT_FOLDER>
     <PROJECT_FOLDER_SELECTION>Select Project Folder</PROJECT_FOLDER_SELECTION>
+    <PROJECT_MANAGEMENT>Project Management</PROJECT_MANAGEMENT>
     <PROJECT_NAME>Project Name</PROJECT_NAME>
+    <PROJECT_PATH>Project Path</PROJECT_PATH>
+    <PROJECT_SIZE>Size(GB)</PROJECT_SIZE>
     <PROTECTED_NUMBER_CPU>Protected Number (CPU)</PROTECTED_NUMBER_CPU>
     <PROTECTED_NUMBER_GPU>Protected Number (GPU)</PROTECTED_NUMBER_GPU>
     <PYRAMID_COEFFICIENT>Pyramid Coefficient</PYRAMID_COEFFICIENT>

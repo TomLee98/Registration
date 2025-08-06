@@ -460,14 +460,12 @@ V4.x        da Vinci          达·芬奇
 ==================== Important Form Update =========================
 
 V5.x        Wittgenstein          维特根斯坦
-  |- V5.0.0     2025/08/01
+  |- V5.0.0     2025/08/07
   |     |- [New] introduce "developer mode": enable custom plugins loading
   |     |- [New] add user behaviour analyzer and debugger as plugin <reg3d_improvement_assistant>
   |     |- [New] add "local display" to speed up segmentation display
-  |     |- [New] TODO: support file "drag" and "open"
-  |     |- [New] TODO: add "registration project" function
+  |     |- [New] TODO: add "registration project" paradigm and project management
   |     |- [New] TODO: add project "auto save" setting and function
-  |     |- [New] TODO: add "data protection" to encrypt/decrypt sensitivity data
   |     |- [Adjust] accelarator key changed from 'ctrl' to 'alt', for "CropT", "Source Changing"
   |     |- [Adjust] add z projection synchronization after registration
   |     |- [Fix Bugs] fix the bug when segmentor loading ROI
@@ -475,7 +473,10 @@ V5.x        Wittgenstein          维特根斯坦
   |     |- [Fix Bugs] fix the bug if user cancel export movie
   |     |- [Fix Bugs] fix the bug if user export single channel as ".rmv" file
   |     |- [Fix Bugs] fix the bug if user set registration with 3D view
-  |     |- [Fix Bugs] TODO: fix the bug if there is no mask but user pushes "Export Mask" button
-  |     |- [Fix Bugs] TODO: fix the bug that segmentation will keep the previous algorithm on next segmentation
-
+  |     |- [Fix Bugs] fix the bug if there is no mask but user pushes "Export Mask" button
+  |- V5.1.0     2025/08/
+  |     |- [New] TODO: support file "drag" and "open"
+  |     |- [New] TODO: add "data protection" to encrypt/decrypt sensitivity data
+  |     |- [Fix Bugs] TODO: fix the bug if user open an empty project
+ |     |- [Fix Bugs] TODO: fix the bug that segmentation will keep the previous algorithm on next segmentation
 

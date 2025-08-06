@@ -182,6 +182,10 @@ classdef NuclearGroup < handle
 
             end
         end
+
+        function r = isempty(this)
+            r = isempty(this.id_table);
+        end
     end
 
     methods(Access=private)

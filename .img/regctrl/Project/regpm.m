@@ -9,6 +9,7 @@ classdef regpm < handle
     % Register intecaction interface
     properties (GetAccess = ?Register, Dependent)
         Project             (1,1)       %
+        ProjectName         (1,1)
     end
 
     properties (GetAccess = public, SetAccess = immutable)
@@ -43,14 +44,22 @@ classdef regpm < handle
                                            caller.StorageManager, ...
                                            caller.ContextMenu_NodeOperation, ...
                                            opts.MemoryCapacity, ...
-                                           opts.HardDriveCapacity, ...
-                                           opts.CachePolicy);
+                                           opts.HardDriveCapacity);
         end
         
         %% Getter/Setter
 
         function r = get.Project(this)
             r = this.project;       % shallow copy a handle
+        end
+
+        function r = get.ProjectName(this)
+            if ~isempty(this.project) && ~isempty(fieldnames(this.proj_opts))
+                r = this.proj_opts.ProjectFolder + filesep + ...
+                    this.proj_opts.ProjectName + constdef.PROJECT_FILE_EXT;
+            else
+                r = "";
+            end
         end
     end
 
@@ -99,7 +108,22 @@ classdef regpm < handle
         end
 
         function CloseProject(this)
+            % clear temporary files (which could be auto generated if project is reopened)
+            % ...
+            
+            % delete project (but keep the files)
+            if ~isempty(this.project)
+                try
+                    % clear operation history and manager
+                    this.OperationManager.free();
 
+                    % clear project
+                    delete(this.project);
+                    this.project = regproj();   % reset as an empty project
+                catch ME
+                    rethrow(ME);
+                end
+            end
         end
 
         function SaveProject(this)
@@ -116,10 +140,6 @@ classdef regpm < handle
                     rethrow(ME);
                 end
             end
-        end
-
-        function r = FindAllProjects(this)
-            
         end
     end
 

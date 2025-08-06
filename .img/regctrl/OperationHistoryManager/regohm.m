@@ -9,7 +9,7 @@ classdef regohm < handle
     properties(Access = public, Dependent)
         ActiveNodeData  % ___/get, 1-by-1 struct with field {arg, cbot, data, optr}
         ActiveNodeTag   % ___/get, 1-by-1 string, could be empty
-        CachePolicy     % ___/get, 1-by-1 string, could be "PERFORMANCE"/"RESOURCE"/"BALANCE"
+        CachePolicy     % set/get, 1-by-1 string, could be "PERFORMANCE"/"RESOURCE"/"BALANCE"
         CacheSizeMEM    % set/get, 1-by-1 double, indicate the maximal memory cache size
         CacheSizeHDD    % set/get, 1-by-1 double, indicate the maximal hard drive cache size
         CurrentImagePtr % ___/get, 1-by-1 regmov, indicate the current activated image
@@ -116,6 +116,15 @@ classdef regohm < handle
             r = this.optsty;
         end
 
+        function set.CachePolicy(this, r)
+            arguments
+                this
+                r   (1,1)   string  {mustBeMember(r, ["PERFORMANCE","RESOURCE","BALANCE"])}
+            end
+
+            this.optsty = r;
+        end
+
         function r = get.CurrentImagePtr(this)
             r = this.dptr;
         end
@@ -173,7 +182,20 @@ classdef regohm < handle
         function delete(this)
             % free all data
             % from the newest node to oldest node
+            if isvalid(this)
+                free(this);
+            end
 
+            % ~
+        end
+
+        function tf = isempty(this)
+            % only tree without any node
+            tf = isa(this.node_active, "matlab.ui.container.Tree");
+        end
+
+        function free(this)
+            %% free memory/disk
             if ~isempty(this.optree) && isvalid(this.optree) ...
                     && ~isempty(this.optree.Children)
                 nodes = this.optree.Children;
@@ -181,11 +203,13 @@ classdef regohm < handle
                     this.remove(nodes(k));
                 end
             end
-        end
+            this.node_active = this.optree;
 
-        function tf = isempty(this)
-            % only tree without any node
-            tf = isa(this.node_active, "matlab.ui.container.Tree");
+            %% update storage summary
+            this.update_storage_summary();
+
+            %% update appearance
+            this.update_manage_view();
         end
 
         function tf = isaddable(this, optr, args)

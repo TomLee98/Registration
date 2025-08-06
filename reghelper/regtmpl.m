@@ -54,6 +54,12 @@ classdef regtmpl
         function tf = isempty(this)
             tf = isempty(this.refvol);
         end
+
+        function delete(this)
+            delete(this.regdata);
+
+            % ~
+        end
     end
 
     methods(Static)

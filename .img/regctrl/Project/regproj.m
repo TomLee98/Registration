@@ -7,6 +7,16 @@ classdef regproj < handle
         IsReady     % get/___,     stored, 1-by-1 logical indicate if all data is ready
     end
 
+    % project immutable variables:
+    % set only once and will not change in lifetime
+    properties(Access = {?regpm, ?Register})
+        pcolor          (1,1)   struct  = struct("normal",zeros(3), ...
+                                                 "fused", zeros(3))                 % pseudo RGB color definition, {normal, fused}
+        proj_fname      (1,1)   string  = ""                                        % current project filename
+    end
+
+    % project active variables:
+    % set according to user operations
     properties(Access = {?regpm, ?Register})
         %% variables could restore after loading
         cidx_cur        (1,:)   logical  {mustBeNumericOrLogical} = []              % 1-by-c logical array, the current channel index
@@ -19,15 +29,11 @@ classdef regproj < handle
         img_cur         (1,1)   regmov  = regmov.empty()                            % current active image pointer
         img_fname       (1,1)   string  = ""                                        % record the processing raw image file name
         loaded_flag     (1,1)   logical = false                                     % flag for image data status, true for loaded
-        masked_flag     (1,1)   logical = false                                     % 1-by-1 logical, flag for data masked
         opt_crop        (1,1)   struct  = struct("xy",[],"z",[],"f",[])             % the current ROI for image crop, field with xy, z and f(frame)
         opt_movout      (1,1)   struct  = struct()                                  % the movie exporting configuration
         opt_reg         (1,1)   regopt  = regopt("TCREG", "global")                 % registration options
         opt_seg         (1,1)   segopt  = segopt()                                  % segmentation options
         opt_sig         (1,1)   sigopt  = sigopt("MovingQuantile", "Constant")      % signal extraction options
-        pcolor          (1,1)   struct  = struct("normal",zeros(3), ...
-                                                 "fused", zeros(3))                 % pseudo RGB color definition, {normal, fused}
-        proj_fname      (1,1)   string  = ""                                        % current project filename
         refvol          (1,1)   regtmpl = regtmpl.empty()                           % current registration template object
         saved_flag      (1,1)   logical = false                                     % 1-by-1 logical, flag for project saved status
         sidx_cur        (1,1)   double  {mustBeInteger, mustBeNonnegative} = 0      % the current slice index
@@ -51,12 +57,12 @@ classdef regproj < handle
                 "fixdef",this.fixdef, "fidx_cur",this.fidx_cur, ...
                 "fps",this.fps, "frames_reg",this.frames_reg, ...
                 "img_cur",this.img_cur, "img_fname",this.img_fname, ...
-                "loaded_flag",this.loaded_flag, "masked_flag",this.masked_flag, ...
-                "opt_crop",this.opt_crop, "opt_movout",this.opt_movout, ...
-                "opt_reg",this.opt_reg, "opt_seg",this.opt_seg, ...
-                "opt_sig",this.opt_sig, "pcolor",this.pcolor, ...
-                "proj_fname",this.proj_fname, "refvol",this.refvol, ...
-                "saved_flag",this.saved_flag, "sidx_cur",this.sidx_cur);
+                "loaded_flag",this.loaded_flag, "opt_crop",this.opt_crop, ...
+                "opt_movout",this.opt_movout, "opt_reg",this.opt_reg, ...
+                "opt_seg",this.opt_seg, "opt_sig",this.opt_sig, ...
+                "pcolor",this.pcolor, "proj_fname",this.proj_fname, ...
+                "refvol",this.refvol, "saved_flag",this.saved_flag, ...
+                "sidx_cur",this.sidx_cur);
         end
 
         function r = get.IsReady(this)
@@ -79,12 +85,13 @@ classdef regproj < handle
         end
 
         function r = isempty(this)
-            r = isempty(this.img_cur);
+            r = ~this.loaded_flag;
         end
 
         function delete(this)
             % free link
             delete(this.img_cur);
+            delete(this.refvol);
 
             % ~
         end
@@ -101,7 +108,6 @@ classdef regproj < handle
             this.img_cur = seed.img_cur;
             this.img_fname = seed.img_fname;
             this.loaded_flag = seed.loaded_flag;
-            this.masked_flag = seed.masked_flag;
             this.opt_crop = seed.opt_crop;
             this.opt_movout = seed.opt_movout;
             this.opt_reg = seed.opt_reg;

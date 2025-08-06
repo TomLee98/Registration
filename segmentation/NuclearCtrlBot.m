@@ -36,6 +36,7 @@ classdef NuclearCtrlBot < handle
         DispFlag
         DispRange
         HighlightID
+        IsMaskExist
         MaxN
         Parent
         ROIsInfo
@@ -88,6 +89,10 @@ classdef NuclearCtrlBot < handle
             else
                 this.hlid = r;
             end
+        end
+
+        function r = get.IsMaskExist(this)
+            r = ~isempty(this.nuclears);
         end
 
         function r = get.Parent(this)

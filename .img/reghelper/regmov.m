@@ -130,11 +130,15 @@ classdef regmov < matlab.mixin.Copyable
         function r = get.Movie(this)
             % this operation will call deep copy (constructor) if mptr is
             % mpimg or mpimgs object
-            if ismember(class(this.mptr), ["mpimg", "mpimgs"])
-                % hide other properties
-                r = this.mptr.Data;
-            elseif isnumeric(this.mptr)
-                r = this.mptr;
+            if ~isempty(this.mptr) && isvalid(this.mptr)
+                if ismember(class(this.mptr), ["mpimg", "mpimgs"])
+                    % hide other properties
+                    r = this.mptr.Data;
+                elseif isnumeric(this.mptr)
+                    r = this.mptr;
+                end
+            else
+                r = [];
             end
         end
 
@@ -770,13 +774,13 @@ classdef regmov < matlab.mixin.Copyable
         function delete(this)
             if ismember(class(this.mptr), ["mpimg", "mpimgs"])
                 delete(this.mptr);
-            else
-                % free memory
-                this.mptr = [];
             end
 
+            % free memory
+            this.mptr = [];
+
             % ~
-            clear this
+            % clear this
         end
 
         function r = isempty(this)
