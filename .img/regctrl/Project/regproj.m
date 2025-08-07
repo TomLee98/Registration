@@ -3,8 +3,10 @@ classdef regproj < handle
     %a registration project
     
     properties (GetAccess = public, Dependent)
-        Seed        % get/___, not stored, 1-by-1 struct could be save as project
-        IsReady     % get/___,     stored, 1-by-1 logical indicate if all data is ready
+        LastSavedTime   % get/___,     stored, 1-by-1 datetime indicate the last saved time
+        Seed            % get/___, not stored, 1-by-1 struct could be save as project
+        IsReady         % get/___,     stored, 1-by-1 logical indicate if all data is ready
+        IsSaved         % get/set,     stored, 1-by-1 logical indicate if project is saved
     end
 
     % project immutable variables:
@@ -36,8 +38,8 @@ classdef regproj < handle
         opt_sig         (1,1)   sigopt  = sigopt("MovingQuantile", "Constant")      % signal extraction options
         refvol          (1,1)   regtmpl = regtmpl.empty()                           % current registration template object
         saved_flag      (1,1)   logical = false                                     % 1-by-1 logical, flag for project saved status
+        saved_time      (1,1)   datetime= datetime("tomorrow")                      % 1-by-1 datetime record project saved time
         sidx_cur        (1,1)   double  {mustBeInteger, mustBeNonnegative} = 0      % the current slice index
-
         
         %%  variables could restore after development
         dev_done        (1,1)       logical = false                                 % flag for if data is developed
@@ -52,6 +54,17 @@ classdef regproj < handle
         end
         
         %% Getter / Setter
+
+        function r = get.LastSavedTime(this)
+            if this.saved_flag == false && this.saved_time<= datetime("now")
+                % reset
+                this.saved_time = datetime("tomorrow");
+            end
+
+            % save not now
+            r = this.saved_time;
+        end
+
         function r = get.Seed(this)
             r = struct("cidx_cur",this.cidx_cur, "c_order",this.c_order, ...
                 "fixdef",this.fixdef, "fidx_cur",this.fidx_cur, ...
@@ -62,11 +75,27 @@ classdef regproj < handle
                 "opt_seg",this.opt_seg, "opt_sig",this.opt_sig, ...
                 "pcolor",this.pcolor, "proj_fname",this.proj_fname, ...
                 "refvol",this.refvol, "saved_flag",this.saved_flag, ...
-                "sidx_cur",this.sidx_cur);
+                "saved_time",this.saved_time, "sidx_cur",this.sidx_cur);
         end
 
         function r = get.IsReady(this)
             r = this.dev_done;
+        end
+
+        function r = get.IsSaved(this)
+            r = this.saved_flag;
+        end
+
+        function set.IsSaved(this, r)
+            arguments
+                this
+                r       (1,1)   logical
+            end
+
+            this.saved_flag = r;
+            if this.saved_flag == true
+                this.saved_time = datetime("now");
+            end
         end
     end
 
@@ -82,6 +111,17 @@ classdef regproj < handle
 
             % develop other variables
             this.develop();
+        end
+
+        function Reset(this)
+            pcolor_ = this.pcolor;
+            proj_fname_ = this.proj_fname;
+
+            % reset current handle
+            this = regproj.empty();
+
+            this.pcolor = pcolor_;
+            this.proj_fname = proj_fname_;
         end
 
         function r = isempty(this)
@@ -117,6 +157,7 @@ classdef regproj < handle
             this.proj_fname = seed.proj_fname;
             this.refvol = seed.refvol;
             this.saved_flag = seed.saved_flag;
+            this.saved_time = seed.saved_time;
             this.sidx_cur = seed.sidx_cur;
         end
 
@@ -134,6 +175,12 @@ classdef regproj < handle
             this.mimg_cur = GenPreProcVol(vol, this.opt_reg);
 
             this.dev_done = true;
+        end
+    end
+
+    methods(Static)
+        function r = empty()
+            r = regproj();
         end
     end
 end

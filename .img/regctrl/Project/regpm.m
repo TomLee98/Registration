@@ -2,12 +2,8 @@ classdef regpm < handle
     %REGPROJ This class defines registration project, which support <create
     %new project>, <open project>, <close project> and <save project>
 
-    properties(Access = private, Constant)
-
-    end
-
     % Register intecaction interface
-    properties (GetAccess = ?Register, Dependent)
+    properties (Access = ?Register, Dependent)
         Project             (1,1)       %
         ProjectName         (1,1)
     end
@@ -21,7 +17,7 @@ classdef regpm < handle
     end
 
     properties (Access = private)
-        project     (1,1)   regproj = regproj()
+        project     (1,1)   regproj = regproj.empty()
         proj_opts   (1,1)   struct  = struct()
     end
     
@@ -48,15 +44,13 @@ classdef regpm < handle
         end
         
         %% Getter/Setter
-
         function r = get.Project(this)
             r = this.project;       % shallow copy a handle
         end
 
         function r = get.ProjectName(this)
-            if ~isempty(this.project) && ~isempty(fieldnames(this.proj_opts))
-                r = this.proj_opts.ProjectFolder + filesep + ...
-                    this.proj_opts.ProjectName + constdef.PROJECT_FILE_EXT;
+            if ~isempty(this.project)
+                r = this.project.proj_fname;
             else
                 r = "";
             end
@@ -80,10 +74,12 @@ classdef regpm < handle
                 return;
             else
                 % create new empty regproj object
-                this.project = regproj();
+                this.project = regproj.empty();
 
                 % create project files by empty project
                 [pf, dst] = this.create_project_files(prof, conf);
+
+                this.project.IsSaved = true;
 
                 status = 0;
             end
@@ -100,6 +96,9 @@ classdef regpm < handle
                 pf = "";
                 return;
             else
+                % create new empty regproj object
+                this.project = regproj.empty();
+
                 % create project files by empty project
                 pf = this.open_exist_project(file);
 
@@ -118,8 +117,10 @@ classdef regpm < handle
                     this.OperationManager.free();
 
                     % clear project
+                    occupied = false;
+                    save(this.ProjectName, "occupied", '-mat', '-append');
                     delete(this.project);
-                    this.project = regproj();   % reset as an empty project
+                    this.project = regproj.empty();   % reset as an empty project
                 catch ME
                     rethrow(ME);
                 end
@@ -129,7 +130,8 @@ classdef regpm < handle
         function SaveProject(this)
             if ~isempty(this.project)
                 pfile = this.project.proj_fname;
-                DS_ = this.Project.Seed;    % get data struct
+                this.project.IsSaved = true;
+                DS_ = this.project.Seed;    % get data struct
                 try
                     % save project data
                     save(pfile, "DS_", '-mat', '-v7.3', '-nocompression');
@@ -139,6 +141,16 @@ classdef regpm < handle
                 catch ME
                     rethrow(ME);
                 end
+            end
+        end
+
+        function ResetProject(this)
+            % This function resets project variables as initialized
+            if ~isempty(this.project)
+                %
+                this.project.Reset();
+
+                % keep project option
             end
         end
     end
@@ -179,8 +191,9 @@ classdef regpm < handle
 
             % 2. Make project file: *.regproj
             try
-                DS_ = this.Project.Seed;    % get data struct
-                save(pfile, "DS_", '-mat', '-v7.3', '-nocompression');
+                DS_ = this.project.Seed;    % get data struct
+                occupied = true;
+                save(pfile, "DS_", "occupied", '-mat', '-v7.3', '-nocompression');
             catch ME
                 rethrow(ME);
             end
@@ -205,6 +218,9 @@ classdef regpm < handle
 
                 % load operation history from file
                 this.OperationManager.Load(file);
+
+                occupied = true;
+                save(file, "occupied", '-mat', '-append');
             catch ME
                 rethrow(ME);
             end

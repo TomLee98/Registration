@@ -2,6 +2,11 @@ classdef constdef
     %CONSTDEF This class with some public constant definition
     
     properties (Access = public, Constant)
+        %% basic definition
+        KB2B = 1024
+        MB2B = 1048576
+        GB2B = 1073741824
+
         %% environment definition
         SERVER_HOST_NAME = "silab"
         REGISTRATION_GROUP_NAME = "regusers"

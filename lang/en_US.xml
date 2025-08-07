@@ -112,6 +112,8 @@
     <DATA_PROTECTED>Data Protected</DATA_PROTECTED>
     <DATA_ROOT_FOLDER>Data Root Folder</DATA_ROOT_FOLDER>
     <DATA_SECURITY>Data Security</DATA_SECURITY>
+    <DELETE_ABORTION>The project is already open. Please close it before deleting.</DELETE_ABORTION>
+    <DELETE_CONFIRMATION>Confirm deletion?</DELETE_CONFIRMATION>
     <DELETE_NODE>Delete Node</DELETE_NODE>
     <DELINEATION>Delineation</DELINEATION>
     <DETAIL>Detail</DETAIL>
@@ -241,6 +243,7 @@
     <INVALID_DATA_ROOT_FOLDER>Invalid data root directory. Please check the settings</INVALID_DATA_ROOT_FOLDER>
     <INVALID_FILE_NAME>Invalid File Name</INVALID_FILE_NAME>
     <INVALID_FOLDER_NAME>Invalid Folder Name</INVALID_FOLDER_NAME>
+    <INVALID_FOLDERS_PROFILE>Invalid folder configuration: The data directory coincides with the project directory</INVALID_FOLDERS_PROFILE>
     <INVALID_FRAME_ORDER>Invalid frames order</INVALID_FRAME_ORDER>
     <INVALID_PATH>Invalid path</INVALID_PATH>
     <INVALID_PROFILE>Invalid profile</INVALID_PROFILE>
@@ -266,6 +269,7 @@
     <LINEARITY>Linear</LINEARITY>
     <LINE_HAT>Line Hat</LINE_HAT>
     <LINE_WIDTH>Line Width</LINE_WIDTH>
+    <LOADING>Loading…</LOADING>
     <LOAD_TIME>Load Time</LOAD_TIME>
     <LOCAL>Local</LOCAL>
     <LOCAL_OBJECTS>Local Objects</LOCAL_OBJECTS>
@@ -327,6 +331,7 @@
     <MODEL>Model</MODEL>
     <MODEL_PARAMETERS>Model Parameters</MODEL_PARAMETERS>
     <MODERN>Modern</MODERN>
+    <MODIFIED_DATE>Modified Date</MODIFIED_DATE>
     <MONOMODAL>Monomodal</MONOMODAL>
     <MORPHOLOGY>Morphology</MORPHOLOGY>
     <MOST_FREQUENTLY_USED>Most Frequently Used</MOST_FREQUENTLY_USED>
@@ -359,6 +364,7 @@
     <OPACITY>Opacity</OPACITY>
     <OPEN_IMAGING_FILE>Open Imaging File</OPEN_IMAGING_FILE>
     <OPEN_PROJECT>Open Project</OPEN_PROJECT>
+    <OPENING_PROJECT>Opening the project…</OPENING_PROJECT>
     <OPEN_PROJECT_EXIST>The project is already open. Please close it before creating a new one.</OPEN_PROJECT_EXIST>
     <OPEN_REGISTRATION_PROJECT>Open Registration Project File</OPEN_REGISTRATION_PROJECT>
     <OPERATION_SNAPSHOT>Operation Snapshot</OPERATION_SNAPSHOT>

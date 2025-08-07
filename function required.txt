@@ -464,8 +464,8 @@ V5.x        Wittgenstein          维特根斯坦
   |     |- [New] introduce "developer mode": enable custom plugins loading
   |     |- [New] add user behaviour analyzer and debugger as plugin <reg3d_improvement_assistant>
   |     |- [New] add "local display" to speed up segmentation display
-  |     |- [New] TODO: add "registration project" paradigm and project management
-  |     |- [New] TODO: add project "auto save" setting and function
+  |     |- [New] add "registration project" paradigm and project management
+  |     |- [New] add project "auto save" setting and function
   |     |- [Adjust] accelarator key changed from 'ctrl' to 'alt', for "CropT", "Source Changing"
   |     |- [Adjust] add z projection synchronization after registration
   |     |- [Fix Bugs] fix the bug when segmentor loading ROI
@@ -474,6 +474,7 @@ V5.x        Wittgenstein          维特根斯坦
   |     |- [Fix Bugs] fix the bug if user export single channel as ".rmv" file
   |     |- [Fix Bugs] fix the bug if user set registration with 3D view
   |     |- [Fix Bugs] fix the bug if there is no mask but user pushes "Export Mask" button
+  |     |- [Fix Bugs] fix the red-green mixed bug
   |- V5.1.0     2025/08/
   |     |- [New] TODO: support file "drag" and "open"
   |     |- [New] TODO: add "data protection" to encrypt/decrypt sensitivity data
