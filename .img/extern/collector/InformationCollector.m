@@ -68,7 +68,7 @@ classdef InformationCollector < handle
                         this.folder.local, this.COMPONENTS_DELIMITER);
                     if status ~= 0
                         warning("InformationCollector:invalidFolder", ...
-                            "No valid folder for containing log file.");
+                            "The given project folder is invalid.");
                     end
                 catch ME
                     rethrow(ME);
@@ -88,15 +88,21 @@ classdef InformationCollector < handle
                     % REMOTE_INFORMATION_FOLDER
                     this.folder.remote = REMOTE_INFORMATION_FOLDER;
 
-                    try
-                        [status, this.file.remote] = InformationCollector.make_envinfo_file(...
-                            this.folder.remote, this.COMPONENTS_DELIMITER);
-                        if status ~= 0
-                            warning("InformationCollector:invalidFolder", ...
-                                "No valid folder for containing log file.");
+                    if isfolder(this.folder.remote)
+                        try
+                            [status, this.file.remote] = InformationCollector.make_envinfo_file(...
+                                this.folder.remote, this.COMPONENTS_DELIMITER);
+                            if status ~= 0
+                                warning("InformationCollector:invalidFolder", ...
+                                    "The given project folder is invalid.");
+                            end
+                        catch ME
+                            rethrow(ME);
                         end
-                    catch ME
-                        rethrow(ME);
+                    else
+                        this.is_online = false;
+                        warning("InformationCollector:invalidRemoteFolder", ...
+                            "The default remote folder is not accessible.");
                     end
                 end
 
@@ -171,7 +177,7 @@ classdef InformationCollector < handle
             status = 0;
             % try to access
             try
-                % genearate fout name
+                % generate fout name
                 if isfolder(folder)
                     files_exists = struct2table(dir(folder));
                     files_exists = string(files_exists.name);
@@ -187,6 +193,7 @@ classdef InformationCollector < handle
                     end
                 else
                     status = -1;
+                    fout = "";
                     return;
                 end
             catch ME

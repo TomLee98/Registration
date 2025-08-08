@@ -460,7 +460,7 @@ V4.x        da Vinci          达·芬奇
 ==================== Important Form Update =========================
 
 V5.x        Wittgenstein          维特根斯坦
-  |- V5.0.0     2025/08/07
+  |- V5.0.1     2025/08/07
   |     |- [New] introduce "developer mode": enable custom plugins loading
   |     |- [New] add user behaviour analyzer and debugger as plugin <reg3d_improvement_assistant>
   |     |- [New] add "local display" to speed up segmentation display
