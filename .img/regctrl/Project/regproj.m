@@ -125,7 +125,8 @@ classdef regproj < handle
         end
 
         function r = isempty(this)
-            r = ~this.loaded_flag;
+            r = ~this.loaded_flag || isempty(this.img_cur) ...
+                || ~isvalid(this.img_cur);
         end
 
         function delete(this)
@@ -163,18 +164,22 @@ classdef regproj < handle
 
         function develop(this)
             % develop img_zproj variable
-            if this.img_cur.IsProjected
-                this.img_zproj.cur = this.img_cur.MovieZProj;
-                this.img_zproj.ref = Projection(this.refvol.RefVol, ...
-                    this.img_cur.ZProjMethod, 3);
+            if isvalid(this.img_cur) && ~isempty(this.img_cur)
+                if this.img_cur.IsProjected
+                    this.img_zproj.cur = this.img_cur.MovieZProj;
+                    this.img_zproj.ref = Projection(this.refvol.RefVol, ...
+                        this.img_cur.ZProjMethod, 3);
+                end
+
+                % develop mimg_cur
+                vol = this.img_cur.Movie(:, :, this.cidx_cur, :, this.fidx_cur);
+                vol = squeeze(vol);
+                this.mimg_cur = GenPreProcVol(vol, this.opt_reg);
+
+                this.dev_done = true;
+            else
+                this.dev_done = false;
             end
-
-            % develop mimg_cur
-            vol = this.img_cur.Movie(:, :, this.cidx_cur, :, this.fidx_cur);
-            vol = squeeze(vol);
-            this.mimg_cur = GenPreProcVol(vol, this.opt_reg);
-
-            this.dev_done = true;
         end
     end
 

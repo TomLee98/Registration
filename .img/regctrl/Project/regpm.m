@@ -4,8 +4,9 @@ classdef regpm < handle
 
     % Register intecaction interface
     properties (Access = ?Register, Dependent)
-        Project             (1,1)       %
-        ProjectName         (1,1)
+        IsProjectActive     (1,1)       % get/___, 1-by-1 logical, indicate if project on hard-drive
+        Project             (1,1)       % get/___, 1-by-1 regproj object
+        ProjectName         (1,1)       % get/___, 1-by-1 string
     end
 
     properties (GetAccess = public, SetAccess = immutable)
@@ -19,6 +20,7 @@ classdef regpm < handle
     properties (Access = private)
         project     (1,1)   regproj = regproj.empty()
         proj_opts   (1,1)   struct  = struct()
+        active_flag (1,1)   logical = false
     end
     
     methods
@@ -40,20 +42,21 @@ classdef regpm < handle
                                            caller.StorageManager, ...
                                            caller.ContextMenu_NodeOperation, ...
                                            opts.MemoryCapacity, ...
-                                           opts.HardDriveCapacity);
+                                           opts.HardDriveCapacity, ...
+                                           opts.CachePolicy);
         end
         
         %% Getter/Setter
+        function r = get.IsProjectActive(this)
+            r = this.active_flag;
+        end
+
         function r = get.Project(this)
             r = this.project;       % shallow copy a handle
         end
 
         function r = get.ProjectName(this)
-            if ~isempty(this.project)
-                r = this.project.proj_fname;
-            else
-                r = "";
-            end
+            r = this.project.proj_fname;
         end
     end
 
@@ -67,7 +70,7 @@ classdef regpm < handle
             end
 
             % can't create new project if current project is active
-            if ~isempty(this.project)
+            if this.active_flag == true
                 status = -1;
                 pf = "";
                 dst = "";
@@ -79,29 +82,34 @@ classdef regpm < handle
                 % create project files by empty project
                 [pf, dst] = this.create_project_files(prof, conf);
 
-                this.project.IsSaved = true;
+                % modify the cache policy
+                this.OperationManager.CachePolicy = conf.CachePolicy;
 
+                this.project.IsSaved = true;
+                this.active_flag = true;
                 status = 0;
             end
         end
 
-        function [status, pf] = OpenProject(this, file)
+        function status = OpenProject(this, pfile)
             arguments
                 this
-                file    (1,1)   string  {mustBeFile}
+                pfile    (1,1)   string  {mustBeFile}
             end
 
-            if ~isempty(this.project)
+            % can't open project if current project is active
+            if this.active_flag == true
                 status = -1;
-                pf = "";
                 return;
             else
                 % create new empty regproj object
                 this.project = regproj.empty();
 
                 % create project files by empty project
-                pf = this.open_exist_project(file);
+                this.open_exist_project(pfile);
 
+                % this.project.IsSaved = true;
+                this.active_flag = true;
                 status = 0;
             end
         end
@@ -111,30 +119,30 @@ classdef regpm < handle
             % ...
             
             % delete project (but keep the files)
-            if ~isempty(this.project)
-                try
-                    % clear operation history and manager
-                    this.OperationManager.free();
+            try
+                % clear operation history and manager
+                this.OperationManager.free();
 
-                    % clear project
-                    occupied = false;
-                    save(this.ProjectName, "occupied", '-mat', '-append');
-                    delete(this.project);
-                    this.project = regproj.empty();   % reset as an empty project
-                catch ME
-                    rethrow(ME);
-                end
+                % clear project
+                occupied = false;
+                save(this.ProjectName, "occupied", '-mat', '-append');
+                
+                delete(this.project);
+                this.project = regproj.empty();   % reset as an empty project
+
+                this.active_flag = false;
+            catch ME
+                rethrow(ME);
             end
         end
 
         function SaveProject(this)
-            if ~isempty(this.project)
-                pfile = this.project.proj_fname;
+            if isfile(this.project.proj_fname)
                 this.project.IsSaved = true;
                 DS_ = this.project.Seed;    % get data struct
                 try
                     % save project data
-                    save(pfile, "DS_", '-mat', '-v7.3', '-nocompression');
+                    save(this.project.proj_fname, "DS_", '-mat', '-v7.3', '-nocompression');
 
                     % save operation history
                     this.OperationManager.Save(this.project.proj_fname);
@@ -191,9 +199,12 @@ classdef regpm < handle
 
             % 2. Make project file: *.regproj
             try
+                % save data field
                 DS_ = this.project.Seed;    % get data struct
                 occupied = true;
                 save(pfile, "DS_", "occupied", '-mat', '-v7.3', '-nocompression');
+                % save operation field
+                this.OperationManager.Save(pfile);
             catch ME
                 rethrow(ME);
             end
@@ -209,23 +220,21 @@ classdef regpm < handle
             end
         end
 
-        function pfile = open_exist_project(this, file)
+        function open_exist_project(this, pfile)
             % construct all project from exist file
             try
                 % load project data from file
-                load(file, '-mat', "DS_");
+                load(pfile, '-mat', "DS_");
                 this.project.Restore(DS_);
 
                 % load operation history from file
-                this.OperationManager.Load(file);
+                this.OperationManager.Load(pfile);
 
                 occupied = true;
-                save(file, "occupied", '-mat', '-append');
+                save(pfile, "occupied", '-mat', '-append');
             catch ME
                 rethrow(ME);
             end
-
-            pfile = this.project.proj_fname;
         end
     end
 end

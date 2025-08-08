@@ -563,7 +563,7 @@
     <TIP_APP_INFO_COLLECTION_DETAIL>允许程序收集您的使用信息并上传至服务器，便于开发者解决程序异常并优化使用体验。您的使用信息将被加密，用户信息将进行匿名化处理。</TIP_APP_INFO_COLLECTION_DETAIL>
     <TIP_APP_INFO_COLLECTION_SIMPLE>允许程序收集您的使用信息以便于开发者解决程序异常并优化使用体验。</TIP_APP_INFO_COLLECTION_SIMPLE>
     <TIP_CACHE_LOCATION>通过自定义缓冲区位置以手动优化性能(推荐自动)</TIP_CACHE_LOCATION>
-    <TIP_CACHE_POLICY>缓存策略与当前项目绑定，设置后无法更改</TIP_CACHE_POLICY>
+    <TIP_CACHE_POLICY>缓存策略与当前项目绑定</TIP_CACHE_POLICY>
     <TIP_CBX_APPLY_TMAT>指定变换并跳过控制点配准</TIP_CBX_APPLY_TMAT>
     <TIP_CBX_AUTO_KEYFRAME>自动选取关键帧以平衡运动强度</TIP_CBX_AUTO_KEYFRAME>
     <TIP_CBX_ENHANCE>强化算法自动调整滤波器参数以同步模板帧前景</TIP_CBX_ENHANCE>
