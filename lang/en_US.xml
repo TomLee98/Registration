@@ -7,7 +7,6 @@
     <ADVANCED>Advanced</ADVANCED>
     <AFFINE>Affine</AFFINE>
     <AFFINE_TOOLTIP>translation, rotation, anisotropic scaling, reflection, and shearing</AFFINE_TOOLTIP>
-    <AGREE>Agree</AGREE>
     <ALIGNED>Aligned</ALIGNED>
     <ALL_CHANNEL>All</ALL_CHANNEL>
     <ANALYZE>Analyze</ANALYZE>
@@ -48,8 +47,10 @@
     <BLUE>Blue</BLUE>
     <BOTH_SIDE>Both</BOTH_SIDE>
     <BREAK>Break</BREAK>
+    <CACHE_FOLDER>Cache Folder</CACHE_FOLDER>
     <CACHE_LOCATION>Cache Location</CACHE_LOCATION>
     <CACHE_POLICY>Cache Policy</CACHE_POLICY>
+    <CACHE_ROOT_FOLDER>Cache Root Folder</CACHE_ROOT_FOLDER>
     <CALCULATING_GOODNESS>Calculating goodness of registration...</CALCULATING_GOODNESS>
     <CAMERA_BACKGROUND>Camera Background</CAMERA_BACKGROUND>
     <CAMERA_TIME>Camera Time</CAMERA_TIME>
@@ -107,10 +108,8 @@
     <CUBIC_HIGH_QUALITY>Cubic(High Quality)</CUBIC_HIGH_QUALITY>
     <CUSTOMIZED>Customized</CUSTOMIZED>
     <CYAN>Cyan</CYAN>
-    <DATA_FOLDER>Data Folder</DATA_FOLDER>
     <DATA_MANAGEMENT>Data Management</DATA_MANAGEMENT>
     <DATA_PROTECTED>Data Protected</DATA_PROTECTED>
-    <DATA_ROOT_FOLDER>Data Root Folder</DATA_ROOT_FOLDER>
     <DATA_SECURITY>Data Security</DATA_SECURITY>
     <DELETE_ABORTION>The project is already open. Please close it before deleting.</DELETE_ABORTION>
     <DELETE_CONFIRMATION>Confirm deletion?</DELETE_CONFIRMATION>
@@ -124,7 +123,6 @@
     <DILATE_FILTER>Dilate Filter</DILATE_FILTER>
     <DIRECT>Direct</DIRECT>
     <DISABLE>Off</DISABLE>
-    <DISAGREE>Disagree</DISAGREE>
     <DISCARD_RATIO>Discard Ratio</DISCARD_RATIO>
     <DISPLACEMENT_FIELD_ESTIMATION>Displacement Field Estimation</DISPLACEMENT_FIELD_ESTIMATION>
     <DISPLACEMENT_FIELD>Displacement Field</DISPLACEMENT_FIELD>
@@ -218,6 +216,7 @@
     <IGNORE_IMPORT_STEP>Ignore Import Step</IGNORE_IMPORT_STEP>
     <IGNORE_UNFIT_ITEMS>Automatically ignore unfitted components</IGNORE_UNFIT_ITEMS>
     <IMAGE>Image</IMAGE>
+    <IMAGE_COLOR_CONFIGURATION>Image Color Configuration</IMAGE_COLOR_CONFIGURATION>
     <IMAGE_EXPORT_SUCCESS>Image exported successfully</IMAGE_EXPORT_SUCCESS>
     <IMAGE_INTENSITY>image intensity</IMAGE_INTENSITY>
     <IMAGE_LOADING_COMPLETE>Image loading completed:</IMAGE_LOADING_COMPLETE>
@@ -240,7 +239,7 @@
     <INTENSITY_THRESHOLD>Intensity Threshold</INTENSITY_THRESHOLD>
     <INTERFACE_CONTROL>Interface Control</INTERFACE_CONTROL>
     <INTERPOLATION>Interpolation</INTERPOLATION>
-    <INVALID_DATA_ROOT_FOLDER>Invalid data root directory. Please check the settings</INVALID_DATA_ROOT_FOLDER>
+    <INVALID_CACHE_ROOT_FOLDER>Invalid cache root directory. Please check the settings</INVALID_CACHE_ROOT_FOLDER>
     <INVALID_FILE_NAME>Invalid File Name</INVALID_FILE_NAME>
     <INVALID_FOLDER_NAME>Invalid Folder Name</INVALID_FOLDER_NAME>
     <INVALID_FOLDERS_PROFILE>Invalid folder configuration: The data directory coincides with the project directory</INVALID_FOLDERS_PROFILE>
@@ -510,6 +509,7 @@
     <SIMPLE>Simple</SIMPLE>
     <SIMPLE_STAT>Simple Statistics</SIMPLE_STAT>
     <SINGLE_CHANNEL>Single Channel</SINGLE_CHANNEL>
+    <SKIP>Skip</SKIP>
     <SLICE>Slice</SLICE>
     <SLICE_FEW>Please select at least two slices</SLICE_FEW>
     <SLICES_FEW_FOR_NEXT_STEP>The number of layers is small, and registration will not be possible after cropping</SLICES_FEW_FOR_NEXT_STEP>
@@ -559,6 +559,7 @@
     <TIME_RANGE>Please enter a time range (frames):</TIME_RANGE>
     <TIME_SERIES_FILE>Time series file</TIME_SERIES_FILE>
     <TIME_STAMP>Time Stamp</TIME_STAMP>
+    <TIME_STAMP_FILE>Time Stamp File</TIME_STAMP_FILE>
     <TIP_ADD_TIMESTAMPS>Please load the image file first</TIP_ADD_TIMESTAMPS>
     <TIP_APP_INFO_COLLECTION_DETAIL>Allow the program to collect your usage information and upload it to the server, so that developers can resolve program anomalies and optimize the user experience. Your usage information will be encrypted, and user information will be anonymized.</TIP_APP_INFO_COLLECTION_DETAIL>
     <TIP_APP_INFO_COLLECTION_SIMPLE>Allow the program to collect your usage information so that developers can resolve program anomalies and optimize the user experience.</TIP_APP_INFO_COLLECTION_SIMPLE>
@@ -573,7 +574,7 @@
     <TIP_CELLPOSE_BATCH_SIZE>Using a larger batch size can accelerate computation but will consume more video memory</TIP_CELLPOSE_BATCH_SIZE>
     <TIP_CELLPOSE_THRESHOLD>Using a smaller threshold generally detects more targets</TIP_CELLPOSE_THRESHOLD>
     <TIP_DATA_PROTECTION>Enable this option to encrypt sensitive data</TIP_DATA_PROTECTION>
-    <TIP_DATA_ROOT_FOLDER>Please ensure that the disk partition where the root directory of the files is located has sufficient space</TIP_DATA_ROOT_FOLDER>
+    <TIP_CACHE_ROOT_FOLDER>Please ensure that the disk partition where the root directory of the cache is located has sufficient space</TIP_CACHE_ROOT_FOLDER>
     <TIP_DEVELOPER_MODE>Enabling developer mode allows you to load custom plugins</TIP_DEVELOPER_MODE>
     <TIP_DILATE_FILTER_DETAIL>Regenerate the image by constraining the target within specified volume and pixel intensity limits. Parameter array (non-negative integers): [Dilation radius (voxels), Minimum intensity, Maximum intensity, Minimum volume (voxels)]</TIP_DILATE_FILTER_DETAIL>
     <TIP_DILATE_FILTER_SIMPLE>Regenerating images with both volume and pixel intensity constraints</TIP_DILATE_FILTER_SIMPLE>
@@ -614,6 +615,7 @@
     <UNSUPPORTED_FILE_FORMAT>unsupported file format</UNSUPPORTED_FILE_FORMAT>
     <UNSUPPORTED_OS>Unsupported OS type</UNSUPPORTED_OS>
     <UPDATE_SCRIPT_FAILED>Update script generation failed, please check the write permissions</UPDATE_SCRIPT_FAILED>
+    <USE_PROJECT_NAME>Use Project Name</USE_PROJECT_NAME>
     <USER>User</USER>
     <USUAL>Usual</USUAL>
     <UTILIZATION>Utilization</UTILIZATION>

@@ -118,7 +118,7 @@ classdef constdef
                                  "SimpleStatistics",      "ON", ...             % "ON"/"OFF"
                                  "AutoTemplate",          "ON", ...             % "ON"/"OFF"
                                  "PreprocessEvaluation",  "ON", ...             % "ON"/"OFF"
-                                 "DataRootFolder",        "", ...               % data files root folder, under <user> data folder as usual
+                                 "CacheRootFolder",       "", ...               % cache files root folder, under <user> data folder as usual
                                  "AutoSave",              "ON", ...             % "ON"/"OFF", if project is auto save
                                  "AutoSaveInterval",      10, ...               % positive integer scalar, 1 ~ 120, unit as minute
                                  "ImportSourcePreset",    "HOME", ...           % "LAST"/"MODE"/"HOME", indicate default import source
@@ -141,7 +141,7 @@ classdef constdef
 
         %% project configuration (local)
         PROJECT_CONFIG_DEFAULT = struct("CachePolicy",      "PERFORMANCE", ...  % "PERFORMANCE"/"RESOURCES"/"BALANCE"
-                                        "DataFolder",       "", ...             % string scalar indicate data folder name
+                                        "CacheFolder",      "", ...             % string scalar indicate data folder name
                                         "DataProtected",    "OFF", ...          % "ON"/"OFF"
                                         "ProjectFolder",    "", ...             % string scalar indicate current project folder
                                         "ProjectName",      "Untitled", ...     % "Untitled" as constant, can not be changed

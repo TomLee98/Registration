@@ -210,7 +210,7 @@ classdef regpm < handle
             end
 
             %% create data folder
-            dst = prof.DataRootFolder + filesep + this.proj_opts.DataFolder;
+            dst = prof.CacheRootFolder + filesep + this.proj_opts.CacheFolder;
             try
                 % remake dir
                 if isfolder(dst), rmdir(dst, 's'); end
