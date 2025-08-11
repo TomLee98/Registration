@@ -24,7 +24,7 @@ classdef regopt
         % [global]:
         oc_tform_type   (1,1) string {mustBeMember(oc_tform_type, ["translation","rigid","affine"])} = "translation"
         oc_coarse_alg   (1,1) string {mustBeMember(oc_coarse_alg, ["mmt","pcorr","none"])} = "mmt"
-        oc_coarse_args  (1,1) struct = struct("Filter", "median", "VT", 1000, "Radius", 3)
+        oc_coarse_args  (1,1) struct = struct("Filter", 1, "VT", 1000, "Radius", 3)
         oc_mfilter      (1,3) double {mustBeNonnegative, mustBeInteger} = [7,7,3]
         oc_gfilter      (1,3) double {mustBeNonnegative, mustBeInteger} = [1,1,1]
 
@@ -32,7 +32,7 @@ classdef regopt
         % [global]:
         tc_tform_type   (1,1) string {mustBeMember(tc_tform_type, ["translation","rigid","affine"])} = "translation"
         tc_coarse_alg   (1,1) string {mustBeMember(tc_coarse_alg, ["mmt","pcorr","fpp","none"])} = "mmt"
-        tc_coarse_args  (1,1) struct = struct("Operator", "SIFT", "QT", 0.0133, "NumOctave", 3)
+        tc_coarse_args  (1,1) struct = struct("Operator", 2, "QT", 0.0133, "NumOctave", 3)
         tc_mfilter      (1,3) double {mustBeNonnegative, mustBeInteger} = [3,3,3]
         tc_gfilter      (1,3) double {mustBeNonnegative, mustBeInteger} = [3,3,3]
         dfilter         (1,4) double {mustBeInteger} = [3,115,65535,1000]

@@ -482,5 +482,7 @@ V5.x        Wittgenstein          维特根斯坦
   |     |- [Adjust] TODO: enable different cache policy
   |     |- [Adjust] TODO: modify the operation manager memory use meaning
   |     |- [Fix Bugs] fix the bug if user open an empty project
+  |     |- [Fix Bugs] fix the bug that user loads project but registration option error
   |     |- [Fix Bugs] TODO: fix the bug that segmentation will keep the previous algorithm on next segmentation
+  |     |- [Fix Bugs] TODO: fix the bug if there is no enough memory, abnormal exit instead of throw error
 
