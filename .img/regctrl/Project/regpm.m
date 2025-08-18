@@ -6,6 +6,7 @@ classdef regpm < handle
     properties (Access = ?Register, Dependent)
         IsProjectActive     (1,1)       % get/___, 1-by-1 logical, indicate if project on hard-drive
         Project             (1,1)       % get/___, 1-by-1 regproj object
+        ProjectConfig       (1,1)       % get/___, 1-by-1 struct
         ProjectName         (1,1)       % get/___, 1-by-1 string
     end
 
@@ -53,6 +54,10 @@ classdef regpm < handle
 
         function r = get.Project(this)
             r = this.project;       % shallow copy a handle
+        end
+
+        function r = get.ProjectConfig(this)
+            r = this.proj_opts;
         end
 
         function r = get.ProjectName(this)
@@ -140,11 +145,15 @@ classdef regpm < handle
             if isfile(this.project.proj_fname)
                 this.project.IsSaved = true;
                 DS_ = this.project.Seed;    % get data struct
+                OPT_ = this.proj_opts;
                 try
                     % save project data
                     save(this.project.proj_fname, "DS_", '-mat', '-v7.3', '-nocompression');
 
-                    % save operation history
+                    % save project configuration
+                    save(this.project.proj_fname, "OPT_", '-mat', '-append');
+
+                    % save operation history (append)
                     this.OperationManager.Save(this.project.proj_fname);
                 catch ME
                     rethrow(ME);
@@ -201,8 +210,11 @@ classdef regpm < handle
             try
                 % save data field
                 DS_ = this.project.Seed;    % get data struct
+                OPT_ = this.proj_opts;
                 occupied = true;
-                save(pfile, "DS_", "occupied", '-mat', '-v7.3', '-nocompression');
+
+                save(pfile, "DS_", "OPT_", "occupied", '-mat', '-v7.3', '-nocompression');
+
                 % save operation field
                 this.OperationManager.Save(pfile);
             catch ME
@@ -226,6 +238,10 @@ classdef regpm < handle
                 % load project data from file
                 load(pfile, '-mat', "DS_");
                 this.project.Restore(DS_);
+
+                % load project option from file
+                load(pfile, '-mat', "OPT_");
+                this.proj_opts = OPT_;
 
                 % load operation history from file
                 this.OperationManager.Load(pfile);

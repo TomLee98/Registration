@@ -189,6 +189,7 @@ classdef NuclearCtrlBot < handle
                         if isempty(this.disp_range)
                             create_new_object = true;
                         else
+                            % edge detection
                             x0 = this.center{zidx}(cir_index, 1);
                             y0 = this.center{zidx}(cir_index, 2);
                             create_new_object = (x0 > this.disp_range(1) ...
@@ -211,7 +212,7 @@ classdef NuclearCtrlBot < handle
                             addlistener(self, ...
                                 'ROIMoved', @(src,~)this.roi_moved(src,[],self));
 
-                            % binding menu: 修改ID
+                            % binding menu: 
                             uimenu(self.ContextMenu, ...
                                 "Text","修改ID",...
                                 "MenuSelectedFcn",@(~,~)this.roi_modify_id([],[],self), ...
