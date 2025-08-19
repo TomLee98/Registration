@@ -16,10 +16,10 @@ classdef NuclearCtrlBot < handle
         ax_caller                           % axes from caller, must be uiaxes
         nuclears                            % NuclearGroup object, for objects record
         hobj        (:,1)   cell            % handle of circle objects
-        hrange      (:,1)           = []    % handle of display range (rectangle)
+        hrange      (:,1)           = {}    % handle of display range (rectangle)
         cmap                                % string, indicate the color map
         disp_flag   (1,1)   string  = "on"  % string, indicate ROIs display state, "on"/"off"
-        disp_range  (:,4)           = []    % 0/1-by-4 positive integer double, as [x0, y0, w, h]
+        disp_range  (:,4)           = []    % d-by-4 positive integer double, as [x0, y0, w, h]
     end
 
     properties(SetAccess=private, GetAccess=private)
@@ -153,20 +153,22 @@ classdef NuclearCtrlBot < handle
 
             % create display range if needed
             if ~isempty(this.disp_range)
-                if isempty(this.hrange) || ~isvalid(this.hrange)
-                    this.hrange = images.roi.Rectangle(this.ax_caller, ...
-                        "Position",this.disp_range, "Color","y", ...
-                        "FaceAlpha",0, "StripeColor",[0.1, 0.1, 0.1], "Deletable",false, ...
-                        "InteractionsAllowed","none", "LineWidth",1, "MarkerSize",0.1);
+                if isempty(this.hrange)
+                    for k = 1:size(this.disp_range, 1)
+                        this.hrange{k} = images.roi.Rectangle(this.ax_caller, ...
+                            "Position",this.disp_range(k,:), "Color","y", ...
+                            "FaceAlpha",0, "StripeColor",[0.1, 0.1, 0.1], "Deletable",false, ...
+                            "InteractionsAllowed","none", "LineWidth",1, "MarkerSize",0.1);
+                    end
                 else
                     % keep exist rectangle ROI
                 end
             else
-                if ~isempty(this.hrange) && isvalid(this.hrange)
-                    delete(this.hrange);
+                if ~isempty(this.hrange)
+                    cellfun(@delete, this.hrange);
                 end
 
-                this.hrange = [];
+                this.hrange = {};
             end
 
             id_z = this.nuid{zidx};
@@ -192,10 +194,13 @@ classdef NuclearCtrlBot < handle
                             % edge detection
                             x0 = this.center{zidx}(cir_index, 1);
                             y0 = this.center{zidx}(cir_index, 2);
-                            create_new_object = (x0 > this.disp_range(1) ...
-                                && x0 < this.disp_range(1)+this.disp_range(3)) && ...
-                                (y0 > this.disp_range(2) ...
-                                && y0 < this.disp_range(2)+this.disp_range(4));
+                            create_new_object = false;
+                            for k = 1:size(this.disp_range, 1)
+                                create_new_object = create_new_object || (x0 > this.disp_range(k,1) ...
+                                    && x0 < this.disp_range(k,1)+this.disp_range(k,3)) && ...
+                                    (y0 > this.disp_range(k,2) ...
+                                    && y0 < this.disp_range(k,2)+this.disp_range(k,4));
+                            end
                         end
 
                         if create_new_object == true
@@ -314,15 +319,13 @@ classdef NuclearCtrlBot < handle
         end
 
         function status = Clear(this)
-            if ~isempty(this.hrange) && isvalid(this.hrange)
-                delete(this.hrange);
+            if ~isempty(this.hrange)
+                cellfun(@delete, this.hrange);
             end
             this.hrange = [];
 
             if ~isempty(this.hobj)
-                for k = 1:numel(this.hobj)
-                    delete(this.hobj{k}); 
-                end
+                cellfun(@delete, this.hobj);
                 status = this.STATUS_SUCCESS;
             else
                 status = this.STATUS_NO_HANDLE;
