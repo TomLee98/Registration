@@ -21,6 +21,7 @@
     <ANOMALY_CONNECT_OUTLIER_VOLUME>Volume of connected domain is outlier</ANOMALY_CONNECT_OUTLIER_VOLUME>
     <ANOMALY_DETECTION>Anomaly Detection</ANOMALY_DETECTION>
     <ANOMALY_DETECTION_RUNNING>Detecting anomaly connectivity domains…</ANOMALY_DETECTION_RUNNING>
+    <ANOMALY_REGION>Anomaly Region</ANOMALY_REGION>
     <ANOMALY_REPORT>Anomaly Report</ANOMALY_REPORT>
     <APPEARANCE>Appearance</APPEARANCE>
     <APPEND>Append</APPEND>
@@ -322,6 +323,7 @@
     <MIN_ITERATION_STEP>Minimum Iteration Step</MIN_ITERATION_STEP>
     <MIN_SEARCHING_RADIUS>Minimum Searching Radius</MIN_SEARCHING_RADIUS>
     <MIN_Z_PROJECTION>Minimum Z Projection</MIN_Z_PROJECTION>
+    <MINUS>Minus</MINUS>
     <MINUTES>Minutes</MINUTES>
     <MISMATCH_TOLERANCE>Mismatch Tolerance</MISMATCH_TOLERANCE>
     <MISSING_HELP>help.html file is missing</MISSING_HELP>
@@ -392,6 +394,7 @@
     <PIXEL_HISTOGRAM>Pixel Histogram</PIXEL_HISTOGRAM>
     <PLAY_MODE>Play Mode</PLAY_MODE>
     <PLUGINS_MANAGER>Plugins Manager</PLUGINS_MANAGER>
+    <PLUS>Plus</PLUS>
     <POINT_CLOUD_PREVIEW>Generate Point Cloud(Preview)</POINT_CLOUD_PREVIEW>
     <POLYGON>Polygon</POLYGON>
     <POLYNOMIAL>Polynomial</POLYNOMIAL>
