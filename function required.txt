@@ -481,7 +481,6 @@ V5.x        Wittgenstein          维特根斯坦
   |     |- [New] TODO: add "data protection" to encrypt/decrypt sensitivity data
   |     |- [Adjust] add the style support for new project dialog and image importer
   |     |- [Adjust] add "cell geometry" outlier detection in CellSegmentor
-  |     |- [Adjust] TODO: quantize segmentation quantity, use standard score
   |     |- [Adjust] TODO: enable different cache policy
   |     |- [Adjust] TODO: modify the operation manager memory use meaning
   |     |- [Fix Bugs] fix the bug if user open an empty project

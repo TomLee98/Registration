@@ -296,6 +296,7 @@ classdef NuclearCtrlBot < handle
 
             % transform as volume coding
             Vm = zeros(vsize, "uint16");
+            % greater index will overwrite smaller index in intersect region
             for k = 1:numel(vroi), Vm(vroi{k}) = k; end
 
             % transform to sparse coding
