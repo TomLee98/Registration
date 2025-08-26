@@ -477,7 +477,6 @@ V5.x        Wittgenstein          维特根斯坦
   |     |- [Fix Bugs] fix the red-green mixed bug
   |- V5.1.0     2025/08/31
   |     |- [New] Add support for "exception object" display in "CellSegmentor"
-  |     |- [New] TODO: support file "drag" and "open"
   |     |- [New] TODO: add "data protection" to encrypt/decrypt sensitivity data
   |     |- [Adjust] add the style support for new project dialog and image importer
   |     |- [Adjust] add "cell geometry" outlier detection in CellSegmentor
@@ -488,4 +487,5 @@ V5.x        Wittgenstein          维特根斯坦
   |     |- [Fix Bugs] fix load project without project configuration
   |     |- [Fix Bugs] TODO: fix the bug that segmentation will keep the previous algorithm on next segmentation
   |     |- [Fix Bugs] TODO: fix the bug if there is no enough memory, abnormal exit instead of throw error
+  |     |- [Note] Only figure supports 'Drag and Drop File' function
 
