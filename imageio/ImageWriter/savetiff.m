@@ -47,6 +47,7 @@ if turbo == true
     metadata.axes = 'TZCYX';
     % append compression information
     metadata.compression = '';
+    if isempty(metadata.operation), metadata.operation = ""; end
     % generate a python dictionary
     mdata = py.dict(metadata);
 
