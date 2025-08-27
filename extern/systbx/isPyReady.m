@@ -21,22 +21,22 @@ end
 % get matlab version
 mat_ver = string(version).extractBetween("(",")");
 
-pe = pyenv;
+pe = pyenv; % get current python environment
 
 if (pe.Version ~= "")
     if ismember(pe.Version, MAT_PY_VALID_MAPPING.(mat_ver))
+        % redirect output to avoid console display
         if ispc()
-            % redirect output to avoid console display
-            s_np = system("pip list | findstr numpy > ~.sftxt");
-            s_tf  = system("pip list | findstr tifffile >> ~.sftxt");
+            s_np = system("pip list | findstr numpy > NUL");
+            s_tf  = system("pip list | findstr tifffile > NUL");
         elseif isunix()
-            s_np = system("pip list | grep numpy > ~.sftxt");
-            s_tf  = system("pip list | grep tifffile >> ~.sftxt");
+            s_np = system("pip list | grep numpy > /dev/null");
+            s_tf  = system("pip list | grep tifffile > /dev/null");
         else
             throw(MException("isPyReady:invalidOperationSystem", ...
                 "Sorry, your operation system has not been supported."));
         end
-        delete("~.sftxt");    % remove the redirect temporary file
+
         if (s_np==0) && (s_tf==0)
             % there are python and tifffile package, use tifffile replace
             % bio-formats java package
@@ -53,8 +53,8 @@ if (pe.Version ~= "")
     end
 else
     tf = false;
-    warning("savetiff:noPythonOrNotPC","Fast saving disabled because of " + ...
-        "unsupported platform or python environment is not installed.");
+    warning("savetiff:noPythonOrNotPC","Fast saving disabled because that " + ...
+        "python environment is not installed.");
 end
 
 end

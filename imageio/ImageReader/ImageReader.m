@@ -106,7 +106,7 @@ classdef ImageReader < handle
             pfunc = str2func(rf(upper(ext)==rf(:,1), 2));
 
             % if turbo loading enabled
-            ft = ImageReader.fast_loading(ext);
+            ft = ImageReader.is_turbo_support(ext);
 
             % load the metadata
             info = loadimgmd(this.srcfile);
@@ -196,7 +196,7 @@ classdef ImageReader < handle
     end
 
     methods (Static)
-        function tf = fast_loading(ext)
+        function tf = is_turbo_support(ext)
             switch lower(ext)
                 case ".nd2"
                     if ispc()

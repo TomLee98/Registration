@@ -478,9 +478,9 @@ V5.x        Wittgenstein          维特根斯坦
   |- V5.1.0     2025/08/31
   |     |- [New] Add support for "exception object" display in "CellSegmentor"
   |     |- [New] TODO: add "data protection" to encrypt/decrypt sensitivity data
+  |     |- [new] TODO: enable different cache policy
   |     |- [Adjust] add the style support for new project dialog and image importer
   |     |- [Adjust] add "cell geometry" outlier detection in CellSegmentor
-  |     |- [Adjust] TODO: enable different cache policy
   |     |- [Adjust] TODO: modify the operation manager memory use meaning
   |     |- [Fix Bugs] fix the bug if user open an empty project
   |     |- [Fix Bugs] fix the bug that user loads project but registration option error
