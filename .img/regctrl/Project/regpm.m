@@ -107,15 +107,13 @@ classdef regpm < handle
                 status = -1;
                 return;
             else
-                % create new empty regproj object
-                this.project = regproj.empty();
-
                 % create project files by empty project
-                this.open_exist_project(pfile);
+                status = this.open_exist_project(pfile);
 
-                % this.project.IsSaved = true;
-                this.active_flag = true;
-                status = 0;
+                if status == 0
+                    % this.project.IsSaved = true;
+                    this.active_flag = true;
+                end
             end
         end
 
@@ -232,22 +230,31 @@ classdef regpm < handle
             end
         end
 
-        function open_exist_project(this, pfile)
+        function status = open_exist_project(this, pfile)
             % construct all project from exist file
             try
                 % load project data from file
-                load(pfile, '-mat', "DS_");
-                this.project.Restore(DS_);
+                load(pfile, '-mat', "DS_", "occupied");
+                
+                if occupied == false
+                    % create new empty regproj object
+                    this.project = regproj.empty();
 
-                % load project option from file
-                load(pfile, '-mat', "OPT_");
-                this.proj_opts = OPT_;
+                    this.project.Restore(DS_);
+                    % load project option from file
+                    load(pfile, '-mat', "OPT_");
+                    this.proj_opts = OPT_;
 
-                % load operation history from file
-                this.OperationManager.Load(pfile);
+                    % load operation history from file
+                    this.OperationManager.Load(pfile);
 
-                occupied = true;
-                save(pfile, "occupied", '-mat', '-append');
+                    occupied = true;
+                    save(pfile, "occupied", '-mat', '-append');
+
+                    status = 0;
+                else
+                    status = -1;
+                end
             catch ME
                 rethrow(ME);
             end

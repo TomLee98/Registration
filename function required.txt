@@ -475,18 +475,25 @@ V5.x        Wittgenstein          维特根斯坦
   |     |- [Fix Bugs] fix the bug if user set registration with 3D view
   |     |- [Fix Bugs] fix the bug if there is no mask but user pushes "Export Mask" button
   |     |- [Fix Bugs] fix the red-green mixed bug
-  |- V5.1.0     2025/08/31
+  |- V5.1.0     2025/09/14
   |     |- [New] Add support for "exception object" display in "CellSegmentor"
   |     |- [New] TODO: add "data protection" to encrypt/decrypt sensitivity data
+  |     |- [New] TODO: add "project protection": project can be read-only if has been opened already
   |     |- [new] TODO: enable different cache policy
   |     |- [Adjust] add the style support for new project dialog and image importer
-  |     |- [Adjust] add "cell geometry" outlier detection in CellSegmentor
-  |     |- [Adjust] TODO: modify the operation manager memory use meaning
+  |     |- [Adjust] update CellSegmentor for easy segmentation
+  |     |- [Adjust] TODO: modify the operation manager memory view by meaning
   |     |- [Fix Bugs] fix the bug if user open an empty project
   |     |- [Fix Bugs] fix the bug that user loads project but registration option error
   |     |- [Fix Bugs] fix load project without project configuration
-  |     |- [Fix Bugs] TODO: fix the bug that some project can't be opened, hard-drive read/write very slow
-  |     |- [Fix Bugs] TODO: fix the bug that segmentation will keep the previous algorithm on next segmentation
-  |     |- [Fix Bugs] TODO: fix the bug if there is no enough memory, abnormal exit instead of throw error
+  |     |- [Fix Bugs] fix project loading without storage view synchronization
+  |     |- [Fix Bugs] TODO: fix the bug that some project opening time may be very slow
+  |     |- [Fix Bugs] TODO: fix the bug that segmentation may keep the previous algorithm on next segmentation
+  |     |- [Fix Bugs] TODO: fix the bug that python/multi-threads crash on laptop(Intel + Nvidia 3/40_0)
+  |     |- [Fix Bugs] TODO: fix the bug if there is no enough memory, abnormal exit instead of throw error on laptop
   |     |- [Note] Only figure supports 'Drag and Drop File' function
+  |- V5.1.5     2025/
+  |
+  |
+  #
 

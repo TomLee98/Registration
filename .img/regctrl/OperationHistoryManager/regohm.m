@@ -579,8 +579,11 @@ classdef regohm < handle
             [~, ~, ext] = fileparts(file);
             switch ext
                 case constdef.PROJECT_FILE_EXT
+                    % load tree and recovery this.optree
                     load(file, '-mat', "op_tree");
                     op_tree.RestoreUITree(this.optree, this.ctmenu);
+
+                    % load and set properties
                     DS_ = op_tree.OhmgrProperties;
                     this.cache_size_mem = DS_.cache_size_mem;
                     this.cache_size_hdd = DS_.cache_size_hdd;
@@ -588,12 +591,18 @@ classdef regohm < handle
                     this.optsty = DS_.optsty;
                     this.nodes_total_num = DS_.nodes_total_num;
                     this.storage_summary = DS_.storage_summary;
+
+                    % set activate node
                     node = this.find(DS_.tag_active);
                     if ~isempty(node)
                         this.ActivateNode(node);
                     else
                         this.node_active = this.optree;
                     end
+
+                    % update appearance
+                    this.update_storage_summary();
+                    this.update_manage_view();
                 otherwise
                     throw(MException("regohm:invalidFileFormat", ...
                         "File extension must be %s.", constdef.PROJECT_FILE_EXT));

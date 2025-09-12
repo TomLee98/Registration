@@ -18,6 +18,7 @@ classdef NuclearCtrlBot < handle
         hobj        (:,1)   cell            % handle of circle objects
         hrange      (:,1)           = {}    % handle of display range (rectangle)
         cmap                                % string, indicate the color map
+        cid_cur     (:,1)           = []    % circle identity on current slice
         disp_flag   (1,1)   string  = "on"  % string, indicate ROIs display state, "on"/"off"
         disp_range  (:,4)           = []    % d-by-4 positive integer double, as [x0, y0, w, h]
     end
@@ -36,6 +37,10 @@ classdef NuclearCtrlBot < handle
         DispFlag
         DispRange
         HighlightID
+    end
+
+    properties(GetAccess = public, Dependent)
+        CurrentIDs
         IsMaskExist
         MaxN
         Parent
@@ -89,6 +94,10 @@ classdef NuclearCtrlBot < handle
             else
                 this.hlid = r;
             end
+        end
+
+        function r = get.CurrentIDs(this)
+            r = this.cid_cur;
         end
 
         function r = get.IsMaskExist(this)
@@ -172,6 +181,8 @@ classdef NuclearCtrlBot < handle
             end
 
             id_z = this.nuid{zidx};
+            this.cid_cur = [];
+
             if ~isempty(id_z)
                 h_obj = cell(numel(id_z),1);
                 % draw circle at the plane
@@ -204,6 +215,7 @@ classdef NuclearCtrlBot < handle
                         end
 
                         if create_new_object == true
+                            % new circle object
                             self = images.roi.Circle(this.ax_caller,...
                                 "Center",this.center{zidx}(cir_index,:),...
                                 "Radius",this.radius{zidx}(cir_index), ...
@@ -212,6 +224,9 @@ classdef NuclearCtrlBot < handle
                                 "LineWidth",1.5, "MarkerSize",1, "Label",string(cir_id),...
                                 "LabelVisible","on", "FaceAlpha",0, "LabelAlpha",0,...
                                 "Deletable",true, "UserData",[cir_index, zidx]);
+
+                            % record as current circle identies
+                            this.cid_cur = [this.cid_cur; cir_id];
 
                             % binding listener(will be auto removed if the roi was deleted)
                             addlistener(self, ...

@@ -35,6 +35,7 @@
     <ASK_FOR_UPDATE>There is an updated version, is it updated?</ASK_FOR_UPDATE>
     <AUTO>Auto</AUTO>
     <AUTO_CLEAR>Auto Clear</AUTO_CLEAR>
+    <AUTO_FOCUS>Auto Focus</AUTO_FOCUS>
     <AUTO_SAVE>Auto Save</AUTO_SAVE>
     <AUTO_SAVE_INTERVAL>Auto Save Interval</AUTO_SAVE_INTERVAL>
     <AUTO_TEMPLATE>Auto Template</AUTO_TEMPLATE>
