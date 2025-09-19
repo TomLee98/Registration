@@ -48,7 +48,8 @@ try
     if status ~= 0
         fprintf("Registry changes imported failed.\n");
     else
-        fprintf("Registry changes imported successfully. They will take effect after a restart.\n");
+        fprintf("Registry changes imported successfully.\n" + ...
+            "They will take effect after explorer.exe restart.\n");
     end
 catch ME
     fprintf("An exception was thrown: %s", ME.identifier);
