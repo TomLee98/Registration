@@ -11,6 +11,7 @@ classdef constdef
         SERVER_HOST_NAME = "silab"
         REGISTRATION_GROUP_NAME = "regusers"
         MEX_SETUP = "MATLAB_MEX_SETUP"
+        REGPROGJ_REGISTRY_FLAG = "Reg3Dfile"
         PROFILE_FOLDER = ['Reg3D', filesep]
         APP_PROFILE_FILE_NAME = ".profile.xml"
         PROJECT_PROFILE_FILE_NAME = ".project.xml"
