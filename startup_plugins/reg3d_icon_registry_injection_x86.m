@@ -15,6 +15,10 @@ rf_icon = rf_icon.replace("\", "\\");
 %[TEXT START]
 rfp_file = fullfile(temp_folder, "regicon.reg");
 
+% clear temporary file
+status = remove_temporary_file(rfp_file);
+if status==-1, return; end
+
 try
     fid = fopen(rfp_file, "a+", "n", "UTF-8");
 
@@ -59,6 +63,9 @@ try
             "Registry changes imported failed. You could import manually as administrator.");
         fprintf("Regustry file location: %s\n", rfp_file);
     else
+        % clear temporary file
+        status = remove_temporary_file(rfp_file);
+
         fprintf("Registry changes imported successfully.\n" + ...
             "They will take effect after explorer.exe restart.\n");
     end
@@ -66,15 +73,19 @@ catch ME
     warning("registry_injection:unknownException", ...
         "An exception was thrown: %s.\n", ME.identifier);
     status = -1;
+    return;
 end
 
-%% clear temporary file
+end
+
+function status = remove_temporary_file(rfp_file)
 try
     delete(rfp_file);   % remove the old file
+    status = 0;
 catch
     warning("registry_injection:invalidPermission", ...
         "Cleaning temporary registry file was denied.");
+    status = -1;
+    return;
 end
-
 end
-
