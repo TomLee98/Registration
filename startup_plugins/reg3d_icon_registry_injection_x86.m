@@ -1,4 +1,4 @@
-function status = reg3d_icon_injection_x86(temp_folder)
+function status = reg3d_icon_registry_injection_x86(temp_folder)
 %REG3D_ICON_INJECTION This function injects icon which connects with
 %*.regproj file on PC platform
 arguments
@@ -40,19 +40,19 @@ fprintf(fid, "[HKEY_CLASSES_ROOT\\Reg3Dfile\\shell]\n");
 fclose(fid);
 
 %% inject by system call
-
-cmd = ['regedit.exe /s "', rfp_file, '"'];
+cmd = ['reg import ', char(rfp_file)];
 
 try
+    % This command need to run as "Administrator"
     [status, ~] = system(cmd);
     if status ~= 0
-        fprintf("Registry changes imported failed.\n");
+        fprintf("Registry changes imported failed. You could import manually.\n");
     else
         fprintf("Registry changes imported successfully.\n" + ...
             "They will take effect after explorer.exe restart.\n");
     end
 catch ME
-    fprintf("An exception was thrown: %s", ME.identifier);
+    fprintf("An exception was thrown: %s.\n", ME.identifier);
     status = -1;
 end
 
