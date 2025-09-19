@@ -475,7 +475,7 @@ V5.x        Wittgenstein          维特根斯坦
   |     |- [Fix Bugs] fix the bug if user set registration with 3D view
   |     |- [Fix Bugs] fix the bug if there is no mask but user pushes "Export Mask" button
   |     |- [Fix Bugs] fix the red-green mixed bug
-  |- V5.1.0     2025/09/14
+  |- V5.1.0     2025/09/28
   |     |- [New] Add support for "exception object" display in "CellSegmentor"
   |     |- [New] TODO: add "data protection" to encrypt/decrypt sensitivity data
   |     |- [New] TODO: add "project protection": project can be read-only if has been opened already
