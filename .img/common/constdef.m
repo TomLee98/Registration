@@ -37,6 +37,11 @@ classdef constdef
         APPCONF_FILE_EXT = ".xml"
         LANGUAGE_FILE_EXT = ".xml"
 
+        %% file extension icon file definition
+        MASK_FILE_ICON = "mask_icon.png"
+        PROJECT_FILE_ICON = "icon.png"
+        REGMOV_FILE_ICON = "rmv_icon.png"
+
         %% experiment definition
         CAMERA_BACKGROUND = 100
 

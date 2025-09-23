@@ -8,12 +8,14 @@ end
 % get icon file full path
 rf_icon = mfilename("fullpath");
 [rf_icon, ~, ~] = fileparts(rf_icon);
-rf_icon = string(rf_icon).replace("startup_plugins", "sources") + filesep + "icon.png";
-rf_icon = rf_icon.replace("\", "\\");
+icons_folder = string(rf_icon).replace("startup_plugins", "sources");
+rf_proj_icon = replace(icons_folder + filesep + constdef.PROJECT_FILE_EXT, "\", "\\");
+rf_mask_icon = replace(icons_folder + filesep + constdef.MASK_FILE_EXT, "\", "\\");
+rf_rmv_icon = replace(icons_folder + filesep + constdef.REGMOV_FILE_ICON, "\", "\\");
 
 %% create .reg file (register file on Windows: Version 5.00)
 %[TEXT START]
-rfp_file = fullfile(temp_folder, "regicon.reg");
+rfp_file = fullfile(temp_folder, "regicons.reg");
 
 % clear temporary file
 status = remove_temporary_file(rfp_file);
@@ -22,9 +24,11 @@ if status==-1, return; end
 try
     fid = fopen(rfp_file, "a+", "n", "UTF-8");
 
+    %% TITLE
     %Windows Registry Editor Version 5.00
     fprintf(fid, "Windows Registry Editor Version 5.00\n\n");
 
+    %% SUPPORT FOR *.REGPROJ FILE (PROJECT FILE)
     %[HKEY_CLASSES_ROOT\.regproj]
     %@="Reg3Dfile"
     fprintf(fid, "[HKEY_CLASSES_ROOT\\.regproj]\n");
@@ -38,10 +42,48 @@ try
     %[HKEY_CLASSES_ROOT\Reg3Dfile\DefaultIcon]
     %@="<folder>\*.png"
     fprintf(fid, "[HKEY_CLASSES_ROOT\\Reg3Dfile\\DefaultIcon]\n");
-    fprintf(fid, "@=""%s""\n\n", rf_icon);
+    fprintf(fid, "@=""%s""\n\n", rf_proj_icon);
 
     %[HKEY_CLASSES_ROOT\Reg3Dfile\shell]
-    fprintf(fid, "[HKEY_CLASSES_ROOT\\Reg3Dfile\\shell]\n");
+    fprintf(fid, "[HKEY_CLASSES_ROOT\\Reg3Dfile\\shell]\n\n");
+
+    %% SUPPORT FOR *.MASK FILE (SEGMENTOR->MASK FILE)
+    %[HKEY_CLASSES_ROOT\.mask]
+    %@="Reg3Dfile"
+    fprintf(fid, "[HKEY_CLASSES_ROOT\\.mask]\n");
+    fprintf(fid, "@=""Reg3Dmask""\n\n");
+
+    %[HKEY_CLASSES_ROOT\Reg3Dfile]
+    %@="Registration Project File"
+    fprintf(fid, "[HKEY_CLASSES_ROOT\\Reg3Dmask]\n");
+    fprintf(fid, "@=""Registration Mask File""\n\n");
+
+    %[HKEY_CLASSES_ROOT\Reg3Dmask\DefaultIcon]
+    %@="<folder>\*.png"
+    fprintf(fid, "[HKEY_CLASSES_ROOT\\Reg3Dmask\\DefaultIcon]\n");
+    fprintf(fid, "@=""%s""\n\n", rf_mask_icon);
+
+    %[HKEY_CLASSES_ROOT\Reg3Dfile\shell]
+    fprintf(fid, "[HKEY_CLASSES_ROOT\\Reg3Dmask\\shell]\n\n");
+
+    %% SUPPORT FOR *.RMV FILE (REGMOV FILE)
+    %[HKEY_CLASSES_ROOT\.rmv]
+    %@="Reg3Dimages"
+    fprintf(fid, "[HKEY_CLASSES_ROOT\\.rmv]\n");
+    fprintf(fid, "@=""Reg3Dimages""\n\n");
+
+    %[HKEY_CLASSES_ROOT\Reg3Dimages]
+    %@="Registration Image File"
+    fprintf(fid, "[HKEY_CLASSES_ROOT\\Reg3Dimages]\n");
+    fprintf(fid, "@=""Registration Image File""\n\n");
+
+    %[HKEY_CLASSES_ROOT\Reg3Dimages\DefaultIcon]
+    %@="<folder>\*.png"
+    fprintf(fid, "[HKEY_CLASSES_ROOT\\Reg3Dimage\\DefaultIcon]\n");
+    fprintf(fid, "@=""%s""\n\n", rf_rmv_icon);
+
+    %[HKEY_CLASSES_ROOT\Reg3Dfile\shell]
+    fprintf(fid, "[HKEY_CLASSES_ROOT\\Reg3Dimage\\shell]\n");
 
     %[TEXT END]
     fclose(fid);
