@@ -172,7 +172,10 @@ classdef regproj < handle
                 end
 
                 % develop mimg_cur
-                vol = this.img_cur.Movie(:, :, this.cidx_cur, :, this.fidx_cur);
+                [~, cidx] = ismember(this.opt_reg.Options.SC, ...
+                    this.img_cur.MetaData.cOrder);
+
+                vol = this.img_cur.Movie(:, :, cidx, :, this.fidx_cur);
                 vol = squeeze(vol);
                 this.mimg_cur = GenPreProcVol(vol, this.opt_reg);
 

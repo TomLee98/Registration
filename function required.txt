@@ -477,10 +477,11 @@ V5.x        Wittgenstein          维特根斯坦
   |     |- [Fix Bugs] fix the red-green mixed bug
   |- V5.1.0     2026/01/31
   |     |- [New] Add support for "exception object" display in "CellSegmentor"
-  |     |- [new] Add regproj file icon support by registry on Windows platform
+  |     |- [New] Add regproj file icon support by registry on Windows platform
+  |     |- [New] TODO: add "recently project" and "project list" for continue process more easily
   |     |- [New] TODO: add "data protection" to encrypt/decrypt sensitivity data
   |     |- [New] TODO: add "project protection": project can be read-only if has been opened already
-  |     |- [new] TODO: enable different cache policy
+  |     |- [New] TODO: enable different cache policy
   |     |- [Adjust] add the style support for new project dialog and image importer
   |     |- [Adjust] update CellSegmentor for easy segmentation
   |     |- [Adjust] TODO: modify the operation manager memory view by meaning
