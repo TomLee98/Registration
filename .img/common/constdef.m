@@ -172,5 +172,5 @@ classdef constdef
         % code as: REMOTE_INFORMATION_FOLDER = '/data/Share/Code/Reg3D App/.reports';
         RIF_UNIX = "S9DNLUrQeOcvdj+W5tSBW7zjwXUSstMziN530gTIkDTqkWsYR7BicaYvZy2OU17cMwIIiGj1ZBR7abrE+ClTdZhfo0tRX3ztnkwQqHarlSA=";
     end
-    
+
 end

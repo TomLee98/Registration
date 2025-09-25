@@ -53,7 +53,9 @@ if turbo == true
 
     % permute I as imageJ hyperstack dimorder: 'TZCYXS', ordinary: 'XYCZT'
     img = permute(img, [5,4,3,1,2]);
+
     v = py.numpy.array(img).astype("uint16");
+
     fname = py.str(file);
 
     clearvars img
