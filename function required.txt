@@ -480,7 +480,6 @@ V5.x        Wittgenstein          维特根斯坦
   |     |- [New] Add regproj file icon support by registry on Windows platform
   |     |- [New] TODO: add "recently project" and "project list" for continue process more easily
   |     |- [New] TODO: add "data protection" to encrypt/decrypt sensitivity data
-  |     |- [New] TODO: add "project protection": project can be read-only if has been opened already
   |     |- [New] TODO: enable different cache policy
   |     |- [Adjust] add the style support for new project dialog and image importer
   |     |- [Adjust] update CellSegmentor for easy segmentation
@@ -490,6 +489,7 @@ V5.x        Wittgenstein          维特根斯坦
   |     |- [Fix Bugs] fix load project without project configuration
   |     |- [Fix Bugs] fix project loading without storage view synchronization
   |     |- [Fix Bugs] fix the bug if user reloads project with "Registration","Crop" and "Cut" and there are more than 1 branch
+  |     |- [Fix Bugs] TODO: fix the bug if user active "segment" node but display option is disable
   |     |- [Fix Bugs] TODO: fix the bug that some project opening time may be very slow
   |     |- [Fix Bugs] TODO: fix the bug that segmentation may keep the previous algorithm on next segmentation
   |     |- [Fix Bugs] TODO: fix the bug that python/multi-threads crash on laptop(Intel + Nvidia 3/40_0)
