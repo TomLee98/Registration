@@ -490,6 +490,7 @@ V5.x        Wittgenstein          维特根斯坦
   |     |- [Fix Bugs] fix project loading without storage view synchronization
   |     |- [Fix Bugs] fix the bug if user reloads project with "Registration","Crop" and "Cut" and there are more than 1 branch
   |     |- [Fix Bugs] TODO: fix the bug if user active "segment" node but display option is disable
+  |     |- [Fix Bugs] TODO: fix the bug if view as "red & green" and open the "B&C Adjust" subapp
   |     |- [Fix Bugs] TODO: fix the bug that some project opening time may be very slow
   |     |- [Fix Bugs] TODO: fix the bug that segmentation may keep the previous algorithm on next segmentation
   |     |- [Fix Bugs] TODO: fix the bug that python/multi-threads crash on laptop(Intel + Nvidia 3/40_0)

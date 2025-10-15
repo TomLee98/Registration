@@ -507,6 +507,7 @@
     <SEGMENTATION_AREA>Segmentation Area</SEGMENTATION_AREA>
     <SEGMENTATION_AREA_LOCK>Segmentation Area (lock)</SEGMENTATION_AREA_LOCK>
     <SERMENTATION_LOST_WARNING>The program will disable the segmentation in 3D view, continue?</SERMENTATION_LOST_WARNING>
+    <SEGMENTING>Segmenting…</SEGMENTING>
     <SELECTION_SAVING_FOLDER>Select Saving Folder</SELECTION_SAVING_FOLDER>
     <SELF_DEFINITION>Self Definition</SELF_DEFINITION>
     <SETTING_PANEL>Setting Panel</SETTING_PANEL>
